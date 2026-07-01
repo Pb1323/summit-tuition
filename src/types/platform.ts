@@ -1,0 +1,127 @@
+export type Role = "student" | "admin";
+export type Subject = "English" | "Maths" | "VR" | "NVR";
+export type ReferenceStyle = "GL-style" | "non-GL" | "unknown";
+export type Difficulty = "foundation" | "standard" | "stretch";
+export type QuestionType =
+  | "multiple_choice"
+  | "short_number"
+  | "multi_step"
+  | "table_graph"
+  | "word_problem"
+  | "geometry"
+  | "reading_comprehension"
+  | "vocabulary"
+  | "inference"
+  | "retrieval"
+  | "language_analysis"
+  | "grammar"
+  | "punctuation"
+  | "cloze"
+  | "synonyms_antonyms"
+  | "future_vr"
+  | "future_nvr";
+
+export type AttemptStatus = "in_progress" | "submitted" | "marked" | "report_released";
+export type PaymentStatus = "none" | "pending" | "paid" | "refunded";
+
+export interface StudentAccount {
+  id: string;
+  name: string;
+  email: string;
+  passwordHash?: string;
+  role: Role;
+  approved: boolean;
+  plan: string;
+  paymentStatus: PaymentStatus;
+  unlockedMockIds: string[];
+  createdAt: string;
+}
+
+export interface QuestionVisual {
+  type: "bar_chart" | "table" | "number_line" | "coordinate_grid" | "shape";
+  title: string;
+  data: Record<string, string | number | string[] | number[]>;
+}
+
+export interface Question {
+  id: string;
+  subject: Subject;
+  topic: string;
+  subtopic: string;
+  difficulty: Difficulty;
+  questionType: QuestionType;
+  passageId?: string;
+  text: string;
+  options?: string[];
+  correctAnswer: string | string[];
+  markScheme: string;
+  explanation: string;
+  marks: number;
+  visual?: QuestionVisual;
+  tags: string[];
+  timeEstimateSeconds: number;
+}
+
+export interface Passage {
+  id: string;
+  title: string;
+  source: "original";
+  text: string;
+}
+
+export interface MockExam {
+  id: string;
+  title: string;
+  subject: Subject;
+  style: ReferenceStyle;
+  durationMinutes: number;
+  totalMarks: number;
+  questionIds: string[];
+  published: boolean;
+  releaseDate: string;
+  tier: string;
+  description: string;
+}
+
+export interface Attempt {
+  id: string;
+  studentId: string;
+  mockId: string;
+  answers: Record<string, string>;
+  flaggedQuestionIds: string[];
+  score: number;
+  maxScore: number;
+  submittedAt?: string;
+  timeSpentSeconds: number;
+  status: AttemptStatus;
+  adminFeedback: string;
+  weakTopics: string[];
+  reportReady: boolean;
+}
+
+export interface ReferenceSource {
+  id: string;
+  title: string;
+  url: string;
+  subject: Subject;
+  style: ReferenceStyle;
+  notes: string;
+  lastAnalysedAt: string;
+}
+
+export interface ProductPlan {
+  id: string;
+  name: string;
+  price: string;
+  cadence: string;
+  badge?: string;
+  description: string;
+}
+
+export interface EmailTemplate {
+  id: string;
+  trigger: string;
+  subject: string;
+  enabled: boolean;
+}
+

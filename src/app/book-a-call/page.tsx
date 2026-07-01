@@ -1,0 +1,74 @@
+import type { Metadata } from "next";
+import { CheckCircle2 } from "lucide-react";
+import { Container } from "@/components/ui/container";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { HeroSection } from "@/components/sections/hero-section";
+import { BookingPlaceholder } from "@/components/sections/booking-placeholder";
+import { EnquiryForm } from "@/components/sections/enquiry-form";
+import type { InterestedProduct } from "@/types/contact";
+
+export const metadata: Metadata = {
+  title: "Book a Free Parent Call",
+  description:
+    "Book a free 15-minute call to talk through your child's 11+ preparation and find the right starting point — diagnostic assessment, mocks, tuition or the Complete Programme.",
+};
+
+const PRODUCT_MAP: Record<string, InterestedProduct> = {
+  "diagnostic-assessment": "Diagnostic Assessment",
+  "weekly-mock-club": "Weekly Mock Club",
+  "practice-paper-simulator": "Practice Paper Simulator",
+  "private-tuition": "Private Tuition",
+  "group-tuition": "Group Tuition",
+  "complete-programme": "Complete 11+ Programme",
+  "holiday-booster": "Holiday Booster",
+};
+
+const WHAT_TO_EXPECT = [
+  "A quick chat about your child's year group, target schools and timeline",
+  "Honest guidance on whether a diagnostic, mocks, tuition or the full programme fits best",
+  "No pressure, no hard sell — just a clear recommendation",
+];
+
+export default async function BookACallPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ product?: string }>;
+}) {
+  const params = await searchParams;
+  const defaultProduct = params.product ? PRODUCT_MAP[params.product] : undefined;
+
+  return (
+    <>
+      <HeroSection
+        eyebrow="Book a Call"
+        title="Book a Free Parent Call"
+        description="A free 15-minute call helps you choose the right preparation route for your child — no pressure, no hard sell."
+      />
+
+      <section className="pb-20">
+        <Container className="grid grid-cols-1 gap-12 lg:grid-cols-2">
+          <div>
+            <SectionHeading eyebrow="What to expect" title="What we'll cover on the call" />
+            <ul className="mt-6 space-y-3">
+              {WHAT_TO_EXPECT.map((item) => (
+                <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-muted">
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-gold-dark" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-8">
+              <BookingPlaceholder />
+            </div>
+          </div>
+          <div>
+            <SectionHeading eyebrow="Prefer to send details first?" title="Tell us about your child" />
+            <div className="mt-6">
+              <EnquiryForm defaultProduct={defaultProduct} />
+            </div>
+          </div>
+        </Container>
+      </section>
+    </>
+  );
+}
