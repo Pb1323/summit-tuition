@@ -19,7 +19,7 @@ export default function AdminPage() {
               ["Question Bank", "/admin/mocks#question-bank"],
               ["References", "/admin/mocks#references"],
               ["Attempts", "/admin/mocks#attempts"],
-              ["Students", "/admin"],
+              ["Students", "/admin/students"],
               ["Payments", "/admin"],
               ["Products", "/admin"],
             ].map(([label, href]) => <a key={`${label}-${href}`} href={href} className="rounded-full border border-line bg-white px-4 py-2 text-navy hover:border-gold">{label}</a>)}

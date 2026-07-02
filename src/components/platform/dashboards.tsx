@@ -1,10 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { BookOpenCheck, ClipboardList, CreditCard, Eye, FilePlus2, Lock, Mail, ShieldCheck, Sparkles, Users } from "lucide-react";
 import { recommendationsForTopics } from "@/lib/assessment";
 import { usePlatform } from "@/context/platform-context";
 import { AnimatedButton, GlowCard, MockCard, PremiumBadge, ProgressBar, ReportPreview, RevealOnScroll, WeakTopicBreakdown } from "@/components/platform/ui";
+import { AdminStudentsWorkspace } from "@/components/platform/admin-students-workspace";
 import type { Subject } from "@/types/platform";
 
 export function StudentDashboard() {
@@ -24,6 +26,32 @@ export function StudentDashboard() {
       : nextMock
         ? "Your next unlocked mock is ready to take online."
         : "You are ready for the next mock unlock from admin.";
+
+  if (currentUser && !currentUser.approved) {
+    return (
+      <div className="mx-auto max-w-4xl">
+        <GlowCard className="p-8">
+          <PremiumBadge tone="red">Approval pending</PremiumBadge>
+          <h1 className="mt-4 text-3xl font-black tracking-tight text-navy">Your account is awaiting approval</h1>
+          <p className="mt-3 max-w-2xl text-muted">You&apos;ll be able to access mocks once your account has been reviewed. If you have already paid, approval may take a short time.</p>
+          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            <div className="rounded-xl bg-cream p-4">
+              <p className="text-sm font-black uppercase tracking-[0.14em] text-muted">Status</p>
+              <p className="mt-1 text-xl font-black text-navy">Pending</p>
+            </div>
+            <div className="rounded-xl bg-cream p-4 sm:col-span-2">
+              <p className="text-sm font-black uppercase tracking-[0.14em] text-muted">Plan</p>
+              <p className="mt-1 text-xl font-black text-navy">{currentUser.plan}</p>
+            </div>
+          </div>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <AnimatedButton href="/contact">Contact Summit Tuition</AnimatedButton>
+            <Link href="/" className="rounded-full border border-line bg-white px-5 py-2.5 text-sm font-bold text-navy hover:border-gold">Back home</Link>
+          </div>
+        </GlowCard>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-10">
@@ -175,6 +203,8 @@ export function AdminDashboard() {
           <AnimatedButton href="/admin/mocks">Go to Mock Command Centre</AnimatedButton>
         </div>
       </GlowCard>
+
+      <AdminStudentsWorkspace compact />
 
       <section className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => <GlowCard key={stat.label} className="p-5"><div className="flex items-center gap-3 text-gold-dark">{stat.icon}</div><p className="mt-4 text-3xl font-black text-navy">{stat.value}</p><p className="text-sm text-muted">{stat.label}</p></GlowCard>)}

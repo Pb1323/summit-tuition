@@ -165,12 +165,15 @@ For Supabase later:
 2. Student chooses a requested plan.
 3. Payment status remains pending/paid structure only in the demo.
 4. Admin signs in at `/login`.
-5. Admin opens `/admin`.
+5. Admin opens `/admin` or `/admin/students`.
 6. Admin approves/unapproves the student, assigns plan/tier and manually unlocks specific mocks.
+7. For a quick demo, admin can use **Create Test Student** and **Approve + Unlock First Mock**.
+
+Until the production database pass is complete, the visible UI still keeps demo account state in browser `localStorage`. To test approval reliably on the Vercel demo, register the student and sign in as admin in the same browser/profile, or use the admin test-student action. Cross-device/cross-browser approval persistence requires the later Prisma/Postgres database migration.
 
 ## Create And Publish Mocks
 
-In `/admin`:
+In `/admin/mocks`:
 
 - publish/unpublish mocks
 - view the question bank

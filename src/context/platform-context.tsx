@@ -31,6 +31,9 @@ type PlatformContextValue = PlatformState & {
   register: (input: RegisterInput) => { ok: true } | { ok: false; message: string };
   logout: () => void;
   approveUser: (studentId: string, approved: boolean) => void;
+  rejectUser: (studentId: string) => void;
+  approveAndUnlockFirstMock: (studentId: string) => void;
+  createTestStudent: () => void;
   assignPlan: (studentId: string, plan: string) => void;
   unlockMock: (studentId: string, mockId: string, unlocked: boolean) => void;
   setMockPublished: (mockId: string, published: boolean) => void;
@@ -205,6 +208,44 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
     approveUser(studentId, approved) {
       if (currentUser?.role !== "admin") return;
       updateUsers((users) => users.map((user) => (user.id === studentId ? { ...user, approved } : user)));
+    },
+    rejectUser(studentId) {
+      if (currentUser?.role !== "admin") return;
+      updateStore((prev) => ({
+        ...prev,
+        users: prev.users.filter((user) => user.id !== studentId),
+        attempts: prev.attempts.filter((attempt) => attempt.studentId !== studentId),
+      }));
+    },
+    approveAndUnlockFirstMock(studentId) {
+      if (currentUser?.role !== "admin") return;
+      const firstMock = state.mocks.find((mock) => mock.published && (mock.subject === "Maths" || mock.subject === "English"));
+      updateUsers((users) => users.map((user) => {
+        if (user.id !== studentId) return user;
+        const unlockedMockIds = firstMock && !user.unlockedMockIds.includes(firstMock.id) ? [...user.unlockedMockIds, firstMock.id] : user.unlockedMockIds;
+        return { ...user, approved: true, paymentStatus: user.paymentStatus === "none" ? "pending" : user.paymentStatus, unlockedMockIds };
+      }));
+    },
+    createTestStudent() {
+      if (currentUser?.role !== "admin") return;
+      const id = `student-test-${Date.now()}`;
+      updateStore((prev) => ({
+        ...prev,
+        users: [
+          ...prev.users,
+          {
+            id,
+            name: "Test Student",
+            email: `test-student-${Date.now()}@example.com`,
+            role: "student",
+            approved: false,
+            plan: "Weekly Mock Club Plus",
+            paymentStatus: "pending",
+            unlockedMockIds: [],
+            createdAt: new Date().toISOString(),
+          },
+        ],
+      }));
     },
     assignPlan(studentId, plan) {
       if (currentUser?.role !== "admin") return;
