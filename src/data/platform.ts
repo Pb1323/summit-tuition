@@ -14,7 +14,7 @@ export const MASTER_ADMIN_EMAIL = "admin@summittuition.local";
 export const SEEDED_USERS: StudentAccount[] = [
   {
     id: "admin-1",
-    name: "Master Admin",
+    name: "Demo Admin",
     email: MASTER_ADMIN_EMAIL,
     role: "admin",
     approved: true,
@@ -25,8 +25,8 @@ export const SEEDED_USERS: StudentAccount[] = [
   },
   {
     id: "student-1",
-    name: "Amelia Khan",
-    email: "amelia@example.com",
+    name: "Demo Student",
+    email: "student@example.com",
     role: "student",
     approved: true,
     plan: "Weekly Mock Club Plus",
@@ -36,8 +36,8 @@ export const SEEDED_USERS: StudentAccount[] = [
   },
   {
     id: "student-2",
-    name: "Noah Patel",
-    email: "noah@example.com",
+    name: "Test Student",
+    email: "test-student@example.com",
     role: "student",
     approved: false,
     plan: "Diagnostic Assessment",

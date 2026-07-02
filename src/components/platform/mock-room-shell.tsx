@@ -77,15 +77,32 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
     <AuthWrapper>
       <Container className="py-10">
         {isAdminPreview && (
-          <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-gold/25 bg-white/80 p-4 shadow-sm backdrop-blur">
-            <div className="flex flex-wrap items-center gap-2">
-              <PremiumBadge tone="navy"><Eye className="mr-1 h-3.5 w-3.5" /> Admin Preview</PremiumBadge>
-              {!mock.published && <PremiumBadge>Draft / Unpublished</PremiumBadge>}
-              <span className="text-sm font-semibold text-muted">No student attempt will be saved from this view.</span>
+          <div className="mb-5 rounded-2xl border border-gold/25 bg-white/85 p-5 shadow-sm backdrop-blur">
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <PremiumBadge tone="navy"><Eye className="mr-1 h-3.5 w-3.5" /> Admin Preview</PremiumBadge>
+                  <PremiumBadge tone={mock.published ? "green" : "gold"}>{mock.published ? "Published" : "Draft / Unpublished"}</PremiumBadge>
+                  <PremiumBadge>{mock.subject}</PremiumBadge>
+                </div>
+                <h1 className="mt-3 text-2xl font-black text-navy">{mock.title}</h1>
+                <div className="mt-2 flex flex-wrap gap-2 text-xs font-bold text-muted">
+                  <span className="rounded-full bg-cream px-3 py-1">{questions.length} questions</span>
+                  <span className="rounded-full bg-cream px-3 py-1">{mock.durationMinutes} min</span>
+                  <span className="rounded-full bg-cream px-3 py-1">{mock.totalMarks} marks</span>
+                  <span className="rounded-full bg-cream px-3 py-1">Student view shell</span>
+                </div>
+                <p className="mt-2 text-sm font-semibold text-muted">Preview-only mode: no real attempt will be created or submitted.</p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Link href="/admin/mocks" className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-sm font-bold text-navy hover:border-gold">
+                  <ArrowLeft className="h-4 w-4" /> Mock Command Centre
+                </Link>
+                <Link href="/admin" className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-sm font-bold text-navy hover:border-gold">
+                  Admin Dashboard
+                </Link>
+              </div>
             </div>
-            <Link href="/admin" className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-sm font-bold text-navy hover:border-gold">
-              <ArrowLeft className="h-4 w-4" /> Back to admin
-            </Link>
           </div>
         )}
 

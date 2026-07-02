@@ -1,11 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { BookOpenCheck, ClipboardList, CreditCard, Eye, FilePlus2, Lock, Mail, ShieldCheck, Users } from "lucide-react";
+import { BookOpenCheck, ClipboardList, CreditCard, Eye, FilePlus2, Lock, Mail, ShieldCheck, Sparkles, Users } from "lucide-react";
 import { recommendationsForTopics } from "@/lib/assessment";
 import { usePlatform } from "@/context/platform-context";
 import { AnimatedButton, GlowCard, MockCard, PremiumBadge, ProgressBar, ReportPreview, RevealOnScroll, WeakTopicBreakdown } from "@/components/platform/ui";
-import { AdminMockWorkspace } from "@/components/platform/admin-mock-workspace";
 import type { Subject } from "@/types/platform";
 
 export function StudentDashboard() {
@@ -166,6 +165,17 @@ export function AdminDashboard() {
 
   return (
     <div className="space-y-10">
+      <GlowCard className="p-8">
+        <div className="flex flex-wrap items-center justify-between gap-5">
+          <div>
+            <PremiumBadge><Sparkles className="mr-1 h-3.5 w-3.5" /> Dedicated workspace</PremiumBadge>
+            <h2 className="mt-4 text-3xl font-black text-navy">Mock Command Centre</h2>
+            <p className="mt-2 max-w-3xl text-muted">Generate mocks, inspect the question visual showcase, run quality checks, preview drafts, publish papers and review attempts in a spacious admin area.</p>
+          </div>
+          <AnimatedButton href="/admin/mocks">Go to Mock Command Centre</AnimatedButton>
+        </div>
+      </GlowCard>
+
       <section className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => <GlowCard key={stat.label} className="p-5"><div className="flex items-center gap-3 text-gold-dark">{stat.icon}</div><p className="mt-4 text-3xl font-black text-navy">{stat.value}</p><p className="text-sm text-muted">{stat.label}</p></GlowCard>)}
       </section>
@@ -186,7 +196,9 @@ export function AdminDashboard() {
       </section>
 
       <AdminPanel title="Students and manual access" icon={<Users />}>
-        <div className="overflow-x-auto">
+        {students.length === 0 ? (
+          <AdminEmpty title="No students yet" text="New registered students will appear here." />
+        ) : <div className="overflow-x-auto">
           <table className="w-full min-w-[760px] text-left text-sm">
             <caption className="sr-only">Student accounts, plans, payment status, approval status and mock unlock controls</caption>
             <thead className="text-xs uppercase text-muted"><tr><th scope="col" className="p-3">Student</th><th scope="col">Plan</th><th scope="col">Payment</th><th scope="col">Approved</th><th scope="col">Mock unlocks</th></tr></thead>
@@ -213,13 +225,13 @@ export function AdminDashboard() {
               ))}
             </tbody>
           </table>
-        </div>
+        </div>}
       </AdminPanel>
 
-      <AdminMockWorkspace />
-
       <AdminPanel title="Attempts, marking and report release" icon={<Eye />}>
-        <div className="space-y-4">
+        {attempts.filter((attempt) => attempt.status !== "in_progress").length === 0 ? (
+          <AdminEmpty title="No attempts submitted yet" text="Submitted mock attempts will appear here for marking." />
+        ) : <div className="space-y-4">
           {attempts.filter((attempt) => attempt.status !== "in_progress").map((attempt) => {
             const student = users.find((user) => user.id === attempt.studentId);
             const mock = mocks.find((item) => item.id === attempt.mockId);
@@ -237,7 +249,7 @@ export function AdminDashboard() {
               </div>
             );
           })}
-        </div>
+        </div>}
       </AdminPanel>
 
       <AdminPanel title="Add a reference URL" icon={<FilePlus2 />}>
@@ -290,5 +302,14 @@ function AdminPanel({ title, icon, children }: { title: string; icon: React.Reac
       </div>
       {children}
     </GlowCard>
+  );
+}
+
+function AdminEmpty({ title, text }: { title: string; text: string }) {
+  return (
+    <div className="rounded-2xl border border-line bg-cream p-6">
+      <h3 className="text-lg font-black text-navy">{title}</h3>
+      <p className="mt-2 text-sm text-muted">{text}</p>
+    </div>
   );
 }

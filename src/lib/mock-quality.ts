@@ -1,0 +1,49 @@
+import type { MockExam, Passage, Question } from "@/types/platform";
+
+export type MockQualityStatus = "Ready" | "Needs Review" | "Broken Draft";
+
+export type MockQualityResult = {
+  status: MockQualityStatus;
+  checks: { label: string; passed: boolean }[];
+  warnings: string[];
+};
+
+export function evaluateMockQuality(mock: MockExam, questions: Question[], passages: Passage[]): MockQualityResult {
+  const mockQuestions = questions.filter((question) => mock.questionIds.includes(question.id));
+  const checks = [
+    { label: "Has title", passed: Boolean(mock.title?.trim()) },
+    { label: "Has subject", passed: Boolean(mock.subject) },
+    { label: "Has time limit", passed: mock.durationMinutes > 0 },
+    { label: "Has questions", passed: mockQuestions.length > 0 },
+    { label: "Every question has answer", passed: mockQuestions.every((question) => hasAnswer(question)) },
+    { label: "Every question has explanation", passed: mockQuestions.every((question) => Boolean(question.explanation?.trim())) },
+    { label: "Every question has mark scheme", passed: mockQuestions.every((question) => Boolean(question.markScheme?.trim())) },
+    { label: "Every question has topic", passed: mockQuestions.every((question) => Boolean(question.topic?.trim())) },
+    { label: "Every question has difficulty", passed: mockQuestions.every((question) => Boolean(question.difficulty)) },
+    { label: "Maths visual questions render successfully", passed: mockQuestions.every((question) => question.subject !== "Maths" || !needsVisual(question) || Boolean(question.visual?.type)) },
+    { label: "English comprehension questions have passage/paragraph references", passed: mockQuestions.every((question) => question.subject !== "English" || !question.passageId || hasPassageLink(question, passages)) },
+    { label: "Total marks are valid", passed: mock.totalMarks > 0 && mock.totalMarks === mockQuestions.reduce((sum, question) => sum + question.marks, 0) },
+  ];
+  const warnings = checks.filter((check) => !check.passed).map((check) => check.label);
+  const brokenLabels = new Set(["Has title", "Has subject", "Has time limit", "Has questions", "Every question has answer"]);
+  const status: MockQualityStatus = warnings.length === 0 ? "Ready" : warnings.some((warning) => brokenLabels.has(warning)) ? "Broken Draft" : "Needs Review";
+  return { status, checks, warnings };
+}
+
+export function qualityTone(status: MockQualityStatus) {
+  if (status === "Ready") return "green" as const;
+  if (status === "Broken Draft") return "red" as const;
+  return "navy" as const;
+}
+
+function hasAnswer(question: Question) {
+  return Array.isArray(question.correctAnswer) ? question.correctAnswer.length > 0 : Boolean(String(question.correctAnswer ?? "").trim());
+}
+
+function needsVisual(question: Question) {
+  return ["table_graph", "geometry"].includes(question.questionType) || Boolean(question.visual);
+}
+
+function hasPassageLink(question: Question, passages: Passage[]) {
+  return passages.some((passage) => passage.id === question.passageId) && Boolean(question.paragraphRefs?.length);
+}
