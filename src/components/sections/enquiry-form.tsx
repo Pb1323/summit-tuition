@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { SITE } from "@/data/site";
 import {
   Select,
   SelectContent,
@@ -68,7 +69,7 @@ export function EnquiryForm({ defaultProduct }: { defaultProduct?: InterestedPro
 
   if (status === "success") {
     return (
-      <div className="flex flex-col items-center gap-3 rounded-3xl border border-line bg-white px-8 py-16 text-center">
+      <div className="flex flex-col items-center gap-3 rounded-3xl border border-line bg-white px-8 py-16 text-center shadow-[0_22px_70px_-48px_rgba(180,83,9,0.42)]" role="status" aria-live="polite">
         <CheckCircle2 className="h-10 w-10 text-emerald-600" />
         <h3 className="text-xl font-semibold text-navy">Thank you — we&apos;ve got it</h3>
         <p className="max-w-sm text-sm leading-relaxed text-muted">
@@ -80,22 +81,22 @@ export function EnquiryForm({ defaultProduct }: { defaultProduct?: InterestedPro
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5 rounded-3xl border border-line bg-white p-6 sm:p-8">
+    <form onSubmit={handleSubmit} className="space-y-5 rounded-3xl border border-line bg-white p-6 shadow-[0_22px_70px_-48px_rgba(180,83,9,0.42)] sm:p-8">
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div>
           <Label htmlFor="parentName">Parent name</Label>
-          <Input id="parentName" name="parentName" required placeholder="Jane Smith" />
+          <Input id="parentName" name="parentName" required autoComplete="name" placeholder="Jane Smith" />
         </div>
         <div>
           <Label htmlFor="email">Email</Label>
-          <Input id="email" name="email" type="email" required placeholder="jane@email.com" />
+          <Input id="email" name="email" type="email" required autoComplete="email" placeholder="jane@email.com" />
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div>
           <Label htmlFor="phone">Phone</Label>
-          <Input id="phone" name="phone" type="tel" placeholder="07700 900000" />
+          <Input id="phone" name="phone" type="tel" autoComplete="tel" placeholder="07700 900000" />
         </div>
         <div>
           <Label htmlFor="childYearGroup">Child&apos;s year group</Label>
@@ -145,7 +146,7 @@ export function EnquiryForm({ defaultProduct }: { defaultProduct?: InterestedPro
           required
         />
         <Label htmlFor="consent" className="mb-0 font-normal text-muted">
-          I consent to {`Beacon Eleven Plus`} contacting me about my enquiry and storing my
+          I consent to {SITE.name} contacting me about my enquiry and storing my
           details in line with the{" "}
           <a href="/privacy-policy" className="underline hover:text-navy">
             privacy policy
@@ -155,7 +156,7 @@ export function EnquiryForm({ defaultProduct }: { defaultProduct?: InterestedPro
       </div>
 
       {status === "error" && (
-        <p className="text-sm text-rose-600">Something went wrong — please try again.</p>
+        <p className="text-sm text-rose-600" role="alert">Something went wrong — please try again.</p>
       )}
 
       <Button type="submit" size="lg" className="w-full" disabled={status === "loading" || !consent}>

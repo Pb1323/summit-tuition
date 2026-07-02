@@ -11,8 +11,8 @@ export function isCorrect(question: Question, answer?: string) {
   return expected.some((item) => normaliseAnswer(item) === normaliseAnswer(answer));
 }
 
-export function scoreAnswers(mock: MockExam, answers: Record<string, string>) {
-  const questions = QUESTIONS.filter((question) => mock.questionIds.includes(question.id));
+export function scoreAnswers(mock: MockExam, answers: Record<string, string>, bank: Question[] = QUESTIONS) {
+  const questions = bank.filter((question) => mock.questionIds.includes(question.id));
   return questions.reduce(
     (result, question) => {
       const earned = isCorrect(question, answers[question.id]) ? question.marks : 0;
@@ -25,14 +25,13 @@ export function scoreAnswers(mock: MockExam, answers: Record<string, string>) {
   );
 }
 
-export function weakTopicsForAttempt(mock: MockExam, answers: Record<string, string>) {
-  const misses = QUESTIONS.filter((question) => mock.questionIds.includes(question.id) && !isCorrect(question, answers[question.id]));
-  return Array.from(new Set(misses.map((question) => question.topic)));
+export function weakTopicsForAttempt(mock: MockExam, answers: Record<string, string>, bank: Question[] = QUESTIONS) {
+  return analyseAttempt(mock, answers, bank).weakTopics.map((topic) => topic.topic);
 }
 
-export function topicBreakdown(mock: MockExam, attempt?: Attempt) {
+export function topicBreakdown(mock: MockExam, attempt?: Attempt, bank: Question[] = QUESTIONS) {
   const byTopic = new Map<string, { topic: string; score: number; maxScore: number }>();
-  for (const question of QUESTIONS.filter((item) => mock.questionIds.includes(item.id))) {
+  for (const question of bank.filter((item) => mock.questionIds.includes(item.id))) {
     const current = byTopic.get(question.topic) ?? { topic: question.topic, score: 0, maxScore: 0 };
     current.maxScore += question.marks;
     if (attempt && isCorrect(question, attempt.answers[question.id])) {
@@ -41,6 +40,47 @@ export function topicBreakdown(mock: MockExam, attempt?: Attempt) {
     byTopic.set(question.topic, current);
   }
   return Array.from(byTopic.values());
+}
+
+export function analyseAttempt(mock: MockExam, answers: Record<string, string>, bank: Question[] = QUESTIONS) {
+  const questions = bank.filter((question) => mock.questionIds.includes(question.id));
+  const byTopic = new Map<string, { topic: string; missedMarks: number; maxMarks: number; questionIds: string[]; pattern: "careless_error" | "concept_gap" | "timing_pressure" }>();
+
+  for (const question of questions) {
+    const current = byTopic.get(question.topic) ?? {
+      topic: question.topic,
+      missedMarks: 0,
+      maxMarks: 0,
+      questionIds: [],
+      pattern: "concept_gap" as const,
+    };
+    current.maxMarks += question.marks;
+    const answer = answers[question.id];
+    if (!isCorrect(question, answer)) {
+      current.missedMarks += question.marks;
+      current.questionIds.push(question.id);
+      if (!answer) current.pattern = "timing_pressure";
+      else if (question.difficulty === "standard" && question.marks === 1) current.pattern = "careless_error";
+    }
+    byTopic.set(question.topic, current);
+  }
+
+  const weakTopics = Array.from(byTopic.values())
+    .filter((topic) => topic.missedMarks > 0)
+    .sort((a, b) => b.missedMarks / b.maxMarks - a.missedMarks / a.maxMarks)
+    .slice(0, 3);
+
+  return {
+    weakTopics,
+    topicBreakdown: Array.from(byTopic.values()).map((topic) => ({
+      topic: topic.topic,
+      score: topic.maxMarks - topic.missedMarks,
+      maxScore: topic.maxMarks,
+      missedMarks: topic.missedMarks,
+      questionIds: topic.questionIds,
+      pattern: topic.pattern,
+    })),
+  };
 }
 
 export function recommendationsForTopics(topics: string[]) {
@@ -53,4 +93,3 @@ export function recommendationsForTopics(topics: string[]) {
     return `Complete a focused practice pack on ${topic}.`;
   });
 }
-

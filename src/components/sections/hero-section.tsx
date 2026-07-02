@@ -1,6 +1,8 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/container";
+import { DepthField } from "@/components/motion/depth-field";
+import { KineticHeadline } from "@/components/motion/kinetic-headline";
 
 interface HeroSectionProps {
   eyebrow?: string;
@@ -22,34 +24,39 @@ export function HeroSection({
   size = "default",
 }: HeroSectionProps) {
   return (
-    <section className="relative overflow-hidden bg-grain">
-      <div className="absolute inset-0 bg-gradient-to-b from-cream-dark/70 to-cream" />
+    <section className="hero-spotlight relative overflow-hidden">
+      <DepthField />
+      <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-10 h-64 w-64 -translate-x-1/2 rounded-full bg-gold/10 blur-3xl premium-float" />
+      <div aria-hidden="true" className="pointer-events-none absolute -right-24 top-20 h-80 w-80 rounded-full bg-gold-light/20 blur-3xl" />
       <Container
         className={cn(
-          "relative grid items-center gap-12",
-          size === "default" ? "py-20 sm:py-24" : "py-14 sm:py-16",
+          "relative z-10 grid items-center gap-12",
+          size === "default" ? "py-20 sm:py-24 lg:py-28" : "py-14 sm:py-16",
           visual ? "lg:grid-cols-2" : "grid-cols-1"
         )}
       >
         <div className={cn(align === "center" && !visual && "mx-auto max-w-3xl text-center")}>
           {eyebrow && (
-            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-gold-dark">
+            <p className="mb-4 inline-flex rounded-full border border-gold/30 bg-white/70 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-gold-dark shadow-sm">
               {eyebrow}
             </p>
           )}
-          <h1 className="text-4xl font-bold tracking-tight text-navy sm:text-5xl lg:text-[3.25rem] lg:leading-[1.08]">
-            {title}
-          </h1>
+          <KineticHeadline text={title} highlight={["GL-style", "online", "mocks", "improve", "next"]} />
           {description && (
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{description}</p>
           )}
           {actions && (
-            <div className={cn("mt-9 flex flex-wrap gap-4", align === "center" && !visual && "justify-center")}>
+            <div className={cn("mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap", align === "center" && !visual && "justify-center")}>
               {actions}
             </div>
           )}
+          <div className="mt-8 flex flex-wrap gap-2 text-xs font-bold text-muted">
+            {["DBS-checked tutors", "GL-style online mocks", "Manual report release"].map((item) => (
+              <span key={item} className="rounded-full border border-gold/25 bg-white/70 px-3 py-1.5">{item}</span>
+            ))}
+          </div>
         </div>
-        {visual && <div className="relative">{visual}</div>}
+        {visual && <div className="relative hero-dashboard-tilt">{visual}</div>}
       </Container>
     </section>
   );

@@ -6,11 +6,12 @@ import { FAQAccordion } from "@/components/ui/faq-accordion";
 import { HeroSection } from "@/components/sections/hero-section";
 import { CTASection } from "@/components/sections/cta-section";
 import { FAQ_ITEMS } from "@/data/faq";
+import { SITE } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "FAQ",
   description:
-    "Answers to common questions about 11+ tuition, mock exams, diagnostic assessments and how Beacon Eleven Plus works.",
+    `Answers to common questions about 11+ tuition, mock exams, diagnostic assessments and how ${SITE.name} works.`,
 };
 
 export default function FAQPage() {

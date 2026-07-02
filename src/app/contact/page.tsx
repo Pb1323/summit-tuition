@@ -8,7 +8,7 @@ import type { InterestedProduct } from "@/types/contact";
 
 export const metadata: Metadata = {
   title: "Contact Us",
-  description: "Get in touch with Beacon Eleven Plus to ask about 11+ tuition, mocks, diagnostic assessments or the Complete 11+ Programme.",
+  description: `Get in touch with ${SITE.name} to ask about 11+ tuition, mocks, diagnostic assessments or the Complete 11+ Programme.`,
 };
 
 const PRODUCT_MAP: Record<string, InterestedProduct> = {

@@ -8,9 +8,9 @@ export function PricingCard({ tier }: { tier: PricingTier }) {
   return (
     <div
       className={cn(
-        "relative flex flex-col rounded-3xl border bg-white p-7",
+        "premium-card premium-card-hover relative flex flex-col rounded-2xl p-7",
         tier.highlighted
-          ? "border-navy shadow-[0_24px_56px_-20px_rgba(15,43,61,0.35)] lg:-translate-y-2"
+          ? "border-gold/60 shadow-[0_26px_70px_-30px_rgba(180,83,9,0.55)] lg:-translate-y-2"
           : "border-line"
       )}
     >
@@ -20,6 +20,9 @@ export function PricingCard({ tier }: { tier: PricingTier }) {
         </Badge>
       )}
       <h3 className="text-lg font-semibold text-navy">{tier.name}</h3>
+      <p className="mt-1 text-xs font-bold uppercase tracking-[0.16em] text-gold-dark">
+        {tier.highlighted ? "Most guided route" : tier.billingMode === "one-off" ? "Focused start" : "Flexible plan"}
+      </p>
       <p className="mt-1.5 min-h-10 text-sm leading-relaxed text-muted">{tier.description}</p>
       <div className="mt-5 flex items-baseline gap-1">
         <span className="text-4xl font-bold tracking-tight text-navy">{tier.price}</span>
@@ -29,7 +32,9 @@ export function PricingCard({ tier }: { tier: PricingTier }) {
       <ul className="mt-6 flex-1 space-y-3">
         {tier.features.map((f) => (
           <li key={f} className="flex items-start gap-2.5 text-sm text-ink/85">
-            <Check className="mt-0.5 h-4 w-4 shrink-0 text-gold-dark" />
+            <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gold/15 text-gold-dark">
+              <Check className="h-3.5 w-3.5" />
+            </span>
             {f}
           </li>
         ))}

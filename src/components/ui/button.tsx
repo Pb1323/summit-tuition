@@ -4,15 +4,16 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-semibold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gold disabled:pointer-events-none disabled:opacity-50",
+  "focus-gold inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-semibold transition duration-200 active:translate-y-px disabled:pointer-events-none disabled:opacity-50 [&_svg]:transition-transform hover:[&_svg]:translate-x-0.5",
   {
     variants: {
       variant: {
-        primary: "bg-gold text-navy-dark hover:bg-gold-light shadow-sm shadow-gold/30",
-        navy: "bg-navy text-white hover:bg-navy-light",
-        outline: "border border-navy/25 text-navy hover:border-navy hover:bg-navy/5",
-        ghost: "text-navy hover:bg-navy/5",
-        light: "bg-white text-navy hover:bg-cream-dark border border-line",
+        primary:
+          "gold-shimmer bg-gradient-to-r from-gold-dark via-gold to-gold-light text-navy-dark shadow-[0_16px_34px_-18px_rgba(180,83,9,0.9)] hover:-translate-y-0.5 hover:shadow-[0_22px_44px_-20px_rgba(180,83,9,0.95)]",
+        navy: "bg-navy text-white shadow-[0_16px_34px_-22px_rgba(15,23,42,0.8)] hover:-translate-y-0.5 hover:bg-navy-light",
+        outline: "border border-gold/35 bg-white/70 text-navy hover:-translate-y-0.5 hover:border-gold hover:bg-gold/10",
+        ghost: "text-navy hover:bg-gold/10",
+        light: "border border-gold/25 bg-white/90 text-navy shadow-sm hover:-translate-y-0.5 hover:bg-cream-dark",
       },
       size: {
         sm: "h-9 px-4 text-sm",

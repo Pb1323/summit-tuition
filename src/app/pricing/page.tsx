@@ -7,11 +7,12 @@ import { PricingCard } from "@/components/ui/pricing-card";
 import { HeroSection } from "@/components/sections/hero-section";
 import { CTASection } from "@/components/sections/cta-section";
 import { ALL_PRICING_GROUPS } from "@/data/pricing";
+import { SITE } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Pricing — 11+ Tuition, Mocks & Diagnostic Assessments",
   description:
-    "Transparent pricing for every Beacon Eleven Plus product: diagnostic assessment, practice paper simulator, weekly mock club, tuition and the Complete 11+ Programme.",
+    `Transparent pricing for every ${SITE.name} product: diagnostic assessment, practice paper simulator, weekly mock club, tuition and the Complete 11+ Programme.`,
 };
 
 export default function PricingPage() {

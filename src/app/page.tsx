@@ -131,15 +131,12 @@ export default function HomePage() {
             <Button href="/diagnostic-assessment" variant="navy" size="lg">
               Start with a Diagnostic Assessment
             </Button>
-            <Button href="/weekly-mock-club" variant="outline" size="lg">
-              Join Weekly Mock Club
-            </Button>
             <Button href="/book-a-call" size="lg">
               Book a Free Parent Call
             </Button>
-            <Button href="/login" variant="light" size="lg">
+            <Link href="/login" className="inline-flex h-12 items-center justify-center text-sm font-bold text-navy underline decoration-gold/60 underline-offset-4 hover:text-gold-dark">
               Student Login
-            </Button>
+            </Link>
           </>
         }
       />

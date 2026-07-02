@@ -1,0 +1,198 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  student
+  admin
+}
+
+enum Subject {
+  English
+  Maths
+  VR
+  NVR
+}
+
+enum ReferenceStyle {
+  GL_style
+  non_GL
+  unknown
+}
+
+enum AttemptStatus {
+  in_progress
+  submitted
+  marked
+  report_released
+}
+
+enum PaymentStatus {
+  none
+  pending
+  paid
+  refunded
+}
+
+enum PaymentRequestStatus {
+  checkout_started
+  payment_pending
+  paid_pending_approval
+  failed
+  cancelled
+  refunded
+}
+
+model User {
+  id            String        @id @default(cuid())
+  name          String
+  email         String        @unique
+  passwordHash  String
+  role          Role          @default(student)
+  approved      Boolean       @default(false)
+  plan          String
+  paymentStatus PaymentStatus @default(pending)
+  createdAt     DateTime      @default(now())
+  sessions      Session[]
+  attempts      Attempt[]
+  unlocks       MockUnlock[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model MockExam {
+  id                       String      @id
+  title                    String
+  subject                  Subject
+  style                    ReferenceStyle
+  difficultyLabel          String?
+  sourceProfileId          String?
+  generatedFromReferenceId String?
+  topicMix                 Json?
+  durationMinutes          Int
+  totalMarks               Int
+  questionIds              Json
+  published                Boolean     @default(false)
+  releaseDate              DateTime
+  tier                     String
+  description              String
+  attempts                 Attempt[]
+  unlocks                  MockUnlock[]
+}
+
+model Question {
+  id                  String          @id
+  subject             Subject
+  topic               String
+  subtopic            String
+  difficulty          String
+  questionType        String
+  passageId           String?
+  paragraphRefs       Json?
+  text                String
+  options             Json?
+  correctAnswer       Json
+  markScheme          String
+  explanation         String
+  marks               Int
+  visual              Json?
+  tags                Json
+  timeEstimateSeconds Int
+  sourceStyle         ReferenceStyle?
+  originalGenerated   Boolean         @default(false)
+}
+
+model Passage {
+  id         String @id
+  title      String
+  source     String
+  text       String
+  paragraphs Json?
+}
+
+model Attempt {
+  id                 String        @id @default(cuid())
+  studentId          String
+  mockId             String
+  answers            Json
+  flaggedQuestionIds Json
+  score              Int
+  maxScore           Int
+  submittedAt        DateTime?
+  timeSpentSeconds   Int
+  status             AttemptStatus
+  adminFeedback      String        @default("")
+  weakTopics         Json
+  reportReady        Boolean       @default(false)
+  errorPatterns      Json?
+  student            User          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  mock               MockExam      @relation(fields: [mockId], references: [id], onDelete: Cascade)
+
+  @@index([studentId, mockId, status])
+}
+
+model MockUnlock {
+  userId String
+  mockId String
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mock   MockExam @relation(fields: [mockId], references: [id], onDelete: Cascade)
+
+  @@id([userId, mockId])
+}
+
+model ReferenceSource {
+  id                String         @id
+  title             String
+  url               String
+  subject           Subject
+  style             ReferenceStyle
+  notes             String
+  lastAnalysedAt    DateTime
+  topicStyleProfile Json?
+}
+
+model ProductPlan {
+  id          String  @id
+  name        String
+  price       String
+  cadence     String
+  badge       String?
+  description String
+}
+
+model EmailTemplate {
+  id      String  @id
+  trigger String
+  subject String
+  enabled Boolean @default(false)
+}
+
+model PaymentRequest {
+  id                      String               @id @default(cuid())
+  studentEmail            String
+  studentName             String?
+  productId               String
+  productName             String
+  mode                    String
+  status                  PaymentRequestStatus
+  stripeCheckoutSessionId String?              @unique
+  stripeCustomerId        String?
+  stripePaymentIntentId   String?
+  stripeSubscriptionId    String?
+  amountTotal             Int?
+  currency                String?
+  createdAt               DateTime             @default(now())
+  updatedAt               DateTime             @updatedAt
+}

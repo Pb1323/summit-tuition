@@ -3,7 +3,7 @@ import type { NavLink, FooterColumn } from "@/types/nav";
 export const MAIN_NAV: NavLink[] = [
   { label: "Home", href: "/" },
   { label: "Diagnostic", href: "/diagnostic-assessment" },
-  { label: "Mocks", href: "/weekly-mock-club" },
+  { label: "Mocks", href: "/mocks" },
   { label: "Practice Papers", href: "/practice-paper-simulator" },
   { label: "Tuition", href: "/tuition" },
   { label: "Pricing", href: "/pricing" },

@@ -2,6 +2,7 @@ export type Role = "student" | "admin";
 export type Subject = "English" | "Maths" | "VR" | "NVR";
 export type ReferenceStyle = "GL-style" | "non-GL" | "unknown";
 export type Difficulty = "foundation" | "standard" | "stretch";
+export type MockDifficulty = "Standard" | "Summit Stretch";
 export type QuestionType =
   | "multiple_choice"
   | "short_number"
@@ -21,6 +22,8 @@ export type QuestionType =
   | "future_vr"
   | "future_nvr";
 
+export type ErrorPattern = "careless_error" | "concept_gap" | "timing_pressure";
+
 export type AttemptStatus = "in_progress" | "submitted" | "marked" | "report_released";
 export type PaymentStatus = "none" | "pending" | "paid" | "refunded";
 
@@ -38,9 +41,9 @@ export interface StudentAccount {
 }
 
 export interface QuestionVisual {
-  type: "bar_chart" | "table" | "number_line" | "coordinate_grid" | "shape";
+  type: "bar_chart" | "line_graph" | "table" | "number_line" | "coordinate_grid" | "shape";
   title: string;
-  data: Record<string, string | number | string[] | number[]>;
+  data: Record<string, string | number | string[] | number[] | string[][] | number[][]>;
 }
 
 export interface Question {
@@ -51,6 +54,7 @@ export interface Question {
   difficulty: Difficulty;
   questionType: QuestionType;
   passageId?: string;
+  paragraphRefs?: number[];
   text: string;
   options?: string[];
   correctAnswer: string | string[];
@@ -60,6 +64,8 @@ export interface Question {
   visual?: QuestionVisual;
   tags: string[];
   timeEstimateSeconds: number;
+  sourceStyle?: ReferenceStyle;
+  originalGenerated?: boolean;
 }
 
 export interface Passage {
@@ -67,6 +73,7 @@ export interface Passage {
   title: string;
   source: "original";
   text: string;
+  paragraphs?: string[];
 }
 
 export interface MockExam {
@@ -74,6 +81,10 @@ export interface MockExam {
   title: string;
   subject: Subject;
   style: ReferenceStyle;
+  difficultyLabel?: MockDifficulty;
+  sourceProfileId?: string;
+  generatedFromReferenceId?: string;
+  topicMix?: Record<string, number>;
   durationMinutes: number;
   totalMarks: number;
   questionIds: string[];
@@ -97,6 +108,7 @@ export interface Attempt {
   adminFeedback: string;
   weakTopics: string[];
   reportReady: boolean;
+  errorPatterns?: Record<string, ErrorPattern>;
 }
 
 export interface ReferenceSource {
@@ -107,6 +119,12 @@ export interface ReferenceSource {
   style: ReferenceStyle;
   notes: string;
   lastAnalysedAt: string;
+  topicStyleProfile?: {
+    formatNotes: string;
+    timingNotes: string;
+    topicMix: Record<string, number>;
+    difficultyNotes: string;
+  };
 }
 
 export interface ProductPlan {
@@ -124,4 +142,3 @@ export interface EmailTemplate {
   subject: string;
   enabled: boolean;
 }
-

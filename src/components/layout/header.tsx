@@ -17,7 +17,10 @@ export function Header() {
   const dashboardHref = currentUser?.role === "admin" ? "/admin" : "/dashboard";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gold/20 bg-white/82 shadow-[0_12px_40px_-32px_rgba(17,24,39,0.55)] backdrop-blur-xl supports-[backdrop-filter]:bg-white/72">
+    <header className="sticky top-0 z-[70] border-b border-gold/20 bg-white/82 shadow-[0_12px_40px_-32px_rgba(17,24,39,0.55)] backdrop-blur-xl supports-[backdrop-filter]:bg-white/72">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-[60] focus:rounded-full focus:bg-navy focus:px-4 focus:py-2 focus:text-sm focus:font-bold focus:text-white">
+        Skip to content
+      </a>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 lg:px-8">
         <Link href="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-navy text-gold-light">
@@ -31,9 +34,10 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
+              aria-current={pathname === link.href ? "page" : undefined}
               className={cn(
-                "text-sm font-medium text-ink/80 transition-colors hover:text-navy",
-                pathname === link.href && "text-navy font-semibold"
+                "relative text-sm font-medium text-ink/80 transition-colors after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-0 after:rounded-full after:bg-gold after:transition-all hover:text-navy hover:after:w-full",
+                pathname === link.href && "font-semibold text-navy after:w-full"
               )}
             >
               {link.label}
@@ -60,7 +64,9 @@ export function Header() {
         </div>
 
         <button
-          aria-label="Toggle menu"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls="mobile-navigation"
           className="flex h-10 w-10 items-center justify-center rounded-lg text-navy lg:hidden"
           onClick={() => setOpen((v) => !v)}
         >
@@ -69,14 +75,18 @@ export function Header() {
       </div>
 
       {open && (
-        <div className="border-t border-gold/20 bg-white/95 px-6 py-4 shadow-[0_18px_50px_-36px_rgba(17,24,39,0.45)] backdrop-blur-xl lg:hidden">
+        <div id="mobile-navigation" className="border-t border-gold/20 bg-white/95 px-6 py-4 shadow-[0_18px_50px_-36px_rgba(17,24,39,0.45)] backdrop-blur-xl lg:hidden">
           <nav className="flex flex-col gap-1">
             {MAIN_NAV.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
+                aria-current={pathname === link.href ? "page" : undefined}
                 onClick={() => setOpen(false)}
-                className="rounded-xl px-3 py-2.5 text-sm font-medium text-ink/80 hover:bg-cream hover:text-navy"
+                className={cn(
+                  "rounded-xl px-3 py-2.5 text-sm font-medium text-ink/80 hover:bg-cream hover:text-navy",
+                  pathname === link.href && "bg-cream text-navy"
+                )}
               >
                 {link.label}
               </Link>
@@ -90,9 +100,14 @@ export function Header() {
               Account
             </span>
           ) : currentUser ? (
-            <button onClick={() => { logout(); setOpen(false); }} className="mt-3 w-full rounded-full border border-line px-4 py-2 text-sm font-bold text-navy">
-              Sign out
-            </button>
+            <div className="mt-3 grid gap-2">
+              <Button href={dashboardHref} variant="outline" size="md" className="w-full">
+                {currentUser.role === "admin" ? "Admin dashboard" : "Student dashboard"}
+              </Button>
+              <button onClick={() => { logout(); setOpen(false); }} className="w-full rounded-full border border-line px-4 py-2 text-sm font-bold text-navy">
+                Sign out
+              </button>
+            </div>
           ) : (
             <Button href="/login" variant="outline" size="md" className="mt-3 w-full">
               Student Login

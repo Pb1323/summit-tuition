@@ -1,13 +1,16 @@
 "use client";
 
 import { createContext, useContext, useMemo, useSyncExternalStore } from "react";
-import { ATTEMPTS, EMAIL_TEMPLATES, MASTER_ADMIN_EMAIL, MOCKS, PRODUCT_PLANS, QUESTIONS, REFERENCES, SEEDED_USERS } from "@/data/platform";
-import { scoreAnswers, weakTopicsForAttempt } from "@/lib/assessment";
-import type { Attempt, EmailTemplate, MockExam, ProductPlan, ReferenceSource, StudentAccount, Subject } from "@/types/platform";
+import { ATTEMPTS, EMAIL_TEMPLATES, MASTER_ADMIN_EMAIL, MOCKS, PASSAGES, PRODUCT_PLANS, QUESTIONS, REFERENCES, SEEDED_USERS } from "@/data/platform";
+import { analyseAttempt, scoreAnswers, weakTopicsForAttempt } from "@/lib/assessment";
+import { generateMockFromReferenceProfile, type GenerateMockInput } from "@/lib/mock-generation";
+import type { Attempt, EmailTemplate, MockExam, Passage, ProductPlan, Question, ReferenceSource, ReferenceStyle, StudentAccount, Subject } from "@/types/platform";
 
 type PlatformState = {
   users: StudentAccount[];
   mocks: MockExam[];
+  questions: Question[];
+  passages: Passage[];
   attempts: Attempt[];
   references: ReferenceSource[];
   products: ProductPlan[];
@@ -32,6 +35,10 @@ type PlatformContextValue = PlatformState & {
   unlockMock: (studentId: string, mockId: string, unlocked: boolean) => void;
   setMockPublished: (mockId: string, published: boolean) => void;
   createOriginalMockFromReference: (referenceId: string, subject: Subject) => void;
+  generateMockDraft: (input: Omit<GenerateMockInput, "reference"> & { referenceId: string }) => { ok: true; mockId: string } | { ok: false; message: string };
+  updateMockDraft: (mockId: string, patch: Partial<MockExam>) => void;
+  upsertQuestion: (question: Question) => void;
+  setReferenceStyle: (referenceId: string, style: ReferenceStyle) => void;
   addReference: (reference: Omit<ReferenceSource, "id" | "lastAnalysedAt">) => void;
   submitAttempt: (mockId: string, answers: Record<string, string>, flaggedQuestionIds: string[], timeSpentSeconds: number) => Attempt;
   saveAttemptDraft: (mockId: string, answers: Record<string, string>, flaggedQuestionIds: string[], timeSpentSeconds: number) => void;
@@ -45,6 +52,8 @@ const SESSION_KEY = "summit-platform-session-v1";
 const initialState: PlatformState = {
   users: SEEDED_USERS,
   mocks: MOCKS,
+  questions: QUESTIONS,
+  passages: PASSAGES,
   attempts: ATTEMPTS,
   references: REFERENCES,
   products: PRODUCT_PLANS,
@@ -194,12 +203,15 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
       emitChange();
     },
     approveUser(studentId, approved) {
+      if (currentUser?.role !== "admin") return;
       updateUsers((users) => users.map((user) => (user.id === studentId ? { ...user, approved } : user)));
     },
     assignPlan(studentId, plan) {
+      if (currentUser?.role !== "admin") return;
       updateUsers((users) => users.map((user) => (user.id === studentId ? { ...user, plan, paymentStatus: plan ? "paid" : user.paymentStatus } : user)));
     },
     unlockMock(studentId, mockId, unlocked) {
+      if (currentUser?.role !== "admin") return;
       updateUsers((users) =>
         users.map((user) => {
           if (user.id !== studentId) return user;
@@ -211,35 +223,61 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
       );
     },
     setMockPublished(mockId, published) {
+      if (currentUser?.role !== "admin") return;
       updateStore((prev) => ({ ...prev, mocks: prev.mocks.map((mock) => (mock.id === mockId ? { ...mock, published } : mock)) }));
     },
     createOriginalMockFromReference(referenceId, subject) {
+      if (currentUser?.role !== "admin") return;
       const ref = state.references.find((item) => item.id === referenceId);
-      const pool = QUESTIONS.filter((question) => question.subject === subject && question.tags.includes("GL-style"));
-      if (!ref || ref.style !== "GL-style" || pool.length === 0) return;
-      const id = `${subject.toLowerCase()}-generated-${Date.now()}`;
-      const totalMarks = pool.reduce((sum, question) => sum + question.marks, 0);
+      if (!ref || ref.style !== "GL-style" || (subject !== "Maths" && subject !== "English")) return;
+      const generated = generateMockFromReferenceProfile({
+        subject,
+        difficultyLabel: "Summit Stretch",
+        questionCount: 5,
+        durationMinutes: 25,
+        reference: ref,
+      });
       updateStore((prev) => ({
         ...prev,
-        mocks: [
-          ...prev.mocks,
-          {
-            id,
-            title: `${subject} Original GL-Style Draft`,
-            subject,
-            style: "GL-style",
-            durationMinutes: 20,
-            totalMarks,
-            questionIds: pool.map((question) => question.id),
-            published: false,
-            releaseDate: new Date().toISOString().slice(0, 10),
-            tier: "Admin draft",
-            description: `Original ${subject} draft generated from ${ref.title} metadata. Review before publishing.`,
-          },
-        ],
+        mocks: [...prev.mocks, generated.mock],
+        questions: [...prev.questions, ...generated.questions],
+        passages: [...prev.passages, ...generated.passages],
+      }));
+    },
+    generateMockDraft(input) {
+      if (currentUser?.role !== "admin") return { ok: false, message: "Admin access is required to generate mocks." };
+      const reference = state.references.find((item) => item.id === input.referenceId);
+      if (!reference) return { ok: false, message: "Choose a reference profile first." };
+      if (reference.style !== "GL-style") return { ok: false, message: "Only GL-style profiles can generate v1 mocks." };
+      const generated = generateMockFromReferenceProfile({ ...input, reference });
+      updateStore((prev) => ({
+        ...prev,
+        mocks: [...prev.mocks, generated.mock],
+        questions: [...prev.questions, ...generated.questions],
+        passages: [...prev.passages, ...generated.passages],
+      }));
+      return { ok: true, mockId: generated.mock.id };
+    },
+    updateMockDraft(mockId, patch) {
+      if (currentUser?.role !== "admin") return;
+      updateStore((prev) => ({ ...prev, mocks: prev.mocks.map((mock) => (mock.id === mockId ? { ...mock, ...patch } : mock)) }));
+    },
+    upsertQuestion(question) {
+      if (currentUser?.role !== "admin") return;
+      updateStore((prev) => {
+        const exists = prev.questions.some((item) => item.id === question.id);
+        return { ...prev, questions: exists ? prev.questions.map((item) => (item.id === question.id ? question : item)) : [...prev.questions, question] };
+      });
+    },
+    setReferenceStyle(referenceId, style) {
+      if (currentUser?.role !== "admin") return;
+      updateStore((prev) => ({
+        ...prev,
+        references: prev.references.map((reference) => (reference.id === referenceId ? { ...reference, style } : reference)),
       }));
     },
     addReference(reference) {
+      if (currentUser?.role !== "admin") return;
       updateStore((prev) => ({
         ...prev,
         references: [
@@ -251,8 +289,12 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
     submitAttempt(mockId, answers, flaggedQuestionIds, timeSpentSeconds) {
       const mock = state.mocks.find((item) => item.id === mockId);
       if (!currentUser || !mock) throw new Error("Cannot submit attempt without a signed-in student and mock.");
-      const score = scoreAnswers(mock, answers);
-      const weakTopics = weakTopicsForAttempt(mock, answers);
+      if (currentUser.role !== "student" || !currentUser.approved || !currentUser.unlockedMockIds.includes(mock.id) || !mock.published) {
+        throw new Error("This mock is not available for submission by the current account.");
+      }
+      const score = scoreAnswers(mock, answers, state.questions);
+      const weakTopics = weakTopicsForAttempt(mock, answers, state.questions);
+      const analysis = analyseAttempt(mock, answers, state.questions);
       const attempt: Attempt = {
         id: `attempt-${Date.now()}`,
         studentId: currentUser.id,
@@ -267,6 +309,7 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
         adminFeedback: "",
         weakTopics,
         reportReady: false,
+        errorPatterns: Object.fromEntries(analysis.weakTopics.flatMap((topic) => topic.questionIds.map((id) => [id, topic.pattern]))),
       };
       updateStore((prev) => ({
         ...prev,
@@ -294,6 +337,7 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
       updateStore((prev) => ({ ...prev, attempts: [...prev.attempts.filter((item) => item.id !== draft.id), draft] }));
     },
     releaseReport(attemptId, feedback) {
+      if (currentUser?.role !== "admin") return;
       updateStore((prev) => ({
         ...prev,
         attempts: prev.attempts.map((attempt) =>
@@ -302,6 +346,7 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
       }));
     },
     addFeedback(attemptId, feedback) {
+      if (currentUser?.role !== "admin") return;
       updateStore((prev) => ({
         ...prev,
         attempts: prev.attempts.map((attempt) => (attempt.id === attemptId ? { ...attempt, adminFeedback: feedback } : attempt)),

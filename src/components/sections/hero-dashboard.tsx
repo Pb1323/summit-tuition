@@ -21,7 +21,10 @@ function Sparkline({ points }: { points: number[] }) {
 
 export function HeroDashboard() {
   return (
-    <div className="relative rounded-3xl border border-line bg-white p-5 shadow-[0_24px_64px_-24px_rgba(15,43,61,0.35)] sm:p-6">
+    <div className="mock-paper-stack relative rounded-2xl border border-gold/25 bg-white/95 p-5 shadow-[0_28px_80px_-36px_rgba(180,83,9,0.42)] sm:p-6">
+      <div className="absolute -right-4 -top-4 rounded-full border border-gold/30 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-gold-dark shadow-sm">
+        Live report
+      </div>
       <div className="flex items-center justify-between border-b border-line pb-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide text-muted">Parent Dashboard</p>
@@ -36,7 +39,7 @@ export function HeroDashboard() {
         ))}
       </div>
 
-      <div className="mt-4 flex items-center justify-between rounded-xl bg-cream-dark p-3">
+      <div className="mt-4 flex items-center justify-between rounded-xl border border-gold/20 bg-cream-dark p-3">
         <div>
           <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted">
             <TrendingUp className="h-3.5 w-3.5" /> Progress trend
