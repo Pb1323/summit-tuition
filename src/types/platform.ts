@@ -41,9 +41,24 @@ export interface StudentAccount {
 }
 
 export interface QuestionVisual {
-  type: "bar_chart" | "line_graph" | "table" | "number_line" | "coordinate_grid" | "shape";
+  type:
+    | "bar_chart"
+    | "barChart"
+    | "line_graph"
+    | "lineGraph"
+    | "table"
+    | "number_line"
+    | "numberLine"
+    | "coordinate_grid"
+    | "coordinateGrid"
+    | "shape"
+    | "geometry"
+    | "fraction"
+    | "ratioBlocks"
+    | "venn"
+    | "clock";
   title: string;
-  data: Record<string, string | number | string[] | number[] | string[][] | number[][]>;
+  data: Record<string, string | number | boolean | string[] | number[] | string[][] | number[][] | Record<string, string | number>[]>;
 }
 
 export interface Question {

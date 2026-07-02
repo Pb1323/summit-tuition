@@ -16,7 +16,7 @@ type MockRoomShellProps = {
 
 export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) {
   const router = useRouter();
-  const { currentUser, mocks, attempts, questions: questionBank, submitAttempt, saveAttemptDraft } = usePlatform();
+  const { currentUser, mocks, attempts, questions: questionBank, passages, submitAttempt, saveAttemptDraft } = usePlatform();
   const mock = mocks.find((item) => item.id === mockId);
   const existing = attempts.find((attempt) => attempt.studentId === currentUser?.id && attempt.mockId === mockId && attempt.status !== "in_progress");
   const draft = attempts.find((attempt) => attempt.studentId === currentUser?.id && attempt.mockId === mockId && attempt.status === "in_progress");
@@ -29,6 +29,7 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const active = questions[index];
+  const activePassage = active?.passageId ? passages.find((passage) => passage.id === active.passageId) : undefined;
   const unansweredCount = questions.filter((question) => !answers[question.id]).length;
   const elapsedSeconds = useCallback(() => Math.max(0, Math.floor((Date.now() - (startedAt ?? Date.now())) / 1000) + (draft?.timeSpentSeconds ?? 0)), [draft?.timeSpentSeconds, startedAt]);
 
@@ -144,6 +145,8 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
               ) : active ? (
                 <QuestionRenderer
                   question={active}
+                  questionNumber={index + 1}
+                  passage={activePassage}
                   value={answers[active.id]}
                   adminPreview={isAdminPreview}
                   onChange={(value) => {

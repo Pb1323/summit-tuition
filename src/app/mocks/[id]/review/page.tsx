@@ -10,7 +10,7 @@ import { GlowCard, PremiumBadge, ProgressBar, QuestionRenderer, ReportPreview, R
 
 export default function MockReviewPage() {
   const params = useParams<{ id: string }>();
-  const { currentUser, mocks, attempts, questions: questionBank } = usePlatform();
+  const { currentUser, mocks, attempts, questions: questionBank, passages } = usePlatform();
   const mock = mocks.find((item) => item.id === params.id);
   const attempt = attempts.find((item) => item.studentId === currentUser?.id && item.mockId === params.id && item.status === "report_released");
   const questions = useMemo(() => questionBank.filter((question) => mock?.questionIds.includes(question.id)), [mock, questionBank]);
@@ -72,7 +72,7 @@ export default function MockReviewPage() {
                     <PremiumBadge>Question {index + 1}</PremiumBadge>
                     {incorrectQuestions.some((item) => item.id === question.id) ? <PremiumBadge tone="red">Needs review</PremiumBadge> : <PremiumBadge tone="green">Correct</PremiumBadge>}
                     <div className="mt-4">
-                      <QuestionRenderer question={question} value={attempt.answers[question.id]} onChange={() => undefined} review />
+                      <QuestionRenderer question={question} passage={question.passageId ? passages.find((passage) => passage.id === question.passageId) : undefined} questionNumber={index + 1} value={attempt.answers[question.id]} onChange={() => undefined} review />
                     </div>
                   </div>
                 ))}

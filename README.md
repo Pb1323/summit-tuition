@@ -148,6 +148,17 @@ Production TODO:
 - keep mock content and mark schemes server-side so full question data is not shipped publicly to the browser
 - use Stripe webhooks to record paid/pending access requests, then keep manual admin approval as the unlock step
 
+## Supabase Production Database Setup
+
+Supabase is intentionally not connected in this mock-question visual pass. The app already has Prisma/Postgres foundations, so Supabase Postgres can be used later by setting `DATABASE_URL` in Vercel and running the Prisma migration workflow in a separate production-database pass.
+
+For Supabase later:
+
+- use the pooled Postgres connection string for `DATABASE_URL` when appropriate for serverless
+- use `DIRECT_URL` only if migration tooling or the provider requires a direct connection
+- keep the current demo/localStorage compatibility until auth, attempts, reports and admin edits are fully migrated server-side
+- treat Supabase/Prisma migration as separate from question visual quality work
+
 ## Admin Approval Flow
 
 1. Student registers at `/register`.
@@ -209,4 +220,3 @@ npm run lint
 npx tsc --noEmit --incremental false
 npm run build
 ```
-

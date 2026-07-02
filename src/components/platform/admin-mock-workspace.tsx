@@ -10,6 +10,7 @@ export function AdminMockWorkspace() {
   const {
     mocks,
     questions,
+    passages,
     references,
     generateMockDraft,
     setMockPublished,
@@ -35,6 +36,7 @@ export function AdminMockWorkspace() {
     [questions, selectedMock]
   );
   const selectedQuestion = questions.find((question) => question.id === selectedQuestionId) ?? selectedQuestions[0];
+  const selectedPassage = selectedQuestion?.passageId ? passages.find((passage) => passage.id === selectedQuestion.passageId) : undefined;
 
   function handleGenerate() {
     const result = generateMockDraft({
@@ -182,7 +184,7 @@ export function AdminMockWorkspace() {
               )}
             </div>
             <div className="rounded-2xl border border-line bg-cream p-4">
-              {selectedQuestion ? <QuestionRenderer question={selectedQuestion} value="" onChange={() => undefined} review /> : <p className="text-sm text-muted">Generate or select a question to preview it.</p>}
+              {selectedQuestion ? <QuestionRenderer question={selectedQuestion} passage={selectedPassage} questionNumber={selectedQuestions.findIndex((question) => question.id === selectedQuestion.id) + 1} value="" onChange={() => undefined} review adminPreview /> : <p className="text-sm text-muted">Generate or select a question to preview it.</p>}
             </div>
           </div>
         </GlowCard>
