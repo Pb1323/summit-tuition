@@ -6,6 +6,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { PricingCard } from "@/components/ui/pricing-card";
 import { HeroSection } from "@/components/sections/hero-section";
 import { CTASection } from "@/components/sections/cta-section";
+import { RevealOnScroll, StaggerReveal } from "@/components/platform/ui";
 import { ALL_PRICING_GROUPS } from "@/data/pricing";
 import { SITE } from "@/data/site";
 
@@ -33,8 +34,10 @@ export default function PricingPage() {
       {ALL_PRICING_GROUPS.map((group, i) => (
         <section key={group.id} className={i % 2 === 0 ? "py-16" : "bg-cream-dark/50 py-16"}>
           <Container>
+            <RevealOnScroll>
             <SectionHeading title={group.title} />
-            <div
+            </RevealOnScroll>
+            <StaggerReveal
               className={`mt-8 grid grid-cols-1 gap-6 ${
                 group.tiers.length === 3
                   ? "lg:grid-cols-3"
@@ -44,7 +47,7 @@ export default function PricingPage() {
               {group.tiers.map((tier) => (
                 <PricingCard key={tier.id} tier={tier} />
               ))}
-            </div>
+            </StaggerReveal>
           </Container>
         </section>
       ))}

@@ -3,6 +3,7 @@ import { Mail, Phone, MapPin } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { HeroSection } from "@/components/sections/hero-section";
 import { EnquiryForm } from "@/components/sections/enquiry-form";
+import { RevealOnScroll, StaggerReveal } from "@/components/platform/ui";
 import { SITE } from "@/data/site";
 import type { InterestedProduct } from "@/types/contact";
 
@@ -39,7 +40,7 @@ export default async function ContactPage({
 
       <section className="pb-20">
         <Container className="grid grid-cols-1 gap-10 lg:grid-cols-3">
-          <div className="space-y-4 lg:col-span-1">
+          <StaggerReveal className="space-y-4 lg:col-span-1">
             <div className="rounded-2xl border border-line bg-white p-5">
               <Mail className="h-5 w-5 text-gold-dark" />
               <p className="mt-2 text-sm font-semibold text-navy">Email</p>
@@ -59,10 +60,10 @@ export default async function ContactPage({
               <p className="mt-2 text-sm font-semibold text-navy">Location</p>
               <p className="text-sm text-muted">{SITE.address}</p>
             </div>
-          </div>
-          <div className="lg:col-span-2">
+          </StaggerReveal>
+          <RevealOnScroll className="lg:col-span-2" delay={0.08}>
             <EnquiryForm defaultProduct={defaultProduct} />
-          </div>
+          </RevealOnScroll>
         </Container>
       </section>
     </>

@@ -5,6 +5,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { HeroSection } from "@/components/sections/hero-section";
 import { BookingPlaceholder } from "@/components/sections/booking-placeholder";
 import { EnquiryForm } from "@/components/sections/enquiry-form";
+import { RevealOnScroll } from "@/components/platform/ui";
 import type { InterestedProduct } from "@/types/contact";
 
 export const metadata: Metadata = {
@@ -47,7 +48,7 @@ export default async function BookACallPage({
 
       <section className="pb-20">
         <Container className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-          <div>
+          <RevealOnScroll>
             <SectionHeading eyebrow="What to expect" title="What we'll cover on the call" />
             <ul className="mt-6 space-y-3">
               {WHAT_TO_EXPECT.map((item) => (
@@ -60,13 +61,13 @@ export default async function BookACallPage({
             <div className="mt-8">
               <BookingPlaceholder />
             </div>
-          </div>
-          <div>
+          </RevealOnScroll>
+          <RevealOnScroll delay={0.08}>
             <SectionHeading eyebrow="Prefer to send details first?" title="Tell us about your child" />
             <div className="mt-6">
               <EnquiryForm defaultProduct={defaultProduct} />
             </div>
-          </div>
+          </RevealOnScroll>
         </Container>
       </section>
     </>

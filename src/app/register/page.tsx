@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Container } from "@/components/ui/container";
 import { Card } from "@/components/ui/card";
-import { AnimatedButton, PremiumBadge } from "@/components/platform/ui";
+import { AnimatedButton, PremiumBadge, RevealOnScroll } from "@/components/platform/ui";
 import { PRODUCT_PLANS } from "@/data/platform";
 import { usePlatform } from "@/context/platform-context";
 
@@ -30,7 +30,7 @@ export default function RegisterPage() {
 
   return (
     <Container className="py-16">
-      <div className="mx-auto max-w-2xl">
+      <RevealOnScroll className="mx-auto max-w-2xl">
         <Card className="p-8">
           <PremiumBadge>Create student account</PremiumBadge>
           <h1 className="mt-4 text-3xl font-bold text-navy">Register for online 11+ mocks</h1>
@@ -61,8 +61,7 @@ export default function RegisterPage() {
             Already registered? <Link href="/login" className="font-bold text-navy underline">Sign in</Link>
           </p>
         </Card>
-      </div>
+      </RevealOnScroll>
     </Container>
   );
 }
-

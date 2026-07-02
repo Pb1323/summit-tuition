@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { FAQAccordion } from "@/components/ui/faq-accordion";
 import { HeroSection } from "@/components/sections/hero-section";
 import { CTASection } from "@/components/sections/cta-section";
+import { RevealOnScroll } from "@/components/platform/ui";
 import { FAQ_ITEMS } from "@/data/faq";
 import { SITE } from "@/data/site";
 
@@ -26,7 +27,9 @@ export default function FAQPage() {
 
       <section className="pb-20">
         <Container className="max-w-3xl">
-          <FAQAccordion items={FAQ_ITEMS} />
+          <RevealOnScroll>
+            <FAQAccordion items={FAQ_ITEMS} />
+          </RevealOnScroll>
         </Container>
       </section>
 

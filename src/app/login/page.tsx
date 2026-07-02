@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { LockKeyhole } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Card } from "@/components/ui/card";
-import { AnimatedButton, PremiumBadge } from "@/components/platform/ui";
+import { AnimatedButton, PremiumBadge, RevealOnScroll } from "@/components/platform/ui";
 import { usePlatform } from "@/context/platform-context";
 import { MASTER_ADMIN_EMAIL } from "@/data/platform";
 
@@ -29,7 +29,7 @@ export default function LoginPage() {
 
   return (
     <Container className="py-16">
-      <div className="mx-auto max-w-xl">
+      <RevealOnScroll className="mx-auto max-w-xl">
         <Card className="overflow-hidden">
           <div className="bg-navy p-8 text-white">
             <PremiumBadge>Secure account access</PremiumBadge>
@@ -52,8 +52,7 @@ export default function LoginPage() {
             </p>
           </form>
         </Card>
-      </div>
+      </RevealOnScroll>
     </Container>
   );
 }
-

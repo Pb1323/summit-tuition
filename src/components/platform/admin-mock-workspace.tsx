@@ -144,7 +144,7 @@ export function AdminMockWorkspace() {
               <PencilLine className="h-5 w-5 text-gold-dark" />
               <h3 className="text-xl font-black text-navy">Draft review and question editor</h3>
             </div>
-            {selectedMock && <AnimatedButton href={`/mocks/${selectedMock.id}`} className="h-10"><Eye className="h-4 w-4" /> Preview as student</AnimatedButton>}
+            {selectedMock && <AnimatedButton href={`/admin/mocks/${selectedMock.id}/preview`} className="h-10"><Eye className="h-4 w-4" /> Preview as student</AnimatedButton>}
           </div>
           <div className="mt-4 grid gap-3 lg:grid-cols-[1fr_auto]">
             <select value={selectedMock?.id ?? ""} onChange={(event) => setSelectedMockId(event.target.value)} className="h-11 rounded-xl border border-line bg-white px-3 text-sm outline-none focus:border-gold">

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { StaggerReveal } from "@/components/platform/ui";
 
 export interface FeatureItem {
   icon: React.ReactNode;
@@ -17,7 +18,7 @@ export function FeatureGrid({
   className?: string;
 }) {
   return (
-    <div
+    <StaggerReveal
       className={cn(
         "grid grid-cols-1 gap-5 sm:grid-cols-2",
         columns === 3 && "lg:grid-cols-3",
@@ -36,6 +37,6 @@ export function FeatureGrid({
           )}
         </div>
       ))}
-    </div>
+    </StaggerReveal>
   );
 }

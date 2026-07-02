@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { PremiumGridBackground } from "@/components/layout/premium-grid-background";
 import { SITE } from "@/data/site";
 import { PlatformProvider } from "@/context/platform-context";
 
@@ -47,11 +48,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col bg-cream font-sans text-ink">
+      <body className="relative flex min-h-full flex-col bg-cream font-sans text-ink">
+        <PremiumGridBackground />
         <PlatformProvider>
+          <div className="relative z-10 flex min-h-screen flex-col">
           <Header />
           <main id="main-content" className="flex-1">{children}</main>
           <Footer />
+          </div>
         </PlatformProvider>
       </body>
     </html>

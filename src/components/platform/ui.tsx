@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -53,13 +53,28 @@ export function RevealOnScroll({ children, className, delay = 0 }: { children: R
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: 24, scale: 0.98, filter: "blur(8px)" }}
+      initial={{ opacity: 0, y: 36, scale: 0.97, filter: "blur(8px)" }}
       whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay }}
+      transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1], delay }}
     >
       {children}
     </motion.div>
+  );
+}
+
+export function StaggerReveal({ children, className, childClassName }: { children: React.ReactNode; className?: string; childClassName?: string }) {
+  const reduceMotion = useReducedMotion();
+  const items = React.Children.toArray(children);
+  if (reduceMotion) return <div className={className}>{children}</div>;
+  return (
+    <div className={className}>
+      {items.map((child, index) => (
+        <RevealOnScroll key={index} delay={index * 0.06} className={childClassName}>
+          {child}
+        </RevealOnScroll>
+      ))}
+    </div>
   );
 }
 
@@ -140,23 +155,33 @@ export function MockTimer({ durationMinutes, onExpire }: { durationMinutes: numb
   );
 }
 
-function VisualRenderer({ visual }: { visual: QuestionVisual }) {
+function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every((item) => typeof item === "string");
+}
+
+function isNumberArray(value: unknown): value is number[] {
+  return Array.isArray(value) && value.every((item) => typeof item === "number" && Number.isFinite(item));
+}
+
+function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisual; adminPreview?: boolean }) {
   if (visual.type === "table") {
-    const headers = visual.data.headers as string[];
-    const rows = visual.data.rows as string[][];
+    const headers = visual.data.headers;
+    const rows = visual.data.rows;
+    if (!isStringArray(headers) || !Array.isArray(rows)) return <VisualFallback adminPreview={adminPreview} />;
     return (
       <div className="overflow-hidden rounded-xl border border-line bg-white">
         <p className="bg-cream px-4 py-2 text-xs font-bold text-muted">{visual.title}</p>
         <table className="w-full text-center text-sm">
           <thead className="bg-cream-dark text-navy"><tr>{headers.map((header) => <th key={header} scope="col" className="p-3 font-bold">{header}</th>)}</tr></thead>
-          <tbody>{rows.map((row, rowIndex) => <tr key={rowIndex} className="border-t border-line">{row.map((cell, index) => <td key={`${rowIndex}-${index}`} className="p-3">{cell}</td>)}</tr>)}</tbody>
+          <tbody>{rows.map((row, rowIndex) => <tr key={rowIndex} className="border-t border-line">{isStringArray(row) ? row.map((cell, index) => <td key={`${rowIndex}-${index}`} className="p-3">{cell}</td>) : <td className="p-3 text-muted" colSpan={headers.length}>Missing row data</td>}</tr>)}</tbody>
         </table>
       </div>
     );
   }
   if (visual.type === "bar_chart") {
-    const labels = visual.data.labels as string[];
-    const values = visual.data.values as number[];
+    const labels = visual.data.labels;
+    const values = visual.data.values;
+    if (!isStringArray(labels) || !isNumberArray(values) || labels.length === 0 || values.length === 0) return <VisualFallback adminPreview={adminPreview} />;
     const max = Math.max(...values);
     return (
       <div className="rounded-xl border border-line bg-cream p-4" role="img" aria-label={`${visual.title}: ${labels.map((label, index) => `${label} ${values[index]}`).join(", ")}`}>
@@ -174,8 +199,9 @@ function VisualRenderer({ visual }: { visual: QuestionVisual }) {
     );
   }
   if (visual.type === "line_graph") {
-    const labels = visual.data.labels as string[];
-    const values = visual.data.values as number[];
+    const labels = visual.data.labels;
+    const values = visual.data.values;
+    if (!isStringArray(labels) || !isNumberArray(values) || labels.length === 0 || values.length === 0) return <VisualFallback adminPreview={adminPreview} />;
     const max = Math.max(...values);
     const points = values.map((value, index) => `${30 + index * 44},${130 - (value / max) * 90}`).join(" ");
     return (
@@ -191,7 +217,7 @@ function VisualRenderer({ visual }: { visual: QuestionVisual }) {
     );
   }
   if (visual.type === "number_line") {
-    const points = (visual.data.points as number[]) ?? [0, 1];
+    const points = isNumberArray(visual.data.points) ? visual.data.points : [0, 1];
     return (
       <div className="rounded-xl border border-line bg-cream p-4" role="img" aria-label={`${visual.title}: points ${points.join(", ")}`}>
         <p className="text-xs font-bold text-muted">{visual.title}</p>
@@ -203,7 +229,9 @@ function VisualRenderer({ visual }: { visual: QuestionVisual }) {
     );
   }
   if (visual.type === "coordinate_grid") {
-    const plotted = (visual.data.points as number[][]) ?? [[1, 1], [4, 3]];
+    const plotted = Array.isArray(visual.data.points) && visual.data.points.every((point) => Array.isArray(point) && point.length >= 2 && point.every((value) => typeof value === "number"))
+      ? visual.data.points as number[][]
+      : [[1, 1], [4, 3]];
     return (
       <div className="rounded-xl border border-line bg-cream p-4" role="img" aria-label={`${visual.title}: plotted coordinates ${plotted.map((point) => `(${point[0]}, ${point[1]})`).join(", ")}`}>
         <p className="text-xs font-bold text-muted">{visual.title}</p>
@@ -227,7 +255,15 @@ function VisualRenderer({ visual }: { visual: QuestionVisual }) {
       </div>
     );
   }
-  return null;
+  return <VisualFallback adminPreview={adminPreview} />;
+}
+
+function VisualFallback({ adminPreview }: { adminPreview?: boolean }) {
+  return (
+    <div className="rounded-xl border border-line bg-cream p-4 text-sm text-muted">
+      {adminPreview ? "This visual is missing or malformed. Review the visual data before publishing." : "This question visual is not available yet."}
+    </div>
+  );
 }
 
 export function QuestionRenderer({
@@ -235,33 +271,48 @@ export function QuestionRenderer({
   value,
   onChange,
   review,
+  adminPreview,
 }: {
   question: Question;
   value?: string;
   onChange: (value: string) => void;
   review?: boolean;
+  adminPreview?: boolean;
 }) {
   const correct = value ? String(question.correctAnswer).toLowerCase() === value.toLowerCase() : false;
+  const hasText = typeof question.text === "string" && question.text.trim().length > 0;
+  const options = Array.isArray(question.options) ? question.options : [];
+  const hasOptions = options.length > 0;
+  const isChoiceQuestion = question.questionType === "multiple_choice" || question.questionType === "cloze";
   return (
     <div className="space-y-5">
       <div>
-        <PremiumBadge tone="navy">{question.subject} / {question.topic}</PremiumBadge>
-        <h2 className="mt-4 text-2xl font-bold text-navy">{question.text}</h2>
+        <PremiumBadge tone="navy">{question.subject || "Subject"} / {question.topic || "Topic"}</PremiumBadge>
+        <h2 className="mt-4 text-2xl font-bold text-navy">{hasText ? question.text : "Question text missing"}</h2>
+        {!hasText && (
+          <p className="mt-2 rounded-xl border border-line bg-cream p-3 text-sm text-muted">
+            {adminPreview ? "This generated question needs question text before publishing." : "This question is not ready yet."}
+          </p>
+        )}
       </div>
-      {question.visual && <VisualRenderer visual={question.visual} />}
-      {question.options ? (
+      {question.visual && <VisualRenderer visual={question.visual} adminPreview={adminPreview} />}
+      {hasOptions ? (
         <fieldset className="grid gap-3">
-          <legend className="sr-only">Answer options for {question.text}</legend>
-          {question.options.map((option) => (
+          <legend className="sr-only">Answer options for {hasText ? question.text : "this question"}</legend>
+          {options.map((option) => (
             <label key={option} className={cn("flex cursor-pointer items-center gap-3 rounded-xl border border-line bg-white p-4 text-sm font-semibold transition hover:border-gold", value === option && "border-gold bg-gold/10")}>
               <input type="radio" name={question.id} value={option} checked={value === option} onChange={() => onChange(option)} disabled={review} />
               {option}
             </label>
           ))}
         </fieldset>
+      ) : isChoiceQuestion ? (
+        <div className="rounded-xl border border-line bg-cream p-4 text-sm text-muted">
+          {adminPreview ? "This question is missing answer options. Add options before publishing." : "Answer options are not available for this question yet."}
+        </div>
       ) : (
         <label className="block">
-          <span className="sr-only">Answer for {question.text}</span>
+          <span className="sr-only">Answer for {hasText ? question.text : "this question"}</span>
           <input value={value ?? ""} onChange={(event) => onChange(event.target.value)} disabled={review} className="h-12 w-full rounded-xl border border-line px-4 text-sm outline-none focus:border-gold" placeholder="Type your answer" />
         </label>
       )}
