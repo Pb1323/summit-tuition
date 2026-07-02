@@ -51,8 +51,9 @@ Key variables:
 - `NEXT_PUBLIC_SITE_URL`
 - `NEXT_PUBLIC_CONTACT_EMAIL`
 - `NEXT_PUBLIC_CALENDLY_URL`
-- `DATABASE_URL` for the future hosted database
-- `AUTH_SECRET`, `AUTH_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL` for the future production auth layer
+- `DATABASE_URL` for hosted Postgres persistence
+- `DIRECT_URL` if your Postgres provider supplies a separate direct migration URL
+- `AUTH_SECRET`, `AUTH_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL` for deployment/session configuration
 - `ADMIN_EMAIL`
 - `ADMIN_PASSWORD` only for a future seed script, never a real committed secret
 - `STRIPE_SECRET_KEY`
@@ -67,7 +68,7 @@ The seeded master admin email is stored in `src/data/platform.ts`:
 admin@summittuition.local
 ```
 
-No password is committed. On first local sign-in, enter that email and choose a password of at least 8 characters. The demo stores a local password hash in browser `localStorage`.
+No password is committed. With `DATABASE_URL` configured, create/update the master admin by sending a `PUT` request to `/api/auth/login` with `ADMIN_EMAIL` and `ADMIN_PASSWORD`, or run the same request locally before deployment. Without a database, local demo fallback still lets the seeded admin sign in in one browser profile.
 
 To test admin locally:
 
@@ -83,7 +84,7 @@ To test admin locally:
 3. Sign in at `/login`.
 4. The account is pending until admin approves it.
 5. Sign in as admin and open `/admin`.
-6. Approve the student, assign a plan and unlock `Maths GL-Style Mock 1` or `English GL-Style Mock 1`.
+6. Approve the student, assign a plan and unlock `Maths Diagnostic Sample` or `English Diagnostic Sample`.
 7. Return to `/dashboard` as the student.
 8. Start the mock, answer questions and submit.
 9. Sign in as admin, add feedback and release the report.
@@ -133,31 +134,45 @@ Payment must not automatically unlock content. In production, Stripe payment suc
 
 ## Database And Storage
 
-Current storage is demo/local-only:
+With `DATABASE_URL` configured, the important testing flows are server/database-backed:
 
-- accounts, approvals, attempts, report release state and admin edits are stored in browser `localStorage`
-- seed data is static TypeScript in `src/data/platform.ts`
-- no SQLite, Prisma, JSON file writes or persistent local filesystem storage are used
-- API routes are serverless-safe placeholders and do not rely on local disk writes
+- student registration and pending approval
+- admin approval/rejection
+- plan assignment
+- mock unlocks
+- submitted attempts
+- admin feedback and report release
+- server sessions
 
-Production TODO:
+The app still keeps a browser `localStorage` fallback for local demo mode when `DATABASE_URL` is missing. In Vercel, configure hosted Postgres so admin and student state is shared across browsers and devices.
 
-- move users, password hashes, sessions, approvals, unlocks, attempts, reports, products and reference library entries into hosted Postgres
-- suitable providers include Neon, Supabase, Vercel Postgres or another managed Postgres provider
-- add real auth such as Auth.js/NextAuth, Clerk, Supabase Auth or a server-side session implementation
-- keep mock content and mark schemes server-side so full question data is not shipped publicly to the browser
-- use Stripe webhooks to record paid/pending access requests, then keep manual admin approval as the unlock step
+The static catalog in `src/data/platform.ts` is used as an idempotent seed source for products, reference sources, sample mocks, questions, passages and email placeholders. Fake named students are not required for production testing.
 
-## Supabase Production Database Setup
+## Supabase / Postgres Setup
 
-Supabase is intentionally not connected in this mock-question visual pass. The app already has Prisma/Postgres foundations, so Supabase Postgres can be used later by setting `DATABASE_URL` in Vercel and running the Prisma migration workflow in a separate production-database pass.
+Supabase is used as hosted Postgres only; Supabase Auth is not required for this version.
 
-For Supabase later:
+1. Create a Supabase project.
+2. Copy the Postgres connection string.
+3. Add `DATABASE_URL` to Vercel. Use the pooled connection string for serverless if Supabase recommends it.
+4. Add `DIRECT_URL` if you use a separate direct connection for migrations.
+5. Run the schema push against the database:
 
-- use the pooled Postgres connection string for `DATABASE_URL` when appropriate for serverless
-- use `DIRECT_URL` only if migration tooling or the provider requires a direct connection
-- keep the current demo/localStorage compatibility until auth, attempts, reports and admin edits are fully migrated server-side
-- treat Supabase/Prisma migration as separate from question visual quality work
+```bash
+npm run prisma:push
+```
+
+6. Deploy or redeploy Vercel.
+7. Create the master admin by calling:
+
+```bash
+curl -X PUT "$NEXT_PUBLIC_SITE_URL/api/auth/login" \
+  -H "Content-Type: application/json" \
+  -d "{\"email\":\"$ADMIN_EMAIL\",\"password\":\"$ADMIN_PASSWORD\"}"
+```
+
+8. Sign in as admin, visit `/admin/students`, and approve/unlock registered students.
+9. Register a student in another browser/profile and confirm that the pending student appears in admin.
 
 ## Admin Approval Flow
 
@@ -169,7 +184,7 @@ For Supabase later:
 6. Admin approves/unapproves the student, assigns plan/tier and manually unlocks specific mocks.
 7. For a quick demo, admin can use **Create Test Student** and **Approve + Unlock First Mock**.
 
-Until the production database pass is complete, the visible UI still keeps demo account state in browser `localStorage`. To test approval reliably on the Vercel demo, register the student and sign in as admin in the same browser/profile, or use the admin test-student action. Cross-device/cross-browser approval persistence requires the later Prisma/Postgres database migration.
+When `DATABASE_URL` is configured, approval is cross-browser and cross-device because admin pages load users from the database. The localStorage path is fallback-only for local demos without Postgres.
 
 ## Create And Publish Mocks
 
@@ -209,11 +224,11 @@ Types already support `VR` and `NVR`, including future question types. Add quest
 
 ## Known Production Limitations
 
-- Auth is intentionally demo/localStorage-based and hydration-safe, but not production security.
+- Server sessions and password hashes are implemented for the current app, but a full production auth hardening pass is still recommended before taking real payments or sensitive student data.
 - Full mock question data is currently bundled client-side for demo speed.
 - Stripe checkout is structured but not live until keys and webhook handling are added.
 - Email templates are placeholders only; no real email provider is configured.
-- Admin-created mocks and references persist only in the current browser until a database is added.
+- Admin-generated mocks still need full database persistence/versioning in a later pass.
 - The online mock room has casual copy/print deterrents, not DRM.
 
 ## Verification Commands

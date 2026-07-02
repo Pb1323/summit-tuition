@@ -18,9 +18,9 @@ export default function RegisterPage() {
   const [plan, setPlan] = useState("Diagnostic Assessment");
   const [message, setMessage] = useState("Payment creates a pending access request. Admin approval unlocks mocks.");
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const result = register({ name, email, password, plan });
+    const result = await register({ name, email, password, plan });
     if (!result.ok) {
       setMessage(result.message);
       return;

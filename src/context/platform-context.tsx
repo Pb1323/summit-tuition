@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useMemo, useSyncExternalStore } from "react";
+import { createContext, useContext, useEffect, useMemo, useSyncExternalStore } from "react";
 import { ATTEMPTS, EMAIL_TEMPLATES, MASTER_ADMIN_EMAIL, MOCKS, PASSAGES, PRODUCT_PLANS, QUESTIONS, REFERENCES, SEEDED_USERS } from "@/data/platform";
 import { analyseAttempt, scoreAnswers, weakTopicsForAttempt } from "@/lib/assessment";
 import { generateMockFromReferenceProfile, type GenerateMockInput } from "@/lib/mock-generation";
@@ -27,26 +27,26 @@ type RegisterInput = {
 type PlatformContextValue = PlatformState & {
   currentUser: StudentAccount | null;
   isClientReady: boolean;
-  login: (email: string, password: string) => { ok: true; user: StudentAccount } | { ok: false; message: string };
-  register: (input: RegisterInput) => { ok: true } | { ok: false; message: string };
-  logout: () => void;
-  approveUser: (studentId: string, approved: boolean) => void;
-  rejectUser: (studentId: string) => void;
-  approveAndUnlockFirstMock: (studentId: string) => void;
-  createTestStudent: () => void;
-  assignPlan: (studentId: string, plan: string) => void;
-  unlockMock: (studentId: string, mockId: string, unlocked: boolean) => void;
-  setMockPublished: (mockId: string, published: boolean) => void;
+  login: (email: string, password: string) => Promise<{ ok: true; user: StudentAccount } | { ok: false; message: string }>;
+  register: (input: RegisterInput) => Promise<{ ok: true } | { ok: false; message: string }>;
+  logout: () => Promise<void>;
+  approveUser: (studentId: string, approved: boolean) => Promise<void>;
+  rejectUser: (studentId: string) => Promise<void>;
+  approveAndUnlockFirstMock: (studentId: string) => Promise<void>;
+  createTestStudent: () => Promise<void>;
+  assignPlan: (studentId: string, plan: string) => Promise<void>;
+  unlockMock: (studentId: string, mockId: string, unlocked: boolean) => Promise<void>;
+  setMockPublished: (mockId: string, published: boolean) => Promise<void>;
   createOriginalMockFromReference: (referenceId: string, subject: Subject) => void;
-  generateMockDraft: (input: Omit<GenerateMockInput, "reference"> & { referenceId: string }) => { ok: true; mockId: string } | { ok: false; message: string };
+  generateMockDraft: (input: Omit<GenerateMockInput, "reference"> & { referenceId: string }) => { ok: true; mockId: string; questionCount: number; totalMarks: number } | { ok: false; message: string };
   updateMockDraft: (mockId: string, patch: Partial<MockExam>) => void;
   upsertQuestion: (question: Question) => void;
   setReferenceStyle: (referenceId: string, style: ReferenceStyle) => void;
   addReference: (reference: Omit<ReferenceSource, "id" | "lastAnalysedAt">) => void;
-  submitAttempt: (mockId: string, answers: Record<string, string>, flaggedQuestionIds: string[], timeSpentSeconds: number) => Attempt;
+  submitAttempt: (mockId: string, answers: Record<string, string>, flaggedQuestionIds: string[], timeSpentSeconds: number) => Promise<Attempt | null>;
   saveAttemptDraft: (mockId: string, answers: Record<string, string>, flaggedQuestionIds: string[], timeSpentSeconds: number) => void;
-  releaseReport: (attemptId: string, feedback: string) => void;
-  addFeedback: (attemptId: string, feedback: string) => void;
+  releaseReport: (attemptId: string, feedback: string) => Promise<void>;
+  addFeedback: (attemptId: string, feedback: string) => Promise<void>;
 };
 
 const STORAGE_KEY = "summit-platform-state-v1";
@@ -116,12 +116,37 @@ function emitChange() {
   listeners.forEach((listener) => listener());
 }
 
+async function refreshFromServer() {
+  if (typeof window === "undefined") return;
+  try {
+    const response = await fetch("/api/platform/bootstrap", { credentials: "include", cache: "no-store" });
+    if (!response.ok) return;
+    const data = (await response.json()) as PlatformState & { currentUser: StudentAccount | null };
+    memoryState = {
+      users: data.users,
+      mocks: data.mocks,
+      questions: data.questions,
+      passages: data.passages,
+      attempts: data.attempts,
+      references: data.references,
+      products: data.products,
+      emailTemplates: data.emailTemplates,
+    };
+    memoryCurrentUserId = data.currentUser?.id ?? null;
+    persistState();
+    emitChange();
+  } catch {
+    // Keep local demo state if the server/database is unavailable.
+  }
+}
+
 function ensureBrowserStateLoaded() {
   if (typeof window === "undefined" || hasLoadedBrowserState) return;
   memoryState = loadState();
   memoryCurrentUserId = window.localStorage.getItem(SESSION_KEY);
   hasLoadedBrowserState = true;
   clientSnapshot = buildSnapshot();
+  void refreshFromServer();
 }
 
 function subscribe(listener: () => void) {
@@ -145,8 +170,27 @@ function updateStore(updater: (state: PlatformState) => PlatformState) {
   emitChange();
 }
 
+async function postAndRefresh(url: string, body: unknown) {
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) return false;
+    await refreshFromServer();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export function PlatformProvider({ children }: { children: React.ReactNode }) {
   const state = useSyncExternalStore(subscribe, getClientSnapshot, getServerSnapshot);
+  useEffect(() => {
+    void refreshFromServer();
+  }, []);
 
   const currentUser = useMemo(
     () => state.users.find((user) => user.id === state.currentUserId) ?? null,
@@ -161,7 +205,23 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
     ...state,
     currentUser,
     isClientReady: state.isClientReady,
-    login(email, password) {
+    async login(email, password) {
+      try {
+        const response = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await response.json().catch(() => null);
+        if (response.ok && data?.ok && data.user) {
+          await refreshFromServer();
+          return { ok: true, user: data.user as StudentAccount };
+        }
+        if (response.status !== 404) return { ok: false, message: data?.message ?? "Unable to sign in." };
+      } catch {
+        // Fall back to local demo login below.
+      }
       const normalisedEmail = email.trim().toLowerCase();
       const user = state.users.find((item) => item.email.toLowerCase() === normalisedEmail);
       if (!user) return { ok: false, message: "No account found for that email." };
@@ -178,7 +238,23 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
       emitChange();
       return { ok: true, user: { ...user, passwordHash: expected } };
     },
-    register(input) {
+    async register(input) {
+      try {
+        const response = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(input),
+        });
+        const data = await response.json().catch(() => null);
+        if (response.ok && data?.ok && data.mode !== "demo") {
+          await refreshFromServer();
+          return { ok: true };
+        }
+        if (!response.ok) return { ok: false, message: data?.message ?? "Unable to create account." };
+      } catch {
+        // Fall back to local demo registration below.
+      }
       const email = input.email.trim().toLowerCase();
       if (input.password.length < 8) return { ok: false, message: "Use at least 8 characters." };
       if (state.users.some((user) => user.email.toLowerCase() === email)) {
@@ -200,25 +276,29 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
       updateStore((prev) => ({ ...prev, users: [...prev.users, user] }));
       return { ok: true };
     },
-    logout() {
+    async logout() {
+      await fetch("/api/auth/logout", { method: "POST", credentials: "include" }).catch(() => undefined);
       memoryCurrentUserId = null;
       window.localStorage.removeItem(SESSION_KEY);
       emitChange();
     },
-    approveUser(studentId, approved) {
+    async approveUser(studentId, approved) {
       if (currentUser?.role !== "admin") return;
+      if (await postAndRefresh(`/api/admin/students/${studentId}/approve`, { approved })) return;
       updateUsers((users) => users.map((user) => (user.id === studentId ? { ...user, approved } : user)));
     },
-    rejectUser(studentId) {
+    async rejectUser(studentId) {
       if (currentUser?.role !== "admin") return;
+      if (await postAndRefresh(`/api/admin/students/${studentId}/reject`, {})) return;
       updateStore((prev) => ({
         ...prev,
         users: prev.users.filter((user) => user.id !== studentId),
         attempts: prev.attempts.filter((attempt) => attempt.studentId !== studentId),
       }));
     },
-    approveAndUnlockFirstMock(studentId) {
+    async approveAndUnlockFirstMock(studentId) {
       if (currentUser?.role !== "admin") return;
+      if (await postAndRefresh(`/api/admin/students/${studentId}/unlock-first-mock`, {})) return;
       const firstMock = state.mocks.find((mock) => mock.published && (mock.subject === "Maths" || mock.subject === "English"));
       updateUsers((users) => users.map((user) => {
         if (user.id !== studentId) return user;
@@ -226,7 +306,7 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
         return { ...user, approved: true, paymentStatus: user.paymentStatus === "none" ? "pending" : user.paymentStatus, unlockedMockIds };
       }));
     },
-    createTestStudent() {
+    async createTestStudent() {
       if (currentUser?.role !== "admin") return;
       const id = `student-test-${Date.now()}`;
       updateStore((prev) => ({
@@ -247,12 +327,14 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
         ],
       }));
     },
-    assignPlan(studentId, plan) {
+    async assignPlan(studentId, plan) {
       if (currentUser?.role !== "admin") return;
+      if (await postAndRefresh(`/api/admin/students/${studentId}/assign-plan`, { plan })) return;
       updateUsers((users) => users.map((user) => (user.id === studentId ? { ...user, plan, paymentStatus: plan ? "paid" : user.paymentStatus } : user)));
     },
-    unlockMock(studentId, mockId, unlocked) {
+    async unlockMock(studentId, mockId, unlocked) {
       if (currentUser?.role !== "admin") return;
+      if (await postAndRefresh(`/api/admin/students/${studentId}/unlock-mock`, { mockId, unlocked })) return;
       updateUsers((users) =>
         users.map((user) => {
           if (user.id !== studentId) return user;
@@ -263,8 +345,9 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
         })
       );
     },
-    setMockPublished(mockId, published) {
+    async setMockPublished(mockId, published) {
       if (currentUser?.role !== "admin") return;
+      if (await postAndRefresh(`/api/admin/mocks/${mockId}/publish`, { published })) return;
       updateStore((prev) => ({ ...prev, mocks: prev.mocks.map((mock) => (mock.id === mockId ? { ...mock, published } : mock)) }));
     },
     createOriginalMockFromReference(referenceId, subject) {
@@ -274,8 +357,8 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
       const generated = generateMockFromReferenceProfile({
         subject,
         difficultyLabel: "Summit Stretch",
-        questionCount: 5,
-        durationMinutes: 25,
+        questionCount: 50,
+        durationMinutes: 50,
         reference: ref,
       });
       updateStore((prev) => ({
@@ -297,7 +380,7 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
         questions: [...prev.questions, ...generated.questions],
         passages: [...prev.passages, ...generated.passages],
       }));
-      return { ok: true, mockId: generated.mock.id };
+      return { ok: true, mockId: generated.mock.id, questionCount: generated.questions.length, totalMarks: generated.mock.totalMarks };
     },
     updateMockDraft(mockId, patch) {
       if (currentUser?.role !== "admin") return;
@@ -327,7 +410,21 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
         ],
       }));
     },
-    submitAttempt(mockId, answers, flaggedQuestionIds, timeSpentSeconds) {
+    async submitAttempt(mockId, answers, flaggedQuestionIds, timeSpentSeconds) {
+      try {
+        const response = await fetch("/api/attempts/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ mockId, answers, flaggedQuestionIds, timeSpentSeconds }),
+        });
+        if (response.ok) {
+          await refreshFromServer();
+          return null;
+        }
+      } catch {
+        // Fall back to local demo attempt below.
+      }
       const mock = state.mocks.find((item) => item.id === mockId);
       if (!currentUser || !mock) throw new Error("Cannot submit attempt without a signed-in student and mock.");
       if (currentUser.role !== "student" || !currentUser.approved || !currentUser.unlockedMockIds.includes(mock.id) || !mock.published) {
@@ -377,8 +474,9 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
       };
       updateStore((prev) => ({ ...prev, attempts: [...prev.attempts.filter((item) => item.id !== draft.id), draft] }));
     },
-    releaseReport(attemptId, feedback) {
+    async releaseReport(attemptId, feedback) {
       if (currentUser?.role !== "admin") return;
+      if (await postAndRefresh(`/api/admin/reports/${attemptId}/release`, { feedback })) return;
       updateStore((prev) => ({
         ...prev,
         attempts: prev.attempts.map((attempt) =>
@@ -386,8 +484,9 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
         ),
       }));
     },
-    addFeedback(attemptId, feedback) {
+    async addFeedback(attemptId, feedback) {
       if (currentUser?.role !== "admin") return;
+      if (await postAndRefresh(`/api/admin/reports/${attemptId}/feedback`, { feedback })) return;
       updateStore((prev) => ({
         ...prev,
         attempts: prev.attempts.map((attempt) => (attempt.id === attemptId ? { ...attempt, adminFeedback: feedback } : attempt)),

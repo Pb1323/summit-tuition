@@ -33,9 +33,9 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
   const unansweredCount = questions.filter((question) => !answers[question.id]).length;
   const elapsedSeconds = useCallback(() => Math.max(0, Math.floor((Date.now() - (startedAt ?? Date.now())) / 1000) + (draft?.timeSpentSeconds ?? 0)), [draft?.timeSpentSeconds, startedAt]);
 
-  const submit = useCallback(() => {
+  const submit = useCallback(async () => {
     if (!mock || existing || isAdminPreview) return;
-    submitAttempt(mock.id, answers, flagged, elapsedSeconds());
+    await submitAttempt(mock.id, answers, flagged, elapsedSeconds());
     router.push("/dashboard");
   }, [answers, elapsedSeconds, existing, flagged, isAdminPreview, mock, router, submitAttempt]);
 

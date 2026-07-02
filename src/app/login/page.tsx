@@ -17,9 +17,9 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("First login sets the password for seeded demo accounts.");
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const result = login(email, password);
+    const result = await login(email, password);
     if (!result.ok) {
       setMessage(result.message);
       return;

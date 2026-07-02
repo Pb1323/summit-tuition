@@ -16,10 +16,21 @@ export type GeneratedMockResult = {
 };
 
 export const EnglishGLProfile = {
+  fullMockQuestionCount: 50,
   passageLengthPresets: {
     shortDiagnostic: "250-350 words",
     standardMock: "450-650 words",
-    longMock: "650-850 words",
+    longMock: "650-900 words",
+  },
+  fullMockDistribution: {
+    retrieval: 10,
+    inference: 10,
+    vocabulary: 8,
+    grammar: 6,
+    cloze: 6,
+    languageEffect: 5,
+    sequencingSummary: 3,
+    challenge: 2,
   },
   genres: ["mystery", "adventure", "historical fiction", "realistic fiction", "nature writing", "travel", "myth-inspired", "science non-fiction", "biography", "persuasive article", "diary"],
   questionTypes: ["retrieval", "inference", "vocabulary", "language_analysis", "character motivation", "sequencing", "main idea", "grammar", "cloze", "synonyms_antonyms"],
@@ -27,12 +38,57 @@ export const EnglishGLProfile = {
 };
 
 export const MathsGLProfile = {
+  fullMockQuestionCount: 50,
   topics: ["arithmetic", "fractions", "decimals", "percentages", "ratio", "word problems", "measurement", "time", "money", "geometry", "area/perimeter", "angles", "coordinates", "sequences", "data handling", "multi-step reasoning"],
+  fullMockDistribution: {
+    arithmetic: 6,
+    fractionsDecimals: 5,
+    percentages: 5,
+    ratio: 5,
+    multiStep: 6,
+    geometry: 5,
+    measurementTimeMoney: 4,
+    dataHandling: 4,
+    coordinates: 3,
+    sequences: 3,
+    vennProbability: 2,
+    challenge: 2,
+  },
   visualQuestionRatio: { standard: "20-30%", summitStretch: "30-40%" },
   answerFormat: "Multiple choice and short numerical answer",
 };
 
 export function calculateTopicDistribution(subject: Subject, questionCount: number) {
+  if (questionCount >= 50 && subject === "English") {
+    return {
+      Retrieval: 10,
+      Inference: 10,
+      Vocabulary: 8,
+      Grammar: 6,
+      Cloze: 6,
+      "Language analysis": 5,
+      "Main idea": 3,
+      Challenge: 2,
+    };
+  }
+
+  if (questionCount >= 50 && subject === "Maths") {
+    return {
+      Arithmetic: 6,
+      Fractions: 5,
+      Percentages: 5,
+      Ratio: 5,
+      "Multi-step reasoning": 6,
+      Geometry: 5,
+      Measurement: 4,
+      "Data handling": 4,
+      Coordinates: 3,
+      "Algebra basics": 3,
+      "Venn/probability": 2,
+      Challenge: 2,
+    };
+  }
+
   const mathsWeights = [
     ["Arithmetic", 0.18],
     ["Fractions", 0.16],
@@ -95,7 +151,7 @@ export function generateMockFromReferenceProfile(input: GenerateMockInput): Gene
 
 export function generateMathsGLStyleMock(input: GenerateMockInput): GeneratedMockResult {
   const suffix = `${Date.now()}`;
-  const allQuestions = mathsTemplates(suffix, input.difficultyLabel).slice(0, input.questionCount);
+  const allQuestions = buildMathsQuestions(suffix, input.difficultyLabel, input.questionCount);
   const topicMix = calculateTopicDistribution("Maths", allQuestions.length);
   const totalMarks = allQuestions.reduce((sum, question) => sum + question.marks, 0);
 
@@ -138,12 +194,16 @@ export function generateEnglishGLStyleMock(input: GenerateMockInput): GeneratedM
       "At the first crossing, the river looked ordinary: brown-green water, nettles along the bank, a crisp packet trapped under a root. Nia checked the map. The blue ink showed stepping stones just beyond the bridge, but in real life the water covered them completely. She waited, listening. Beneath the rush of the current, she heard a faint hollow tapping, as if pebbles were knocking together under the surface.",
       "The sound led her upstream to a bank of pale stones. They were arranged in a crescent, not naturally scattered but placed with patient care. Nia crouched and noticed that one stone was flatter than the rest. Under it lay a metal key, dark with age but wrapped in oilcloth.",
       "For a moment she simply stared. The valley, which had always seemed familiar, rearranged itself around her. The river was no longer just a route through the village; it was a sentence Grandmother Isha had written slowly over many years, and Nia had only just learned how to read the first word.",
+      "The key was smaller than Nia expected and strangely warm from the oilcloth. She turned it over in her palm and saw three tiny lines scratched into the metal. They matched three blue marks on the map near the railway bridge, where the river narrowed and slipped beneath an arch of blackened brick.",
+      "Nia nearly went home then. The sensible part of her mind began listing objections: her boots were already muddy, her father would notice if she was late, and old keys did not always open interesting doors. Yet the map seemed to pull her attention back each time she tried to fold it away.",
+      "At the bridge, ivy hung over the parapet like a curtain. Behind it, half-hidden by leaves, was a square iron door set into the stonework. Nia fitted the key into the lock. It resisted at first, then turned with a reluctant click that seemed much louder than the river.",
+      "Inside was not treasure, not exactly. A narrow chamber held measuring rods, notebooks wrapped in cloth and a brass instrument in a wooden case. On the first page of the top notebook, Grandmother Isha had written: Some places disappear only because nobody is taught how to notice them. Nia read the sentence twice, understanding that the map was not a puzzle made for one morning, but an invitation to become more observant than she had been before.",
     ],
     text: "",
   };
   passage.text = passage.paragraphs?.join("\n\n") ?? "";
 
-  const questions = englishTemplates(suffix, passageId, input.difficultyLabel).slice(0, input.questionCount);
+  const questions = buildEnglishQuestions(suffix, passageId, input.difficultyLabel, input.questionCount);
   const topicMix = calculateTopicDistribution("English", questions.length);
   const totalMarks = questions.reduce((sum, question) => sum + question.marks, 0);
 
@@ -171,7 +231,7 @@ export function generateEnglishGLStyleMock(input: GenerateMockInput): GeneratedM
 }
 
 function mathsTemplates(suffix: string, difficultyLabel: MockDifficulty): Question[] {
-  const difficulty = difficultyLabel === "Summit Stretch" ? "stretch" : "standard";
+  const difficulty = difficultyLabel === "Standard" ? "standard" : "stretch";
   return [
     {
       id: `gen-maths-ratio-${suffix}`,
@@ -345,7 +405,7 @@ function mathsTemplates(suffix: string, difficultyLabel: MockDifficulty): Questi
 }
 
 function englishTemplates(suffix: string, passageId: string, difficultyLabel: MockDifficulty): Question[] {
-  const difficulty = difficultyLabel === "Summit Stretch" ? "stretch" : "standard";
+  const difficulty = difficultyLabel === "Standard" ? "standard" : "stretch";
   return [
     {
       id: `gen-eng-retrieval-${suffix}`,
@@ -508,4 +568,133 @@ function englishTemplates(suffix: string, passageId: string, difficultyLabel: Mo
       originalGenerated: true,
     },
   ];
+}
+
+function buildMathsQuestions(suffix: string, difficultyLabel: MockDifficulty, questionCount: number): Question[] {
+  const base = mathsTemplates(suffix, difficultyLabel);
+  const topicPlan = [
+    ["Arithmetic", 6],
+    ["Fractions", 5],
+    ["Percentages", 5],
+    ["Ratio", 5],
+    ["Multi-step reasoning", 6],
+    ["Geometry", 5],
+    ["Measurement", 4],
+    ["Data handling", 4],
+    ["Coordinates", 3],
+    ["Algebra basics", 3],
+    ["Venn/probability", 2],
+    ["Challenge", 2],
+  ] as const;
+  const plannedTopics = topicPlan.flatMap(([topic, count]) => Array.from({ length: count }, () => topic)).slice(0, questionCount);
+  return plannedTopics.map((topic, index) => {
+    const template = chooseMathsTemplate(base, topic, index);
+    const stretch = difficultyLabel === "Summit Stretch";
+    return {
+      ...template,
+      id: `${template.id}-q${index + 1}`,
+      topic,
+      subtopic: subtopicForMaths(topic, index),
+      difficulty: difficultyLabel === "Standard" && index < 32 ? "standard" : "stretch",
+      text: tuneMathsStem(template.text, topic, index, stretch),
+      marks: stretch && (topic === "Challenge" || topic === "Multi-step reasoning") ? Math.max(2, template.marks) : template.marks,
+      tags: Array.from(new Set([...(template.tags ?? []), topic.toLowerCase(), difficultyLabel, "50-question-full-mock"])),
+      timeEstimateSeconds: stretch ? Math.max(template.timeEstimateSeconds, 110) : template.timeEstimateSeconds,
+    };
+  });
+}
+
+function buildEnglishQuestions(suffix: string, passageId: string, difficultyLabel: MockDifficulty, questionCount: number): Question[] {
+  const base = englishTemplates(suffix, passageId, difficultyLabel);
+  const topicPlan = [
+    ["Retrieval", 10],
+    ["Inference", 10],
+    ["Vocabulary", 8],
+    ["Grammar", 6],
+    ["Cloze", 6],
+    ["Language analysis", 5],
+    ["Main idea", 3],
+    ["Challenge", 2],
+  ] as const;
+  const plannedTopics = topicPlan.flatMap(([topic, count]) => Array.from({ length: count }, () => topic)).slice(0, questionCount);
+  return plannedTopics.map((topic, index) => {
+    const template = chooseEnglishTemplate(base, topic, index);
+    const paragraphRefs = paragraphRefsForEnglish(topic, index);
+    return {
+      ...template,
+      id: `${template.id}-q${index + 1}`,
+      topic,
+      subtopic: subtopicForEnglish(topic, index),
+      paragraphRefs,
+      difficulty: difficultyLabel === "Standard" && index < 34 ? "standard" : "stretch",
+      text: tuneEnglishStem(template.text, topic, index, difficultyLabel === "Summit Stretch"),
+      tags: Array.from(new Set([...(template.tags ?? []), topic.toLowerCase(), difficultyLabel, "50-question-full-mock"])),
+      timeEstimateSeconds: difficultyLabel === "Summit Stretch" ? Math.max(template.timeEstimateSeconds, 75) : template.timeEstimateSeconds,
+    };
+  });
+}
+
+function chooseMathsTemplate(base: Question[], topic: string, index: number) {
+  const keyword = topic.toLowerCase().includes("venn") ? "venn" : topic.toLowerCase().split(" ")[0];
+  const candidates = base.filter((question) => question.topic === topic || question.tags.some((tag) => tag.toLowerCase().includes(keyword)));
+  return (candidates.length ? candidates : base)[index % (candidates.length || base.length)];
+}
+
+function chooseEnglishTemplate(base: Question[], topic: string, index: number) {
+  const candidates = base.filter((question) => question.topic === topic || question.tags.some((tag) => tag.toLowerCase().includes(topic.toLowerCase().split(" ")[0])));
+  return (candidates.length ? candidates : base)[index % (candidates.length || base.length)];
+}
+
+function subtopicForMaths(topic: string, index: number) {
+  const map: Record<string, string[]> = {
+    Arithmetic: ["BIDMAS", "mental calculation", "missing operations"],
+    Fractions: ["fractions and decimals", "equivalence", "fraction of amount"],
+    Percentages: ["percentage change", "money", "reverse comparison"],
+    Ratio: ["sharing", "changing ratio", "proportion"],
+    "Multi-step reasoning": ["mixed operations", "word problem", "checking constraints"],
+    Geometry: ["perimeter", "area", "angles"],
+    Measurement: ["unit conversion", "time", "money"],
+    "Data handling": ["tables", "charts", "Venn diagrams"],
+    Coordinates: ["coordinate grids", "reading points", "translation"],
+    "Algebra basics": ["sequences", "term rules", "patterns"],
+    "Venn/probability": ["sets", "exactly one group", "probability"],
+    Challenge: ["mixed topic", "multi-step", "Summit Stretch"],
+  };
+  const values = map[topic] ?? ["GL-style"];
+  return values[index % values.length];
+}
+
+function subtopicForEnglish(topic: string, index: number) {
+  const map: Record<string, string[]> = {
+    Retrieval: ["precise detail", "direct understanding"],
+    Inference: ["deduction", "character motivation", "evidence across paragraphs"],
+    Vocabulary: ["meaning in context", "synonyms", "antonyms"],
+    Grammar: ["punctuation", "sentence structure"],
+    Cloze: ["word choice", "tone"],
+    "Language analysis": ["effect", "imagery", "atmosphere"],
+    "Main idea": ["summary", "sequencing", "theme"],
+    Challenge: ["multi-paragraph inference", "authorial purpose"],
+  };
+  const values = map[topic] ?? ["GL-style"];
+  return values[index % values.length];
+}
+
+function paragraphRefsForEnglish(topic: string, index: number) {
+  if (topic === "Challenge") return [Math.max(1, (index % 6) + 1), Math.min(12, (index % 6) + 6)];
+  if (topic === "Main idea") return [1, 12];
+  return [Math.max(1, (index % 12) + 1)];
+}
+
+function tuneMathsStem(text: string, topic: string, index: number, stretch: boolean) {
+  const prefix = stretch && index % 3 === 0 ? "Summit Stretch: " : "";
+  if (topic === "Challenge") return `${prefix}${text} Check both steps before choosing the closest answer.`;
+  if (topic === "Multi-step reasoning") return `${prefix}${text} You may need to combine two operations.`;
+  return `${prefix}${text}`;
+}
+
+function tuneEnglishStem(text: string, topic: string, index: number, stretch: boolean) {
+  const prefix = stretch && (topic === "Inference" || topic === "Challenge") ? "Using evidence from the passage, " : "";
+  if (topic === "Challenge") return `${prefix}${text} Choose the answer that is best supported overall.`;
+  if (topic === "Main idea" && index % 2 === 0) return "Which option best summarises the writer's main idea in the passage?";
+  return `${prefix}${text}`;
 }

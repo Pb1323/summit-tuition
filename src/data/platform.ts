@@ -319,7 +319,7 @@ export const QUESTIONS: Question[] = [
 export const MOCKS: MockExam[] = [
   {
     id: "maths-gl-1",
-    title: "Maths GL-Style Mock 1",
+    title: "Maths Diagnostic Sample",
     subject: "Maths",
     style: "GL-style",
     durationMinutes: 30,
@@ -327,12 +327,12 @@ export const MOCKS: MockExam[] = [
     questionIds: ["m1", "m2", "m3", "m4", "m5", "m6", "m7", "m8", "m9"],
     published: true,
     releaseDate: "2026-07-01",
-    tier: "Weekly Mock Club Plus",
-    description: "Original online-only maths mock covering arithmetic, fractions, ratio, geometry and data handling.",
+    tier: "Diagnostic Assessment",
+    description: "Short original online-only diagnostic sample covering arithmetic, fractions, ratio, geometry and data handling. Full generated mocks default to 50 questions.",
   },
   {
     id: "english-gl-1",
-    title: "English GL-Style Mock 1",
+    title: "English Diagnostic Sample",
     subject: "English",
     style: "GL-style",
     durationMinutes: 20,
@@ -340,8 +340,8 @@ export const MOCKS: MockExam[] = [
     questionIds: ["e1", "e2", "e3", "e4", "e5"],
     published: true,
     releaseDate: "2026-07-01",
-    tier: "Weekly Mock Club Plus",
-    description: "Original comprehension, vocabulary, inference, grammar and cloze questions.",
+    tier: "Diagnostic Assessment",
+    description: "Short original comprehension diagnostic sample. Full generated English mocks default to 50 questions with a longer passage.",
   },
   {
     id: "vr-placeholder",
