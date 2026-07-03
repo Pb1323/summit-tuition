@@ -88,5 +88,6 @@ export async function clearSession() {
 }
 
 export function isSeedAdmin(email: string) {
-  return email.trim().toLowerCase() === MASTER_ADMIN_EMAIL.toLowerCase();
+  const adminEmail = process.env.ADMIN_EMAIL || MASTER_ADMIN_EMAIL;
+  return email.trim().toLowerCase() === adminEmail.trim().toLowerCase();
 }
