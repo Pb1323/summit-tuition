@@ -46,13 +46,40 @@ export async function PUT(request: Request) {
   const body = await request.json().catch(() => null);
   const email = String(body?.email ?? "").trim().toLowerCase();
   const password = String(body?.password ?? "");
-  if (!isDatabaseConfigured() || !isSeedAdmin(email) || password.length < 8) {
-    return NextResponse.json({ ok: false, message: "Master admin seed requires database and valid credentials." }, { status: 400 });
+  const databaseConfigured = isDatabaseConfigured();
+  const adminEmailConfigured = Boolean(process.env.ADMIN_EMAIL);
+
+  if (!databaseConfigured) {
+    console.error("Master admin bootstrap blocked: DATABASE_URL is missing.", { databaseConfigured, adminEmailConfigured });
+    return NextResponse.json({ ok: false, message: "Database is not configured for admin bootstrap." }, { status: 500 });
   }
-  const user = await prisma.user.upsert({
-    where: { email },
-    update: { passwordHash: hashPasswordServer(password), role: "admin", approved: true, paymentStatus: "paid" },
-    create: { name: "Master Admin", email, passwordHash: hashPasswordServer(password), role: "admin", approved: true, plan: "Complete 11+ Programme", paymentStatus: "paid" },
-  });
-  return NextResponse.json({ ok: true, userId: user.id });
+
+  if (!isSeedAdmin(email) || password.length < 8) {
+    console.error("Master admin bootstrap rejected invalid credentials.", {
+      databaseConfigured,
+      adminEmailConfigured,
+      emailMatchesAdmin: isSeedAdmin(email),
+      passwordLengthValid: password.length >= 8,
+    });
+    return NextResponse.json({ ok: false, message: "Master admin seed requires valid admin email and an 8+ character password." }, { status: 400 });
+  }
+
+  try {
+    const passwordHash = hashPasswordServer(password);
+    const user = await prisma.user.upsert({
+      where: { email },
+      update: { passwordHash, role: "admin", approved: true, paymentStatus: "paid" },
+      create: { name: "Master Admin", email, passwordHash, role: "admin", approved: true, plan: "Complete 11+ Programme", paymentStatus: "paid" },
+    });
+    return NextResponse.json({ ok: true, userId: user.id });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Unknown bootstrap error";
+    console.error("Master admin bootstrap database upsert failed.", {
+      databaseConfigured,
+      adminEmailConfigured,
+      errorName: error instanceof Error ? error.name : "UnknownError",
+      message,
+    });
+    return NextResponse.json({ ok: false, message: "Admin bootstrap failed while writing to the database." }, { status: 500 });
+  }
 }
