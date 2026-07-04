@@ -56,7 +56,8 @@ export interface QuestionVisual {
     | "fraction"
     | "ratioBlocks"
     | "venn"
-    | "clock";
+    | "clock"
+    | "sequence";
   title: string;
   data: Record<string, string | number | boolean | string[] | number[] | string[][] | number[][] | Record<string, string | number>[]>;
 }

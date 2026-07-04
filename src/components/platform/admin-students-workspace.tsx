@@ -18,7 +18,7 @@ export function AdminStudentsWorkspace({ compact = false }: { compact?: boolean 
           <div>
             <PremiumBadge tone={pending.length ? "red" : "green"}>{pending.length ? `${pending.length} pending` : "No pending approvals"}</PremiumBadge>
             <h2 className="mt-3 text-2xl font-black text-navy">Pending Student Approvals</h2>
-            <p className="mt-2 max-w-3xl text-sm text-muted">Newly registered students appear here in the current demo storage. Approve, assign a plan, and unlock the first mock from one place.</p>
+            <p className="mt-2 max-w-3xl text-sm text-muted">Newly registered students appear here for review. Approve, assign a plan, and unlock the first mock from one place.</p>
           </div>
           <button onClick={createTestStudent} className="inline-flex h-11 items-center gap-2 rounded-full border border-line bg-white px-4 text-sm font-bold text-navy hover:border-gold">
             <UserPlus className="h-4 w-4" /> Create Test Student

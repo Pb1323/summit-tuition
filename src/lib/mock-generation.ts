@@ -300,7 +300,7 @@ function mathsTemplates(suffix: string, difficultyLabel: MockDifficulty): Questi
       options: ["36", "38", "41", "44"],
       correctAnswer: "41",
       marks: 2,
-      visual: { type: "numberLine", title: "Equal sequence steps", data: { ticks: [2, 3, 4, 5, 6, 7, 8], highlight: 8 } },
+      visual: { type: "sequence", title: "Equal sequence steps", data: { totalTerms: 8, knownPositions: [2, 5], knownValues: [11, 26], targetPosition: 8 } },
       markScheme: createMarkScheme(["From term 2 to term 5 is 3 steps.", "26 - 11 = 15, so each step is 5.", "Term 8 is 3 more steps after term 5: 26 + 15 = 41."]),
       explanation: createExplanations("Sequences", "Use the gap between known terms to find the step size."),
       tags: ["algebra", "sequences", "GL-style"],

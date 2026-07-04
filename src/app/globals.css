@@ -266,6 +266,49 @@ body {
   }
 }
 
+/* Question-visual animations: clarify process only (line drawn in reading order,
+   highlighted point pulses twice, sequence steps appear one by one). Motion-safe only. */
+@media (prefers-reduced-motion: no-preference) {
+  .qv-draw {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: qv-draw 1.1s ease-out 0.2s forwards;
+  }
+
+  .qv-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: qv-pulse 1.4s ease-in-out 0.4s 2;
+  }
+
+  .qv-step {
+    opacity: 0;
+    animation: qv-step-in 0.4s ease-out forwards;
+  }
+}
+
+@keyframes qv-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes qv-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.4);
+  }
+}
+
+@keyframes qv-step-in {
+  to {
+    opacity: 1;
+  }
+}
+
 @media print {
   body {
     display: none;

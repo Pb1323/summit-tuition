@@ -5,7 +5,7 @@ import { prisma, isDatabaseConfigured } from "@/lib/server/db";
 import { MASTER_ADMIN_EMAIL, SEEDED_USERS } from "@/data/platform";
 import type { Role, StudentAccount } from "@/types/platform";
 
-export const SESSION_COOKIE = "__Host-summit_session";
+export const SESSION_COOKIE = process.env.NODE_ENV === "production" ? "__Host-summit_session" : "summit_session";
 const SESSION_DAYS = 30;
 
 function hashToken(token: string) {

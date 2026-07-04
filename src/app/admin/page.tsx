@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { RequireAuth, RevealOnScroll } from "@/components/platform/ui";
 import { AdminDashboard } from "@/components/platform/dashboards";
@@ -22,7 +23,7 @@ export default function AdminPage() {
               ["Students", "/admin/students"],
               ["Payments", "/admin"],
               ["Products", "/admin"],
-            ].map(([label, href]) => <a key={`${label}-${href}`} href={href} className="rounded-full border border-line bg-white px-4 py-2 text-navy hover:border-gold">{label}</a>)}
+            ].map(([label, href]) => <Link key={`${label}-${href}`} href={href} className="rounded-full border border-line bg-white px-4 py-2 text-navy hover:border-gold">{label}</Link>)}
           </nav>
         </RevealOnScroll>
         <RevealOnScroll delay={0.06}>

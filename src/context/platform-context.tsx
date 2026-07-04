@@ -133,6 +133,8 @@ async function refreshFromServer() {
       emailTemplates: data.emailTemplates,
     };
     memoryCurrentUserId = data.currentUser?.id ?? null;
+    if (memoryCurrentUserId) window.localStorage.setItem(SESSION_KEY, memoryCurrentUserId);
+    else window.localStorage.removeItem(SESSION_KEY);
     persistState();
     emitChange();
   } catch {

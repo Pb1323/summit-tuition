@@ -14,20 +14,24 @@ export default function MockReviewPage() {
   const mock = mocks.find((item) => item.id === params.id);
   const attempt = attempts.find((item) => item.studentId === currentUser?.id && item.mockId === params.id && item.status === "report_released");
   const questions = useMemo(() => questionBank.filter((question) => mock?.questionIds.includes(question.id)), [mock, questionBank]);
-  const [showOnlyWrong, setShowOnlyWrong] = useState(false);
+  const [filterMode, setFilterMode] = useState<"all" | "wrong" | "flagged">("all");
   const [topicFilter, setTopicFilter] = useState("All topics");
   const incorrectQuestions = useMemo(() => questions.filter((question) => {
     if (!attempt) return false;
     return !isCorrect(question, attempt.answers[question.id]);
   }), [attempt, questions]);
+  const flaggedIds = useMemo(() => new Set(attempt?.flaggedQuestionIds ?? []), [attempt]);
   const topics = useMemo(() => Array.from(new Set(questions.map((question) => question.topic))).sort(), [questions]);
   const visibleQuestions = useMemo(() => {
     return questions.filter((question) => {
-      const wrongMatch = !showOnlyWrong || incorrectQuestions.some((item) => item.id === question.id);
+      const modeMatch =
+        filterMode === "all" ||
+        (filterMode === "wrong" && incorrectQuestions.some((item) => item.id === question.id)) ||
+        (filterMode === "flagged" && flaggedIds.has(question.id));
       const topicMatch = topicFilter === "All topics" || question.topic === topicFilter;
-      return wrongMatch && topicMatch;
+      return modeMatch && topicMatch;
     });
-  }, [incorrectQuestions, questions, showOnlyWrong, topicFilter]);
+  }, [filterMode, flaggedIds, incorrectQuestions, questions, topicFilter]);
 
   return (
     <RequireAuth role="student">
@@ -81,8 +85,9 @@ export default function MockReviewPage() {
                   <p className="mt-1 text-sm text-muted">Use the filters to work through a full 50-question paper without losing your place.</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <button type="button" onClick={() => setShowOnlyWrong(false)} className={`rounded-full px-4 py-2 text-sm font-bold ${!showOnlyWrong ? "bg-gold text-white shadow-gold" : "border border-line bg-white text-navy"}`}>All questions</button>
-                  <button type="button" onClick={() => setShowOnlyWrong(true)} className={`rounded-full px-4 py-2 text-sm font-bold ${showOnlyWrong ? "bg-gold text-white shadow-gold" : "border border-line bg-white text-navy"}`}>Wrong only</button>
+                  <button type="button" onClick={() => setFilterMode("all")} className={`rounded-full px-4 py-2 text-sm font-bold ${filterMode === "all" ? "bg-gold text-white shadow-gold" : "border border-line bg-white text-navy"}`}>All questions</button>
+                  <button type="button" onClick={() => setFilterMode("wrong")} className={`rounded-full px-4 py-2 text-sm font-bold ${filterMode === "wrong" ? "bg-gold text-white shadow-gold" : "border border-line bg-white text-navy"}`}>Wrong only</button>
+                  <button type="button" onClick={() => setFilterMode("flagged")} className={`rounded-full px-4 py-2 text-sm font-bold ${filterMode === "flagged" ? "bg-gold text-white shadow-gold" : "border border-line bg-white text-navy"}`}>Flagged in exam ({flaggedIds.size})</button>
                   <select value={topicFilter} onChange={(event) => setTopicFilter(event.target.value)} className="h-10 rounded-full border border-line bg-white px-3 text-sm font-bold text-navy outline-none focus:border-gold">
                     <option>All topics</option>
                     {topics.map((topic) => <option key={topic}>{topic}</option>)}
@@ -107,6 +112,7 @@ export default function MockReviewPage() {
                   <div key={question.id} id={`review-q-${index + 1}`} className="scroll-mt-24 border-t border-line pt-6 first:border-t-0 first:pt-0">
                     <PremiumBadge>Question {index + 1}</PremiumBadge>
                     {incorrectQuestions.some((item) => item.id === question.id) ? <PremiumBadge tone="red">Needs review</PremiumBadge> : <PremiumBadge tone="green">Correct</PremiumBadge>}
+                    {flaggedIds.has(question.id) && <PremiumBadge tone="navy">You flagged this in the exam</PremiumBadge>}
                     <div className="mt-4">
                       <QuestionRenderer question={question} passage={question.passageId ? passages.find((passage) => passage.id === question.passageId) : undefined} questionNumber={index + 1} value={attempt.answers[question.id]} onChange={() => undefined} review />
                     </div>

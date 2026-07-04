@@ -1,13 +1,13 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AlertTriangle, ArrowLeft, Eye, Flag, ShieldAlert } from "lucide-react";
+import { AlertTriangle, ArrowLeft, CheckCircle2, Eye, Flag, ShieldAlert } from "lucide-react";
 import { usePlatform } from "@/context/platform-context";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/container";
-import { AnimatedButton, GlowCard, MockTimer, PremiumBadge, QuestionNavigator, QuestionRenderer, RequireAuth } from "@/components/platform/ui";
+import { AnimatedButton, GlowCard, MockTimer, PremiumBadge, ProgressBar, QuestionNavigator, QuestionRenderer, RequireAuth } from "@/components/platform/ui";
 
 type MockRoomShellProps = {
   mockId: string;
@@ -28,10 +28,14 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
   const [flagged, setFlagged] = useState<string[]>([]);
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
   const [startedAt, setStartedAt] = useState<number | null>(null);
+  const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
+  // Elapsed time already banked in the resumed draft, captured once at start.
+  // Reading the live draft here would compound: every save writes the new total back into the draft.
+  const [baseElapsed, setBaseElapsed] = useState(0);
   const active = questions[index];
   const activePassage = active?.passageId ? passages.find((passage) => passage.id === active.passageId) : undefined;
   const unansweredCount = questions.filter((question) => !answers[question.id]).length;
-  const elapsedSeconds = useCallback(() => Math.max(0, Math.floor((Date.now() - (startedAt ?? Date.now())) / 1000) + (draft?.timeSpentSeconds ?? 0)), [draft?.timeSpentSeconds, startedAt]);
+  const elapsedSeconds = useCallback(() => Math.max(0, Math.floor((Date.now() - (startedAt ?? Date.now())) / 1000) + baseElapsed), [baseElapsed, startedAt]);
 
   const submit = useCallback(async () => {
     if (!mock || existing || isAdminPreview) return;
@@ -43,7 +47,10 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
     if (!mock || !active) return;
     setFlagged((items) => {
       const next = items.includes(active.id) ? items.filter((id) => id !== active.id) : [...items, active.id];
-      if (!isAdminPreview) saveAttemptDraft(mock.id, answers, next, elapsedSeconds());
+      if (!isAdminPreview) {
+        saveAttemptDraft(mock.id, answers, next, elapsedSeconds());
+        setLastSavedAt(new Date());
+      }
       return next;
     });
   }, [active, answers, elapsedSeconds, isAdminPreview, mock, saveAttemptDraft]);
@@ -52,10 +59,36 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
     if (draft && !isAdminPreview) {
       setAnswers(draft.answers);
       setFlagged(draft.flaggedQuestionIds);
+      setBaseElapsed(draft.timeSpentSeconds);
     }
     setStartedAt(Date.now());
     setStarted(true);
   }
+
+  const inExam = started && !existing && !isAdminPreview;
+
+  useEffect(() => {
+    if (!inExam) return;
+    const warn = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = "";
+    };
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [inExam]);
+
+  useEffect(() => {
+    if (!inExam || showSubmitConfirm) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT" || target.isContentEditable)) return;
+      if (event.key === "ArrowLeft") setIndex((current) => Math.max(0, current - 1));
+      else if (event.key === "ArrowRight") setIndex((current) => Math.min(questions.length - 1, current + 1));
+      else if (event.key === "f" || event.key === "F") toggleFlag();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [inExam, questions.length, showSubmitConfirm, toggleFlag]);
 
   if (!mock) {
     return (
@@ -136,7 +169,7 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
             <div className="mt-8 rounded-2xl border border-gold/30 bg-gold/10 p-4 text-sm text-navy">
               No PDF downloads or printable paper are provided. Answers are saved inside this platform. Do not copy or share question content.
             </div>
-            {draft && <p className="mt-4 rounded-2xl border border-line bg-white p-3 text-sm font-semibold text-navy">Saved draft found: {Object.keys(draft.answers).length}/{questions.length} answered and {draft.flaggedQuestionIds.length} flagged.</p>}
+            {draft && <p className="mt-4 rounded-2xl border border-line bg-white p-3 text-sm font-semibold text-navy">Saved draft found: {Object.keys(draft.answers).length}/{questions.length} answered, {draft.flaggedQuestionIds.length} flagged, about {Math.max(0, Math.ceil((mock.durationMinutes * 60 - draft.timeSpentSeconds) / 60))} min remaining on the clock.</p>}
             <AnimatedButton onClick={startMock} className="mt-8">{draft ? "Resume timed mock" : "Start timed mock"}</AnimatedButton>
           </GlowCard>
         ) : (
@@ -145,15 +178,28 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div><p className="text-sm font-bold text-gold-dark">{mock.subject}</p><h1 className="text-xl font-black text-navy">{mock.title}</h1></div>
                 <div className="flex flex-wrap items-center gap-3">
-                  <span className="rounded-full border border-line bg-white px-3 py-1 text-sm font-bold text-navy">{unansweredCount} unanswered</span>
-                  {isAdminPreview ? <span className="rounded-full bg-navy px-3 py-1 text-sm font-bold text-white">Preview timer</span> : <MockTimer durationMinutes={mock.durationMinutes} onExpire={submit} />}
+                  {!isAdminPreview && lastSavedAt && (
+                    <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
+                      <CheckCircle2 className="h-3.5 w-3.5" /> Saved {lastSavedAt.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    </span>
+                  )}
+                  {!isAdminPreview && (
+                    <button onClick={() => setShowSubmitConfirm(true)} className="rounded-full border border-gold bg-gold/10 px-4 py-1.5 text-sm font-bold text-gold-dark transition hover:bg-gold/20">
+                      Review &amp; submit
+                    </button>
+                  )}
+                  {isAdminPreview ? <span className="rounded-full bg-navy px-3 py-1 text-sm font-bold text-white">Preview timer</span> : <MockTimer durationMinutes={mock.durationMinutes} initialElapsedSeconds={baseElapsed} onExpire={submit} />}
                 </div>
               </div>
               <div className="mt-4"><QuestionNavigator questions={questions} activeIndex={index} answers={answers} flagged={flagged} onSelect={setIndex} /></div>
-              <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-muted">
-                <span className="rounded-full bg-cream px-2.5 py-1">Answered: {questions.length - unansweredCount}</span>
-                <span className="rounded-full bg-cream px-2.5 py-1">Unanswered: {unansweredCount}</span>
-                <span className="rounded-full bg-cream px-2.5 py-1">Flagged: {flagged.length}</span>
+              <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+                <div className="flex flex-wrap gap-2 text-xs font-semibold text-muted">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-cream px-2.5 py-1"><span className="h-2.5 w-2.5 rounded-sm bg-navy" /> Answered: {questions.length - unansweredCount}</span>
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-cream px-2.5 py-1"><span className="h-2.5 w-2.5 rounded-sm border border-line bg-white" /> Unanswered: {unansweredCount}</span>
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-cream px-2.5 py-1"><span className="h-2.5 w-2.5 rounded-sm ring-2 ring-gold-dark" /> Flagged: {flagged.length}</span>
+                  <span className="rounded-full bg-cream px-2.5 py-1">Keys: ← → move, F flag</span>
+                </div>
+                <div className="w-full max-w-45 sm:w-45"><ProgressBar value={questions.length ? ((questions.length - unansweredCount) / questions.length) * 100 : 0} /></div>
               </div>
             </div>
             <GlowCard className="p-6 sm:p-8">
@@ -169,7 +215,10 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
                   onChange={(value) => {
                     const next = { ...answers, [active.id]: value };
                     setAnswers(next);
-                    if (!isAdminPreview) saveAttemptDraft(mock.id, next, flagged, elapsedSeconds());
+                    if (!isAdminPreview) {
+                      saveAttemptDraft(mock.id, next, flagged, elapsedSeconds());
+                      setLastSavedAt(new Date());
+                    }
                   }}
                 />
               ) : (
@@ -193,12 +242,48 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
             </GlowCard>
             {showSubmitConfirm && !isAdminPreview && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-navy/45 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="submit-title">
-                <div className="max-w-lg rounded-2xl border border-gold/30 bg-white p-6 shadow-[0_28px_90px_-35px_rgba(17,24,39,0.8)]">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gold/15 text-gold-dark">
-                    <AlertTriangle className="h-6 w-6" />
+                <div className="max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-gold/30 bg-white p-6 shadow-[0_28px_90px_-35px_rgba(17,24,39,0.8)]">
+                  {unansweredCount > 0 ? (
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gold/15 text-gold-dark"><AlertTriangle className="h-6 w-6" /></div>
+                  ) : (
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 text-emerald-700"><CheckCircle2 className="h-6 w-6" /></div>
+                  )}
+                  <h2 id="submit-title" className="mt-4 text-2xl font-black text-navy">Review before you submit</h2>
+                  {unansweredCount > 0 ? (
+                    <p className="mt-2 rounded-xl border border-gold/30 bg-gold/10 p-3 text-sm font-semibold leading-relaxed text-navy">
+                      You still have {unansweredCount} unanswered question{unansweredCount === 1 ? "" : "s"}{flagged.length > 0 ? ` and ${flagged.length} flagged for another look` : ""}. Tap a question below to jump back to it.
+                    </p>
+                  ) : (
+                    <p className="mt-2 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm font-semibold leading-relaxed text-emerald-800">
+                      All {questions.length} questions answered{flagged.length > 0 ? `, with ${flagged.length} still flagged for another look` : ""}. Once submitted you cannot re-enter this mock until the report is released.
+                    </p>
+                  )}
+                  <div className="mt-5 grid grid-cols-5 gap-2 sm:grid-cols-10">
+                    {questions.map((question, questionIndex) => {
+                      const answered = Boolean(answers[question.id]);
+                      const isFlagged = flagged.includes(question.id);
+                      return (
+                        <button
+                          key={question.id}
+                          onClick={() => { setIndex(questionIndex); setShowSubmitConfirm(false); }}
+                          aria-label={`Return to question ${questionIndex + 1}, ${answered ? "answered" : "unanswered"}${isFlagged ? ", flagged" : ""}`}
+                          className={cn(
+                            "h-10 rounded-lg border text-sm font-bold transition hover:border-gold",
+                            answered ? "border-navy bg-navy text-white" : "border-red-200 bg-red-50 text-red-700",
+                            isFlagged && "ring-2 ring-gold-dark ring-offset-1"
+                          )}
+                        >
+                          {questionIndex + 1}
+                        </button>
+                      );
+                    })}
                   </div>
-                  <h2 id="submit-title" className="mt-4 text-2xl font-black text-navy">Submit this mock for marking?</h2>
-                  <p className="mt-2 text-sm leading-relaxed text-muted">You have {unansweredCount} unanswered question{unansweredCount === 1 ? "" : "s"} and {flagged.length} flagged question{flagged.length === 1 ? "" : "s"}. You will not see the full review until admin releases the report.</p>
+                  <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-muted">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-cream px-2.5 py-1"><span className="h-2.5 w-2.5 rounded-sm bg-navy" /> Answered</span>
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-cream px-2.5 py-1"><span className="h-2.5 w-2.5 rounded-sm border border-red-200 bg-red-50" /> Unanswered</span>
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-cream px-2.5 py-1"><span className="h-2.5 w-2.5 rounded-sm ring-2 ring-gold-dark" /> Flagged</span>
+                  </div>
+                  <p className="mt-4 text-sm text-muted">Your answers stay saved on this device. You will not see the full review until admin releases the report.</p>
                   <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
                     <button onClick={() => setShowSubmitConfirm(false)} className="rounded-full border border-line px-5 py-2 text-sm font-bold text-navy">Keep working</button>
                     <button onClick={submit} className="rounded-full bg-gold px-5 py-2 text-sm font-bold text-navy">Submit for marking</button>

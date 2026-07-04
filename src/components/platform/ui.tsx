@@ -7,7 +7,10 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, CheckCircle2, Lock, ShieldCheck, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePlatform } from "@/context/platform-context";
-import type { Attempt, MockExam, Passage, Question, QuestionVisual, Role } from "@/types/platform";
+import { VisualRenderer } from "@/components/platform/question-visuals";
+import type { Attempt, MockExam, Passage, Question, Role } from "@/types/platform";
+
+const COMPACT_QUESTION_NAV_THRESHOLD = 15;
 
 export function AnimatedButton({
   href,
@@ -133,8 +136,8 @@ export function RequireAuth({ role, children }: { role?: Role; children: React.R
   return <>{children}</>;
 }
 
-export function MockTimer({ durationMinutes, onExpire }: { durationMinutes: number; onExpire: () => void }) {
-  const [seconds, setSeconds] = useState(durationMinutes * 60);
+export function MockTimer({ durationMinutes, initialElapsedSeconds = 0, onExpire }: { durationMinutes: number; initialElapsedSeconds?: number; onExpire: () => void }) {
+  const [seconds, setSeconds] = useState(() => Math.max(0, durationMinutes * 60 - initialElapsedSeconds));
   useEffect(() => {
     if (seconds <= 0) {
       onExpire();
@@ -152,219 +155,6 @@ export function MockTimer({ durationMinutes, onExpire }: { durationMinutes: numb
     >
       {mins}:{secs}
     </span>
-  );
-}
-
-function isStringArray(value: unknown): value is string[] {
-  return Array.isArray(value) && value.every((item) => typeof item === "string");
-}
-
-function isNumberArray(value: unknown): value is number[] {
-  return Array.isArray(value) && value.every((item) => typeof item === "number" && Number.isFinite(item));
-}
-
-function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisual; adminPreview?: boolean }) {
-  const type = visual.type.replace("_", "").toLowerCase();
-  const title = visual.title || "Question visual";
-  const frame = (children: React.ReactNode, summary: string) => (
-    <div className="overflow-hidden rounded-2xl border border-gold/25 bg-white shadow-[0_16px_44px_-36px_rgba(17,24,39,0.45)]" role="img" aria-label={summary}>
-      <div className="border-b border-gold/15 bg-cream px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-gold-dark">{title}</div>
-      <div className="p-4">{children}</div>
-    </div>
-  );
-
-  if (type === "table") {
-    const headers = visual.data.headers;
-    const rows = visual.data.rows;
-    if (!isStringArray(headers) || !Array.isArray(rows)) return <VisualFallback adminPreview={adminPreview} />;
-    return frame(
-      <div className="overflow-x-auto">
-        <table className="min-w-full border-separate border-spacing-0 text-center text-sm">
-          <thead><tr>{headers.map((header) => <th key={header} scope="col" className="border-b border-gold/20 bg-cream px-4 py-3 font-black text-navy first:rounded-tl-xl last:rounded-tr-xl">{header}</th>)}</tr></thead>
-          <tbody>{rows.map((row, rowIndex) => <tr key={rowIndex}>{isStringArray(row) ? row.map((cell, index) => <td key={`${rowIndex}-${index}`} className="border-b border-line bg-white px-4 py-3 font-semibold text-ink">{cell}</td>) : <td className="border-b border-line px-4 py-3 text-muted" colSpan={headers.length}>Missing row data</td>}</tr>)}</tbody>
-        </table>
-      </div>,
-      `${title}: ${headers.join(", ")}`
-    );
-  }
-
-  if (type === "barchart") {
-    const labels = visual.data.labels;
-    const values = visual.data.values;
-    if (!isStringArray(labels) || !isNumberArray(values) || labels.length === 0 || values.length === 0) return <VisualFallback adminPreview={adminPreview} />;
-    const max = Math.max(...values, 1);
-    return frame(
-      <svg viewBox="0 0 360 220" className="h-64 w-full max-w-full">
-        <line x1="46" y1="178" x2="330" y2="178" stroke="#172033" strokeWidth="2" />
-        <line x1="46" y1="26" x2="46" y2="178" stroke="#172033" strokeWidth="2" />
-        {[0, 1, 2, 3].map((tick) => <line key={tick} x1="46" y1={178 - tick * 40} x2="330" y2={178 - tick * 40} stroke="#f7e8bd" strokeWidth="1" />)}
-        {labels.map((label, index) => {
-          const barHeight = Math.max(8, (values[index] / max) * 128);
-          const x = 68 + index * (240 / Math.max(labels.length, 1));
-          return (
-            <g key={label}>
-              <rect x={x} y={178 - barHeight} width="34" height={barHeight} rx="5" fill="#f59e0b" />
-              <text x={x + 17} y="200" textAnchor="middle" className="fill-[#172033] text-[12px] font-bold">{label}</text>
-              <text x={x + 17} y={170 - barHeight} textAnchor="middle" className="fill-[#111827] text-[12px] font-bold">{values[index]}</text>
-            </g>
-          );
-        })}
-      </svg>,
-      `${title}: ${labels.map((label, index) => `${label} ${values[index]}`).join(", ")}`
-    );
-  }
-
-  if (type === "linegraph") {
-    const labels = visual.data.labels;
-    const values = visual.data.values;
-    if (!isStringArray(labels) || !isNumberArray(values) || labels.length === 0 || values.length === 0) return <VisualFallback adminPreview={adminPreview} />;
-    const max = Math.max(...values, 1);
-    const step = 260 / Math.max(values.length - 1, 1);
-    const points = values.map((value, index) => `${52 + index * step},${176 - (value / max) * 128}`).join(" ");
-    return frame(
-      <svg viewBox="0 0 360 220" className="h-64 w-full max-w-full">
-        {Array.from({ length: 5 }).map((_, index) => <line key={index} x1="48" y1={48 + index * 32} x2="324" y2={48 + index * 32} stroke="#f7e8bd" />)}
-        <line x1="48" y1="176" x2="324" y2="176" stroke="#172033" strokeWidth="2" />
-        <line x1="48" y1="32" x2="48" y2="176" stroke="#172033" strokeWidth="2" />
-        <polyline points={points} fill="none" stroke="#b45309" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-        {values.map((value, index) => {
-          const cx = 52 + index * step;
-          const cy = 176 - (value / max) * 128;
-          return <g key={`${index}-${value}`}><circle cx={cx} cy={cy} r="5" fill="#f59e0b" stroke="#172033" strokeWidth="2" /><text x={cx} y="202" textAnchor="middle" className="fill-[#172033] text-[11px] font-bold">{labels[index]}</text></g>;
-        })}
-      </svg>,
-      `${title}: ${labels.map((label, index) => `${label} ${values[index]}`).join(", ")}`
-    );
-  }
-
-  if (type === "coordinategrid") {
-    const plotted = Array.isArray(visual.data.points) && visual.data.points.every((point) => Array.isArray(point) && point.length >= 2 && point.every((value) => typeof value === "number"))
-      ? visual.data.points as number[][]
-      : [[1, 1], [4, 3]];
-    return frame(
-      <svg viewBox="0 0 240 240" className="mx-auto h-72 w-full max-w-sm">
-        {Array.from({ length: 7 }).map((_, index) => <g key={index}><line x1={36 + index * 28} y1="24" x2={36 + index * 28} y2="196" stroke="#f7e8bd" /><line x1="24" y1={36 + index * 28} x2="208" y2={36 + index * 28} stroke="#f7e8bd" /></g>)}
-        <line x1="36" y1="204" x2="216" y2="204" stroke="#172033" strokeWidth="2" />
-        <line x1="36" y1="204" x2="36" y2="20" stroke="#172033" strokeWidth="2" />
-        <text x="220" y="218" className="fill-[#172033] text-[12px] font-bold">x</text>
-        <text x="20" y="18" className="fill-[#172033] text-[12px] font-bold">y</text>
-        {plotted.map((point, index) => <g key={point.join("-")}><circle cx={36 + point[0] * 28} cy={204 - point[1] * 28} r="6" fill="#f59e0b" stroke="#172033" strokeWidth="2" /><text x={44 + point[0] * 28} y={198 - point[1] * 28} className="fill-[#111827] text-[12px] font-bold">{String.fromCharCode(65 + index)}</text></g>)}
-      </svg>,
-      `${title}: plotted coordinates ${plotted.map((point) => `(${point[0]}, ${point[1]})`).join(", ")}`
-    );
-  }
-
-  if (type === "numberline") {
-    const ticks = isNumberArray(visual.data.ticks) ? visual.data.ticks : isNumberArray(visual.data.points) ? visual.data.points : [0, 1, 2, 3, 4, 5];
-    const highlight = typeof visual.data.highlight === "number" ? visual.data.highlight : ticks[Math.floor(ticks.length / 2)];
-    return frame(
-      <svg viewBox="0 0 360 110" className="h-32 w-full">
-        <line x1="34" y1="52" x2="326" y2="52" stroke="#172033" strokeWidth="3" strokeLinecap="round" />
-        {ticks.map((tick, index) => {
-          const x = 42 + index * (276 / Math.max(ticks.length - 1, 1));
-          return <g key={tick}><line x1={x} y1="38" x2={x} y2="66" stroke="#172033" strokeWidth="2" /><text x={x} y="88" textAnchor="middle" className="fill-[#172033] text-[12px] font-bold">{tick}</text>{tick === highlight && <circle cx={x} cy="52" r="8" fill="#f59e0b" stroke="#b45309" strokeWidth="2" />}</g>;
-        })}
-      </svg>,
-      `${title}: number line ${ticks.join(", ")}`
-    );
-  }
-
-  if (type === "shape" || type === "geometry") {
-    const width = typeof visual.data.width === "number" ? visual.data.width : 9;
-    const height = typeof visual.data.height === "number" ? visual.data.height : 4;
-    const isCompound = typeof visual.data.cutWidth === "number" || typeof visual.data.cutHeight === "number";
-    return frame(
-      <svg viewBox="0 0 320 190" className="h-56 w-full">
-        {isCompound ? (
-          <>
-            <path d="M58 42 H238 V90 H178 V146 H58 Z" fill="#fff8e7" stroke="#172033" strokeWidth="4" strokeLinejoin="round" />
-            <text x="148" y="30" textAnchor="middle" className="fill-[#111827] text-[13px] font-black">10 cm</text>
-            <text x="246" y="70" className="fill-[#111827] text-[13px] font-black">4 cm</text>
-            <text x="184" y="122" className="fill-[#111827] text-[13px] font-black">3 cm</text>
-            <text x="44" y="98" textAnchor="middle" className="fill-[#111827] text-[13px] font-black">7 cm</text>
-          </>
-        ) : (
-          <>
-            <rect x="58" y="48" width="204" height="92" fill="#fff8e7" stroke="#172033" strokeWidth="4" rx="3" />
-            <text x="160" y="35" textAnchor="middle" className="fill-[#111827] text-[13px] font-black">{width} cm</text>
-            <text x="270" y="100" className="fill-[#111827] text-[13px] font-black">{height} cm</text>
-          </>
-        )}
-      </svg>,
-      `${title}: geometry diagram`
-    );
-  }
-
-  if (type === "fraction") {
-    const numerator = typeof visual.data.numerator === "number" ? visual.data.numerator : 3;
-    const denominator = typeof visual.data.denominator === "number" ? visual.data.denominator : 5;
-    return frame(
-      <div className="space-y-3">
-        <div className="grid gap-1" style={{ gridTemplateColumns: `repeat(${denominator}, minmax(0, 1fr))` }}>
-          {Array.from({ length: denominator }).map((_, index) => <div key={index} className={cn("h-14 border border-gold/30", index < numerator ? "bg-gold/35" : "bg-white")} />)}
-        </div>
-        <p className="text-center text-sm font-bold text-navy">{numerator} out of {denominator} equal parts shaded</p>
-      </div>,
-      `${title}: fraction ${numerator}/${denominator}`
-    );
-  }
-
-  if (type === "ratioblocks") {
-    const labels = isStringArray(visual.data.labels) ? visual.data.labels : ["Ben", "Isla"];
-    const values = isNumberArray(visual.data.values) ? visual.data.values : [2, 5];
-    return frame(
-      <div className="space-y-4">
-        {labels.map((label, rowIndex) => <div key={label} className="grid grid-cols-[72px_1fr] items-center gap-3"><span className="text-sm font-black text-navy">{label}</span><div className="flex gap-1">{Array.from({ length: values[rowIndex] ?? 1 }).map((_, index) => <span key={index} className="h-9 flex-1 rounded-md border border-gold/35 bg-gold/20" />)}</div></div>)}
-      </div>,
-      `${title}: ratio ${labels.map((label, index) => `${label} ${values[index]}`).join(", ")}`
-    );
-  }
-
-  if (type === "venn") {
-    return frame(
-      <svg viewBox="0 0 320 190" className="h-56 w-full">
-        <circle cx="132" cy="96" r="62" fill="#fde68a55" stroke="#172033" strokeWidth="3" />
-        <circle cx="188" cy="96" r="62" fill="#f59e0b33" stroke="#172033" strokeWidth="3" />
-        <text x="108" y="36" textAnchor="middle" className="fill-[#172033] text-[13px] font-black">{String(visual.data.leftLabel ?? "A")}</text>
-        <text x="212" y="36" textAnchor="middle" className="fill-[#172033] text-[13px] font-black">{String(visual.data.rightLabel ?? "B")}</text>
-        <text x="104" y="100" textAnchor="middle" className="fill-[#111827] text-[16px] font-black">{String(visual.data.left ?? "")}</text>
-        <text x="160" y="100" textAnchor="middle" className="fill-[#111827] text-[16px] font-black">{String(visual.data.overlap ?? "")}</text>
-        <text x="216" y="100" textAnchor="middle" className="fill-[#111827] text-[16px] font-black">{String(visual.data.right ?? "")}</text>
-      </svg>,
-      `${title}: Venn diagram`
-    );
-  }
-
-  if (type === "clock") {
-    const hour = typeof visual.data.hour === "number" ? visual.data.hour : 8;
-    const minute = typeof visual.data.minute === "number" ? visual.data.minute : 0;
-    const minuteAngle = minute * 6;
-    const hourAngle = (hour % 12) * 30 + minute * 0.5;
-    return frame(
-      <svg viewBox="0 0 220 220" className="mx-auto h-64 w-full max-w-xs">
-        <circle cx="110" cy="110" r="82" fill="#fffdf7" stroke="#172033" strokeWidth="4" />
-        {Array.from({ length: 12 }).map((_, index) => {
-          const angle = (index + 1) * 30 - 90;
-          const x = 110 + Math.cos((angle * Math.PI) / 180) * 64;
-          const y = 110 + Math.sin((angle * Math.PI) / 180) * 64;
-          return <text key={index} x={x} y={y + 4} textAnchor="middle" className="fill-[#172033] text-[12px] font-black">{index + 1}</text>;
-        })}
-        <line x1="110" y1="110" x2={110 + Math.cos(((hourAngle - 90) * Math.PI) / 180) * 42} y2={110 + Math.sin(((hourAngle - 90) * Math.PI) / 180) * 42} stroke="#172033" strokeWidth="6" strokeLinecap="round" />
-        <line x1="110" y1="110" x2={110 + Math.cos(((minuteAngle - 90) * Math.PI) / 180) * 62} y2={110 + Math.sin(((minuteAngle - 90) * Math.PI) / 180) * 62} stroke="#b45309" strokeWidth="4" strokeLinecap="round" />
-        <circle cx="110" cy="110" r="5" fill="#f59e0b" />
-      </svg>,
-      `${title}: clock showing ${hour}:${String(minute).padStart(2, "0")}`
-    );
-  }
-
-  return <VisualFallback adminPreview={adminPreview} />;
-}
-
-function VisualFallback({ adminPreview }: { adminPreview?: boolean }) {
-  return (
-    <div className="rounded-xl border border-line bg-cream p-4 text-sm text-muted">
-      {adminPreview ? "This visual is missing or malformed. Review the visual data before publishing." : "This question visual is not available yet."}
-    </div>
   );
 }
 
@@ -523,24 +313,62 @@ export function QuestionNavigator({
   flagged: string[];
   onSelect: (index: number) => void;
 }) {
+  const shouldCollapse = questions.length > COMPACT_QUESTION_NAV_THRESHOLD;
+  const [expanded, setExpanded] = useState(!shouldCollapse);
+  const buttonClass = (question: Question, index: number, compact = false) => cn(
+    "shrink-0 rounded-lg border text-sm font-bold transition",
+    compact ? "h-9 w-9" : "h-10",
+    activeIndex === index
+      ? "border-gold bg-gold text-navy shadow-[0_6px_18px_-8px_rgba(180,83,9,0.8)]"
+      : answers[question.id]
+        ? "border-navy bg-navy text-white"
+        : "border-line bg-white text-navy hover:border-gold",
+    flagged.includes(question.id) && "ring-2 ring-gold-dark ring-offset-1"
+  );
+  const questionButton = (question: Question, index: number, compact = false) => (
+    <button
+      key={`${question.id}-${compact ? "compact" : "grid"}`}
+      onClick={() => onSelect(index)}
+      aria-current={activeIndex === index ? "step" : undefined}
+      aria-label={`Question ${index + 1}, ${answers[question.id] ? "answered" : "unanswered"}${flagged.includes(question.id) ? ", flagged" : ""}`}
+      className={buttonClass(question, index, compact)}
+    >
+      {index + 1}
+    </button>
+  );
+
+  if (shouldCollapse) {
+    return (
+      <div className="space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <span className="rounded-full bg-cream px-3 py-1 text-xs font-black uppercase tracking-[0.14em] text-muted">
+            Q {activeIndex + 1}/{questions.length}
+          </span>
+          <button
+            type="button"
+            onClick={() => setExpanded((value) => !value)}
+            className="rounded-full border border-line bg-white px-3 py-1 text-xs font-black text-navy hover:border-gold"
+            aria-expanded={expanded}
+          >
+            {expanded ? "Compact view" : "Show all questions"}
+          </button>
+        </div>
+        {!expanded ? (
+          <div className="flex max-w-full gap-2 overflow-x-auto overscroll-x-contain pb-2" aria-label="Compact question navigation">
+            {questions.map((question, index) => questionButton(question, index, true))}
+          </div>
+        ) : (
+          <div className="grid max-h-48 grid-cols-5 gap-2 overflow-y-auto pr-1 sm:grid-cols-10" aria-label="Expanded question navigation">
+            {questions.map((question, index) => questionButton(question, index))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-5 gap-2 sm:grid-cols-10">
-      {questions.map((question, index) => (
-        <button
-          key={question.id}
-          onClick={() => onSelect(index)}
-          aria-current={activeIndex === index ? "step" : undefined}
-          aria-label={`Question ${index + 1}, ${answers[question.id] ? "answered" : "unanswered"}${flagged.includes(question.id) ? ", flagged" : ""}`}
-          className={cn(
-            "h-10 rounded-lg border text-sm font-bold",
-            activeIndex === index ? "border-gold bg-gold text-navy" : "border-line bg-white text-navy",
-            answers[question.id] && activeIndex !== index && "bg-cream-dark",
-            flagged.includes(question.id) && "ring-2 ring-gold-dark"
-          )}
-        >
-          {index + 1}
-        </button>
-      ))}
+      {questions.map((question, index) => questionButton(question, index))}
     </div>
   );
 }
