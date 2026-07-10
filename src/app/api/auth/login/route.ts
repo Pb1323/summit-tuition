@@ -15,9 +15,9 @@ export async function POST(request: Request) {
 
   if (!isDatabaseConfigured()) {
     const seeded = SEEDED_USERS.find((user) => user.email.toLowerCase() === email);
-    if (!seeded) return NextResponse.json({ ok: false, message: "No account found." }, { status: 401 });
+    if (!seeded) return NextResponse.json({ ok: false, mode: "demo" }, { status: 200 });
     await createSession(seeded.id);
-    return NextResponse.json({ ok: true, user: seeded });
+    return NextResponse.json({ ok: true, mode: "demo", user: seeded });
   }
 
   const user = await prisma.user.findUnique({ where: { email }, include: { unlocks: true } });

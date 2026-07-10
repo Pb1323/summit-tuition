@@ -6,6 +6,7 @@ import type { Attempt, EmailTemplate, MockExam, Passage, ProductPlan, Question, 
 
 export type PlatformBootstrap = {
   currentUser: StudentAccount | null;
+  mode?: "demo";
   users: StudentAccount[];
   mocks: MockExam[];
   questions: Question[];
@@ -161,6 +162,7 @@ export async function getPlatformBootstrap(currentUser: StudentAccount | null): 
   if (!isDatabaseConfigured()) {
     return {
       currentUser,
+      mode: "demo",
       users: currentUser?.role === "admin" ? SEEDED_USERS : currentUser ? [currentUser] : [],
       mocks: MOCKS,
       questions: QUESTIONS,

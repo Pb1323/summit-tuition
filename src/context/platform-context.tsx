@@ -123,7 +123,8 @@ async function refreshFromServer() {
   try {
     const response = await fetch("/api/platform/bootstrap", { credentials: "include", cache: "no-store" });
     if (!response.ok) return;
-    const data = (await response.json()) as PlatformState & { currentUser: StudentAccount | null };
+    const data = (await response.json()) as PlatformState & { currentUser: StudentAccount | null; mode?: "demo" };
+    if (data.mode === "demo") return; // No database configured: the server has no authoritative state beyond the static seed, so keep local demo mutations intact instead of clobbering them.
     memoryState = {
       users: data.users,
       mocks: data.mocks,
@@ -222,7 +223,7 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
           await refreshFromServer();
           return { ok: true, user: data.user as StudentAccount };
         }
-        if (response.status !== 404) return { ok: false, message: data?.message ?? "Unable to sign in." };
+        if (response.status !== 404 && data?.mode !== "demo") return { ok: false, message: data?.message ?? "Unable to sign in." };
       } catch {
         // Fall back to local demo login below.
       }
