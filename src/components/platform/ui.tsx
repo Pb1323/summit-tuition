@@ -183,6 +183,138 @@ export function EnglishPassageRenderer({ passage, paragraphRefs }: { passage?: P
   );
 }
 
+function isNoMistakeOption(option: string) {
+  return /^(no mistake|n)\b/i.test(option.trim());
+}
+
+/**
+ * Renders GL Assessment's "spot the error" format: a sentence split into 4
+ * lettered groups of words, plus a separate N (no mistake) choice — not a
+ * plain radio list. Reconstructs the segmented sentence purely from
+ * `question.options` (segments 0-3, "No mistake" last) so it works for both
+ * generator output and the hand-authored static mock, which share the same
+ * option shape via different code paths.
+ */
+export function SpotTheErrorRenderer({
+  question,
+  value,
+  onChange,
+  review,
+}: {
+  question: Question;
+  value?: string;
+  onChange: (value: string) => void;
+  review?: boolean;
+}) {
+  const options = Array.isArray(question.options) ? question.options : [];
+  const segments = options.filter((option) => !isNoMistakeOption(option));
+  const noMistakeOption = options.find((option) => isNoMistakeOption(option)) ?? "No mistake";
+  const expected = (Array.isArray(question.correctAnswer) ? question.correctAnswer[0] : question.correctAnswer) ?? "";
+  const noMistakeSelected = value !== undefined && isNoMistakeOption(value);
+  const noMistakeCorrect = isNoMistakeOption(expected);
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-wrap gap-x-1.5 gap-y-3 rounded-2xl border border-line bg-cream/60 p-5 text-lg leading-9 text-ink" aria-label="Sentence split into four lettered groups of words; choose the group with the mistake">
+        {segments.map((segment, index) => {
+          const letter = String.fromCharCode(65 + index);
+          const selected = value === segment;
+          const showCorrect = review && expected.trim().toLowerCase() === segment.trim().toLowerCase();
+          const showWrong = review && selected && !showCorrect;
+          return (
+            <button
+              key={segment}
+              type="button"
+              disabled={review}
+              onClick={() => onChange(segment)}
+              className={cn(
+                "inline-flex items-baseline gap-1.5 rounded-lg border-b-[3px] px-1.5 py-1 font-semibold transition disabled:cursor-default",
+                selected ? "border-gold bg-gold/10 text-navy" : "border-line/70 text-ink hover:border-gold/60",
+                showCorrect && "border-emerald-500 bg-emerald-50 text-emerald-800",
+                showWrong && "border-red-500 bg-red-50 text-red-700"
+              )}
+            >
+              <span className="rounded bg-navy px-1.5 py-0.5 text-[11px] font-black text-white">{letter}</span>
+              {segment}
+            </button>
+          );
+        })}
+      </div>
+      <button
+        type="button"
+        disabled={review}
+        onClick={() => onChange(noMistakeOption)}
+        className={cn(
+          "flex w-full items-center gap-3 rounded-2xl border p-4 text-left text-sm font-bold transition disabled:cursor-default",
+          noMistakeSelected ? "border-gold bg-gold/10 text-navy" : "border-line bg-white text-navy hover:border-gold",
+          review && noMistakeCorrect && "border-emerald-400 bg-emerald-50 text-emerald-800",
+          review && noMistakeSelected && !noMistakeCorrect && "border-red-400 bg-red-50 text-red-700"
+        )}
+      >
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-line bg-cream text-sm font-black text-navy">N</span>
+        There is no mistake in this sentence
+      </button>
+    </div>
+  );
+}
+
+/**
+ * Renders GL Assessment's "best word" cloze format: the gap sits inline in
+ * the sentence (not a detached list below it), and options are chip buttons
+ * rather than a vertical radio list — each option is grammatically valid in
+ * isolation, so seeing them beside the live-filled gap matters more than in
+ * a normal multiple-choice question.
+ */
+export function ClozeGapRenderer({
+  question,
+  value,
+  onChange,
+  review,
+}: {
+  question: Question;
+  value?: string;
+  onChange: (value: string) => void;
+  review?: boolean;
+}) {
+  const options = Array.isArray(question.options) ? question.options : [];
+  const expected = (Array.isArray(question.correctAnswer) ? question.correctAnswer[0] : question.correctAnswer) ?? "";
+  const [before, after = ""] = question.text.split(/_{3,}/);
+  return (
+    <div className="space-y-4">
+      <p className="rounded-2xl border border-gold/25 bg-cream/60 p-5 text-lg leading-9 text-ink">
+        {before}
+        <span className={cn("mx-1 inline-flex min-w-28 items-center justify-center rounded-lg border-b-[3px] px-3 py-1 align-middle text-base font-black", value ? "border-gold bg-gold/10 text-navy" : "border-dashed border-line/70 text-muted")}>
+          {value || "choose ↓"}
+        </span>
+        {after}
+      </p>
+      <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Choose the best word or phrase to complete the gap">
+        {options.map((option, index) => {
+          const selected = value === option;
+          const showCorrect = review && expected.trim().toLowerCase() === option.trim().toLowerCase();
+          const showWrong = review && selected && !showCorrect;
+          return (
+            <button
+              key={option}
+              type="button"
+              disabled={review}
+              onClick={() => onChange(option)}
+              className={cn(
+                "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-bold transition disabled:cursor-default",
+                selected ? "border-gold bg-gold text-navy" : "border-line bg-white text-navy hover:border-gold",
+                showCorrect && "border-emerald-400 bg-emerald-50 text-emerald-800",
+                showWrong && "border-red-400 bg-red-50 text-red-700"
+              )}
+            >
+              <span className="text-xs font-black opacity-60">{String.fromCharCode(65 + index)}</span>
+              {option}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export function QuestionRenderer({
   question,
   value,
@@ -205,6 +337,8 @@ export function QuestionRenderer({
   const options = Array.isArray(question.options) ? question.options : [];
   const hasOptions = options.length > 0;
   const isChoiceQuestion = question.questionType === "multiple_choice" || question.questionType === "cloze";
+  const isSpotTheError = (question.tags ?? []).map((tag) => tag.toLowerCase()).includes("segment-format");
+  const isCloze = question.questionType === "cloze";
   const expected = Array.isArray(question.correctAnswer) ? question.correctAnswer : [question.correctAnswer];
   const isCorrectOption = (option: string) => expected.some((item) => item.trim().toLowerCase() === option.trim().toLowerCase());
   const qualityWarnings = [
@@ -216,9 +350,11 @@ export function QuestionRenderer({
     !question.markScheme && "Missing mark scheme",
     !question.explanation && "Missing explanation",
     isChoiceQuestion && !hasOptions && "Missing answer options",
+    isSpotTheError && options.length < 2 && "Spot-the-error question needs segment options",
     question.subject === "English" && question.passageId && !passage && "Linked passage not found",
     question.subject === "Maths" && question.questionType === "table_graph" && !question.visual && "Maths visual missing",
   ].filter(Boolean) as string[];
+  const headingText = isSpotTheError ? question.text.split("\n")[0] : isCloze ? "Choose the word or phrase that best completes the passage." : question.text;
   return (
     <div className="space-y-6">
       {passage && <EnglishPassageRenderer passage={passage} paragraphRefs={question.paragraphRefs} />}
@@ -230,12 +366,7 @@ export function QuestionRenderer({
           <span className="rounded-full border border-line bg-cream px-3 py-1 text-xs font-bold text-navy">{question.marks || 1} mark{question.marks === 1 ? "" : "s"}</span>
           {question.paragraphRefs?.length ? <span className="rounded-full border border-line bg-white px-3 py-1 text-xs font-bold text-muted">Paragraph {question.paragraphRefs.join(", ")}</span> : null}
         </div>
-        <h2 className="mt-4 text-2xl font-bold leading-snug text-navy">{hasText ? question.text : "Question text missing"}</h2>
-        {question.questionType === "cloze" && hasText && (
-          <div className="mt-3 rounded-xl border border-gold/20 bg-cream p-3 text-sm font-semibold text-navy">
-            Cloze blank: <span className="inline-flex min-w-20 rounded-full border border-gold/40 bg-white px-4 py-1 align-middle">&nbsp;</span>
-          </div>
-        )}
+        <h2 className="mt-4 text-2xl font-bold leading-snug text-navy">{hasText ? headingText : "Question text missing"}</h2>
         {!hasText && (
           <p className="mt-2 rounded-xl border border-line bg-cream p-3 text-sm text-muted">
             {adminPreview ? "This generated question needs question text before publishing." : "This question is not ready yet."}
@@ -251,7 +382,11 @@ export function QuestionRenderer({
         )}
       </div>
       {question.visual && <VisualRenderer visual={question.visual} adminPreview={adminPreview} />}
-      {hasOptions ? (
+      {isSpotTheError ? (
+        <SpotTheErrorRenderer question={question} value={value} onChange={onChange} review={review} />
+      ) : isCloze ? (
+        <ClozeGapRenderer question={question} value={value} onChange={onChange} review={review} />
+      ) : hasOptions ? (
         <fieldset className="grid gap-3">
           <legend className="sr-only">Answer options for {hasText ? question.text : "this question"}</legend>
           {options.map((option, index) => {

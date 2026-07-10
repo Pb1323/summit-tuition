@@ -1,4 +1,5 @@
 import type { MockDifficulty, MockExam, Passage, Question, ReferenceSource, Subject } from "@/types/platform";
+import { allocateByWeights, allocateEnglishSectionCounts } from "@/lib/english-sections";
 
 export type GenerateMockInput = {
   subject: Extract<Subject, "Maths" | "English">;
@@ -22,19 +23,16 @@ export const EnglishGLProfile = {
     standardMock: "450-650 words",
     longMock: "650-900 words",
   },
-  fullMockDistribution: {
-    retrieval: 10,
-    inference: 10,
-    vocabulary: 8,
-    grammar: 6,
-    cloze: 6,
-    languageEffect: 5,
-    sequencingSummary: 3,
-    challenge: 2,
-  },
+  /**
+   * GL Assessment English is a 4-section paper, not a flat topic pool.
+   * Ratios calibrated against a real GL familiarisation booklet (54
+   * questions) read directly for research/gl-english-question-bank.md.
+   */
+  sectionWeights: { comprehension: 0.52, spelling: 0.17, punctuation: 0.17, cloze: 0.15 },
+  comprehensionSkillWeights: { inference: 0.45, vocabulary: 0.25, retrieval: 0.2, grammarEmbedded: 0.15, literaryDevice: 0.05 },
   genres: ["mystery", "adventure", "historical fiction", "realistic fiction", "nature writing", "travel", "myth-inspired", "science non-fiction", "biography", "persuasive article", "diary"],
-  questionTypes: ["retrieval", "inference", "vocabulary", "language_analysis", "character motivation", "sequencing", "main idea", "grammar", "cloze", "synonyms_antonyms"],
-  answerFormat: "Mostly multiple choice with clear paragraph references",
+  questionTypes: ["retrieval", "inference", "vocabulary", "language_analysis", "grammar", "cloze"],
+  answerFormat: "Section A comprehension is MC A-E off one passage; Sections B/C are 4-segment spot-the-error plus N; Section D is inline cloze with 5 options per gap.",
 };
 
 export const MathsGLProfile = {
@@ -59,16 +57,13 @@ export const MathsGLProfile = {
 };
 
 export function calculateTopicDistribution(subject: Subject, questionCount: number) {
-  if (questionCount >= 50 && subject === "English") {
+  if (subject === "English") {
+    const counts = allocateEnglishSectionCounts(questionCount);
     return {
-      Retrieval: 10,
-      Inference: 10,
-      Vocabulary: 8,
-      Grammar: 6,
-      Cloze: 6,
-      "Language analysis": 5,
-      "Main idea": 3,
-      Challenge: 2,
+      "Reading comprehension": counts.comprehension,
+      Spelling: counts.spelling,
+      Punctuation: counts.punctuation,
+      Cloze: counts.cloze,
     };
   }
 
@@ -103,21 +98,7 @@ export function calculateTopicDistribution(subject: Subject, questionCount: numb
     ["Multi-step reasoning", 0.06],
   ] as const;
 
-  const englishWeights = [
-    ["Retrieval", 0.16],
-    ["Inference", 0.24],
-    ["Vocabulary", 0.2],
-    ["Language analysis", 0.14],
-    ["Character motivation", 0.08],
-    ["Sequencing", 0.06],
-    ["Main idea", 0.06],
-    ["Grammar", 0.1],
-    ["Punctuation", 0.06],
-    ["Cloze", 0.1],
-  ] as const;
-
-  const weights = subject === "Maths" ? mathsWeights : englishWeights;
-  return Object.fromEntries(weights.map(([topic, weight]) => [topic, Math.max(1, Math.round(questionCount * weight))]));
+  return Object.fromEntries(mathsWeights.map(([topic, weight]) => [topic, Math.max(1, Math.round(questionCount * weight))]));
 }
 
 export function createMarkScheme(steps: string[]) {
@@ -203,12 +184,29 @@ export function generateEnglishGLStyleMock(input: GenerateMockInput): GeneratedM
   };
   passage.text = passage.paragraphs?.join("\n\n") ?? "";
 
-  const questions = buildEnglishQuestions(suffix, passageId, input.difficultyLabel, input.questionCount);
+  const clozePassageId = `passage-performance-day-${suffix}`;
+  const clozePassage: Passage = {
+    id: clozePassageId,
+    title: "Performance Day",
+    source: "original",
+    paragraphs: [
+      "Backstage, the hum of the audience grew louder as the lights dimmed. Priya smoothed the front of her costume and counted her breaths, the way her drama teacher had taught her.",
+      "She could hear Theo pacing behind the curtain, his shoes tapping an uneven rhythm against the wooden floor. Neither of them had spoken since the final rehearsal ended.",
+      "A stagehand leaned close and whispered that the microphones were finally working again, though nobody had explained what had gone wrong with them in the first place.",
+      "Priya peered through the gap in the curtain. Rows of parents sat fanning themselves with programmes, and somewhere near the back her grandmother was already recording on her phone.",
+      "The stage manager raised three fingers, then two, then one. Priya felt her stomach tighten, though she reminded herself that this feeling always faded within the first minute.",
+      "When the curtain finally lifted, the applause arrived before she had taken a single step, warm and sudden, and for a moment it carried her forward better than her own legs could.",
+    ],
+    text: "",
+  };
+  clozePassage.text = clozePassage.paragraphs?.join("\n\n") ?? "";
+
+  const questions = buildEnglishQuestions(suffix, passageId, clozePassageId, input.difficultyLabel, input.questionCount);
   const topicMix = calculateTopicDistribution("English", questions.length);
   const totalMarks = questions.reduce((sum, question) => sum + question.marks, 0);
 
   return {
-    passages: [passage],
+    passages: [passage, clozePassage],
     questions,
     mock: {
       id: `english-gl-stretch-${suffix}`,
@@ -225,7 +223,7 @@ export function generateEnglishGLStyleMock(input: GenerateMockInput): GeneratedM
       published: false,
       releaseDate: new Date().toISOString().slice(0, 10),
       tier: "Admin draft",
-      description: "Original comprehension-led English draft with GL-style retrieval, inference, vocabulary, grammar and cloze coverage.",
+      description: "Original 4-section English draft matching GL Assessment's real paper structure: reading comprehension, spelling, punctuation and cloze in the researched GL ratio (see research/gl-english-question-bank.md).",
     },
   };
 }
@@ -404,169 +402,140 @@ function mathsTemplates(suffix: string, difficultyLabel: MockDifficulty): Questi
   ];
 }
 
-function englishTemplates(suffix: string, passageId: string, difficultyLabel: MockDifficulty): Question[] {
-  const difficulty = difficultyLabel === "Standard" ? "standard" : "stretch";
-  return [
-    {
-      id: `gen-eng-retrieval-${suffix}`,
+type ComprehensionSkill = "retrieval" | "vocabulary" | "inference" | "grammarEmbedded" | "literaryDevice";
+
+function comprehensionTemplates(suffix: string, passageId: string, difficulty: "standard" | "stretch"): Record<ComprehensionSkill, Question[]> {
+  const base = (overrides: Partial<Question> & Pick<Question, "id" | "subtopic" | "paragraphRefs" | "text" | "options" | "correctAnswer" | "markScheme" | "explanation">): Question => ({
+    subject: "English",
+    topic: "Reading comprehension",
+    difficulty,
+    questionType: "reading_comprehension",
+    passageId,
+    marks: 1,
+    tags: ["comprehension", "GL-style"],
+    timeEstimateSeconds: 70,
+    sourceStyle: "GL-style",
+    originalGenerated: true,
+    ...overrides,
+  });
+  return {
+    retrieval: [
+      base({ id: `gen-eng-retrieval-envelope-${suffix}`, subtopic: "Precise detail", questionType: "retrieval", paragraphRefs: [1], text: "What was unusual about the map when it arrived?", options: ["It was folded inside a brown envelope", "It was printed on plastic", "It showed bright modern roads", "It was sent by Nia's teacher"], correctAnswer: "It was folded inside a brown envelope", markScheme: "Award 1 mark for identifying the brown envelope detail.", explanation: "The first paragraph states that the map arrived folded inside a brown envelope." }),
+      base({ id: `gen-eng-retrieval-table-${suffix}`, subtopic: "Precise detail", questionType: "retrieval", paragraphRefs: [2], text: "Where did Nia find the map?", options: ["On the kitchen table", "In her school bag", "Under her pillow", "In the garden shed"], correctAnswer: "On the kitchen table", markScheme: "Award 1 mark for identifying the kitchen table.", explanation: "Paragraph 2 states Nia found the map on the kitchen table before breakfast." }),
+      base({ id: `gen-eng-retrieval-key-${suffix}`, subtopic: "Precise detail", questionType: "retrieval", paragraphRefs: [7], text: "What did Nia find under the flatter stone?", options: ["A metal key wrapped in oilcloth", "A second map", "A handwritten letter", "A small brass compass"], correctAnswer: "A metal key wrapped in oilcloth", markScheme: "Award 1 mark for identifying the key wrapped in oilcloth.", explanation: "Paragraph 7 states that under the flatter stone lay a metal key wrapped in oilcloth." }),
+    ],
+    vocabulary: [
+      base({ id: `gen-eng-vocab-assumed-${suffix}`, subtopic: "Meaning in context", questionType: "vocabulary", paragraphRefs: [2], text: "Which word is closest in meaning to 'assumed' as it is used in paragraph 2?", options: ["guessed", "carried", "proved", "forgot"], correctAnswer: "guessed", markScheme: "Assumed means guessed or supposed without being certain.", explanation: "Nia thinks the map belongs to school before she has checked properly." }),
+      base({ id: `gen-eng-vocab-reluctant-${suffix}`, subtopic: "Meaning in context", questionType: "vocabulary", paragraphRefs: [11], text: "Which word is closest in meaning to 'reluctant' as it is used in paragraph 11 ('turned with a reluctant click')?", options: ["unwilling", "sudden", "loud", "broken"], correctAnswer: "unwilling", markScheme: "Reluctant means unwilling or hesitant.", explanation: "The lock seems to resist turning, as if unwilling to open." }),
+      base({ id: `gen-eng-vocab-objections-${suffix}`, subtopic: "Meaning in context", questionType: "vocabulary", paragraphRefs: [10], text: "Which word is closest in meaning to 'objections' as it is used in paragraph 10?", options: ["reasons against", "questions", "jokes", "plans"], correctAnswer: "reasons against", markScheme: "Objections are reasons put forward against doing something.", explanation: "Nia's sensible side is listing reasons not to continue." }),
+    ],
+    inference: [
+      base({ id: `gen-eng-inference-secret-${suffix}`, subtopic: "Character motivation", questionType: "inference", paragraphRefs: [4, 5], text: "Why does Nia avoid mentioning the envelope to her father?", options: ["She senses the map may be private or mysterious", "She has lost the map", "She dislikes walking to the library", "She wants to avoid breakfast"], correctAnswer: "She senses the map may be private or mysterious", markScheme: "Award 1 mark for recognising that Nia is secretive because the map feels significant or mysterious.", explanation: "The passage says she avoids mentioning the envelope after feeling it may contain a secret." }),
+      base({ id: `gen-eng-inference-continue-${suffix}`, subtopic: "Character motivation", questionType: "inference", paragraphRefs: [10], text: "Why does Nia decide to carry on despite the objections listed in paragraph 10?", options: ["The map keeps pulling her attention back", "Her father tells her to continue", "She is no longer worried about being late", "She wants to avoid the rain"], correctAnswer: "The map keeps pulling her attention back", markScheme: "Award 1 mark for recognising the map's pull overrides her sensible doubts.", explanation: "Paragraph 10 states the map seemed to pull her attention back each time she tried to fold it away." }),
+      base({ id: `gen-eng-inference-morning-${suffix}`, subtopic: "Evidence across paragraphs", questionType: "inference", paragraphRefs: [2], text: "What does the busy morning scene in paragraph 2 suggest about why nobody questions where the map came from?", options: ["Everyone is too distracted to notice properly", "Nobody in the family can read maps", "The family already knew about the map", "Nia hides the map before anyone sees it"], correctAnswer: "Everyone is too distracted to notice properly", markScheme: "Award 1 mark for linking the chaotic breakfast scene to nobody noticing.", explanation: "The father is searching for keys and the brother is arguing, so nobody is paying close attention." }),
+    ],
+    grammarEmbedded: [
+      base({ id: `gen-eng-grammar-adjectives-${suffix}`, subtopic: "Word class in context", questionType: "grammar", paragraphRefs: [3], text: "How many adjectives are in this sentence from paragraph 3: 'but the river was careful and detailed, marked with bends, shallows and tiny handwritten notes'?", options: ["2", "3", "4", "5"], correctAnswer: "4", markScheme: "The adjectives are careful, detailed, tiny and handwritten.", explanation: "Count only the words that describe a noun: careful, detailed, tiny, handwritten." }),
+      base({ id: `gen-eng-grammar-wordclass-${suffix}`, subtopic: "Word class in context", questionType: "grammar", paragraphRefs: [11], text: "What type of word is 'reluctant' in paragraph 11 ('turned with a reluctant click')?", options: ["Noun", "Verb", "Adjective", "Adverb"], correctAnswer: "Adjective", markScheme: "Reluctant describes the click, so it is an adjective.", explanation: "An adjective describes a noun; here it describes the click." }),
+      base({ id: `gen-eng-grammar-verbs-${suffix}`, subtopic: "Word class in context", questionType: "grammar", paragraphRefs: [5], text: "What type of words are the following, all taken from paragraph 5: packed, pulled, told?", options: ["Nouns", "Verbs", "Adjectives", "Prepositions"], correctAnswer: "Verbs", markScheme: "Packed, pulled and told are all doing/action words.", explanation: "Each word describes an action Nia carries out." }),
+    ],
+    literaryDevice: [
+      base({ id: `gen-eng-literary-simile1-${suffix}`, subtopic: "Literary device", questionType: "language_analysis", paragraphRefs: [1], text: "'the river curled across it like a question waiting to be answered' (paragraph 1) is an example of...", options: ["A simile", "A metaphor", "Personification", "Alliteration"], correctAnswer: "A simile", markScheme: "The comparison uses 'like', which signals a simile.", explanation: "Similes compare two things using 'like' or 'as'." }),
+      base({ id: `gen-eng-literary-metaphor1-${suffix}`, subtopic: "Literary device", questionType: "language_analysis", paragraphRefs: [8], text: "'it was a sentence Grandmother Isha had written slowly over many years' (paragraph 8) is an example of...", options: ["A metaphor", "A simile", "Onomatopoeia", "A proverb"], correctAnswer: "A metaphor", markScheme: "The river is directly described as a sentence, without 'like' or 'as', so it is a metaphor.", explanation: "Metaphors describe one thing as if it were another thing entirely." }),
+    ],
+  };
+}
+
+function spellingTemplates(suffix: string, difficulty: "standard" | "stretch"): Question[] {
+  const base = (id: string, segments: string[], wrongSegment: number | null, correction: string): Question => {
+    const sentence = segments.join(" ");
+    const noMistake = wrongSegment === null;
+    return {
+      id,
       subject: "English",
-      topic: "Retrieval",
-      subtopic: "Precise detail",
-      difficulty,
-      questionType: "retrieval",
-      passageId,
-      paragraphRefs: [1],
-      text: "What was unusual about the map when it arrived?",
-      options: ["It was folded inside a brown envelope", "It was printed on plastic", "It showed bright modern roads", "It was sent by Nia's teacher"],
-      correctAnswer: "It was folded inside a brown envelope",
-      marks: 1,
-      markScheme: "Award 1 mark for identifying the brown envelope detail.",
-      explanation: "The first paragraph states that the map arrived folded inside a brown envelope.",
-      tags: ["retrieval", "comprehension", "GL-style"],
-      timeEstimateSeconds: 60,
-      sourceStyle: "GL-style",
-      originalGenerated: true,
-    },
-    {
-      id: `gen-eng-vocab-${suffix}`,
-      subject: "English",
-      topic: "Vocabulary",
-      subtopic: "Meaning in context",
-      difficulty,
-      questionType: "vocabulary",
-      passageId,
-      paragraphRefs: [2],
-      text: "Which word is closest in meaning to 'assumed' as it is used in paragraph 2?",
-      options: ["guessed", "carried", "proved", "forgot"],
-      correctAnswer: "guessed",
-      marks: 1,
-      markScheme: "Assumed means guessed or supposed without being certain.",
-      explanation: "Nia thinks the map belongs to school before she has checked properly.",
-      tags: ["vocabulary", "context", "GL-style"],
-      timeEstimateSeconds: 70,
-      sourceStyle: "GL-style",
-      originalGenerated: true,
-    },
-    {
-      id: `gen-eng-inference-${suffix}`,
-      subject: "English",
-      topic: "Inference",
-      subtopic: "Character response",
-      difficulty,
-      questionType: "inference",
-      passageId,
-      paragraphRefs: [4, 5],
-      text: "Why does Nia avoid mentioning the envelope to her father?",
-      options: ["She senses the map may be private or mysterious", "She has lost the map", "She dislikes walking to the library", "She wants to avoid breakfast"],
-      correctAnswer: "She senses the map may be private or mysterious",
-      marks: 1,
-      markScheme: "Award 1 mark for recognising that Nia is secretive because the map feels significant or mysterious.",
-      explanation: "The passage says she avoids mentioning the envelope after feeling it may contain a secret.",
-      tags: ["inference", "character", "GL-style"],
-      timeEstimateSeconds: 90,
-      sourceStyle: "GL-style",
-      originalGenerated: true,
-    },
-    {
-      id: `gen-eng-language-${suffix}`,
-      subject: "English",
-      topic: "Language analysis",
-      subtopic: "Atmosphere",
-      difficulty,
-      questionType: "language_analysis",
-      passageId,
-      paragraphRefs: [8],
-      text: "What effect is created by describing the river as 'a sentence Grandmother Isha had written slowly over many years'?",
-      options: ["It suggests the river carries hidden meaning", "It shows the river is drying up", "It proves the map is inaccurate", "It makes the valley seem crowded"],
-      correctAnswer: "It suggests the river carries hidden meaning",
-      marks: 1,
-      markScheme: "Award 1 mark for recognising that the metaphor suggests a hidden message or meaning.",
-      explanation: "A sentence can be read, so the image suggests Nia is learning to interpret the river.",
-      tags: ["language analysis", "atmosphere", "GL-style"],
-      timeEstimateSeconds: 95,
-      sourceStyle: "GL-style",
-      originalGenerated: true,
-    },
-    {
-      id: `gen-eng-cloze-${suffix}`,
-      subject: "English",
-      topic: "Cloze",
-      subtopic: "Tone and meaning",
-      difficulty,
-      questionType: "cloze",
-      passageId,
-      paragraphRefs: [4],
-      text: "Choose the word that best completes the sentence: Nia felt a small _____ in her chest.",
-      options: ["tightening", "celebration", "echo", "shadow"],
-      correctAnswer: "tightening",
-      marks: 1,
-      markScheme: "Tightening matches the exact phrase and the feeling of tension.",
-      explanation: "The surrounding mood is secretive and tense, so 'tightening' fits best.",
-      tags: ["cloze", "vocabulary", "GL-style"],
-      timeEstimateSeconds: 60,
-      sourceStyle: "GL-style",
-      originalGenerated: true,
-    },
-    {
-      id: `gen-eng-sequence-${suffix}`,
-      subject: "English",
-      topic: "Sequencing",
-      subtopic: "Events",
-      difficulty,
-      questionType: "reading_comprehension",
-      passageId,
-      paragraphRefs: [5, 6, 7],
-      text: "Which event happens first after Nia leaves the house?",
-      options: ["She reaches the first crossing", "She finds the metal key", "She hears hollow tapping", "She lifts the flat stone"],
-      correctAnswer: "She reaches the first crossing",
-      marks: 1,
-      markScheme: "At the first crossing comes before hearing the tapping and finding the key.",
-      explanation: "The events move from the crossing, to listening, to the pale stones, then to the key.",
-      tags: ["sequencing", "comprehension", "GL-style"],
-      timeEstimateSeconds: 70,
-      sourceStyle: "GL-style",
-      originalGenerated: true,
-    },
-    {
-      id: `gen-eng-main-idea-${suffix}`,
-      subject: "English",
-      topic: "Main idea",
-      subtopic: "Summary",
-      difficulty,
-      questionType: "reading_comprehension",
-      passageId,
-      paragraphRefs: [1, 8],
-      text: "Which is the best summary of the passage?",
-      options: ["A girl begins to understand a mysterious map left by her grandmother", "A family prepares breakfast during heavy rain", "A village library closes after a storm", "A girl loses a key near a railway bridge"],
-      correctAnswer: "A girl begins to understand a mysterious map left by her grandmother",
-      marks: 1,
-      markScheme: "Award 1 mark for the summary that covers the map, Nia and her grandmother's hidden message.",
-      explanation: "The passage centres on Nia following clues from her grandmother's map.",
-      tags: ["summary", "main idea", "GL-style"],
-      timeEstimateSeconds: 80,
-      sourceStyle: "GL-style",
-      originalGenerated: true,
-    },
-    {
-      id: `gen-eng-grammar-${suffix}`,
-      subject: "English",
-      topic: "Grammar",
-      subtopic: "Sentence control",
+      topic: "Spelling",
+      subtopic: noMistake ? "No mistake" : "Find the mistake",
       difficulty,
       questionType: "grammar",
-      passageId,
-      paragraphRefs: [5],
-      text: "Which sentence is punctuated correctly?",
-      options: ["Nia packed the map in a plastic folder, pulled on her boots, and left.", "Nia packed, the map in a plastic folder pulled on her boots and left.", "Nia packed the map, in a plastic folder pulled on her boots, and left.", "Nia packed the map in a plastic folder pulled, on her boots and left."],
-      correctAnswer: "Nia packed the map in a plastic folder, pulled on her boots, and left.",
+      text: `Find the group of words with the spelling mistake in it. If there is no mistake, choose N.\n"${sentence}"`,
+      options: [...segments, "No mistake"],
+      correctAnswer: noMistake ? "No mistake" : segments[wrongSegment],
       marks: 1,
-      markScheme: "The correct sentence uses commas to separate actions in a list.",
-      explanation: "The commas help separate the sequence of actions clearly.",
-      tags: ["grammar", "punctuation", "GL-style"],
-      timeEstimateSeconds: 70,
+      markScheme: noMistake ? "Every word is spelled correctly, so N is the answer." : correction,
+      explanation: noMistake ? "A deliberately-correct item so N cannot be eliminated by pattern-guessing." : correction,
+      tags: ["spelling", "segment-format", "GL-style"],
+      timeEstimateSeconds: 45,
       sourceStyle: "GL-style",
       originalGenerated: true,
-    },
+    };
+  };
+  return [
+    base(`gen-eng-spell-comittee-${suffix}`, ["The comittee's decision", "to postpone the tournament", "caused widespread", "disappointment."], 0, "'Comittee's' should be 'committee's' (double t, double e)."),
+    base(`gen-eng-spell-irresistable-${suffix}`, ["Her irresistable urge", "to interrupt the meeting", "embarrassed her", "colleagues."], 0, "'Irresistable' should be 'irresistible' (-ible, not -able)."),
+    base(`gen-eng-spell-recieved-${suffix}`, ["Priya recieved an", "elaborate invitation", "to the exclusive", "concert."], 0, "'Recieved' should be 'received' — i before e except after c."),
+    base(`gen-eng-spell-persued-${suffix}`, ["The company persued", "the customers who", "had not paid", "on time."], 0, "'Persued' should be 'pursued'."),
+    base(`gen-eng-spell-consistant-${suffix}`, ["Consistant hard work", "has contributed to", "significant", "improvements."], 0, "'Consistant' should be 'consistent'."),
+    base(`gen-eng-spell-correct1-${suffix}`, ["The professor's fascinating lecture", "on ancient civilisations", "captivated the", "audience."], null, ""),
+    base(`gen-eng-spell-permision-${suffix}`, ["Oli asked his mother", "for permision to attend", "the charity", "concert."], 1, "'Permision' should be 'permission' (double s)."),
+    base(`gen-eng-spell-correct2-${suffix}`, ["Julia regretted postponing", "her annual expedition", "to the", "mountains."], null, ""),
+  ];
+}
+
+function punctuationTemplates(suffix: string, difficulty: "standard" | "stretch"): Question[] {
+  const base = (id: string, sentence: string, segments: string[], wrongSegment: number | null, correction: string): Question => {
+    const noMistake = wrongSegment === null;
+    return {
+      id,
+      subject: "English",
+      topic: "Punctuation",
+      subtopic: noMistake ? "No mistake" : "Find the mistake",
+      difficulty,
+      questionType: "punctuation",
+      text: `Find the group of words with the punctuation mistake in it. If there is no mistake, choose N.\n"${sentence}"`,
+      options: [...segments, "No mistake"],
+      correctAnswer: noMistake ? "No mistake" : segments[wrongSegment],
+      marks: 1,
+      markScheme: noMistake ? "Every mark of punctuation is correct, so N is the answer." : correction,
+      explanation: noMistake ? "A deliberately-correct item so N cannot be eliminated by pattern-guessing." : correction,
+      tags: ["punctuation", "segment-format", "GL-style"],
+      timeEstimateSeconds: 45,
+      sourceStyle: "GL-style",
+      originalGenerated: true,
+    };
+  };
+  return [
+    base(`gen-eng-punct-its-${suffix}`, "Its clear that the students homework was finished on time.", ["Its clear that", "the students homework", "was finished", "on time"], 0, "'Its' needs an apostrophe here: 'It's clear' (it is clear)."),
+    base(`gen-eng-punct-question-${suffix}`, "Mention the word hippo and you probably think of a robust animal. But how accurate is this", ["Mention the word hippo", "and you probably think", "of a robust animal.", "But how accurate is this"], 3, "The sentence needs a question mark: 'But how accurate is this?'"),
+    base(`gen-eng-punct-possessive-${suffix}`, "The suns harmful rays can damage skin that is not protected.", ["The suns harmful rays", "can damage skin", "that is not", "protected"], 0, "'Suns' needs an apostrophe: 'sun's harmful rays' (possessive)."),
+    base(`gen-eng-punct-contraction-${suffix}`, "Its true that hippos are omnivores, but they are not gentle creatures.", ["Its true that hippos", "are omnivores, but", "they are not", "gentle creatures"], 0, "'Its' should be 'It's' (it is true)."),
+    base(`gen-eng-punct-bracket-${suffix}`, "They can run at speed (up to 30 kilometres per hour and are surprisingly fast.", ["They can run at speed", "(up to 30 kilometres", "per hour and", "are surprisingly fast."], 1, "The opening bracket is never closed — it needs a closing bracket after 'hour)'."),
+    base(`gen-eng-punct-correct1-${suffix}`, "Hippos typically do their running at night, whilst hunting for food.", ["Hippos typically do", "their running at night,", "whilst hunting", "for food."], null, ""),
+    base(`gen-eng-punct-list-${suffix}`, "Nia packed the map in a plastic folder pulled on her boots, and left.", ["Nia packed the map", "in a plastic folder", "pulled on her boots,", "and left."], 1, "A comma is missing after 'folder' to separate the list of actions."),
+    base(`gen-eng-punct-correct2-${suffix}`, "During the day, hippos usually stay in the water to keep their skin cool.", ["During the day, hippos", "usually stay in", "the water to keep", "their skin cool."], null, ""),
+  ];
+}
+
+function clozeTemplates(suffix: string, clozePassageId: string, difficulty: "standard" | "stretch"): Question[] {
+  const base = (overrides: Partial<Question> & Pick<Question, "id" | "subtopic" | "paragraphRefs" | "text" | "options" | "correctAnswer" | "markScheme" | "explanation">): Question => ({
+    subject: "English",
+    topic: "Cloze",
+    difficulty,
+    questionType: "cloze",
+    passageId: clozePassageId,
+    marks: 1,
+    tags: ["cloze", "GL-style"],
+    timeEstimateSeconds: 55,
+    sourceStyle: "GL-style",
+    originalGenerated: true,
+    ...overrides,
+  });
+  return [
+    base({ id: `gen-eng-cloze-nerves-${suffix}`, subtopic: "Tense agreement", paragraphRefs: [1], text: "Backstage, the hum of the audience ____ louder as the lights dimmed.", options: ["grew", "grow", "growing", "has grew", "grows"], correctAnswer: "grew", markScheme: "Past tense 'grew' matches the rest of the passage's past-tense narration.", explanation: "Every other verb in this paragraph is in the simple past tense." }),
+    base({ id: `gen-eng-cloze-pacing-${suffix}`, subtopic: "Preposition choice", paragraphRefs: [2], text: "She could hear Theo pacing behind the curtain, his shoes tapping ____ rhythm against the wooden floor.", options: ["an uneven", "a uneven", "the uneven", "uneven a", "an unevenly"], correctAnswer: "an uneven", markScheme: "'Uneven' starts with a vowel sound, so it takes 'an', and the noun 'rhythm' needs an article.", explanation: "Article agreement with the following adjective/noun." }),
+    base({ id: `gen-eng-cloze-mics-${suffix}`, subtopic: "Conjunction choice", paragraphRefs: [3], text: "A stagehand whispered that the microphones were finally working again, ____ nobody had explained what had gone wrong.", options: ["though", "so", "because", "and", "unless"], correctAnswer: "though", markScheme: "'Though' correctly signals the contrast between the mics working and the mystery of the fault.", explanation: "The second clause contrasts with the first, so a contrast conjunction is needed." }),
+    base({ id: `gen-eng-cloze-grandmother-${suffix}`, subtopic: "Homophone choice", paragraphRefs: [4], text: "Rows of parents sat fanning themselves with programmes, and somewhere near the back ____ grandmother was already recording.", options: ["her", "their", "there", "they're", "hers"], correctAnswer: "her", markScheme: "'Her' correctly shows the grandmother belongs to Priya (singular possessive).", explanation: "The grandmother belongs to Priya specifically, so the singular possessive is needed." }),
+    base({ id: `gen-eng-cloze-fingers-${suffix}`, subtopic: "Tense agreement", paragraphRefs: [5], text: "Priya felt her stomach tighten, though she reminded herself that this feeling always ____ within the first minute.", options: ["faded", "fades", "fade", "had faded", "will fade"], correctAnswer: "fades", markScheme: "This is a general habitual truth Priya reminds herself of, so present simple 'fades' is correct.", explanation: "A general truth or habit uses present simple tense, not past tense." }),
+    base({ id: `gen-eng-cloze-applause-${suffix}`, subtopic: "Adjective vs adverb", paragraphRefs: [6], text: "When the curtain finally lifted, the applause arrived before she had taken a single step, warm and ____.", options: ["sudden", "suddenly", "suddenness", "more sudden", "suddenest"], correctAnswer: "sudden", markScheme: "'Sudden' pairs with 'warm' as a matching adjective describing the applause, not an adverb.", explanation: "Both words in the pair describe the noun 'applause', so both must be adjectives." }),
   ];
 }
 
@@ -604,44 +573,48 @@ function buildMathsQuestions(suffix: string, difficultyLabel: MockDifficulty, qu
   });
 }
 
-function buildEnglishQuestions(suffix: string, passageId: string, difficultyLabel: MockDifficulty, questionCount: number): Question[] {
-  const base = englishTemplates(suffix, passageId, difficultyLabel);
-  const topicPlan = [
-    ["Retrieval", 10],
-    ["Inference", 10],
-    ["Vocabulary", 8],
-    ["Grammar", 6],
-    ["Cloze", 6],
-    ["Language analysis", 5],
-    ["Main idea", 3],
-    ["Challenge", 2],
-  ] as const;
-  const plannedTopics = topicPlan.flatMap(([topic, count]) => Array.from({ length: count }, () => topic)).slice(0, questionCount);
-  return plannedTopics.map((topic, index) => {
-    const template = chooseEnglishTemplate(base, topic, index);
-    const paragraphRefs = paragraphRefsForEnglish(topic, index);
-    return {
-      ...template,
-      id: `${template.id}-q${index + 1}`,
-      topic,
-      subtopic: subtopicForEnglish(topic, index),
-      paragraphRefs,
-      difficulty: difficultyLabel === "Standard" && index < 34 ? "standard" : "stretch",
-      text: tuneEnglishStem(template.text, topic, index, difficultyLabel === "Summit Stretch"),
-      tags: Array.from(new Set([...(template.tags ?? []), topic.toLowerCase(), difficultyLabel, "50-question-full-mock"])),
-      timeEstimateSeconds: difficultyLabel === "Summit Stretch" ? Math.max(template.timeEstimateSeconds, 75) : template.timeEstimateSeconds,
-    };
-  });
+/**
+ * Builds the 4-section GL English paper: comprehension (with its own
+ * retrieval/inference/vocabulary/grammar-embedded/literary-device skill
+ * mix), spelling, punctuation, and cloze, sized by `EnglishGLProfile`'s
+ * researched ratios (see research/gl-english-question-bank.md). Each section
+ * picks difficulty wholesale from `difficultyLabel` rather than mixing
+ * per-question — Summit Stretch templates use harder vocabulary/decoys
+ * throughout rather than a partial split.
+ */
+function buildEnglishQuestions(suffix: string, passageId: string, clozePassageId: string, difficultyLabel: MockDifficulty, questionCount: number): Question[] {
+  const difficulty = difficultyLabel === "Standard" ? "standard" : "stretch";
+  const stretch = difficultyLabel === "Summit Stretch";
+  const sectionCounts = allocateEnglishSectionCounts(questionCount);
+
+  const comprehensionPools = comprehensionTemplates(suffix, passageId, difficulty);
+  const skillCounts = allocateByWeights(sectionCounts.comprehension, EnglishGLProfile.comprehensionSkillWeights as Record<ComprehensionSkill, number>);
+  const comprehensionPlan = (Object.keys(skillCounts) as ComprehensionSkill[]).flatMap((skill) => Array.from({ length: skillCounts[skill] }, () => skill));
+  const comprehensionQuestions = comprehensionPlan.map((skill, index) => finalizeEnglishQuestion(comprehensionPools[skill][index % comprehensionPools[skill].length], "comp", index, stretch));
+
+  const spellingPool = spellingTemplates(suffix, difficulty);
+  const spellingQuestions = Array.from({ length: sectionCounts.spelling }, (_, index) => finalizeEnglishQuestion(spellingPool[index % spellingPool.length], "spelling", index, stretch));
+
+  const punctuationPool = punctuationTemplates(suffix, difficulty);
+  const punctuationQuestions = Array.from({ length: sectionCounts.punctuation }, (_, index) => finalizeEnglishQuestion(punctuationPool[index % punctuationPool.length], "punct", index, stretch));
+
+  const clozePool = clozeTemplates(suffix, clozePassageId, difficulty);
+  const clozeQuestions = Array.from({ length: sectionCounts.cloze }, (_, index) => finalizeEnglishQuestion(clozePool[index % clozePool.length], "cloze", index, stretch));
+
+  return [...comprehensionQuestions, ...spellingQuestions, ...punctuationQuestions, ...clozeQuestions];
+}
+
+function finalizeEnglishQuestion(template: Question, slot: string, index: number, stretch: boolean): Question {
+  return {
+    ...template,
+    id: `${template.id}-${slot}-q${index + 1}`,
+    tags: Array.from(new Set([...(template.tags ?? []), stretch ? "Summit Stretch" : "Standard", "gl-4-section-mock"])),
+  };
 }
 
 function chooseMathsTemplate(base: Question[], topic: string, index: number) {
   const keyword = topic.toLowerCase().includes("venn") ? "venn" : topic.toLowerCase().split(" ")[0];
   const candidates = base.filter((question) => question.topic === topic || question.tags.some((tag) => tag.toLowerCase().includes(keyword)));
-  return (candidates.length ? candidates : base)[index % (candidates.length || base.length)];
-}
-
-function chooseEnglishTemplate(base: Question[], topic: string, index: number) {
-  const candidates = base.filter((question) => question.topic === topic || question.tags.some((tag) => tag.toLowerCase().includes(topic.toLowerCase().split(" ")[0])));
   return (candidates.length ? candidates : base)[index % (candidates.length || base.length)];
 }
 
@@ -664,37 +637,9 @@ function subtopicForMaths(topic: string, index: number) {
   return values[index % values.length];
 }
 
-function subtopicForEnglish(topic: string, index: number) {
-  const map: Record<string, string[]> = {
-    Retrieval: ["precise detail", "direct understanding"],
-    Inference: ["deduction", "character motivation", "evidence across paragraphs"],
-    Vocabulary: ["meaning in context", "synonyms", "antonyms"],
-    Grammar: ["punctuation", "sentence structure"],
-    Cloze: ["word choice", "tone"],
-    "Language analysis": ["effect", "imagery", "atmosphere"],
-    "Main idea": ["summary", "sequencing", "theme"],
-    Challenge: ["multi-paragraph inference", "authorial purpose"],
-  };
-  const values = map[topic] ?? ["GL-style"];
-  return values[index % values.length];
-}
-
-function paragraphRefsForEnglish(topic: string, index: number) {
-  if (topic === "Challenge") return [Math.max(1, (index % 6) + 1), Math.min(12, (index % 6) + 6)];
-  if (topic === "Main idea") return [1, 12];
-  return [Math.max(1, (index % 12) + 1)];
-}
-
 function tuneMathsStem(text: string, topic: string, index: number, stretch: boolean) {
   const prefix = stretch && index % 3 === 0 ? "Summit Stretch: " : "";
   if (topic === "Challenge") return `${prefix}${text} Check both steps before choosing the closest answer.`;
   if (topic === "Multi-step reasoning") return `${prefix}${text} You may need to combine two operations.`;
-  return `${prefix}${text}`;
-}
-
-function tuneEnglishStem(text: string, topic: string, index: number, stretch: boolean) {
-  const prefix = stretch && (topic === "Inference" || topic === "Challenge") ? "Using evidence from the passage, " : "";
-  if (topic === "Challenge") return `${prefix}${text} Choose the answer that is best supported overall.`;
-  if (topic === "Main idea" && index % 2 === 0) return "Which option best summarises the writer's main idea in the passage?";
   return `${prefix}${text}`;
 }

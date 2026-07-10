@@ -8,6 +8,7 @@ import { usePlatform } from "@/context/platform-context";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/container";
 import { AnimatedButton, GlowCard, MockTimer, PremiumBadge, ProgressBar, QuestionNavigator, QuestionRenderer, RequireAuth } from "@/components/platform/ui";
+import { englishSectionMeta, getEnglishSectionId } from "@/lib/english-sections";
 
 type MockRoomShellProps = {
   mockId: string;
