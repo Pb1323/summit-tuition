@@ -49,3 +49,7 @@ src/generated/prisma/
 
 # preserved older site snapshot
 /legacy/
+
+# sibling projects with their own separate git repos
+/india-study-platform/
+/summit-gcse-tuition/
