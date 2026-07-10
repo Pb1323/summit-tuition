@@ -40,6 +40,8 @@ type PlatformContextValue = PlatformState & {
   createOriginalMockFromReference: (referenceId: string, subject: Subject) => void;
   generateMockDraft: (input: Omit<GenerateMockInput, "reference"> & { referenceId: string }) => { ok: true; mockId: string; questionCount: number; totalMarks: number } | { ok: false; message: string };
   updateMockDraft: (mockId: string, patch: Partial<MockExam>) => void;
+  cloneMock: (mockId: string) => { ok: true; mockId: string } | { ok: false; message: string };
+  archiveMock: (mockId: string) => void;
   upsertQuestion: (question: Question) => void;
   setReferenceStyle: (referenceId: string, style: ReferenceStyle) => void;
   addReference: (reference: Omit<ReferenceSource, "id" | "lastAnalysedAt">) => void;
@@ -387,6 +389,54 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
     updateMockDraft(mockId, patch) {
       if (currentUser?.role !== "admin") return;
       updateStore((prev) => ({ ...prev, mocks: prev.mocks.map((mock) => (mock.id === mockId ? { ...mock, ...patch } : mock)) }));
+    },
+    cloneMock(mockId) {
+      if (currentUser?.role !== "admin") return { ok: false, message: "Admin access is required to clone mocks." };
+      const mock = state.mocks.find((item) => item.id === mockId);
+      if (!mock) return { ok: false, message: "Choose a mock to clone first." };
+      const suffix = Date.now();
+      const clonedQuestions = state.questions
+        .filter((question) => mock.questionIds.includes(question.id))
+        .map((question, index) => ({ ...question, id: `${question.id}-copy-${suffix}-${index + 1}` }));
+      const questionIdByOriginal = new Map(
+        state.questions
+          .filter((question) => mock.questionIds.includes(question.id))
+          .map((question, index) => [question.id, clonedQuestions[index]?.id ?? question.id])
+      );
+      const clonedMock: MockExam = {
+        ...mock,
+        id: `${mock.id}-copy-${suffix}`,
+        title: `${mock.title} Copy`,
+        questionIds: mock.questionIds.map((id) => questionIdByOriginal.get(id) ?? id),
+        published: false,
+        tier: "Admin draft",
+        releaseDate: new Date().toISOString().slice(0, 10),
+        description: `${mock.description} Cloned for review before publishing.`,
+      };
+      updateStore((prev) => ({
+        ...prev,
+        mocks: [...prev.mocks, clonedMock],
+        questions: [...prev.questions, ...clonedQuestions],
+      }));
+      return { ok: true, mockId: clonedMock.id };
+    },
+    archiveMock(mockId) {
+      if (currentUser?.role !== "admin") return;
+      updateStore((prev) => ({
+        ...prev,
+        mocks: prev.mocks.map((mock) =>
+          mock.id === mockId
+            ? {
+                ...mock,
+                published: false,
+                tier: "Archived",
+                description: mock.description.includes("Archived by admin.")
+                  ? mock.description
+                  : `${mock.description} Archived by admin.`,
+              }
+            : mock
+        ),
+      }));
     },
     upsertQuestion(question) {
       if (currentUser?.role !== "admin") return;

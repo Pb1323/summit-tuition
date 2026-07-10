@@ -9,10 +9,13 @@ import { AdminMockWorkspace } from "@/components/platform/admin-mock-workspace";
 import type { MockExam, Passage, Question } from "@/types/platform";
 
 export function AdminMocksCommandCentre() {
-  const { mocks, questions, passages, attempts, references, setMockPublished } = usePlatform();
+  const { mocks, questions, passages, attempts, references, setMockPublished, cloneMock, archiveMock } = usePlatform();
   const [selectedVisualId, setSelectedVisualId] = useState("show-table");
+  const [actionMessage, setActionMessage] = useState("");
   const quality = useMemo(() => new Map(mocks.map((mock) => [mock.id, evaluateMockQuality(mock, questions, passages)])), [mocks, passages, questions]);
-  const draftMocks = mocks.filter((mock) => !mock.published);
+  const archivedMocks = mocks.filter((mock) => mock.tier === "Archived");
+  const visibleMocks = mocks.filter((mock) => mock.tier !== "Archived");
+  const draftMocks = visibleMocks.filter((mock) => !mock.published);
   const publishedMocks = mocks.filter((mock) => mock.published);
   const generatedNeedsReview = mocks.filter((mock) => mock.generatedFromReferenceId && quality.get(mock.id)?.status !== "Ready");
   const pendingAttempts = attempts.filter((attempt) => attempt.status === "submitted");
@@ -42,24 +45,58 @@ export function AdminMocksCommandCentre() {
             ["Attempts", "#attempts"],
             ["References", "#references"],
             ["Quality Checks", "#quality"],
+            ["Archive", "#archive"],
           ].map(([label, href]) => <a key={href} href={href} className="rounded-full border border-line bg-white px-4 py-2 text-navy hover:border-gold">{label}</a>)}
         </nav>
+        {actionMessage && <p className="mt-3 rounded-xl bg-cream px-4 py-2 text-sm font-bold text-navy" role="status">{actionMessage}</p>}
       </GlowCard>
 
       <section id="overview" className="space-y-5 scroll-mt-28">
         <SectionTitle title="Mock Overview" text="Every mock shows publish readiness, attempts, and safe admin preview controls." />
         <div className="grid gap-5 xl:grid-cols-2">
-          {mocks.map((mock) => (
-            <MockAdminCard key={mock.id} mock={mock} questions={questions} attempts={attempts} quality={quality.get(mock.id)!} onTogglePublish={() => setMockPublished(mock.id, !mock.published)} />
+          {visibleMocks.map((mock) => (
+            <MockAdminCard
+              key={mock.id}
+              mock={mock}
+              questions={questions}
+              attempts={attempts}
+              quality={quality.get(mock.id)!}
+              onTogglePublish={() => setMockPublished(mock.id, !mock.published)}
+              onClone={() => {
+                const result = cloneMock(mock.id);
+                setActionMessage(result.ok ? `Cloned "${mock.title}" as an unpublished draft.` : result.message);
+              }}
+              onArchive={() => {
+                archiveMock(mock.id);
+                setActionMessage(`Archived "${mock.title}" and unpublished it.`);
+              }}
+            />
           ))}
-          {mocks.length === 0 && <EmptyPanel title="No mocks yet" text="Generate your first GL-style mock to begin reviewing question quality." />}
+          {visibleMocks.length === 0 && <EmptyPanel title="No mocks yet" text="Generate your first GL-style mock to begin reviewing question quality." />}
         </div>
       </section>
 
       <section id="drafts" className="scroll-mt-28">
         <SectionTitle title="Drafts" text="Unpublished mocks stay admin-only until you review and publish them." />
         <div className="mt-5 grid gap-5 xl:grid-cols-2">
-          {draftMocks.map((mock) => <MockAdminCard key={mock.id} mock={mock} questions={questions} attempts={attempts} quality={quality.get(mock.id)!} onTogglePublish={() => setMockPublished(mock.id, true)} />)}
+          {draftMocks.map((mock) => (
+            <MockAdminCard
+              key={mock.id}
+              mock={mock}
+              questions={questions}
+              attempts={attempts}
+              quality={quality.get(mock.id)!}
+              onTogglePublish={() => setMockPublished(mock.id, true)}
+              onClone={() => {
+                const result = cloneMock(mock.id);
+                setActionMessage(result.ok ? `Cloned "${mock.title}" as an unpublished draft.` : result.message);
+              }}
+              onArchive={() => {
+                archiveMock(mock.id);
+                setActionMessage(`Archived "${mock.title}" and unpublished it.`);
+              }}
+            />
+          ))}
           {draftMocks.length === 0 && <EmptyPanel title="No draft mocks yet" text="Generate your first GL-style mock from the generator section." />}
         </div>
       </section>
@@ -67,7 +104,24 @@ export function AdminMocksCommandCentre() {
       <section id="published" className="scroll-mt-28">
         <SectionTitle title="Published" text="Published mocks can be unlocked for approved students from the admin overview." />
         <div className="mt-5 grid gap-5 xl:grid-cols-2">
-          {publishedMocks.map((mock) => <MockAdminCard key={mock.id} mock={mock} questions={questions} attempts={attempts} quality={quality.get(mock.id)!} onTogglePublish={() => setMockPublished(mock.id, false)} />)}
+          {publishedMocks.map((mock) => (
+            <MockAdminCard
+              key={mock.id}
+              mock={mock}
+              questions={questions}
+              attempts={attempts}
+              quality={quality.get(mock.id)!}
+              onTogglePublish={() => setMockPublished(mock.id, false)}
+              onClone={() => {
+                const result = cloneMock(mock.id);
+                setActionMessage(result.ok ? `Cloned "${mock.title}" as an unpublished draft.` : result.message);
+              }}
+              onArchive={() => {
+                archiveMock(mock.id);
+                setActionMessage(`Archived "${mock.title}" and unpublished it.`);
+              }}
+            />
+          ))}
           {publishedMocks.length === 0 && <EmptyPanel title="No published mocks" text="Reviewed mocks will appear here after publishing." />}
         </div>
       </section>
@@ -160,11 +214,33 @@ export function AdminMocksCommandCentre() {
           })}
         </div>
       </section>
+
+      <section id="archive" className="scroll-mt-28">
+        <SectionTitle title="Archive" text="Archived mocks are unpublished and kept for admin reference." />
+        <div className="mt-5 grid gap-5 xl:grid-cols-2">
+          {archivedMocks.map((mock) => (
+            <MockAdminCard
+              key={mock.id}
+              mock={mock}
+              questions={questions}
+              attempts={attempts}
+              quality={quality.get(mock.id)!}
+              onTogglePublish={() => setMockPublished(mock.id, true)}
+              onClone={() => {
+                const result = cloneMock(mock.id);
+                setActionMessage(result.ok ? `Cloned archived mock "${mock.title}" as a fresh draft.` : result.message);
+              }}
+              onArchive={() => setActionMessage(`"${mock.title}" is already archived.`)}
+            />
+          ))}
+          {archivedMocks.length === 0 && <EmptyPanel title="No archived mocks" text="Archived mocks will appear here after admin moves them out of the active lists." />}
+        </div>
+      </section>
     </div>
   );
 }
 
-function MockAdminCard({ mock, questions, attempts, quality, onTogglePublish }: { mock: MockExam; questions: Question[]; attempts: { mockId: string; status: string }[]; quality: ReturnType<typeof evaluateMockQuality>; onTogglePublish: () => void }) {
+function MockAdminCard({ mock, questions, attempts, quality, onTogglePublish, onClone, onArchive }: { mock: MockExam; questions: Question[]; attempts: { mockId: string; status: string }[]; quality: ReturnType<typeof evaluateMockQuality>; onTogglePublish: () => void; onClone: () => void; onArchive: () => void }) {
   const mockQuestions = questions.filter((question) => mock.questionIds.includes(question.id));
   const mockAttempts = attempts.filter((attempt) => attempt.mockId === mock.id);
   const pendingReports = mockAttempts.filter((attempt) => attempt.status === "submitted").length;
@@ -199,8 +275,8 @@ function MockAdminCard({ mock, questions, attempts, quality, onTogglePublish }: 
         <a href="#generate" className="inline-flex h-10 items-center gap-2 rounded-full border border-line bg-white px-4 text-sm font-bold text-navy hover:border-gold"><PencilLine className="h-4 w-4" /> Edit / Review Questions</a>
         <button onClick={onTogglePublish} className="h-10 rounded-full border border-line px-4 text-sm font-bold text-navy hover:border-gold">{mock.published ? "Unpublish" : "Publish"}</button>
         <a href="#attempts" className="h-10 rounded-full border border-line px-4 py-2 text-sm font-bold text-navy hover:border-gold">View Attempts ({pendingReports})</a>
-        <button disabled className="inline-flex h-10 items-center gap-2 rounded-full border border-line px-4 text-sm font-bold text-muted opacity-70"><Copy className="h-4 w-4" /> Clone</button>
-        <button disabled className="inline-flex h-10 items-center gap-2 rounded-full border border-line px-4 text-sm font-bold text-muted opacity-70"><Archive className="h-4 w-4" /> Archive</button>
+        <button onClick={onClone} className="inline-flex h-10 items-center gap-2 rounded-full border border-line px-4 text-sm font-bold text-navy hover:border-gold"><Copy className="h-4 w-4" /> Clone</button>
+        <button onClick={onArchive} className="inline-flex h-10 items-center gap-2 rounded-full border border-line px-4 text-sm font-bold text-navy hover:border-gold"><Archive className="h-4 w-4" /> Archive</button>
       </div>
     </GlowCard>
   );
