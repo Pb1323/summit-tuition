@@ -1,6 +1,6 @@
 # Summit Tuition Project Context
 
-Last updated: 2026-07-09
+Last updated: 2026-07-11
 
 ## Sibling Projects In This Repo
 
@@ -100,6 +100,7 @@ Seed/static catalog lives in `src/data/platform.ts`:
 
 ## Recent Feature State
 
+- Added `maths-gl-2-stretch` ("Maths GL-Style Stretch Paper") to `src/data/platform.ts`: a full 50-question, 57-mark original Maths mock (questions `mh1`-`mh50`) replicating the real GL 11+ Maths paper format section-for-section — arithmetic, fractions, percentages, ratio, algebra, geometry, measurement, time/money, data handling, number patterns and multi-step challenge word problems — mirroring the structure of `english-gl-2-stretch`. Passes every `evaluateMockQuality` gate in `src/lib/mock-quality.ts` (50+ questions, 30%+ visual ratio, 30%+ stretch difficulty, balanced topic spread, challenge questions present, marks reconcile). Uses only pre-existing visual types (bar_chart, line_graph, table, coordinateGrid, numberLine, shape, sequence, fraction, ratioBlocks, venn, clock) — did not touch `question-visuals.tsx` or `types/platform.ts`, which were mid-edit by another session adding NVR/VR visual renderers.
 - Mock room visuals have been polished with dedicated renderers in `src/components/platform/question-visuals.tsx`.
 - The mock room supports compact 50-question navigation, keyboard left/right movement, flagging, draft resume, submit confirmation, and admin preview mode.
 - Admin mock command centre includes overview, drafts, published, generator, visual showcase, attempts, references, quality checks, and archive.
