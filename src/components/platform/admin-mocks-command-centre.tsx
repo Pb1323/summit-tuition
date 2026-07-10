@@ -9,9 +9,10 @@ import { AdminMockWorkspace } from "@/components/platform/admin-mock-workspace";
 import type { MockExam, Passage, Question } from "@/types/platform";
 
 export function AdminMocksCommandCentre() {
-  const { mocks, questions, passages, attempts, references, setMockPublished, cloneMock, archiveMock } = usePlatform();
+  const { mocks, questions, passages, attempts, references, setMockPublished, cloneMock, archiveMock, addFeedback, releaseReport } = usePlatform();
   const [selectedVisualId, setSelectedVisualId] = useState("show-table");
   const [actionMessage, setActionMessage] = useState("");
+  const [feedback, setFeedback] = useState<Record<string, string>>({});
   const quality = useMemo(() => new Map(mocks.map((mock) => [mock.id, evaluateMockQuality(mock, questions, passages)])), [mocks, passages, questions]);
   const archivedMocks = mocks.filter((mock) => mock.tier === "Archived");
   const visibleMocks = mocks.filter((mock) => mock.tier !== "Archived");
@@ -166,6 +167,15 @@ export function AdminMocksCommandCentre() {
                   </div>
                   <PremiumBadge tone={attempt.status === "report_released" ? "green" : "navy"}>{attempt.status.replaceAll("_", " ")}</PremiumBadge>
                 </div>
+                {attempt.status === "submitted" && (
+                  <div className="mt-4 space-y-3">
+                    <textarea value={feedback[attempt.id] ?? attempt.adminFeedback} onChange={(event) => setFeedback((prev) => ({ ...prev, [attempt.id]: event.target.value }))} placeholder="Manual feedback notes" className="min-h-20 w-full rounded-xl border border-line p-3 text-sm outline-none focus:border-gold" />
+                    <div className="flex gap-3">
+                      <button onClick={() => addFeedback(attempt.id, feedback[attempt.id] ?? attempt.adminFeedback)} className="rounded-full border border-line px-3 py-1 text-sm font-bold text-navy">Save feedback</button>
+                      <button onClick={() => releaseReport(attempt.id, feedback[attempt.id] ?? attempt.adminFeedback)} className="rounded-full bg-gold px-3 py-1 text-sm font-bold text-navy">Release report</button>
+                    </div>
+                  </div>
+                )}
               </GlowCard>
             );
           })}
