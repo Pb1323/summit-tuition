@@ -10,6 +10,8 @@ const eslintConfig = defineConfig([
     // Default ignores of eslint-config-next:
     ".next/**",
     "legacy/**",
+    "india-study-platform/**",
+    "summit-gcse-tuition/**",
     "out/**",
     "build/**",
     "next-env.d.ts",
