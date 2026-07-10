@@ -1,16 +1,10 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { PremiumGridBackground } from "@/components/layout/premium-grid-background";
 import { SITE } from "@/data/site";
 import { PlatformProvider } from "@/context/platform-context";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -47,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} h-full antialiased`}>
+    <html lang="en" className="h-full antialiased">
       <body className="relative flex min-h-full flex-col bg-cream font-sans text-ink">
         <PremiumGridBackground />
         <PlatformProvider>

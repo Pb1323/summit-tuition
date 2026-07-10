@@ -19,7 +19,7 @@ Open `http://localhost:3000`.
 1. Push this repo to GitHub.
 2. Go to Vercel and click **New Project**.
 3. Import the GitHub repo.
-4. Select the correct root directory. If this repo is imported directly, keep the root as `/`. If it is inside a larger monorepo, select `Tuition+mocks`.
+4. Select the correct root directory. If this repo is imported directly, keep the root as `/`. If it is inside a larger monorepo, select `Summit-Tuition`.
 5. Framework preset: **Next.js**.
 6. Add environment variables from `.env.example`.
 7. Deploy.
