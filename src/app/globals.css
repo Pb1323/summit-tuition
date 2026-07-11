@@ -363,9 +363,16 @@ body {
     display: none;
   }
 
-  /* Opt-in: any page wrapping its printable content in .gl-print renders instead of blanking. */
+  /* Opt-in: any page wrapping its printable content in .gl-print renders instead of blanking -
+     but the site's own header/footer (siblings of <main> in the root layout) must stay hidden,
+     or they leak onto the printed/exported page as a trailing extra sheet. */
   body:has(.gl-print) {
     display: block;
+  }
+
+  body:has(.gl-print) header,
+  body:has(.gl-print) footer {
+    display: none;
   }
 
   .gl-print {
@@ -386,8 +393,11 @@ body {
     display: none !important;
   }
 
-  .gl-print-page {
+  .gl-print-page:not(:last-child) {
     break-after: page;
+  }
+
+  .gl-print-page {
     padding-top: var(--gl-print-margin-top-text);
     padding-bottom: var(--gl-print-margin-bottom);
     padding-inline: var(--gl-print-margin-side);
