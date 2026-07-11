@@ -45,15 +45,13 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
 
   const toggleFlag = useCallback(() => {
     if (!mock || !active) return;
-    setFlagged((items) => {
-      const next = items.includes(active.id) ? items.filter((id) => id !== active.id) : [...items, active.id];
-      if (!isAdminPreview) {
-        saveAttemptDraft(mock.id, answers, next, elapsedSeconds());
-        setLastSavedAt(new Date());
-      }
-      return next;
-    });
-  }, [active, answers, elapsedSeconds, isAdminPreview, mock, saveAttemptDraft]);
+    const next = flagged.includes(active.id) ? flagged.filter((id) => id !== active.id) : [...flagged, active.id];
+    setFlagged(next);
+    if (!isAdminPreview) {
+      saveAttemptDraft(mock.id, answers, next, elapsedSeconds());
+      setLastSavedAt(new Date());
+    }
+  }, [active, answers, elapsedSeconds, flagged, isAdminPreview, mock, saveAttemptDraft]);
 
   function startMock() {
     if (draft && !isAdminPreview) {

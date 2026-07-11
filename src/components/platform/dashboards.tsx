@@ -79,6 +79,20 @@ export function StudentDashboard() {
         </GlowCard>
       </section>
 
+      <section>
+        <GlowCard className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <PremiumBadge tone="navy">New</PremiumBadge>
+            <h2 className="mt-3 text-xl font-bold text-navy">Study Notes</h2>
+            <p className="mt-1 max-w-xl text-sm text-muted">
+              Interactive, topic-by-topic notes for your lessons and homework — concept walkthroughs, worked
+              examples and self-marking practice questions.
+            </p>
+          </div>
+          <AnimatedButton href="/notes">Open Notes</AnimatedButton>
+        </GlowCard>
+      </section>
+
       <section className="grid gap-3 md:grid-cols-4">
         {[
           ["Register", "Complete"],
