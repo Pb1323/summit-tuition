@@ -174,7 +174,7 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
           </GlowCard>
         ) : (
           <div className="mock-room-protection space-y-6">
-            <div className="sticky top-20 z-20 rounded-2xl border border-line bg-white/90 p-4 shadow-sm backdrop-blur">
+            <div className="rounded-2xl border border-line bg-white/90 p-4 shadow-sm backdrop-blur">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div><p className="text-sm font-bold text-gold-dark">{mock.subject}</p><h1 className="text-xl font-black text-navy">{mock.title}</h1></div>
                 <div className="flex flex-wrap items-center gap-3">

@@ -267,7 +267,8 @@ body {
 }
 
 /* Question-visual animations: clarify process only (line drawn in reading order,
-   highlighted point pulses twice, sequence steps appear one by one). Motion-safe only. */
+   highlighted point pulses twice, sequence steps appear one by one, bars rise from
+   the baseline, shapes/points/blocks pop in). Motion-safe only. */
 @media (prefers-reduced-motion: no-preference) {
   .qv-draw {
     stroke-dasharray: 1;
@@ -284,6 +285,20 @@ body {
   .qv-step {
     opacity: 0;
     animation: qv-step-in 0.4s ease-out forwards;
+  }
+
+  .qv-rise {
+    transform-box: fill-box;
+    transform-origin: bottom;
+    animation: qv-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .qv-pop {
+    transform-box: fill-box;
+    transform-origin: center;
+    opacity: 0;
+    transform: scale(0.85);
+    animation: qv-pop 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
 }
 
@@ -306,6 +321,22 @@ body {
 @keyframes qv-step-in {
   to {
     opacity: 1;
+  }
+}
+
+@keyframes qv-rise {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes qv-pop {
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 

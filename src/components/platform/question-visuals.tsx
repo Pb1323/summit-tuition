@@ -304,7 +304,7 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
       <div className="overflow-x-auto">
         <table className="min-w-full border-separate border-spacing-0 text-center text-sm">
           <thead><tr>{headers.map((header) => <th key={header} scope="col" className="border-b border-gold/20 bg-cream px-4 py-3 font-black text-navy first:rounded-tl-xl last:rounded-tr-xl">{header}</th>)}</tr></thead>
-          <tbody>{rows.map((row, rowIndex) => <tr key={rowIndex}>{isStringArray(row) ? row.map((cell, index) => <td key={`${rowIndex}-${index}`} className="border-b border-line bg-white px-4 py-3 font-semibold text-ink">{cell}</td>) : <td className="border-b border-line px-4 py-3 text-muted" colSpan={headers.length}>Missing row data</td>}</tr>)}</tbody>
+          <tbody>{rows.map((row, rowIndex) => <tr key={rowIndex} className="qv-step" style={{ animationDelay: `${rowIndex * 0.09}s` }}>{isStringArray(row) ? row.map((cell, index) => <td key={`${rowIndex}-${index}`} className="border-b border-line bg-white px-4 py-3 font-semibold text-ink transition-colors hover:bg-gold/5">{cell}</td>) : <td className="border-b border-line px-4 py-3 text-muted" colSpan={headers.length}>Missing row data</td>}</tr>)}</tbody>
         </table>
       </div>,
       `${title}: ${headers.join(", ")}`
@@ -323,8 +323,15 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
     const plotHeight = plotBottom - plotTop;
     const ticks = Array.from({ length: scale.max / scale.step + 1 }, (_, index) => index * scale.step);
     const slot = (plotRight - plotLeft) / labels.length;
+    const barGradientId = `${patternId}-bar`;
     return frame(
       <svg viewBox="0 0 360 226" className="h-64 w-full max-w-full">
+        <defs>
+          <linearGradient id={barGradientId} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#fbbf24" />
+            <stop offset="100%" stopColor={GOLD_DARK} />
+          </linearGradient>
+        </defs>
         {ticks.map((tick) => {
           const y = plotBottom - (tick / scale.max) * plotHeight;
           return (
@@ -341,7 +348,7 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
           const x = plotLeft + slot * index + (slot - barWidth) / 2;
           return (
             <g key={label}>
-              <rect x={x} y={plotBottom - barHeight} width={barWidth} height={barHeight} rx={5} fill={GOLD} stroke={GOLD_DARK} strokeWidth={1} />
+              <rect className="qv-rise" style={{ animationDelay: `${index * 0.09}s` }} x={x} y={plotBottom - barHeight} width={barWidth} height={barHeight} rx={5} fill={`url(#${barGradientId})`} stroke={GOLD_DARK} strokeWidth={1} />
               <text x={x + barWidth / 2} y={plotBottom + 20} textAnchor="middle" fill={INK} fontSize={12} fontWeight={700}>{label}</text>
             </g>
           );
@@ -380,7 +387,7 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
         <line x1={plotLeft} y1={plotTop} x2={plotLeft} y2={plotBottom} stroke={INK} strokeWidth={2} />
         <polyline points={points} pathLength={1} className="qv-draw" fill="none" stroke={GOLD_DARK} strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" />
         {values.map((value, index) => (
-          <g key={`${index}-${value}`}>
+          <g key={`${index}-${value}`} className="qv-pop" style={{ animationDelay: `${1.1 + index * 0.12}s` }}>
             <circle cx={pointX(index)} cy={pointY(value)} r={5} fill={GOLD} stroke={INK} strokeWidth={2} />
             <text x={pointX(index)} y={plotBottom + 20} textAnchor="middle" fill={INK} fontSize={11} fontWeight={700}>{labels[index]}</text>
           </g>
@@ -415,7 +422,7 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
         <text x={gx(gridMax) + 14} y={originY + 4} fill={INK} fontSize={12} fontWeight={700}>x</text>
         <text x={originX - 4} y={gy(gridMax) - 14} fill={INK} fontSize={12} fontWeight={700}>y</text>
         {plotted.map((point, index) => (
-          <g key={point.join("-")}>
+          <g key={point.join("-")} className="qv-pop" style={{ animationDelay: `${0.15 + index * 0.15}s` }}>
             <circle cx={gx(point[0])} cy={gy(point[1])} r={6} fill={GOLD} stroke={INK} strokeWidth={2} />
             <text x={gx(point[0]) + 9} y={gy(point[1]) - 7} fill={INK_SOFT} fontSize={13} fontWeight={800}>{String.fromCharCode(65 + index)}</text>
           </g>
@@ -470,9 +477,16 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
       const cw = cutWidth * unit;
       const ch = cutHeight * unit;
       const path = `M ${x0} ${y0} h ${w} v ${h - ch} h ${-cw} v ${ch} h ${-(w - cw)} Z`;
+      const shapeGradientId = `${patternId}-shape`;
       return frame(
         <svg viewBox="0 0 320 190" className="h-56 w-full">
-          <path d={path} fill="#fff8e7" stroke={INK} strokeWidth={4} strokeLinejoin="round" />
+          <defs>
+            <linearGradient id={shapeGradientId} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#fff8e7" />
+              <stop offset="100%" stopColor="#fde9b8" />
+            </linearGradient>
+          </defs>
+          <path className="qv-pop" d={path} fill={`url(#${shapeGradientId})`} stroke={INK} strokeWidth={4} strokeLinejoin="round" />
           <text x={x0 + w / 2} y={y0 - 10} textAnchor="middle" fill={INK_SOFT} fontSize={13} fontWeight={800}>{width} cm</text>
           <text x={x0 + w + 8} y={y0 + (h - ch) / 2 + 4} fill={INK_SOFT} fontSize={13} fontWeight={800}>{height - cutHeight} cm</text>
           <text x={x0 + w - cw + 8} y={y0 + h - ch / 2 + 4} fill={INK_SOFT} fontSize={13} fontWeight={800}>{cutHeight} cm</text>
@@ -486,9 +500,16 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
     const drawHeight = Math.max(48, Math.min(120, (height / width) * drawWidth));
     const x0 = (320 - drawWidth) / 2;
     const y0 = (190 - drawHeight) / 2 + 6;
+    const rectGradientId = `${patternId}-shape`;
     return frame(
       <svg viewBox="0 0 320 190" className="h-56 w-full">
-        <rect x={x0} y={y0} width={drawWidth} height={drawHeight} fill="#fff8e7" stroke={INK} strokeWidth={4} rx={3} />
+        <defs>
+          <linearGradient id={rectGradientId} x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#fff8e7" />
+            <stop offset="100%" stopColor="#fde9b8" />
+          </linearGradient>
+        </defs>
+        <rect className="qv-pop" x={x0} y={y0} width={drawWidth} height={drawHeight} fill={`url(#${rectGradientId})`} stroke={INK} strokeWidth={4} rx={3} />
         <text x={x0 + drawWidth / 2} y={y0 - 12} textAnchor="middle" fill={INK_SOFT} fontSize={13} fontWeight={800}>{width} cm</text>
         <text x={x0 + drawWidth + 10} y={y0 + drawHeight / 2 + 4} fill={INK_SOFT} fontSize={13} fontWeight={800}>{height} cm</text>
       </svg>,
@@ -541,7 +562,13 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
     return frame(
       <div className="space-y-3">
         <div className="grid gap-1" style={{ gridTemplateColumns: `repeat(${denominator}, minmax(0, 1fr))` }}>
-          {Array.from({ length: denominator }).map((_, index) => <div key={index} className={cn("h-14 border border-gold/30", index < numerator ? "bg-gold/35" : "bg-white")} />)}
+          {Array.from({ length: denominator }).map((_, index) => (
+            <div
+              key={index}
+              className={cn("qv-pop h-14 rounded-md border border-gold/30", index < numerator ? "bg-gradient-to-br from-gold/60 to-gold-dark/40 shadow-[inset_0_1px_2px_rgba(255,255,255,0.5)]" : "bg-white")}
+              style={{ animationDelay: `${index * 0.06}s` }}
+            />
+          ))}
         </div>
         <p className="text-center text-sm font-bold text-navy">{denominator} equal parts</p>
       </div>,
@@ -554,17 +581,35 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
     const values = isNumberArray(visual.data.values) ? visual.data.values : [2, 5];
     return frame(
       <div className="space-y-4">
-        {labels.map((label, rowIndex) => <div key={label} className="grid grid-cols-[72px_1fr] items-center gap-3"><span className="text-sm font-black text-navy">{label}</span><div className="flex gap-1">{Array.from({ length: values[rowIndex] ?? 1 }).map((_, index) => <span key={index} className="h-9 flex-1 rounded-md border border-gold/35 bg-gold/20" />)}</div></div>)}
+        {labels.map((label, rowIndex) => (
+          <div key={label} className="grid grid-cols-[72px_1fr] items-center gap-3">
+            <span className="text-sm font-black text-navy">{label}</span>
+            <div className="flex gap-1">
+              {Array.from({ length: values[rowIndex] ?? 1 }).map((_, index) => (
+                <span
+                  key={index}
+                  className="qv-pop h-9 flex-1 rounded-md border border-gold/35 bg-gradient-to-b from-gold/35 to-gold/15 shadow-[inset_0_1px_2px_rgba(255,255,255,0.6)]"
+                  style={{ animationDelay: `${(rowIndex * 6 + index) * 0.05}s` }}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
       </div>,
       `${title}: ratio ${labels.map((label, index) => `${label} ${values[index]}`).join(", ")}`
     );
   }
 
   if (type === "venn") {
+    const vennGradientId = `${patternId}-venn`;
     return frame(
       <svg viewBox="0 0 320 190" className="h-56 w-full">
-        <circle cx={132} cy={96} r={62} fill="#fde68a55" stroke={INK} strokeWidth={3} />
-        <circle cx={188} cy={96} r={62} fill="#f59e0b33" stroke={INK} strokeWidth={3} />
+        <defs>
+          <radialGradient id={`${vennGradientId}-left`}><stop offset="0%" stopColor="#fde68a" stopOpacity={0.75} /><stop offset="100%" stopColor="#fde68a" stopOpacity={0.25} /></radialGradient>
+          <radialGradient id={`${vennGradientId}-right`}><stop offset="0%" stopColor={GOLD} stopOpacity={0.55} /><stop offset="100%" stopColor={GOLD} stopOpacity={0.15} /></radialGradient>
+        </defs>
+        <circle className="qv-pop" style={{ animationDelay: "0s" }} cx={132} cy={96} r={62} fill={`url(#${vennGradientId}-left)`} stroke={INK} strokeWidth={3} />
+        <circle className="qv-pop" style={{ animationDelay: "0.15s" }} cx={188} cy={96} r={62} fill={`url(#${vennGradientId}-right)`} stroke={INK} strokeWidth={3} />
         <text x={108} y={36} textAnchor="middle" fill={INK} fontSize={13} fontWeight={800}>{String(visual.data.leftLabel ?? "A")}</text>
         <text x={212} y={36} textAnchor="middle" fill={INK} fontSize={13} fontWeight={800}>{String(visual.data.rightLabel ?? "B")}</text>
         <text x={104} y={100} textAnchor="middle" fill={INK_SOFT} fontSize={16} fontWeight={800}>{String(visual.data.left ?? "")}</text>
@@ -580,18 +625,22 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
     const minute = typeof visual.data.minute === "number" ? visual.data.minute : 0;
     const minuteAngle = minute * 6;
     const hourAngle = (hour % 12) * 30 + minute * 0.5;
+    const clockGradientId = `${patternId}-clock`;
     return frame(
       <svg viewBox="0 0 220 220" className="mx-auto h-64 w-full max-w-xs">
-        <circle cx={110} cy={110} r={82} fill="#fffdf7" stroke={INK} strokeWidth={4} />
+        <defs>
+          <radialGradient id={clockGradientId}><stop offset="0%" stopColor="#fffdf7" /><stop offset="100%" stopColor="#fff3d6" /></radialGradient>
+        </defs>
+        <circle cx={110} cy={110} r={82} fill={`url(#${clockGradientId})`} stroke={INK} strokeWidth={4} />
         {Array.from({ length: 12 }).map((_, index) => {
           const angle = (index + 1) * 30 - 90;
           const x = 110 + Math.cos((angle * Math.PI) / 180) * 64;
           const y = 110 + Math.sin((angle * Math.PI) / 180) * 64;
           return <text key={index} x={x} y={y + 4} textAnchor="middle" fill={INK} fontSize={12} fontWeight={800}>{index + 1}</text>;
         })}
-        <line x1={110} y1={110} x2={110 + Math.cos(((hourAngle - 90) * Math.PI) / 180) * 42} y2={110 + Math.sin(((hourAngle - 90) * Math.PI) / 180) * 42} stroke={INK} strokeWidth={6} strokeLinecap="round" />
-        <line x1={110} y1={110} x2={110 + Math.cos(((minuteAngle - 90) * Math.PI) / 180) * 62} y2={110 + Math.sin(((minuteAngle - 90) * Math.PI) / 180) * 62} stroke={GOLD_DARK} strokeWidth={4} strokeLinecap="round" />
-        <circle cx={110} cy={110} r={5} fill={GOLD} />
+        <line className="qv-draw" pathLength={1} x1={110} y1={110} x2={110 + Math.cos(((hourAngle - 90) * Math.PI) / 180) * 42} y2={110 + Math.sin(((hourAngle - 90) * Math.PI) / 180) * 42} stroke={INK} strokeWidth={6} strokeLinecap="round" />
+        <line className="qv-draw" pathLength={1} style={{ animationDelay: "0.15s" }} x1={110} y1={110} x2={110 + Math.cos(((minuteAngle - 90) * Math.PI) / 180) * 62} y2={110 + Math.sin(((minuteAngle - 90) * Math.PI) / 180) * 62} stroke={GOLD_DARK} strokeWidth={4} strokeLinecap="round" />
+        <circle className="qv-pop" style={{ animationDelay: "0.5s" }} cx={110} cy={110} r={5} fill={GOLD} />
       </svg>,
       `${title}: clock showing ${hour}:${String(minute).padStart(2, "0")}`
     );

@@ -162,24 +162,91 @@ export function EnglishPassageRenderer({ passage, paragraphRefs }: { passage?: P
   if (!passage) return null;
   const paragraphs = passage.paragraphs?.length ? passage.paragraphs : passage.text.split(/\n{2,}/).filter(Boolean);
   return (
-    <aside className="rounded-2xl border border-gold/25 bg-white shadow-[0_16px_44px_-38px_rgba(17,24,39,0.55)]">
-      <div className="border-b border-gold/15 bg-cream px-5 py-4">
+    <aside className="overflow-hidden rounded-2xl border border-gold/25 bg-white shadow-[0_16px_44px_-38px_rgba(17,24,39,0.55)]">
+      <div className="border-b border-gold/15 bg-cream px-6 py-4">
         <p className="text-xs font-black uppercase tracking-[0.18em] text-gold-dark">Original comprehension passage</p>
-        <h3 className="mt-1 text-xl font-black text-navy">{passage.title}</h3>
+        <h3 className="mt-1 font-serif text-xl font-black text-navy">{passage.title}</h3>
       </div>
-      <div className="max-h-[32rem] space-y-4 overflow-y-auto p-5 text-[15px] leading-8 text-ink">
-        {paragraphs.map((paragraph, index) => {
-          const number = index + 1;
-          const active = paragraphRefs?.includes(number);
-          return (
-            <p key={number} className={cn("rounded-xl border p-3", active ? "border-gold/35 bg-gold/10" : "border-transparent bg-white")}>
-              <span className="mr-3 inline-flex h-6 w-6 items-center justify-center rounded-full bg-cream text-xs font-black text-gold-dark">{number}</span>
-              {paragraph}
-            </p>
-          );
-        })}
+      <div className="max-h-[34rem] overflow-y-auto px-6 py-6 sm:px-8">
+        <div className="mx-auto max-w-2xl font-serif text-[16.5px] leading-[1.85] text-ink [text-wrap:pretty]">
+          {paragraphs.map((paragraph, index) => {
+            const active = paragraphRefs?.includes(index + 1);
+            return (
+              <p key={index} className={cn("mb-5 last:mb-0 first:first-letter:float-left first:first-letter:mr-2 first:first-letter:font-black first:first-letter:leading-[0.8] first:first-letter:text-4xl first:first-letter:text-gold-dark", active && "-mx-3 rounded-lg bg-gold/10 px-3 py-1 ring-1 ring-gold/25")}>
+                {paragraph}
+              </p>
+            );
+          })}
+        </div>
       </div>
     </aside>
+  );
+}
+
+/** GL spelling/punctuation "find the lettered group with the mistake" format: the question text is an
+ * instruction line plus a quoted sentence, and options are the sentence split into segments plus a
+ * trailing "No mistake" choice. Parsed here so the sentence can be rendered once with inline lettered
+ * segments instead of repeating the full sentence in every answer row. */
+function parseSegmentQuestion(question: Question) {
+  const lines = question.text.split("\n");
+  const instruction = lines[0]?.trim() ?? "";
+  const sentence = lines.slice(1).join(" ").trim().replace(/^"|"$/g, "");
+  const options = Array.isArray(question.options) ? question.options : [];
+  const noMistakeIndex = options.findIndex((option) => /no mistake|^n$/i.test(option.trim()));
+  const segments = noMistakeIndex >= 0 ? options.slice(0, noMistakeIndex) : options;
+  const noMistakeOption = noMistakeIndex >= 0 ? options[noMistakeIndex] : undefined;
+  return { instruction, sentence, segments, noMistakeOption };
+}
+
+function SegmentMistakeAnswer({
+  question,
+  value,
+  onChange,
+  review,
+  isCorrectOption,
+}: {
+  question: Question;
+  value?: string;
+  onChange: (value: string) => void;
+  review?: boolean;
+  isCorrectOption: (option: string) => boolean;
+}) {
+  const { instruction, segments, noMistakeOption } = parseSegmentQuestion(question);
+  const segmentButton = (option: string, letter: string) => {
+    const selected = value === option;
+    const showCorrect = review && isCorrectOption(option);
+    const showWrong = review && selected && !showCorrect;
+    return (
+      <button
+        key={option}
+        type="button"
+        disabled={review}
+        onClick={() => onChange(option)}
+        className={cn(
+          "mx-0.5 my-0.5 inline-flex items-baseline gap-1 rounded-md border-b-2 border-dashed px-1.5 py-0.5 font-semibold transition disabled:cursor-default",
+          selected ? "border-solid border-gold bg-gold/15 text-navy" : "border-line/70 text-ink hover:border-gold hover:bg-gold/5",
+          showCorrect && "border-solid border-emerald-500 bg-emerald-50 text-emerald-800",
+          showWrong && "border-solid border-red-500 bg-red-50 text-red-800"
+        )}
+      >
+        {option}
+        <sup className="text-[10px] font-black text-gold-dark">{letter}</sup>
+      </button>
+    );
+  };
+  return (
+    <div className="rounded-2xl border border-gold/20 bg-cream/60 p-5">
+      {instruction && <p className="text-xs font-black uppercase tracking-[0.14em] text-gold-dark">{instruction}</p>}
+      <p className="mt-3 font-serif text-lg leading-[2.1] text-navy">
+        {segments.map((segment, index) => segmentButton(segment, String.fromCharCode(65 + index)))}
+      </p>
+      {noMistakeOption && (
+        <div className="mt-4 border-t border-gold/15 pt-4">
+          {segmentButton(noMistakeOption, String.fromCharCode(65 + segments.length))}
+          <span className="ml-2 text-sm font-semibold text-muted">if you think there is no mistake</span>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -205,6 +272,7 @@ export function QuestionRenderer({
   const options = Array.isArray(question.options) ? question.options : [];
   const hasOptions = options.length > 0;
   const isChoiceQuestion = question.questionType === "multiple_choice" || question.questionType === "cloze";
+  const isSegmentFormat = question.tags?.includes("segment-format") && options.length > 0;
   const expected = Array.isArray(question.correctAnswer) ? question.correctAnswer : [question.correctAnswer];
   const isCorrectOption = (option: string) => expected.some((item) => item.trim().toLowerCase() === option.trim().toLowerCase());
   const qualityWarnings = [
@@ -230,7 +298,7 @@ export function QuestionRenderer({
           <span className="rounded-full border border-line bg-cream px-3 py-1 text-xs font-bold text-navy">{question.marks || 1} mark{question.marks === 1 ? "" : "s"}</span>
           {question.paragraphRefs?.length ? <span className="rounded-full border border-line bg-white px-3 py-1 text-xs font-bold text-muted">Paragraph {question.paragraphRefs.join(", ")}</span> : null}
         </div>
-        <h2 className="mt-4 text-2xl font-bold leading-snug text-navy">{hasText ? question.text : "Question text missing"}</h2>
+        {!isSegmentFormat && <h2 className="mt-4 text-2xl font-bold leading-snug text-navy">{hasText ? question.text : "Question text missing"}</h2>}
         {question.questionType === "cloze" && hasText && (
           <div className="mt-3 rounded-xl border border-gold/20 bg-cream p-3 text-sm font-semibold text-navy">
             Cloze blank: <span className="inline-flex min-w-20 rounded-full border border-gold/40 bg-white px-4 py-1 align-middle">&nbsp;</span>
@@ -251,7 +319,9 @@ export function QuestionRenderer({
         )}
       </div>
       {question.visual && <VisualRenderer visual={question.visual} adminPreview={adminPreview} />}
-      {hasOptions ? (
+      {isSegmentFormat ? (
+        <SegmentMistakeAnswer question={question} value={value} onChange={onChange} review={review} isCorrectOption={isCorrectOption} />
+      ) : hasOptions ? (
         <fieldset className="grid gap-3">
           <legend className="sr-only">Answer options for {hasText ? question.text : "this question"}</legend>
           {options.map((option, index) => {
