@@ -15,6 +15,9 @@ export function Header() {
   const pathname = usePathname();
   const { currentUser, isClientReady, logout } = usePlatform();
   const dashboardHref = currentUser?.role === "admin" ? "/admin" : "/dashboard";
+  // Signed-in users clicking "Mocks" mean "take me to my mocks", not the marketing page they've already converted from.
+  const mocksHref = currentUser?.role === "admin" ? "/admin/mocks" : currentUser ? "/dashboard" : "/mocks";
+  const navHref = (link: { href: string }) => (link.href === "/mocks" ? mocksHref : link.href);
 
   return (
     <header className="sticky top-0 z-[70] border-b border-gold/20 bg-white/82 shadow-[0_12px_40px_-32px_rgba(17,24,39,0.55)] backdrop-blur-xl supports-[backdrop-filter]:bg-white/72">
@@ -33,11 +36,11 @@ export function Header() {
           {MAIN_NAV.map((link) => (
             <Link
               key={link.href}
-              href={link.href}
-              aria-current={pathname === link.href ? "page" : undefined}
+              href={navHref(link)}
+              aria-current={pathname === navHref(link) ? "page" : undefined}
               className={cn(
                 "relative text-sm font-medium text-ink/80 transition-colors after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-0 after:rounded-full after:bg-gold after:transition-all hover:text-navy hover:after:w-full",
-                pathname === link.href && "font-semibold text-navy after:w-full"
+                pathname === navHref(link) && "font-semibold text-navy after:w-full"
               )}
             >
               {link.label}
@@ -80,12 +83,12 @@ export function Header() {
             {MAIN_NAV.map((link) => (
               <Link
                 key={link.href}
-                href={link.href}
-                aria-current={pathname === link.href ? "page" : undefined}
+                href={navHref(link)}
+                aria-current={pathname === navHref(link) ? "page" : undefined}
                 onClick={() => setOpen(false)}
                 className={cn(
                   "rounded-xl px-3 py-2.5 text-sm font-medium text-ink/80 hover:bg-cream hover:text-navy",
-                  pathname === link.href && "bg-cream text-navy"
+                  pathname === navHref(link) && "bg-cream text-navy"
                 )}
               >
                 {link.label}

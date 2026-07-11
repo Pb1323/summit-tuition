@@ -10,6 +10,7 @@ import { CTASection } from "@/components/sections/cta-section";
 import { MockRouteConfigurator } from "@/components/sections/mock-route-configurator";
 import { ScrollStoryRail } from "@/components/motion/scroll-story-rail";
 import { DashboardPreview, GlowCard, PremiumBadge, ProgressBar, RevealOnScroll } from "@/components/platform/ui";
+import { SignedInMocksNotice } from "@/components/platform/signed-in-mocks-notice";
 import { MOCK_CLUB_PRICING } from "@/data/pricing";
 
 export const metadata: Metadata = {
@@ -34,6 +35,7 @@ const CYCLE = [
 export default function MocksPage() {
   return (
     <>
+      <SignedInMocksNotice />
       <HeroSection
         eyebrow="Online 11+ Mocks"
         title="GL-style online mocks that show students exactly what to improve next"
