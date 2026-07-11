@@ -33,9 +33,14 @@ function toPrismaReferenceStyle(style: string) {
   return "unknown";
 }
 
+// Per-process guard only (not a DB check): re-running the upserts below is idempotent and cheap at this
+// catalog's size, so this just avoids repeating it on every request within the same warm server instance.
+// A DB-row-count guard would wrongly skip forever once the catalog was seeded once, hiding any later
+// additions to MOCKS/QUESTIONS/etc from a database that was already seeded on an earlier deploy.
+let catalogSeededThisProcess = false;
+
 async function ensureCatalogSeeded() {
-  const productCount = await prisma.productPlan.count();
-  if (productCount > 0) return;
+  if (catalogSeededThisProcess) return;
 
   await prisma.$transaction([
     ...PRODUCT_PLANS.map((product) => prisma.productPlan.upsert({
@@ -156,6 +161,7 @@ async function ensureCatalogSeeded() {
       },
     })),
   ]);
+  catalogSeededThisProcess = true;
 }
 
 export async function getPlatformBootstrap(currentUser: StudentAccount | null): Promise<PlatformBootstrap> {
