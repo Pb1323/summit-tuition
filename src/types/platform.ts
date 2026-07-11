@@ -57,9 +57,32 @@ export interface QuestionVisual {
     | "ratioBlocks"
     | "venn"
     | "clock"
-    | "sequence";
+    | "sequence"
+    | "nvr_matrix"
+    | "nvrMatrix"
+    | "nvr_sequence"
+    | "nvrSequence"
+    | "nvr_oddoneout"
+    | "nvrOddOneOut"
+    | "nvr_pairanalogy"
+    | "nvrPairAnalogy"
+    | "nvr_similarity"
+    | "nvrSimilarity"
+    | "nvr_codekey"
+    | "nvrCodeKey"
+    | "nvr_rotation"
+    | "nvrRotation"
+    | "nvr_net"
+    | "nvrNet"
+    | "nvr_combine3d"
+    | "nvrCombine3d"
+    | "nvr_holepunch"
+    | "nvrHolePunch"
+    | "vr_code"
+    | "vrCode";
   title: string;
-  data: Record<string, string | number | boolean | string[] | number[] | string[][] | number[][] | Record<string, string | number>[]>;
+  /** Payload shape depends on `type` — validated at render time in question-visuals.tsx, not by this type. */
+  data: Record<string, unknown>;
 }
 
 export interface Question {

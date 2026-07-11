@@ -9,6 +9,9 @@ const INK_SOFT = "#111827";
 const GOLD = "#f59e0b";
 const GOLD_DARK = "#b45309";
 const GRID = "#f7e8bd";
+/** Secondary interactive accent (selection/hover/structural cues), kept distinct from GOLD's "content" emphasis. */
+const BLUE = "#3b82f6";
+const BLUE_DARK = "#1d4ed8";
 
 function isStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every((item) => typeof item === "string");
@@ -16,6 +19,263 @@ function isStringArray(value: unknown): value is string[] {
 
 function isNumberArray(value: unknown): value is number[] {
   return Array.isArray(value) && value.every((item) => typeof item === "number" && Number.isFinite(item));
+}
+
+/** A single NVR figure: a regular polygon (or circle when sides is 0), optionally rotated, mirrored, filled and decorated. */
+export interface NvrFigure {
+  sides: number;
+  rotation?: number;
+  reflect?: boolean;
+  fill?: "solid" | "outline" | "hatch" | "crosshatch" | "dots" | "stripes" | "halfSplit";
+  size?: number;
+  borderStyle?: "solid" | "dashed" | "dotted";
+  internalElements?: { shape: "dot" | "square" | "triangle"; position: "center" | "topLeft" | "topRight" | "bottomLeft" | "bottomRight"; size?: number }[];
+  arrows?: { angle: number; count?: number }[];
+}
+
+/** A matrix/sequence cell: one figure, several overlapping figures (compound), or empty (the unknown slot). */
+export type NvrCell = NvrFigure | NvrFigure[] | null;
+
+function isNvrFigure(value: unknown): value is NvrFigure {
+  if (typeof value !== "object" || value === null) return false;
+  const candidate = value as Record<string, unknown>;
+  return typeof candidate.sides === "number";
+}
+
+function isNvrCell(value: unknown): value is NvrCell {
+  if (value === null) return true;
+  if (Array.isArray(value)) return value.every((item) => isNvrFigure(item));
+  return isNvrFigure(value);
+}
+
+function isNvrCellArray(value: unknown): value is NvrCell[] {
+  return Array.isArray(value) && value.every((item) => isNvrCell(item));
+}
+
+function isNvrFigureArray(value: unknown): value is NvrFigure[] {
+  return Array.isArray(value) && value.every((item) => isNvrFigure(item));
+}
+
+function isCodePairArray(value: unknown): value is { word: string; code: string }[] {
+  return (
+    Array.isArray(value) &&
+    value.length > 0 &&
+    value.every((item) => typeof item === "object" && item !== null && typeof (item as Record<string, unknown>).word === "string" && typeof (item as Record<string, unknown>).code === "string")
+  );
+}
+
+/** Rounds to 2dp so SSR and client trig results always serialize identically (avoids hydration mismatches). */
+function r2(value: number) {
+  return Math.round(value * 100) / 100;
+}
+
+function nvrPolygonPoints(sides: number, rotation: number, radius: number, reflect: boolean) {
+  return Array.from({ length: sides }, (_, index) => {
+    const angle = ((360 / sides) * index + rotation - 90) * (Math.PI / 180);
+    const x = Math.cos(angle) * radius * (reflect ? -1 : 1);
+    return `${r2(x)},${r2(Math.sin(angle) * radius)}`;
+  }).join(" ");
+}
+
+const INTERNAL_ELEMENT_OFFSET: Record<string, [number, number]> = {
+  center: [0, 0],
+  topLeft: [-0.42, -0.42],
+  topRight: [0.42, -0.42],
+  bottomLeft: [-0.42, 0.42],
+  bottomRight: [0.42, 0.42],
+};
+
+function NvrInternalElement({ element, radius }: { element: NonNullable<NvrFigure["internalElements"]>[number]; radius: number }) {
+  const [ox, oy] = INTERNAL_ELEMENT_OFFSET[element.position] ?? [0, 0];
+  const cx = ox * radius;
+  const cy = oy * radius;
+  const size = (element.size ?? 0.22) * radius;
+  if (element.shape === "dot") return <circle cx={cx} cy={cy} r={size / 2} fill={INK} />;
+  if (element.shape === "square") return <rect x={cx - size / 2} y={cy - size / 2} width={size} height={size} fill={INK} />;
+  return <polygon points={nvrPolygonPoints(3, 0, size / 1.6, false)} transform={`translate(${cx},${cy})`} fill={INK} />;
+}
+
+function NvrArrowMark({ arrow, radius }: { arrow: NonNullable<NvrFigure["arrows"]>[number]; radius: number }) {
+  const rad = (arrow.angle - 90) * (Math.PI / 180);
+  const length = radius * 1.15;
+  const x2 = r2(Math.cos(rad) * length);
+  const y2 = r2(Math.sin(rad) * length);
+  const headSize = 5;
+  const headAngle1 = rad + (150 * Math.PI) / 180;
+  const headAngle2 = rad - (150 * Math.PI) / 180;
+  return (
+    <g stroke={GOLD_DARK} strokeWidth={2.5} fill="none">
+      <line x1={0} y1={0} x2={x2} y2={y2} strokeLinecap="round" />
+      <polyline
+        points={`${r2(x2 + Math.cos(headAngle1) * headSize)},${r2(y2 + Math.sin(headAngle1) * headSize)} ${x2},${y2} ${r2(x2 + Math.cos(headAngle2) * headSize)},${r2(y2 + Math.sin(headAngle2) * headSize)}`}
+        strokeLinejoin="round"
+      />
+    </g>
+  );
+}
+
+/** A short straight arrow drawn between two diagram elements (not attached to a figure) — used for transform/analogy cues. */
+function DiagramArrow({ x1, x2, y, color = GOLD_DARK }: { x1: number; x2: number; y: number; color?: string }) {
+  return (
+    <g stroke={color} strokeWidth={2.5} fill={color}>
+      <line x1={x1} y1={y} x2={x2 - 9} y2={y} strokeLinecap="round" />
+      <polygon points={`${x2},${y} ${x2 - 10},${r2(y - 5)} ${x2 - 10},${r2(y + 5)}`} />
+    </g>
+  );
+}
+
+/** A dashed vertical divider separating two visual groups within one diagram (e.g. the worked pair vs the test pair). */
+function DiagramDivider({ x, yTop, yBottom, color = BLUE }: { x: number; yTop: number; yBottom: number; color?: string }) {
+  return <line x1={x} y1={yTop} x2={x} y2={yBottom} stroke={color} strokeWidth={2} strokeDasharray="5 5" opacity={0.55} />;
+}
+
+/** Oblique ("cavalier") projection of a cuboid's three visible faces, anchored at the front face's top-left corner. */
+export function cuboidFaces(x: number, y: number, w: number, h: number, d: number) {
+  const dx = d * 0.6;
+  const dy = -d * 0.38;
+  const p = (px: number, py: number) => `${r2(px)},${r2(py)}`;
+  const front = [p(x, y), p(x + w, y), p(x + w, y + h), p(x, y + h)].join(" ");
+  const top = [p(x, y), p(x + dx, y + dy), p(x + w + dx, y + dy), p(x + w, y)].join(" ");
+  const right = [p(x + w, y), p(x + w + dx, y + dy), p(x + w + dx, y + dy + h), p(x + w, y + h)].join(" ");
+  const centroid = (pts: [number, number][]): [number, number] => [pts.reduce((s, v) => s + v[0], 0) / pts.length, pts.reduce((s, v) => s + v[1], 0) / pts.length];
+  return {
+    front,
+    top,
+    right,
+    centroids: {
+      front: centroid([[x, y], [x + w, y], [x + w, y + h], [x, y + h]]),
+      top: centroid([[x, y], [x + dx, y + dy], [x + w + dx, y + dy], [x + w, y]]),
+      right: centroid([[x + w, y], [x + w + dx, y + dy], [x + w + dx, y + dy + h], [x + w, y + h]]),
+    },
+    dx,
+    dy,
+  };
+}
+
+/** A shaded cuboid (three-tone: light top, mid front, dark right) with optional small face symbols — used for nets/cubes and combined-solid questions. */
+export type Block = { w: number; h: number; d: number };
+export type AttachMode = "top" | "topgap" | "right" | "shifted";
+
+/** Anchors block B against fixed block A for a given attach mode — shared by the combine3D prompt and its answer options so gap/overlap/shift decoys stay consistent. */
+export function combine3dLayout(a: Block, b: Block, attach: AttachMode, xA = 40, yA = 150) {
+  let xB = xA;
+  let yB = yA;
+  if (attach === "top") {
+    xB = xA + (a.w - b.w) / 2;
+    yB = yA - b.h;
+  } else if (attach === "topgap") {
+    xB = xA + (a.w - b.w) / 2;
+    yB = yA - b.h - 18;
+  } else if (attach === "right") {
+    xB = xA + a.w + 4;
+    yB = yA + (a.h - b.h);
+  } else {
+    xB = xA + a.w - b.w * 0.4;
+    yB = yA - b.h;
+  }
+  return { xA, yA, xB, yB };
+}
+
+export function ObliqueCuboid({ x, y, w, h, d, symbols, patternId }: { x: number; y: number; w: number; h: number; d: number; symbols?: { top?: NvrFigure; front?: NvrFigure; right?: NvrFigure }; patternId: string }) {
+  const faces = cuboidFaces(x, y, w, h, d);
+  return (
+    <g>
+      <polygon points={faces.top} fill="#fde68a" stroke={INK} strokeWidth={2} strokeLinejoin="round" />
+      <polygon points={faces.front} fill={GOLD} stroke={INK} strokeWidth={2} strokeLinejoin="round" />
+      <polygon points={faces.right} fill={GOLD_DARK} stroke={INK} strokeWidth={2} strokeLinejoin="round" />
+      {symbols?.top && <NvrFigureMark figure={symbols.top} x={faces.centroids.top[0]} y={faces.centroids.top[1]} size={Math.min(w, d) * 0.7} patternId={`${patternId}-top`} />}
+      {symbols?.front && <NvrFigureMark figure={symbols.front} x={faces.centroids.front[0]} y={faces.centroids.front[1]} size={Math.min(w, h) * 0.7} patternId={`${patternId}-front`} />}
+      {symbols?.right && <NvrFigureMark figure={symbols.right} x={faces.centroids.right[0]} y={faces.centroids.right[1]} size={Math.min(d, h) * 0.7} patternId={`${patternId}-right`} />}
+    </g>
+  );
+}
+
+const BORDER_DASH: Record<string, string | undefined> = { dashed: "6 4", dotted: "2 4", solid: undefined };
+
+/** Renders one NVR figure, a compound stack of figures, or a "?" placeholder, centred at (x, y). */
+export function NvrFigureMark({ figure, x, y, size, patternId }: { figure: NvrCell; x: number; y: number; size: number; patternId: string }) {
+  if (figure === null) {
+    return (
+      <text x={x} y={y + 9} textAnchor="middle" fill={GOLD_DARK} fontSize={28} fontWeight={900}>
+        ?
+      </text>
+    );
+  }
+  const figures = Array.isArray(figure) ? figure : [figure];
+  return (
+    <>
+      {figures.map((part, index) => (
+        <NvrSingleFigure key={index} figure={part} x={x} y={y} size={size * (1 - index * 0.32)} patternId={`${patternId}-${index}`} />
+      ))}
+    </>
+  );
+}
+
+function NvrSingleFigure({ figure, x, y, size, patternId }: { figure: NvrFigure; x: number; y: number; size: number; patternId: string }) {
+  const radius = (size / 2) * (figure.size ?? 0.82);
+  const fillColor = figure.fill && figure.fill !== "solid" && figure.fill !== "outline" ? `url(#${patternId})` : figure.fill === "outline" ? "#fff8e7" : GOLD;
+  const dash = BORDER_DASH[figure.borderStyle ?? "solid"];
+  const body =
+    figure.sides <= 0 ? (
+      <circle cx={0} cy={0} r={radius} fill={fillColor} stroke={INK} strokeWidth={3} strokeDasharray={dash} />
+    ) : (
+      <polygon points={nvrPolygonPoints(figure.sides, figure.rotation ?? 0, radius, figure.reflect ?? false)} fill={fillColor} stroke={INK} strokeWidth={3} strokeLinejoin="round" strokeDasharray={dash} />
+    );
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <NvrFillPattern id={patternId} fill={figure.fill} />
+      {body}
+      {figure.internalElements?.map((element, index) => <NvrInternalElement key={index} element={element} radius={radius} />)}
+      {figure.arrows?.map((arrow, index) => <NvrArrowMark key={index} arrow={arrow} radius={radius} />)}
+    </g>
+  );
+}
+
+function NvrFillPattern({ id, fill }: { id: string; fill?: NvrFigure["fill"] }) {
+  if (fill === "hatch" || fill === "stripes") {
+    return (
+      <defs>
+        <pattern id={id} width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+          <rect width="7" height="7" fill="#fff8e7" />
+          <line x1="0" y1="0" x2="0" y2="7" stroke={GOLD_DARK} strokeWidth="3" />
+        </pattern>
+      </defs>
+    );
+  }
+  if (fill === "crosshatch") {
+    return (
+      <defs>
+        <pattern id={id} width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+          <rect width="7" height="7" fill="#fff8e7" />
+          <line x1="0" y1="0" x2="0" y2="7" stroke={GOLD_DARK} strokeWidth="2" />
+          <line x1="0" y1="0" x2="7" y2="0" stroke={GOLD_DARK} strokeWidth="2" />
+        </pattern>
+      </defs>
+    );
+  }
+  if (fill === "dots") {
+    return (
+      <defs>
+        <pattern id={id} width="8" height="8" patternUnits="userSpaceOnUse">
+          <rect width="8" height="8" fill="#fff8e7" />
+          <circle cx="4" cy="4" r="1.6" fill={GOLD_DARK} />
+        </pattern>
+      </defs>
+    );
+  }
+  if (fill === "halfSplit") {
+    return (
+      <defs>
+        <linearGradient id={id} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor={GOLD} />
+          <stop offset="50%" stopColor={GOLD} />
+          <stop offset="50%" stopColor="#fff8e7" />
+          <stop offset="100%" stopColor="#fff8e7" />
+        </linearGradient>
+      </defs>
+    );
+  }
+  return null;
 }
 
 /** Smallest "nice" axis maximum and tick step so chart values can be read off the scale. */
@@ -26,8 +286,9 @@ function niceScale(maxValue: number) {
 }
 
 export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisual; adminPreview?: boolean }) {
-  const type = visual.type.replace("_", "").toLowerCase();
+  const type = visual.type.replace(/_/g, "").toLowerCase();
   const title = visual.title || "Question visual";
+  const patternId = React.useId();
   const frame = (children: React.ReactNode, summary: string) => (
     <div className="overflow-hidden rounded-2xl border border-gold/25 bg-white shadow-[0_16px_44px_-36px_rgba(17,24,39,0.45)]" role="img" aria-label={summary}>
       <div className="border-b border-gold/15 bg-cream px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-gold-dark">{title}</div>
@@ -336,7 +597,341 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
     );
   }
 
+  if (type === "nvrmatrix") {
+    const cells = visual.data.cells;
+    if (!isNvrCellArray(cells) || cells.length !== 9) return <VisualFallback adminPreview={adminPreview} />;
+    const cellSize = 88;
+    const gap = 12;
+    const originX = 20;
+    const originY = 20;
+    return frame(
+      <svg viewBox="0 0 320 320" className="mx-auto h-96 w-full max-w-sm">
+        {cells.map((figure, index) => {
+          const row = Math.floor(index / 3);
+          const col = index % 3;
+          const cx = originX + col * (cellSize + gap) + cellSize / 2;
+          const cy = originY + row * (cellSize + gap) + cellSize / 2;
+          const isMissing = figure === null;
+          return (
+            <g key={index}>
+              <rect x={cx - cellSize / 2} y={cy - cellSize / 2} width={cellSize} height={cellSize} rx={10} fill={isMissing ? "#fde68a" : "#ffffff"} stroke={isMissing ? GOLD_DARK : GRID} strokeWidth={isMissing ? 3 : 2} />
+              <NvrFigureMark figure={figure} x={cx} y={cy} size={cellSize} patternId={patternId} />
+            </g>
+          );
+        })}
+      </svg>,
+      `${title}: 3 by 3 pattern grid, work out the rule and find the missing figure`
+    );
+  }
+
+  if (type === "nvrsequence") {
+    const figures = visual.data.figures;
+    if (!isNvrCellArray(figures) || figures.length < 3) return <VisualFallback adminPreview={adminPreview} />;
+    const cellSize = 72;
+    const gap = 16;
+    const totalWidth = figures.length * cellSize + (figures.length - 1) * gap;
+    const startX = (360 - totalWidth) / 2 + cellSize / 2;
+    const cy = 68;
+    return frame(
+      <svg viewBox="0 0 360 140" className="h-48 w-full">
+        {figures.map((figure, index) => {
+          const cx = startX + index * (cellSize + gap);
+          const isMissing = figure === null;
+          return (
+            <g key={index}>
+              <rect x={cx - cellSize / 2} y={cy - cellSize / 2} width={cellSize} height={cellSize} rx={10} fill={isMissing ? "#fde68a" : "#ffffff"} stroke={isMissing ? GOLD_DARK : GRID} strokeWidth={isMissing ? 3 : 2} />
+              <NvrFigureMark figure={figure} x={cx} y={cy} size={cellSize} patternId={patternId} />
+            </g>
+          );
+        })}
+      </svg>,
+      `${title}: sequence of ${figures.length} figures following one rule, find the missing figure`
+    );
+  }
+
+  if (type === "nvroddoneout") {
+    const figures = visual.data.figures;
+    if (!isNvrFigureArray(figures) || figures.length < 4) return <VisualFallback adminPreview={adminPreview} />;
+    const cellSize = 68;
+    const gap = 14;
+    const totalWidth = figures.length * cellSize + (figures.length - 1) * gap;
+    const startX = (360 - totalWidth) / 2 + cellSize / 2;
+    const cy = 60;
+    return frame(
+      <svg viewBox="0 0 360 128" className="h-44 w-full">
+        {figures.map((figure, index) => {
+          const cx = startX + index * (cellSize + gap);
+          return (
+            <g key={index}>
+              <rect x={cx - cellSize / 2} y={cy - cellSize / 2} width={cellSize} height={cellSize} rx={10} fill="#ffffff" stroke={GRID} strokeWidth={2} />
+              <NvrFigureMark figure={figure} x={cx} y={cy} size={cellSize} patternId={patternId} />
+              <text x={cx} y={cy + cellSize / 2 + 18} textAnchor="middle" fill={INK} fontSize={11} fontWeight={800}>
+                {String.fromCharCode(65 + index)}
+              </text>
+            </g>
+          );
+        })}
+      </svg>,
+      `${title}: row of ${figures.length} figures labelled ${figures.map((_, index) => String.fromCharCode(65 + index)).join(", ")}, four share a rule and one is the odd one out`
+    );
+  }
+
+  if (type === "vrcode") {
+    const pairs = visual.data.pairs;
+    const target = visual.data.target;
+    if (!isCodePairArray(pairs)) return <VisualFallback adminPreview={adminPreview} />;
+    return frame(
+      <div className="space-y-3">
+        <div className="flex flex-wrap gap-2">
+          {pairs.map((pair, index) => (
+            <div key={`${pair.word}-${index}`} className="flex items-center gap-2 rounded-full border border-gold/30 bg-cream px-3 py-1.5 text-sm font-bold text-navy">
+              <span>{pair.word}</span>
+              <span className="text-gold-dark" aria-hidden="true">→</span>
+              <span className="font-mono tracking-[0.14em] text-gold-dark">{String(pair.code)}</span>
+            </div>
+          ))}
+        </div>
+        {typeof target === "string" && (
+          <div className="rounded-xl border-2 border-dashed border-gold-dark bg-white px-4 py-3 text-center text-lg font-black tracking-[0.2em] text-navy">{target}</div>
+        )}
+      </div>,
+      `${title}: code key ${pairs.map((pair) => `${pair.word} is ${pair.code}`).join(", ")}${typeof target === "string" ? `, decode ${target}` : ""}`
+    );
+  }
+
+  if (type === "nvrpairanalogy") {
+    const a = visual.data.a;
+    const b = visual.data.b;
+    const c = visual.data.c;
+    if (!isNvrFigure(a) || !isNvrFigure(b) || !isNvrFigure(c)) return <VisualFallback adminPreview={adminPreview} />;
+    const size = 64;
+    const cy = 65;
+    const [ax, bx, cx, dx] = [50, 160, 250, 360];
+    return frame(
+      <svg viewBox="0 0 420 130" className="h-44 w-full">
+        <NvrFigureMark figure={a} x={ax} y={cy} size={size} patternId={`${patternId}-a`} />
+        <DiagramArrow x1={ax + 37} x2={bx - 37} y={cy} />
+        <NvrFigureMark figure={b} x={bx} y={cy} size={size} patternId={`${patternId}-b`} />
+        <DiagramDivider x={205} yTop={20} yBottom={110} />
+        <NvrFigureMark figure={c} x={cx} y={cy} size={size} patternId={`${patternId}-c`} />
+        <DiagramArrow x1={cx + 37} x2={dx - 37} y={cy} />
+        <rect x={dx - size / 2} y={cy - size / 2} width={size} height={size} rx={10} fill="#fde68a" stroke={GOLD_DARK} strokeWidth={3} />
+        <NvrFigureMark figure={null} x={dx} y={cy} size={size} patternId={`${patternId}-d`} />
+      </svg>,
+      `${title}: figure A changes into figure B; figure C must change the same way, choose what it becomes`
+    );
+  }
+
+  if (type === "nvrrotation") {
+    const before = visual.data.before;
+    const after = visual.data.after;
+    const test = visual.data.test;
+    if (!isNvrFigure(before) || !isNvrFigure(after) || !isNvrFigure(test)) return <VisualFallback adminPreview={adminPreview} />;
+    const size = 68;
+    const cy = 65;
+    const [beforeX, afterX, testX] = [55, 175, 320];
+    return frame(
+      <svg viewBox="0 0 420 130" className="h-44 w-full">
+        <NvrFigureMark figure={before} x={beforeX} y={cy} size={size} patternId={`${patternId}-before`} />
+        <path d={`M ${beforeX + 40} ${cy - 24} A 30 30 0 0 1 ${afterX - 40} ${cy - 24}`} fill="none" stroke={GOLD_DARK} strokeWidth={2.5} markerEnd="none" />
+        <NvrFigureMark figure={after} x={afterX} y={cy} size={size} patternId={`${patternId}-after`} />
+        <DiagramDivider x={250} yTop={20} yBottom={110} />
+        <NvrFigureMark figure={test} x={testX} y={cy} size={size} patternId={`${patternId}-test`} />
+        <text x={320} y={118} textAnchor="middle" fill={INK} fontSize={11} fontWeight={800}>?</text>
+      </svg>,
+      `${title}: the first figure is rotated to make the second; apply the same rotation to the test figure and choose the result`
+    );
+  }
+
+  if (type === "nvrsimilarity") {
+    const reference = visual.data.reference;
+    const query = visual.data.query;
+    if (!isNvrFigureArray(reference) || reference.length < 2 || !isNvrFigure(query)) return <VisualFallback adminPreview={adminPreview} />;
+    const size = 72;
+    const cy = 66;
+    return frame(
+      <svg viewBox="0 0 360 148" className="h-48 w-full">
+        {reference.map((figure, index) => (
+          <NvrFigureMark key={index} figure={figure} x={70 + index * 90} y={cy} size={size} patternId={`${patternId}-ref${index}`} />
+        ))}
+        <line x1={20} y1={112} x2={20 + reference.length * 90 - 20} y2={112} stroke={GRID} strokeWidth={2} />
+        <text x={20} y={132} fill={INK} fontSize={11} fontWeight={800}>these are alike</text>
+        <line x1={272} y1={20} x2={272} y2={112} stroke={GRID} strokeWidth={2} />
+        <NvrFigureMark figure={query} x={320} y={cy} size={size} patternId={`${patternId}-query`} />
+        <text x={272} y={132} fill={INK} fontSize={11} fontWeight={800}>which option is like these?</text>
+      </svg>,
+      `${title}: two reference figures share one property, choose the answer option that shares the same property as the query figure`
+    );
+  }
+
+  if (type === "nvrcodekey") {
+    const examples = visual.data.examples;
+    const test = visual.data.test;
+    const validExamples =
+      Array.isArray(examples) &&
+      examples.every((item) => typeof item === "object" && item !== null && isNvrFigure((item as Record<string, unknown>).figure) && typeof (item as Record<string, unknown>).code === "string");
+    if (!validExamples || !isNvrFigure(test)) return <VisualFallback adminPreview={adminPreview} />;
+    const typedExamples = examples as { figure: NvrFigure; code: string }[];
+    return frame(
+      <div className="space-y-3">
+        <div className="flex flex-wrap items-center gap-3">
+          {typedExamples.map((example, index) => (
+            <div key={index} className="flex items-center gap-2 rounded-xl border border-gold/25 bg-cream px-2 py-1.5">
+              <svg viewBox="0 0 60 60" className="h-10 w-10">
+                <NvrFigureMark figure={example.figure} x={30} y={30} size={48} patternId={`${patternId}-ex${index}`} />
+              </svg>
+              <span className="text-gold-dark" aria-hidden="true">→</span>
+              <span className="font-mono text-sm font-black tracking-[0.14em] text-gold-dark">{example.code}</span>
+            </div>
+          ))}
+        </div>
+        <div className="flex items-center gap-3 rounded-xl border-2 border-dashed border-gold-dark bg-white px-3 py-2">
+          <svg viewBox="0 0 60 60" className="h-10 w-10">
+            <NvrFigureMark figure={test} x={30} y={30} size={48} patternId={`${patternId}-test`} />
+          </svg>
+          <span className="text-gold-dark" aria-hidden="true">→</span>
+          <span className="text-lg font-black text-navy">?</span>
+        </div>
+      </div>,
+      `${title}: figure-to-code key with ${typedExamples.length} worked examples, work out the code for the test figure`
+    );
+  }
+
+  if (type === "nvrnet") {
+    const net = visual.data.net;
+    const isFaceMap = typeof net === "object" && net !== null && ["top", "front", "bottom", "left", "right", "back"].every((face) => isNvrFigure((net as Record<string, unknown>)[face]));
+    if (!isFaceMap) return <VisualFallback adminPreview={adminPreview} />;
+    const faces = net as Record<"top" | "front" | "bottom" | "left" | "right" | "back", NvrFigure>;
+    const cellSize = 72;
+    const gap = 10;
+    const originX = 14;
+    const originY = 14;
+    const cellPos = (row: number, col: number) => ({ x: originX + col * (cellSize + gap) + cellSize / 2, y: originY + row * (cellSize + gap) + cellSize / 2 });
+    const layout: { face: keyof typeof faces; row: number; col: number }[] = [
+      { face: "top", row: 0, col: 2 },
+      { face: "left", row: 1, col: 1 },
+      { face: "front", row: 1, col: 2 },
+      { face: "right", row: 1, col: 3 },
+      { face: "back", row: 1, col: 4 },
+      { face: "bottom", row: 2, col: 2 },
+    ];
+    return frame(
+      <svg viewBox="0 0 430 268" className="mx-auto h-80 w-full max-w-lg">
+        {layout.map(({ face, row, col }) => {
+          const { x, y } = cellPos(row, col);
+          return (
+            <g key={face}>
+              <rect x={x - cellSize / 2} y={y - cellSize / 2} width={cellSize} height={cellSize} rx={8} fill="#ffffff" stroke={GRID} strokeWidth={2} />
+              <NvrFigureMark figure={faces[face]} x={x} y={y} size={cellSize * 0.82} patternId={`${patternId}-${face}`} />
+            </g>
+          );
+        })}
+      </svg>,
+      `${title}: unfolded net of a cube with a different symbol on each of the 6 faces, choose the cube it folds into`
+    );
+  }
+
+  if (type === "nvrcombine3d") {
+    const a = visual.data.a;
+    const b = visual.data.b;
+    const isBlock = (v: unknown): v is { w: number; h: number; d: number } => typeof v === "object" && v !== null && ["w", "h", "d"].every((k) => typeof (v as Record<string, unknown>)[k] === "number");
+    if (!isBlock(a) || !isBlock(b)) return <VisualFallback adminPreview={adminPreview} />;
+    return frame(
+      <svg viewBox="0 0 300 220" className="mx-auto h-72 w-full max-w-md">
+        <ObliqueCuboid x={40} y={150} w={a.w} h={a.h} d={a.d} patternId={`${patternId}-a`} />
+        <text x={40 + a.w / 2} y={185} textAnchor="middle" fill={INK} fontSize={11} fontWeight={800}>Shape A</text>
+        <ObliqueCuboid x={190} y={150} w={b.w} h={b.h} d={b.d} patternId={`${patternId}-b`} />
+        <text x={190 + b.w / 2} y={185} textAnchor="middle" fill={INK} fontSize={11} fontWeight={800}>Shape B</text>
+      </svg>,
+      `${title}: two separate solids, shape A and shape B; choose the answer option that shows them joined face-to-face with no gap or overlap`
+    );
+  }
+
+  if (type === "nvrholepunch") {
+    const folds = visual.data.folds;
+    const punch = visual.data.punch;
+    const isPunchPoint = typeof punch === "object" && punch !== null && typeof (punch as Record<string, unknown>).x === "number" && typeof (punch as Record<string, unknown>).y === "number";
+    if (!isStringArray(folds) || !isPunchPoint) return <VisualFallback adminPreview={adminPreview} />;
+    const p = punch as { x: number; y: number };
+    const foldedSize = 130;
+    const foldedX = 30;
+    const foldedY = 28;
+    const targetSize = 150;
+    const targetX = foldedX + foldedSize + 74;
+    const targetY = foldedY - 14;
+    const quarterPoints = [0.25, 0.5, 0.75];
+    return frame(
+      <svg viewBox="0 0 410 190" className="h-64 w-full">
+        <rect x={foldedX} y={foldedY} width={foldedSize} height={foldedSize} rx={6} fill="#fff8e7" stroke={INK} strokeWidth={3} />
+        {quarterPoints.map((q) => (
+          <g key={q} stroke={GRID} strokeWidth={1} strokeDasharray="2 4" opacity={0.9}>
+            <line x1={foldedX + q * foldedSize} y1={foldedY} x2={foldedX + q * foldedSize} y2={foldedY + foldedSize} />
+            <line x1={foldedX} y1={foldedY + q * foldedSize} x2={foldedX + foldedSize} y2={foldedY + q * foldedSize} />
+          </g>
+        ))}
+        {folds.map((fold, index) => {
+          const isVertical = fold === "vertical";
+          const label = `Fold ${index + 1}`;
+          return (
+            <g key={index}>
+              <line
+                x1={isVertical ? foldedX + foldedSize / 2 : foldedX}
+                y1={isVertical ? foldedY : foldedY + foldedSize / 2}
+                x2={isVertical ? foldedX + foldedSize / 2 : foldedX + foldedSize}
+                y2={isVertical ? foldedY + foldedSize : foldedY + foldedSize / 2}
+                stroke={BLUE_DARK}
+                strokeWidth={2.5}
+                strokeDasharray="6 4"
+              />
+              {folds.length > 1 && (
+                <text
+                  x={isVertical ? foldedX + foldedSize / 2 : foldedX - 6}
+                  y={isVertical ? foldedY - 8 : foldedY + foldedSize / 2 + 4}
+                  textAnchor={isVertical ? "middle" : "end"}
+                  fill={BLUE_DARK}
+                  fontSize={10}
+                  fontWeight={800}
+                >
+                  {label}
+                </text>
+              )}
+            </g>
+          );
+        })}
+        <circle cx={foldedX + p.x * foldedSize} cy={foldedY + p.y * foldedSize} r={6} fill={INK} />
+        <DiagramArrow x1={foldedX + foldedSize + 14} x2={foldedX + foldedSize + 60} y={foldedY + foldedSize / 2} />
+        <rect x={targetX} y={targetY} width={targetSize} height={targetSize} rx={6} fill="#ffffff" stroke={GOLD_DARK} strokeWidth={3} strokeDasharray="6 4" />
+        {quarterPoints.map((q) => (
+          <g key={q} stroke={GRID} strokeWidth={1} strokeDasharray="2 4" opacity={0.9}>
+            <line x1={targetX + q * targetSize} y1={targetY} x2={targetX + q * targetSize} y2={targetY + targetSize} />
+            <line x1={targetX} y1={targetY + q * targetSize} x2={targetX + targetSize} y2={targetY + q * targetSize} />
+          </g>
+        ))}
+        <text x={targetX + targetSize / 2} y={targetY + targetSize / 2 + 9} textAnchor="middle" fill={GOLD_DARK} fontSize={30} fontWeight={900}>?</text>
+      </svg>,
+      `${title}: paper folded ${folds.join(" then ")}, a hole is punched through the folded stack; choose the pattern of holes when unfolded`
+    );
+  }
+
   return <VisualFallback adminPreview={adminPreview} />;
+}
+
+/** Reflects a point across each fold line in turn, returning every resulting hole position when the paper is unfolded (deduped). */
+export function unfoldPoints(point: { x: number; y: number }, folds: string[]) {
+  let points = [point];
+  for (const fold of folds) {
+    points = points.flatMap((p) => [p, fold === "vertical" ? { x: 1 - p.x, y: p.y } : { x: p.x, y: 1 - p.y }]);
+  }
+  const seen = new Set<string>();
+  const unique: { x: number; y: number }[] = [];
+  for (const p of points) {
+    const key = `${p.x.toFixed(3)},${p.y.toFixed(3)}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      unique.push(p);
+    }
+  }
+  return unique;
 }
 
 function ordinal(value: number) {
