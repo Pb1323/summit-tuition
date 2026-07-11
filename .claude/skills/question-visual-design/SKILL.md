@@ -85,6 +85,17 @@ letter-to-symbol / word-to-code substitution questions, where seeing the key as
 a row of pill chips plus a highlighted target to decode is genuinely clearer
 than a sentence.
 
+## Matching GL's real print layout
+
+`research/gl-layout-spec.md` has real GL Assessment page measurements (A4, margins, fonts, line
+spacing) extracted via `pdfplumber` from official papers in `research/gl-papers/` (gitignored locally —
+never publish these PDFs, only the extracted numbers, per `PROJECT_CONTEXT.md`). The numbers are wired
+into `src/app/globals.css` as `--gl-print-*` custom properties plus a `@media print` block: wrap any
+future printable/exportable mock page in a `.gl-print` container with `.gl-print-page` (or
+`.gl-print-page-diagram` for diagram-heavy pages, which use GL's smaller top margin) per printed sheet,
+and `.gl-print-passage` around English reading-passage text specifically for the serif treatment. This
+isn't wired into any route yet — it's the CSS building blocks for whenever mock PDF export is built.
+
 ## Quality bar before calling a new visual "done"
 
 - Renders correctly with `adminPreview` true and false (check `VisualFallback`'s copy differs).
