@@ -137,13 +137,13 @@ function emitChange() {
   listeners.forEach((listener) => listener());
 }
 
-async function refreshFromServer() {
-  if (typeof window === "undefined") return;
+async function refreshFromServer(): Promise<boolean> {
+  if (typeof window === "undefined") return false;
   try {
     const response = await fetch("/api/platform/bootstrap", { credentials: "include", cache: "no-store" });
-    if (!response.ok) return;
+    if (!response.ok) return false;
     const data = (await response.json()) as PlatformState & { currentUser: StudentAccount | null; mode?: "demo" };
-    if (data.mode === "demo") return; // No database configured: the server has no authoritative state beyond the static seed, so keep local demo mutations intact instead of clobbering them.
+    if (data.mode === "demo") return true; // No database configured: the server has no authoritative state beyond the static seed, so keep local demo mutations intact instead of clobbering them.
     memoryState = {
       users: data.users,
       mocks: data.mocks,
@@ -159,8 +159,10 @@ async function refreshFromServer() {
     else window.localStorage.removeItem(SESSION_KEY);
     persistState();
     emitChange();
+    return true;
   } catch {
     // Keep local demo state if the server/database is unavailable.
+    return false;
   }
 }
 
@@ -238,8 +240,9 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
           body: JSON.stringify({ email, password }),
         });
         const data = await response.json().catch(() => null);
-        if (response.ok && data?.ok && data.user) {
-          await refreshFromServer();
+        if (response.ok && data?.ok && data.user && data.mode !== "demo") {
+          const refreshed = await refreshFromServer();
+          if (!refreshed) return { ok: false, message: "Signed in, but couldn't load your account. Please try again." };
           return { ok: true, user: data.user as StudentAccount };
         }
         if (response.status !== 404 && data?.mode !== "demo") return { ok: false, message: data?.message ?? "Unable to sign in." };
