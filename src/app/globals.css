@@ -358,6 +358,52 @@ body {
   }
 }
 
+/*
+ * .gl-print base styles apply on-screen too (not just @media print) so the route reads as a
+ * formatted page when viewed in a normal browser tab, not flat unstyled text - the @media print
+ * block below only adds/removes what's specifically different when actually printing/exporting
+ * (no grey background, no page shadow/gap, header/footer hidden, real page breaks).
+ */
+.gl-print {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 24px 12px;
+  background: #e7e9ee;
+  font-family: var(--font-sans);
+  font-size: var(--gl-print-body-size);
+  line-height: var(--gl-print-line-height);
+  color: var(--color-ink);
+}
+
+/* English reading passages get the GL serif treatment; everything else stays sans. */
+.gl-print .gl-print-passage {
+  font-family: var(--font-serif);
+}
+
+/* Any element the app doesn't want on the printed/exported page. */
+.gl-print .gl-print-hide {
+  display: none;
+}
+
+.gl-print-page {
+  width: 210mm;
+  min-height: 297mm;
+  max-width: 100%;
+  box-sizing: border-box;
+  background: #fff;
+  box-shadow: var(--shadow-soft);
+  padding-top: var(--gl-print-margin-top-text);
+  padding-bottom: var(--gl-print-margin-bottom);
+  padding-inline: var(--gl-print-margin-side);
+}
+
+.gl-print-page.gl-print-page-diagram {
+  padding-top: var(--gl-print-margin-top-diagram);
+}
+
 @media print {
   body {
     display: none;
@@ -375,38 +421,28 @@ body {
     display: none;
   }
 
+  /* Strip the on-screen "page preview" chrome - printing supplies its own page boundaries. */
   .gl-print {
-    font-family: var(--font-sans);
-    font-size: var(--gl-print-body-size);
-    line-height: var(--gl-print-line-height);
-    color: var(--color-ink);
+    display: block;
+    gap: 0;
+    padding: 0;
     background: #fff;
   }
 
-  /* English reading passages get the GL serif treatment; everything else stays sans. */
-  .gl-print .gl-print-passage {
-    font-family: var(--font-serif);
-  }
-
-  /* Any element the app doesn't want on the printed page (nav, buttons, progress UI). */
   .gl-print .gl-print-hide {
     display: none !important;
+  }
+
+  .gl-print-page {
+    width: auto;
+    min-height: 0;
+    box-shadow: none;
   }
 
   .gl-print-page:not(:last-child) {
     break-after: page;
   }
 
-  .gl-print-page {
-    padding-top: var(--gl-print-margin-top-text);
-    padding-bottom: var(--gl-print-margin-bottom);
-    padding-inline: var(--gl-print-margin-side);
-  }
-
-  /* Diagram-only pages (NVR grids, etc.) need less top padding - GL's own pages do too. */
-  .gl-print-page.gl-print-page-diagram {
-    padding-top: var(--gl-print-margin-top-diagram);
-  }
 }
 
 @page {
