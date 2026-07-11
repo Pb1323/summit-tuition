@@ -89,12 +89,31 @@ function hashPassword(password: string, salt: string) {
   return window.btoa(`${salt}:${password}`);
 }
 
+/** Keeps any cached (possibly locally edited) items by id, and appends items newly shipped in code that the cache predates. */
+function mergeCatalogById<T extends { id: string }>(cached: T[] | undefined, fresh: T[]): T[] {
+  if (!cached) return fresh;
+  const cachedIds = new Set(cached.map((item) => item.id));
+  const missing = fresh.filter((item) => !cachedIds.has(item.id));
+  return missing.length ? [...cached, ...missing] : cached;
+}
+
 function loadState() {
   if (typeof window === "undefined") return initialState;
   const raw = window.localStorage.getItem(STORAGE_KEY);
   if (!raw) return initialState;
   try {
-    return { ...initialState, ...JSON.parse(raw) } as PlatformState;
+    const parsed = { ...initialState, ...JSON.parse(raw) } as PlatformState;
+    // The browser cache predates newly shipped mocks/questions/etc: merge those in by id
+    // instead of letting the stale cached array silently hide new catalog content forever.
+    return {
+      ...parsed,
+      mocks: mergeCatalogById(parsed.mocks, initialState.mocks),
+      questions: mergeCatalogById(parsed.questions, initialState.questions),
+      passages: mergeCatalogById(parsed.passages, initialState.passages),
+      references: mergeCatalogById(parsed.references, initialState.references),
+      products: mergeCatalogById(parsed.products, initialState.products),
+      emailTemplates: mergeCatalogById(parsed.emailTemplates, initialState.emailTemplates),
+    };
   } catch {
     return initialState;
   }
