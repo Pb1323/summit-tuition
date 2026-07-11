@@ -6,9 +6,19 @@ import { RequireAuth, GlowCard, PremiumBadge, RevealOnScroll } from "@/component
 import { numbersTopic } from "@/components/notes/notes-content/numbers";
 import { fractionsDecimalsPercentagesTopic } from "@/components/notes/notes-content/fractions-decimals-percentages";
 import { ratioProportionTopic } from "@/components/notes/notes-content/ratio-proportion";
+import { algebraTopic } from "@/components/notes/notes-content/algebra";
+import { geometryTopic } from "@/components/notes/notes-content/geometry";
+import { averagesStatisticsTopic } from "@/components/notes/notes-content/averages-statistics";
 import type { TopicContent } from "@/components/notes/types";
 
-const TOPICS: TopicContent[] = [numbersTopic, fractionsDecimalsPercentagesTopic, ratioProportionTopic];
+const TOPICS: TopicContent[] = [
+  numbersTopic,
+  fractionsDecimalsPercentagesTopic,
+  ratioProportionTopic,
+  algebraTopic,
+  geometryTopic,
+  averagesStatisticsTopic,
+];
 
 export default function MathsNotesHubPage() {
   return (
