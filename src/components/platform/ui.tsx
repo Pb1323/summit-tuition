@@ -136,7 +136,7 @@ export function RequireAuth({ role, children }: { role?: Role; children: React.R
   return <>{children}</>;
 }
 
-export function MockTimer({ durationMinutes, initialElapsedSeconds = 0, onExpire }: { durationMinutes: number; initialElapsedSeconds?: number; onExpire: () => void }) {
+export function MockTimer({ durationMinutes, initialElapsedSeconds = 0, onExpire, visible = true }: { durationMinutes: number; initialElapsedSeconds?: number; onExpire: () => void; visible?: boolean }) {
   const [seconds, setSeconds] = useState(() => Math.max(0, durationMinutes * 60 - initialElapsedSeconds));
   useEffect(() => {
     if (seconds <= 0) {
@@ -146,6 +146,10 @@ export function MockTimer({ durationMinutes, initialElapsedSeconds = 0, onExpire
     const timer = window.setTimeout(() => setSeconds((value) => value - 1), 1000);
     return () => window.clearTimeout(timer);
   }, [seconds, onExpire]);
+  // The countdown keeps running and still auto-submits on expiry even while hidden — only the visible readout is suppressed.
+  if (!visible) {
+    return <span className="rounded-full border border-line bg-cream px-3 py-1 text-sm font-bold text-muted">Timer hidden</span>;
+  }
   const mins = Math.floor(seconds / 60).toString().padStart(2, "0");
   const secs = (seconds % 60).toString().padStart(2, "0");
   return (

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AlertTriangle, ArrowLeft, CheckCircle2, Eye, Flag, ShieldAlert } from "lucide-react";
+import { AlertTriangle, ArrowLeft, CheckCircle2, Eye, EyeOff, Flag, ShieldAlert } from "lucide-react";
 import { usePlatform } from "@/context/platform-context";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/container";
@@ -32,6 +32,18 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
   // Elapsed time already banked in the resumed draft, captured once at start.
   // Reading the live draft here would compound: every save writes the new total back into the draft.
   const [baseElapsed, setBaseElapsed] = useState(0);
+  const [showTimer, setShowTimer] = useState(() => {
+    if (typeof window === "undefined") return true;
+    const stored = window.localStorage.getItem("summit-mock-show-timer");
+    return stored !== "false";
+  });
+  const toggleTimer = useCallback(() => {
+    setShowTimer((value) => {
+      const next = !value;
+      window.localStorage.setItem("summit-mock-show-timer", String(next));
+      return next;
+    });
+  }, []);
   const active = questions[index];
   const activePassage = active?.passageId ? passages.find((passage) => passage.id === active.passageId) : undefined;
   const unansweredCount = questions.filter((question) => !answers[question.id]).length;
@@ -186,7 +198,17 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
                       Review &amp; submit
                     </button>
                   )}
-                  {isAdminPreview ? <span className="rounded-full bg-navy px-3 py-1 text-sm font-bold text-white">Preview timer</span> : <MockTimer durationMinutes={mock.durationMinutes} initialElapsedSeconds={baseElapsed} onExpire={submit} />}
+                  {!isAdminPreview && (
+                    <button
+                      onClick={toggleTimer}
+                      aria-label={showTimer ? "Hide timer" : "Show timer"}
+                      title={showTimer ? "Hide timer" : "Show timer"}
+                      className="rounded-full border border-line bg-white p-1.5 text-navy transition hover:bg-cream"
+                    >
+                      {showTimer ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                    </button>
+                  )}
+                  {isAdminPreview ? <span className="rounded-full bg-navy px-3 py-1 text-sm font-bold text-white">Preview timer</span> : <MockTimer durationMinutes={mock.durationMinutes} initialElapsedSeconds={baseElapsed} onExpire={submit} visible={showTimer} />}
                 </div>
               </div>
               <div className="mt-4"><QuestionNavigator questions={questions} activeIndex={index} answers={answers} flagged={flagged} onSelect={setIndex} /></div>
