@@ -18,6 +18,11 @@ export function Header() {
   // Signed-in users clicking "Mocks" mean "take me to my mocks", not the marketing page they've already converted from.
   const mocksHref = currentUser?.role === "admin" ? "/admin/mocks" : currentUser ? "/dashboard" : "/mocks";
   const navHref = (link: { href: string }) => (link.href === "/mocks" ? mocksHref : link.href);
+  // Notes sits alongside Mocks in the primary nav, not tucked into the account controls.
+  const navLinks =
+    currentUser && currentUser.role !== "admin"
+      ? MAIN_NAV.flatMap((link) => (link.href === "/mocks" ? [link, { label: "Notes", href: "/notes" }] : [link]))
+      : MAIN_NAV;
 
   return (
     <header className="sticky top-0 z-[70] border-b border-gold/20 bg-white/82 shadow-[0_12px_40px_-32px_rgba(17,24,39,0.55)] backdrop-blur-xl supports-[backdrop-filter]:bg-white/72">
@@ -33,7 +38,7 @@ export function Header() {
         </Link>
 
         <nav className="hidden items-center gap-7 lg:flex">
-          {MAIN_NAV.map((link) => (
+          {navLinks.map((link) => (
             <Link
               key={link.href}
               href={navHref(link)}
@@ -53,11 +58,6 @@ export function Header() {
             <span className="text-sm font-bold text-muted">Account</span>
           ) : currentUser ? (
             <>
-              {currentUser.role !== "admin" && (
-                <Link href="/notes" className="text-sm font-bold text-navy">
-                  Notes
-                </Link>
-              )}
               <Link href={dashboardHref} className="text-sm font-bold text-navy">
                 {currentUser.role === "admin" ? "Admin" : "Dashboard"}
               </Link>
@@ -85,7 +85,7 @@ export function Header() {
       {open && (
         <div id="mobile-navigation" className="border-t border-gold/20 bg-white/95 px-6 py-4 shadow-[0_18px_50px_-36px_rgba(17,24,39,0.45)] backdrop-blur-xl lg:hidden">
           <nav className="flex flex-col gap-1">
-            {MAIN_NAV.map((link) => (
+            {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={navHref(link)}
@@ -109,11 +109,6 @@ export function Header() {
             </span>
           ) : currentUser ? (
             <div className="mt-3 grid gap-2">
-              {currentUser.role !== "admin" && (
-                <Button href="/notes" variant="outline" size="md" className="w-full">
-                  Study Notes
-                </Button>
-              )}
               <Button href={dashboardHref} variant="outline" size="md" className="w-full">
                 {currentUser.role === "admin" ? "Admin dashboard" : "Student dashboard"}
               </Button>
