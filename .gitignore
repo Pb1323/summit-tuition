@@ -56,3 +56,6 @@ src/generated/prisma/
 
 # Downloaded copyrighted GL Assessment papers - local reference only, never publish
 research/gl-papers/*.pdf
+
+.vercel
+.env*

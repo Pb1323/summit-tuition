@@ -1,6 +1,6 @@
 # Summit Tuition Project Context
 
-Last updated: 2026-07-11
+Last updated: 2026-07-12
 
 ## Sibling Projects In This Repo
 
@@ -43,6 +43,7 @@ Important: this repo has `AGENTS.md` warning that this is a newer Next.js with b
 ## Main Product Flows
 
 - Public marketing routes explain diagnostic assessments, tuition, mocks, practice packs, pricing, FAQs, policies, and booking/contact.
+- Students open interactive Study Notes at `/notes` (subject index) and `/notes/maths/[topic]` (Numbers, Fractions/Decimals/Percentages, Ratio & Proportion, Algebra, Geometry, Averages & Statistics), wired in from the student dashboard.
 - Students register at `/register`, choose a plan, and remain pending until admin approval.
 - Admin signs in at `/login`, opens `/admin`, approves students, assigns plans, and unlocks mocks.
 - Students open `/dashboard`, start unlocked online mocks, autosave drafts, submit attempts, then wait for admin release.
@@ -55,6 +56,7 @@ Important: this repo has `AGENTS.md` warning that this is a newer Next.js with b
 - `/login`, `/register`, `/dashboard`.
 - `/admin`, `/admin/students`, `/admin/mocks`, `/admin/mocks/[id]/preview`.
 - `/mocks`, `/mocks/[id]`, `/mocks/[id]/review`.
+- `/notes`, `/notes/maths`, `/notes/maths/numbers`, `/notes/maths/fractions-decimals-percentages`, `/notes/maths/ratio-proportion`, `/notes/maths/algebra`, `/notes/maths/geometry`, `/notes/maths/averages-statistics`.
 - Marketing pages: `/pricing`, `/contact`, `/book-a-call`, `/about`, `/faq`, `/tuition`, `/tuition/group`, `/tuition/private`, `/diagnostic-assessment`, `/weekly-mock-club`, `/practice-paper-simulator`, `/practice-packs`, `/complete-programme`, `/holiday-booster`, `/privacy-policy`, `/terms`, `/safeguarding`.
 
 ## Server/API Routes
@@ -100,6 +102,8 @@ Seed/static catalog lives in `src/data/platform.ts`:
 
 ## Recent Feature State
 
+- **Study Notes feature** (new, `src/components/notes/**` and `src/app/notes/**`): interactive, letterhead-styled study pages, separate from the mock/exam system. `src/components/notes/notes-shell.tsx` and `notes-blocks.tsx` render topic content defined per-subtopic in `src/components/notes/notes-content/*.ts` (numbers, fractions-decimals-percentages, ratio-proportion, algebra, geometry, averages-statistics), each paired with bespoke interactive SVG diagrams in `src/components/notes/notes-diagrams/*.tsx` (e.g. `balance-scale-equation.tsx`, `angle-sum-explorer.tsx`, `pie-chart-explorer.tsx`). Theming lives in `notes-theme.ts`; CSS is namespaced `nt-`/`notes-` in `globals.css` to stay isolated from the rest of the site. Wired into the student dashboard as an entry point. Content-only/local so far — no persistence of student progress within notes yet.
+- **Uncommitted site-wide UX polish pass** (working tree as of 2026-07-12, not yet committed): touches `src/app/page.tsx`, `about/page.tsx`, `tuition/page.tsx`, `diagnostic-assessment/page.tsx`, `components/layout/header.tsx` + `footer.tsx`, `components/sections/cta-section.tsx`, `components/platform/dashboards.tsx`, `components/ui/badge.tsx`, `components/ui/testimonial-card.tsx`, and `globals.css`. Adds two new editorial components — `src/components/ui/drop-cap.tsx` and `pull-quote.tsx` — plus new CSS: `.editorial-drop-cap`, `.editorial-pull-quote`, `.cursor-pencil` (custom pencil cursor for interactive text), and a `premium-card-hover` utility now applied to dashboard step/stat cards. This is a restrained subset of the visual/editorial half of the brainstorm in [docs/ideas/11plus-premium-craft-and-gamification.md](docs/ideas/11plus-premium-craft-and-gamification.md); the "wax-seal" gamification half of that doc was deliberately not started (deferred until Notes is stable).
 - Added `maths-gl-2-stretch` ("Maths GL-Style Stretch Paper") to `src/data/platform.ts`: a full 50-question, 57-mark original Maths mock (questions `mh1`-`mh50`) replicating the real GL 11+ Maths paper format section-for-section — arithmetic, fractions, percentages, ratio, algebra, geometry, measurement, time/money, data handling, number patterns and multi-step challenge word problems — mirroring the structure of `english-gl-2-stretch`. Passes every `evaluateMockQuality` gate in `src/lib/mock-quality.ts` (50+ questions, 30%+ visual ratio, 30%+ stretch difficulty, balanced topic spread, challenge questions present, marks reconcile). Uses only pre-existing visual types (bar_chart, line_graph, table, coordinateGrid, numberLine, shape, sequence, fraction, ratioBlocks, venn, clock) — did not touch `question-visuals.tsx` or `types/platform.ts`, which were mid-edit by another session adding NVR/VR visual renderers.
 - Mock room visuals have been polished with dedicated renderers in `src/components/platform/question-visuals.tsx`.
 - The mock room supports compact 50-question navigation, keyboard left/right movement, flagging, draft resume, submit confirmation, and admin preview mode.
@@ -170,6 +174,7 @@ If Playwright needs the local server, the config uses `scripts/playwright-dev-se
 - Server libs: `src/lib/server/auth.ts`, `db.ts`, `platform-store.ts`, `ai-generation.ts`.
 - Domain libs: `src/lib/assessment.ts`, `mock-generation.ts`, `mock-quality.ts`, `stripe.ts`, `utils.ts`.
 - Platform UI: `src/components/platform/*`.
+- Study Notes: `src/components/notes/*`, `src/app/notes/**`.
 - Marketing sections: `src/components/sections/*`.
 - Layout/UI primitives: `src/components/layout/*`, `src/components/ui/*`, `src/components/motion/*`.
 - Tests: `tests/admin-nav-and-mock-room.spec.ts`.

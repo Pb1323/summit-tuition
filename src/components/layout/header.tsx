@@ -39,7 +39,7 @@ export function Header() {
               href={navHref(link)}
               aria-current={pathname === navHref(link) ? "page" : undefined}
               className={cn(
-                "relative text-sm font-medium text-ink/80 transition-colors after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-0 after:rounded-full after:bg-gold after:transition-all hover:text-navy hover:after:w-full",
+                "cursor-pencil relative text-sm font-medium text-ink/80 transition-colors duration-300 after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-0 after:rounded-full after:bg-gold after:transition-all after:duration-300 hover:text-navy hover:after:w-full",
                 pathname === navHref(link) && "font-semibold text-navy after:w-full"
               )}
             >
@@ -87,7 +87,7 @@ export function Header() {
                 aria-current={pathname === navHref(link) ? "page" : undefined}
                 onClick={() => setOpen(false)}
                 className={cn(
-                  "rounded-xl px-3 py-2.5 text-sm font-medium text-ink/80 hover:bg-cream hover:text-navy",
+                  "cursor-pencil rounded-xl px-3 py-2.5 text-sm font-medium text-ink/80 transition-colors duration-300 hover:bg-cream hover:text-navy",
                   pathname === navHref(link) && "bg-cream text-navy"
                 )}
               >

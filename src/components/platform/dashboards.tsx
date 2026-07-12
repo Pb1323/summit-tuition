@@ -100,7 +100,7 @@ export function StudentDashboard() {
           ["Admin approves", currentUser?.approved ? "Complete" : "Pending"],
           ["Report released", released.length ? "Ready" : pending.length ? "In marking" : "After mock"],
         ].map(([label, state], idx) => (
-          <div key={label} className="rounded-2xl border border-line bg-white/85 p-4 shadow-[0_18px_44px_-36px_rgba(17,24,39,0.42)]">
+          <div key={label} className="premium-card-hover rounded-2xl border border-line bg-white/85 p-4 shadow-[0_18px_44px_-36px_rgba(17,24,39,0.42)]">
             <p className="text-xs font-black uppercase tracking-[0.18em] text-gold-dark">Step {idx + 1}</p>
             <p className="mt-2 font-bold text-navy">{label}</p>
             <p className="text-sm text-muted">{state}</p>
@@ -231,7 +231,7 @@ export function AdminDashboard() {
           ["Publish mocks", draftMocks, "Review drafts before student unlocks."],
           ["Classify references", unclassifiedReferences, "Tag GL, non-GL or unknown."],
         ].map(([label, value, text]) => (
-          <div key={label} className="rounded-2xl border border-gold/25 bg-white/90 p-5 shadow-[0_18px_52px_-42px_rgba(180,83,9,0.55)]">
+          <div key={label} className="premium-card-hover rounded-2xl border border-gold/25 bg-white/90 p-5 shadow-[0_18px_52px_-42px_rgba(180,83,9,0.55)]">
             <p className="text-3xl font-black text-navy">{value}</p>
             <p className="mt-1 font-bold text-navy">{label}</p>
             <p className="mt-1 text-sm text-muted">{text}</p>

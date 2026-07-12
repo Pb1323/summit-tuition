@@ -212,6 +212,10 @@ Admin can view submitted attempts, add manual feedback and release the report. O
 
 Types already support `VR` and `NVR`, including future question types. Add questions to `QUESTIONS`, add question IDs to a draft mock in `MOCKS`, and publish when ready. NVR diagrams should use generated SVG/canvas/code data, not copied paper assets.
 
+## Study Notes
+
+Interactive study notes live at `/notes` (subject index) and `/notes/maths/[topic]`, separate from the mock/exam system. Content and diagrams are defined in `src/components/notes/notes-content/*.ts` and `src/components/notes/notes-diagrams/*.tsx`; see `PROJECT_CONTEXT.md` for the full file map.
+
 ## Content Rules
 
 - No PDF downloads.

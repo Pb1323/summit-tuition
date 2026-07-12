@@ -20,10 +20,10 @@ export function Footer() {
               {SITE.description}
             </p>
             <div className="mt-5 space-y-2 text-sm">
-              <a href={`mailto:${SITE.email}`} className="flex items-center gap-2 hover:text-white">
+              <a href={`mailto:${SITE.email}`} className="cursor-pencil flex items-center gap-2 transition-colors duration-300 hover:text-white">
                 <Mail className="h-4 w-4 text-gold-light" /> {SITE.email}
               </a>
-              <a href={`tel:${SITE.phone.replace(/\s/g, "")}`} className="flex items-center gap-2 hover:text-white">
+              <a href={`tel:${SITE.phone.replace(/\s/g, "")}`} className="cursor-pencil flex items-center gap-2 transition-colors duration-300 hover:text-white">
                 <Phone className="h-4 w-4 text-gold-light" /> {SITE.phone}
               </a>
             </div>
@@ -37,7 +37,7 @@ export function Footer() {
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((link) => (
                   <li key={link.href}>
-                    <Link href={link.href} className="text-sm text-cream/70 hover:text-white">
+                    <Link href={link.href} className="cursor-pencil text-sm text-cream/70 transition-colors duration-300 hover:text-white">
                       {link.label}
                     </Link>
                   </li>
