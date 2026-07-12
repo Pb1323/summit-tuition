@@ -6,6 +6,7 @@ import { AreaPerimeterGrid } from "../notes-diagrams/area-perimeter-grid";
 export const geometryTopic: TopicContent = {
   slug: "geometry",
   subject: "Maths",
+  subjectSlug: "maths",
   title: "Geometry: Angles & Shapes",
   description:
     "Geometry questions reward students who know a small set of angle facts and shape properties cold, and can apply them quickly under pressure. This module covers angle facts on lines, at points, in triangles and quadrilaterals, the properties of common 2D shapes, and calculating perimeter and area — all high-frequency 11+ topics.",

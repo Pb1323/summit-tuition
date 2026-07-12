@@ -5,6 +5,7 @@ import { ScaleFactorLinker } from "../notes-diagrams/scale-factor-linker";
 export const ratioProportionTopic: TopicContent = {
   slug: "ratio-proportion",
   subject: "Maths",
+  subjectSlug: "maths",
   title: "Ratio & Proportion",
   description:
     "Ratios compare quantities to one another, while proportion describes how quantities scale together. This module covers ratio notation and simplifying, sharing an amount in a given ratio, and scaling quantities up or down — a recurring theme in 11+ word problems.",

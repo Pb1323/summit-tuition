@@ -17,8 +17,8 @@ const SUBJECTS = [
     slug: "english",
     name: "English",
     icon: BookText,
-    description: "Comprehension, inference and writing technique notes.",
-    available: false,
+    description: "Comprehension, grammar, spelling and cloze — built strand by strand.",
+    available: true,
   },
   {
     slug: "verbal-reasoning",

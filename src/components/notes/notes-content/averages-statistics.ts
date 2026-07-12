@@ -6,6 +6,7 @@ import { PieChartExplorer } from "../notes-diagrams/pie-chart-explorer";
 export const averagesStatisticsTopic: TopicContent = {
   slug: "averages-statistics",
   subject: "Maths",
+  subjectSlug: "maths",
   title: "Averages & Statistics",
   description:
     "A practical module covering the four key averages, how to read charts and tables accurately, and how pie charts connect to simple probability — core skills for the data-handling questions on every 11+ Maths paper.",

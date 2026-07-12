@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { NOTES_GOLD, type NotesTheme } from "./notes-theme";
-import type { NotesTier, PracticeQuestion, WorkedExample, GlossaryTerm } from "./types";
+import type { NotesTier, PracticeQuestion, ClickErrorQuestion, WorkedExample, GlossaryTerm } from "./types";
 
 export function TierBadge({ tier }: { tier: NotesTier }) {
   return (
@@ -297,6 +297,126 @@ export function PracticeQuestions({
               {feedback && (
                 <span
                   key={`${q.id}-${ans.checked}-${ans.correct}`}
+                  className="text-[0.82em] font-bold"
+                  style={{
+                    color: ans.correct ? "#8a6a1e" : "#a8433a",
+                    animation: ans.correct ? "ntpopcheck 0.5s ease" : "ntshake 0.4s ease",
+                  }}
+                >
+                  {feedback}
+                </span>
+              )}
+            </div>
+            {hints[q.id] && (
+              <div className="mx-[22px] mb-[18px] ml-[60px] animate-[ntfadein_0.3s_ease] rounded-lg px-3.5 py-3 text-[0.82em]" style={{ background: "#FBF4E4", color: theme.body }}>
+                {q.hint}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+interface ClickAnswerState {
+  selected: number | null;
+  correct: boolean;
+  wrong: boolean;
+}
+
+export function ClickErrorPracticeQuestions({
+  theme,
+  questions,
+  onProgress,
+}: {
+  theme: NotesTheme;
+  questions: ClickErrorQuestion[];
+  onProgress?: (correct: number, total: number) => void;
+}) {
+  const [answers, setAnswers] = useState<Record<string, ClickAnswerState>>(() =>
+    Object.fromEntries(questions.map((q) => [q.id, { selected: null, correct: false, wrong: false }]))
+  );
+  const [hints, setHints] = useState<Record<string, boolean>>({});
+
+  const onProgressRef = useRef(onProgress);
+  useEffect(() => {
+    onProgressRef.current = onProgress;
+  }, [onProgress]);
+
+  useEffect(() => {
+    const correct = questions.filter((q) => answers[q.id]?.correct).length;
+    onProgressRef.current?.(correct, questions.length);
+  }, [answers, questions]);
+
+  const attempt = (q: ClickErrorQuestion, idx: number) => {
+    const ans = answers[q.id];
+    if (ans?.correct) return;
+    if (idx === q.errorIdx) {
+      setAnswers((s) => ({ ...s, [q.id]: { selected: idx, correct: true, wrong: false } }));
+    } else {
+      setAnswers((s) => ({ ...s, [q.id]: { selected: idx, correct: false, wrong: true } }));
+      window.setTimeout(() => {
+        setAnswers((s) => (s[q.id]?.correct ? s : { ...s, [q.id]: { ...s[q.id], wrong: false } }));
+      }, 700);
+    }
+  };
+
+  return (
+    <div>
+      <div className="mb-3.5 font-serif text-[1.15em] font-semibold" style={{ color: theme.headline }}>
+        Practice Questions
+      </div>
+      {questions.map((q, i) => {
+        const ans = answers[q.id];
+        const feedback = ans.correct ? `✓ ${q.correction}` : ans.wrong ? "✗ Not quite — try again" : null;
+        return (
+          <div key={q.id} className="mb-4 rounded-2xl border shadow-sm" style={{ background: theme.cardBg, borderColor: theme.hairline }}>
+            <div className="flex items-start gap-3.5 px-[22px] pb-2 pt-[18px]">
+              <span
+                className="flex h-[26px] w-[26px] flex-none items-center justify-center rounded-full border-[1.5px] font-mono text-[0.78em] font-extrabold"
+                style={{ borderColor: NOTES_GOLD, color: NOTES_GOLD }}
+              >
+                {i + 1}
+              </span>
+              <span className="pt-0.5 text-[0.78em]" style={{ color: theme.subtext }}>
+                {q.instruction}
+              </span>
+            </div>
+            <p className="m-0 mb-1.5 px-[22px] pl-[60px] font-serif text-[1.12em] leading-[1.9]" style={{ color: theme.headline }}>
+              {q.words.map((w, idx) => {
+                const isCorrectPick = ans.correct && idx === q.errorIdx;
+                const isWrongPick = ans.wrong && idx === ans.selected;
+                return (
+                  <span
+                    key={idx}
+                    onClick={() => attempt(q, idx)}
+                    className="cursor-pointer rounded-[5px] px-[3px] py-px transition-[background,box-shadow] duration-300"
+                    style={{
+                      background: isCorrectPick ? "rgba(201,162,75,0.28)" : "transparent",
+                      boxShadow: isCorrectPick ? `inset 0 -3px 0 0 ${NOTES_GOLD}` : "none",
+                      textDecoration: isCorrectPick ? "line-through" : "none",
+                      textDecorationColor: NOTES_GOLD,
+                      textDecorationThickness: "2px",
+                      animation: isWrongPick ? "ntshake 0.4s ease" : "none",
+                    }}
+                  >
+                    {w}&nbsp;
+                  </span>
+                );
+              })}
+            </p>
+            <div className="flex flex-wrap items-center gap-2.5 px-[22px] pb-[18px] pl-[60px]">
+              <button
+                onClick={() => setHints((s) => ({ ...s, [q.id]: !s[q.id] }))}
+                className="rounded-lg border px-4 py-2 text-[0.78em] font-bold"
+                style={{ borderColor: NOTES_GOLD, color: "#8a6a1e" }}
+              >
+                Hint
+              </button>
+              {feedback && (
+                <span
+                  key={`${q.id}-${ans.correct}-${ans.wrong}-${ans.selected}`}
                   className="text-[0.82em] font-bold"
                   style={{
                     color: ans.correct ? "#8a6a1e" : "#a8433a",

@@ -6,6 +6,7 @@ import { SquareCubeArray } from "../notes-diagrams/square-cube-array";
 export const numbersTopic: TopicContent = {
   slug: "numbers",
   subject: "Maths",
+  subjectSlug: "maths",
   title: "Numbers",
   description:
     "A foundation module covering place value, factors and multiples, and the structure of square and cube numbers — the essential number sense that underpins the 11+ Maths paper.",

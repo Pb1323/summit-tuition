@@ -6,6 +6,7 @@ import { SequenceStepVisualizer } from "../notes-diagrams/sequence-step-visualiz
 export const algebraTopic: TopicContent = {
   slug: "algebra",
   subject: "Maths",
+  subjectSlug: "maths",
   title: "Algebra Basics",
   description:
     "Algebra uses letters to stand for unknown or changing numbers. This module covers writing and simplifying expressions, solving simple linear equations, and spotting the pattern in number sequences — foundational skills that show up throughout 11+ maths and reasoning papers.",

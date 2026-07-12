@@ -12,10 +12,11 @@ import {
   WorkedExampleBlock,
   SelfCheckBlock,
   PracticeQuestions,
+  ClickErrorPracticeQuestions,
   MistakeBox,
   ExamTipBox,
 } from "./notes-blocks";
-import type { TopicContent } from "./types";
+import type { TopicContent, PracticeQuestion, ClickErrorQuestion } from "./types";
 
 const GLYPHS = ["π", "∑", "√", "∞", "Δ", "÷", "×"];
 
@@ -134,9 +135,10 @@ export function NotesTopicPage({ topic }: { topic: TopicContent }) {
     setMobileNavOpen(false);
   }, []);
 
+  const glyphs = topic.glyphs ?? GLYPHS;
   const headerSymbols = useMemo(
     () =>
-      GLYPHS.slice(0, 6).map((g, i) => ({
+      glyphs.slice(0, 6).map((g, i) => ({
         glyph: g,
         style: {
           position: "absolute" as const,
@@ -150,7 +152,7 @@ export function NotesTopicPage({ topic }: { topic: TopicContent }) {
           animationDelay: `${i * 0.7}s`,
         },
       })),
-    []
+    [glyphs]
   );
 
   const searchQ = searchQuery.trim().toLowerCase();
@@ -278,7 +280,7 @@ export function NotesTopicPage({ topic }: { topic: TopicContent }) {
               className="mt-4 flex items-center gap-2 border-t py-3.5 text-[0.78em] text-[#F8F5EE]/65"
               style={{ borderColor: "rgba(201,162,75,0.25)" }}
             >
-              <Link href="/notes/maths" className="hover:text-[#F8F5EE]">
+              <Link href={`/notes/${topic.subjectSlug}`} className="hover:text-[#F8F5EE]">
                 {topic.title}
               </Link>
               <span style={{ color: NOTES_GOLD }}>›</span>
@@ -443,11 +445,19 @@ export function NotesTopicPage({ topic }: { topic: TopicContent }) {
 
                   <div className="mt-6">
                     <SelfCheckBlock theme={t} prompt={s.selfCheck.prompt} answer={s.selfCheck.answer} />
-                    <PracticeQuestions
-                      theme={t}
-                      questions={s.questions}
-                      onProgress={(correct, total) => updateProgress(s.id, correct, total)}
-                    />
+                    {s.kind === "click-error" ? (
+                      <ClickErrorPracticeQuestions
+                        theme={t}
+                        questions={s.questions as ClickErrorQuestion[]}
+                        onProgress={(correct, total) => updateProgress(s.id, correct, total)}
+                      />
+                    ) : (
+                      <PracticeQuestions
+                        theme={t}
+                        questions={s.questions as PracticeQuestion[]}
+                        onProgress={(correct, total) => updateProgress(s.id, correct, total)}
+                      />
+                    )}
                   </div>
 
                   <MistakeBox theme={t} mistakes={s.mistakes} />

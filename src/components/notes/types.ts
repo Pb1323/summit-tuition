@@ -9,6 +9,15 @@ export interface PracticeQuestion {
   hint: string;
 }
 
+export interface ClickErrorQuestion {
+  id: string;
+  instruction: string;
+  words: string[];
+  errorIdx: number;
+  correction: string;
+  hint: string;
+}
+
 export interface WorkedExample {
   question: string;
   fastMethod: string;
@@ -35,7 +44,9 @@ export interface Subtopic {
   Diagram: ComponentType;
   worked: WorkedExample;
   selfCheck: { prompt: string; answer: string };
-  questions: PracticeQuestion[];
+  /** "click-error" renders questions as ClickErrorQuestion[] via ClickErrorPracticeQuestions; omitted/"fill" uses PracticeQuestion[] via PracticeQuestions. */
+  kind?: "click-error";
+  questions: PracticeQuestion[] | ClickErrorQuestion[];
   mistakes: string[];
   examTip: string;
   searchTerms: string[];
@@ -43,8 +54,11 @@ export interface Subtopic {
 
 export interface TopicContent {
   slug: string;
-  subject: "Maths";
+  subject: "Maths" | "English";
+  subjectSlug: string;
   title: string;
   description: string;
+  /** Header/intro decorative glyphs; defaults to maths symbols if omitted. */
+  glyphs?: string[];
   subtopics: Subtopic[];
 }

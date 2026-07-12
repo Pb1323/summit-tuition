@@ -6,6 +6,7 @@ import { PercentOfAmount } from "../notes-diagrams/percent-of-amount";
 export const fractionsDecimalsPercentagesTopic: TopicContent = {
   slug: "fractions-decimals-percentages",
   subject: "Maths",
+  subjectSlug: "maths",
   title: "Fractions, Decimals & Percentages",
   description:
     "Fractions, decimals and percentages are three ways of writing the same value. This module builds fluency in converting between them, combining fractions with different denominators, and finding a percentage of an amount — all frequent 11+ arithmetic staples.",
