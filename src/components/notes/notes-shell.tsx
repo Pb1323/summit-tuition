@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { getNotesTheme, NOTES_GOLD, type NotesThemeMode } from "./notes-theme";
+import { loadTopicProgress, saveTopicProgress } from "./notes-progress";
 import {
   TierBadge,
   WhyMatters,
@@ -13,10 +14,12 @@ import {
   SelfCheckBlock,
   PracticeQuestions,
   ClickErrorPracticeQuestions,
+  EvidencePracticeQuestions,
+  ClozePracticeQuestions,
   MistakeBox,
   ExamTipBox,
 } from "./notes-blocks";
-import type { TopicContent, PracticeQuestion, ClickErrorQuestion } from "./types";
+import type { TopicContent, PracticeQuestion, ClickErrorQuestion, EvidenceQuestion, ClozeQuestion } from "./types";
 
 const GLYPHS = ["π", "∑", "√", "∞", "Δ", "÷", "×"];
 
@@ -55,6 +58,17 @@ export function NotesTopicPage({ topic }: { topic: TopicContent }) {
   const [timerExpanded, setTimerExpanded] = useState(false);
 
   const t = getNotesTheme(theme);
+
+  // Restore saved mastery progress for this topic once mounted (after hydration, to avoid an SSR/client mismatch).
+  useEffect(() => {
+    const saved = loadTopicProgress(topic.slug);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time hydration-safe restore from localStorage, not a render-time derivation
+    if (Object.keys(saved).length > 0) setProgress(saved);
+  }, [topic.slug]);
+
+  useEffect(() => {
+    if (Object.keys(progress).length > 0) saveTopicProgress(topic.slug, progress);
+  }, [topic.slug, progress]);
 
   useEffect(() => {
     const root = scrollRef.current;
@@ -107,7 +121,7 @@ export function NotesTopicPage({ topic }: { topic: TopicContent }) {
       if (!sec) return;
       const rect = sec.getBoundingClientRect();
       const relTop = rect.top - wrapRect.top;
-      const dist = Math.abs(relTop - 140);
+      const dist = Math.abs(relTop - 105);
       if (relTop < el.clientHeight * 0.6 && dist < bestDist) {
         bestDist = dist;
         best = s.id;
@@ -130,7 +144,7 @@ export function NotesTopicPage({ topic }: { topic: TopicContent }) {
   const scrollToSection = useCallback((id: string) => {
     const el = sectionRefs.current[id];
     if (el && scrollRef.current) {
-      scrollRef.current.scrollTo({ top: el.offsetTop - 108, behavior: "smooth" });
+      scrollRef.current.scrollTo({ top: el.offsetTop - 80, behavior: "smooth" });
     }
     setMobileNavOpen(false);
   }, []);
@@ -209,11 +223,11 @@ export function NotesTopicPage({ topic }: { topic: TopicContent }) {
             ))}
           </div>
 
-          <div className="relative z-[2] mx-auto max-w-[1400px] px-8 pt-[22px]">
-            <div className="flex flex-wrap items-center justify-between gap-5">
-              <div className="flex items-center gap-4">
+          <div className="relative z-[2] mx-auto max-w-[1400px] px-8 pt-[15px]">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
                 <div
-                  className="flex h-[52px] w-[52px] flex-none items-center justify-center rounded-xl border-[1.5px] text-[1.5em] font-bold font-serif"
+                  className="flex h-[42px] w-[42px] flex-none items-center justify-center rounded-xl border-[1.5px] text-[1.25em] font-bold font-serif"
                   style={{
                     borderColor: NOTES_GOLD,
                     color: NOTES_GOLD,
@@ -223,21 +237,21 @@ export function NotesTopicPage({ topic }: { topic: TopicContent }) {
                   S
                 </div>
                 <div>
-                  <div className="font-serif text-[1.55em] font-bold leading-tight tracking-wide text-[#F8F5EE]">
+                  <div className="font-serif text-[1.3em] font-bold leading-tight tracking-wide text-[#F8F5EE]">
                     Summit Tuition
                   </div>
-                  <div className="mt-1 text-[0.68em] font-semibold uppercase tracking-[0.22em]" style={{ color: NOTES_GOLD }}>
+                  <div className="mt-0.5 text-[0.64em] font-semibold uppercase tracking-[0.2em]" style={{ color: NOTES_GOLD }}>
                     11+ Preparation &middot; {topic.title}
                   </div>
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2.5">
+              <div className="flex flex-wrap items-center gap-2">
                 <div
-                  className="flex items-center gap-2 rounded-full border px-3.5 py-2 backdrop-blur-md"
+                  className="flex items-center gap-2 rounded-full border px-3 py-1.5 backdrop-blur-md"
                   style={{ background: "rgba(255,255,255,0.06)", borderColor: "rgba(201,162,75,0.3)" }}
                 >
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" className="flex-none">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="flex-none">
                     <circle cx="11" cy="11" r="7" stroke={NOTES_GOLD} strokeWidth="2" />
                     <line x1="21" y1="21" x2="16.65" y2="16.65" stroke={NOTES_GOLD} strokeWidth="2" strokeLinecap="round" />
                   </svg>
@@ -246,20 +260,20 @@ export function NotesTopicPage({ topic }: { topic: TopicContent }) {
                     placeholder="Search this document…"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-[150px] bg-transparent text-[0.82em] text-[#F8F5EE] outline-none placeholder:text-[#F8F5EE]/50"
+                    className="w-[150px] bg-transparent text-[0.78em] text-[#F8F5EE] outline-none placeholder:text-[#F8F5EE]/50"
                   />
                 </div>
                 <button
                   onClick={() => setTheme((v) => (v === "focus" ? "default" : "focus"))}
                   title="Toggle focus mode"
-                  className="rounded-full border px-3.5 py-2 text-[0.78em] font-bold text-[#F8F5EE] backdrop-blur-md transition"
+                  className="rounded-full border px-3 py-1.5 text-[0.75em] font-bold text-[#F8F5EE] backdrop-blur-md transition"
                   style={{ background: "rgba(255,255,255,0.07)", borderColor: "rgba(201,162,75,0.3)" }}
                 >
                   {theme === "focus" ? "☀" : "☽"}
                 </button>
                 <button
                   onClick={() => window.print()}
-                  className="rounded-full border px-3.5 py-2 text-[0.78em] font-extrabold text-[#0A1F44]"
+                  className="rounded-full border px-3 py-1.5 text-[0.75em] font-extrabold text-[#0A1F44]"
                   style={{ background: "linear-gradient(135deg,#C9A24B,#e0bd6c)", borderColor: NOTES_GOLD }}
                 >
                   ⬇ Export
@@ -267,7 +281,7 @@ export function NotesTopicPage({ topic }: { topic: TopicContent }) {
                 {isMobile && (
                   <button
                     onClick={() => setMobileNavOpen((v) => !v)}
-                    className="rounded-full border px-3 py-1.5 text-[1em] text-[#F8F5EE] backdrop-blur-md"
+                    className="rounded-full border px-2.5 py-1 text-[0.95em] text-[#F8F5EE] backdrop-blur-md"
                     style={{ background: "rgba(255,255,255,0.07)", borderColor: "rgba(201,162,75,0.3)" }}
                   >
                     ☰
@@ -277,7 +291,7 @@ export function NotesTopicPage({ topic }: { topic: TopicContent }) {
             </div>
 
             <div
-              className="mt-4 flex items-center gap-2 border-t py-3.5 text-[0.78em] text-[#F8F5EE]/65"
+              className="mt-2.5 flex items-center gap-2 border-t py-2 text-[0.74em] text-[#F8F5EE]/65"
               style={{ borderColor: "rgba(201,162,75,0.25)" }}
             >
               <Link href={`/notes/${topic.subjectSlug}`} className="hover:text-[#F8F5EE]">
@@ -298,7 +312,7 @@ export function NotesTopicPage({ topic }: { topic: TopicContent }) {
             className={
               isMobile
                 ? "absolute top-0 z-[300] h-full w-[300px] shadow-[10px_0_40px_rgba(0,0,0,0.3)] transition-[left] duration-300"
-                : "sticky top-[132px] max-h-[calc(100vh-160px)] w-[250px] flex-none overflow-y-auto"
+                : "sticky top-[100px] max-h-[calc(100vh-125px)] w-[250px] flex-none overflow-y-auto"
             }
             style={isMobile ? { left: mobileNavOpen ? 0 : "-320px" } : undefined}
           >
@@ -375,10 +389,10 @@ export function NotesTopicPage({ topic }: { topic: TopicContent }) {
           </aside>
 
           {/* main content */}
-          <main className="min-w-0 flex-1 py-9 pb-[100px]">
+          <main className="min-w-0 flex-1 py-5 pb-[100px]">
             <div
               ref={introRef}
-              className="relative mb-8 overflow-hidden rounded-[20px] border p-8 shadow-[0_8px_28px_rgba(10,31,68,0.07)] transition-all duration-700"
+              className="relative mb-5 overflow-hidden rounded-[20px] border p-6 shadow-[0_8px_28px_rgba(10,31,68,0.07)] transition-all duration-700"
               style={{
                 background: t.cardBg,
                 borderColor: t.hairline,
@@ -406,7 +420,7 @@ export function NotesTopicPage({ topic }: { topic: TopicContent }) {
                   ref={(el) => {
                     sectionRefs.current[s.id] = el;
                   }}
-                  className="mb-14 scroll-mt-[150px] transition-all duration-700"
+                  className="mb-14 scroll-mt-[115px] transition-all duration-700"
                   style={{
                     opacity: !matched ? 0.32 : on ? 1 : 0,
                     transform: on ? "translateY(0)" : "translateY(26px)",
@@ -449,6 +463,18 @@ export function NotesTopicPage({ topic }: { topic: TopicContent }) {
                       <ClickErrorPracticeQuestions
                         theme={t}
                         questions={s.questions as ClickErrorQuestion[]}
+                        onProgress={(correct, total) => updateProgress(s.id, correct, total)}
+                      />
+                    ) : s.kind === "click-evidence" ? (
+                      <EvidencePracticeQuestions
+                        theme={t}
+                        questions={s.questions as EvidenceQuestion[]}
+                        onProgress={(correct, total) => updateProgress(s.id, correct, total)}
+                      />
+                    ) : s.kind === "cloze-fill" ? (
+                      <ClozePracticeQuestions
+                        theme={t}
+                        questions={s.questions as ClozeQuestion[]}
                         onProgress={(correct, total) => updateProgress(s.id, correct, total)}
                       />
                     ) : (

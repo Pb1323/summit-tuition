@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { NOTES_GOLD, type NotesTheme } from "./notes-theme";
-import type { NotesTier, PracticeQuestion, ClickErrorQuestion, WorkedExample, GlossaryTerm } from "./types";
+import type { NotesTier, PracticeQuestion, ClickErrorQuestion, EvidenceQuestion, ClozeQuestion, WorkedExample, GlossaryTerm } from "./types";
 
 export function TierBadge({ tier }: { tier: NotesTier }) {
   return (
@@ -406,6 +406,247 @@ export function ClickErrorPracticeQuestions({
                 );
               })}
             </p>
+            <div className="flex flex-wrap items-center gap-2.5 px-[22px] pb-[18px] pl-[60px]">
+              <button
+                onClick={() => setHints((s) => ({ ...s, [q.id]: !s[q.id] }))}
+                className="rounded-lg border px-4 py-2 text-[0.78em] font-bold"
+                style={{ borderColor: NOTES_GOLD, color: "#8a6a1e" }}
+              >
+                Hint
+              </button>
+              {feedback && (
+                <span
+                  key={`${q.id}-${ans.correct}-${ans.wrong}-${ans.selected}`}
+                  className="text-[0.82em] font-bold"
+                  style={{
+                    color: ans.correct ? "#8a6a1e" : "#a8433a",
+                    animation: ans.correct ? "ntpopcheck 0.5s ease" : "ntshake 0.4s ease",
+                  }}
+                >
+                  {feedback}
+                </span>
+              )}
+            </div>
+            {hints[q.id] && (
+              <div className="mx-[22px] mb-[18px] ml-[60px] animate-[ntfadein_0.3s_ease] rounded-lg px-3.5 py-3 text-[0.82em]" style={{ background: "#FBF4E4", color: theme.body }}>
+                {q.hint}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+interface PickAnswerState {
+  selected: number | null;
+  correct: boolean;
+  wrong: boolean;
+}
+
+export function EvidencePracticeQuestions({
+  theme,
+  questions,
+  onProgress,
+}: {
+  theme: NotesTheme;
+  questions: EvidenceQuestion[];
+  onProgress?: (correct: number, total: number) => void;
+}) {
+  const [answers, setAnswers] = useState<Record<string, PickAnswerState>>(() =>
+    Object.fromEntries(questions.map((q) => [q.id, { selected: null, correct: false, wrong: false }]))
+  );
+  const [hints, setHints] = useState<Record<string, boolean>>({});
+
+  const onProgressRef = useRef(onProgress);
+  useEffect(() => {
+    onProgressRef.current = onProgress;
+  }, [onProgress]);
+
+  useEffect(() => {
+    const correct = questions.filter((q) => answers[q.id]?.correct).length;
+    onProgressRef.current?.(correct, questions.length);
+  }, [answers, questions]);
+
+  const attempt = (q: EvidenceQuestion, idx: number) => {
+    const ans = answers[q.id];
+    if (ans?.correct) return;
+    if (idx === q.correctIdx) {
+      setAnswers((s) => ({ ...s, [q.id]: { selected: idx, correct: true, wrong: false } }));
+    } else {
+      setAnswers((s) => ({ ...s, [q.id]: { selected: idx, correct: false, wrong: true } }));
+      window.setTimeout(() => {
+        setAnswers((s) => (s[q.id]?.correct ? s : { ...s, [q.id]: { ...s[q.id], wrong: false } }));
+      }, 700);
+    }
+  };
+
+  return (
+    <div>
+      <div className="mb-3.5 font-serif text-[1.15em] font-semibold" style={{ color: theme.headline }}>
+        Practice Questions
+      </div>
+      {questions.map((q, i) => {
+        const ans = answers[q.id];
+        const feedback = ans.correct ? `✓ ${q.correction}` : ans.wrong ? "✗ Not quite — try again" : null;
+        return (
+          <div key={q.id} className="mb-4 rounded-2xl border shadow-sm" style={{ background: theme.cardBg, borderColor: theme.hairline }}>
+            <div className="flex items-start gap-3.5 px-[22px] pb-2 pt-[18px]">
+              <span
+                className="flex h-[26px] w-[26px] flex-none items-center justify-center rounded-full border-[1.5px] font-mono text-[0.78em] font-extrabold"
+                style={{ borderColor: NOTES_GOLD, color: NOTES_GOLD }}
+              >
+                {i + 1}
+              </span>
+              <span className="pt-0.5 text-[0.78em]" style={{ color: theme.subtext }}>
+                {q.instruction}
+              </span>
+            </div>
+            <p className="m-0 mb-1.5 px-[22px] pl-[60px] font-serif text-[1em] leading-[1.85]" style={{ color: theme.headline }}>
+              {q.passage.map((sentence, idx) => {
+                const isCorrectPick = ans.correct && idx === q.correctIdx;
+                const isWrongPick = ans.wrong && idx === ans.selected;
+                return (
+                  <span
+                    key={idx}
+                    onClick={() => attempt(q, idx)}
+                    className="cursor-pointer rounded-[6px] px-[3px] py-px transition-[background,box-shadow] duration-300"
+                    style={{
+                      background: isCorrectPick ? "rgba(201,162,75,0.28)" : "transparent",
+                      boxShadow: isCorrectPick ? `inset 0 -3px 0 0 ${NOTES_GOLD}` : "none",
+                      animation: isWrongPick ? "ntshake 0.4s ease" : "none",
+                    }}
+                  >
+                    {sentence}{" "}
+                  </span>
+                );
+              })}
+            </p>
+            <div className="flex flex-wrap items-center gap-2.5 px-[22px] pb-[18px] pl-[60px]">
+              <button
+                onClick={() => setHints((s) => ({ ...s, [q.id]: !s[q.id] }))}
+                className="rounded-lg border px-4 py-2 text-[0.78em] font-bold"
+                style={{ borderColor: NOTES_GOLD, color: "#8a6a1e" }}
+              >
+                Hint
+              </button>
+              {feedback && (
+                <span
+                  key={`${q.id}-${ans.correct}-${ans.wrong}-${ans.selected}`}
+                  className="text-[0.82em] font-bold"
+                  style={{
+                    color: ans.correct ? "#8a6a1e" : "#a8433a",
+                    animation: ans.correct ? "ntpopcheck 0.5s ease" : "ntshake 0.4s ease",
+                  }}
+                >
+                  {feedback}
+                </span>
+              )}
+            </div>
+            {hints[q.id] && (
+              <div className="mx-[22px] mb-[18px] ml-[60px] animate-[ntfadein_0.3s_ease] rounded-lg px-3.5 py-3 text-[0.82em]" style={{ background: "#FBF4E4", color: theme.body }}>
+                {q.hint}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+export function ClozePracticeQuestions({
+  theme,
+  questions,
+  onProgress,
+}: {
+  theme: NotesTheme;
+  questions: ClozeQuestion[];
+  onProgress?: (correct: number, total: number) => void;
+}) {
+  const [answers, setAnswers] = useState<Record<string, PickAnswerState>>(() =>
+    Object.fromEntries(questions.map((q) => [q.id, { selected: null, correct: false, wrong: false }]))
+  );
+  const [hints, setHints] = useState<Record<string, boolean>>({});
+
+  const onProgressRef = useRef(onProgress);
+  useEffect(() => {
+    onProgressRef.current = onProgress;
+  }, [onProgress]);
+
+  useEffect(() => {
+    const correct = questions.filter((q) => answers[q.id]?.correct).length;
+    onProgressRef.current?.(correct, questions.length);
+  }, [answers, questions]);
+
+  const attempt = (q: ClozeQuestion, idx: number) => {
+    const ans = answers[q.id];
+    if (ans?.correct) return;
+    if (idx === q.correctIdx) {
+      setAnswers((s) => ({ ...s, [q.id]: { selected: idx, correct: true, wrong: false } }));
+    } else {
+      setAnswers((s) => ({ ...s, [q.id]: { selected: idx, correct: false, wrong: true } }));
+      window.setTimeout(() => {
+        setAnswers((s) => (s[q.id]?.correct ? s : { ...s, [q.id]: { ...s[q.id], wrong: false } }));
+      }, 700);
+    }
+  };
+
+  return (
+    <div>
+      <div className="mb-3.5 font-serif text-[1.15em] font-semibold" style={{ color: theme.headline }}>
+        Practice Questions
+      </div>
+      {questions.map((q, i) => {
+        const ans = answers[q.id];
+        const feedback = ans.correct ? `✓ ${q.correction}` : ans.wrong ? "✗ Not quite — try again" : null;
+        return (
+          <div key={q.id} className="mb-4 rounded-2xl border shadow-sm" style={{ background: theme.cardBg, borderColor: theme.hairline }}>
+            <div className="flex items-start gap-3.5 px-[22px] pb-2 pt-[18px]">
+              <span
+                className="flex h-[26px] w-[26px] flex-none items-center justify-center rounded-full border-[1.5px] font-mono text-[0.78em] font-extrabold"
+                style={{ borderColor: NOTES_GOLD, color: NOTES_GOLD }}
+              >
+                {i + 1}
+              </span>
+              <span className="pt-0.5 text-[0.78em]" style={{ color: theme.subtext }}>
+                {q.instruction}
+              </span>
+            </div>
+            <p className="m-0 mb-2 px-[22px] pl-[60px] font-serif text-[1.05em] leading-[1.85]" style={{ color: theme.headline }}>
+              {q.before}{" "}
+              <span
+                className="inline-block rounded-[6px] border-b-2 px-2 py-px font-mono text-[0.85em]"
+                style={{ borderColor: NOTES_GOLD, background: ans.correct ? "rgba(201,162,75,0.2)" : theme.inputBg }}
+              >
+                {ans.correct ? q.options[q.correctIdx] : "______"}
+              </span>{" "}
+              {q.after}
+            </p>
+            <div className="flex flex-wrap items-center gap-2 px-[22px] pb-3 pl-[60px]">
+              {q.options.map((opt, idx) => {
+                const isCorrectPick = ans.correct && idx === q.correctIdx;
+                const isWrongPick = ans.wrong && idx === ans.selected;
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => attempt(q, idx)}
+                    disabled={ans.correct}
+                    className="rounded-lg border px-3.5 py-1.5 font-mono text-[0.8em] font-bold transition-colors"
+                    style={{
+                      borderColor: isCorrectPick ? NOTES_GOLD : theme.hairline,
+                      background: isCorrectPick ? "rgba(201,162,75,0.2)" : theme.inputBg,
+                      color: theme.headline,
+                      cursor: ans.correct ? "default" : "pointer",
+                      animation: isWrongPick ? "ntshake 0.4s ease" : "none",
+                    }}
+                  >
+                    {opt}
+                  </button>
+                );
+              })}
+            </div>
             <div className="flex flex-wrap items-center gap-2.5 px-[22px] pb-[18px] pl-[60px]">
               <button
                 onClick={() => setHints((s) => ({ ...s, [q.id]: !s[q.id] }))}
