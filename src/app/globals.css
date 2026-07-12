@@ -473,6 +473,76 @@ body {
   }
 }
 
+/* Question-visual interactivity: hover/keyboard-focus/tap reveal an exact-value tooltip and a
+   subtle highlight without cluttering the diagram by default. Pure CSS (no JS state) so it works
+   the same for mouse hover, keyboard focus and touch tap (tapping a focusable SVG node focuses it). */
+.qv-hit {
+  cursor: pointer;
+  outline: none;
+}
+
+.qv-hit .qv-mark {
+  transition: filter 160ms ease, stroke 160ms ease, stroke-width 160ms ease;
+}
+
+.qv-hit:hover .qv-mark,
+.qv-hit:focus-visible .qv-mark,
+.qv-hit:focus .qv-mark {
+  filter: drop-shadow(0 6px 10px rgba(180, 83, 9, 0.35));
+  stroke: #1d4ed8;
+}
+
+.qv-hit .qv-mark-scale {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: filter 160ms ease, stroke 160ms ease, transform 160ms ease;
+}
+
+.qv-hit:hover .qv-mark-scale,
+.qv-hit:focus-visible .qv-mark-scale,
+.qv-hit:focus .qv-mark-scale {
+  filter: drop-shadow(0 6px 10px rgba(180, 83, 9, 0.35));
+  stroke: #1d4ed8;
+  transform: scale(1.18);
+}
+
+.qv-hit .qv-tooltip,
+.qv-hit .qv-guide {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 150ms ease, transform 150ms ease;
+  pointer-events: none;
+}
+
+.qv-hit .qv-guide {
+  transform: none;
+}
+
+.qv-hit:hover .qv-tooltip,
+.qv-hit:focus-visible .qv-tooltip,
+.qv-hit:focus .qv-tooltip,
+.qv-hit:hover .qv-guide,
+.qv-hit:focus-visible .qv-guide,
+.qv-hit:focus .qv-guide {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qv-hit .qv-tooltip,
+  .qv-hit .qv-guide,
+  .qv-hit .qv-mark,
+  .qv-hit .qv-mark-scale {
+    transition: opacity 1ms linear;
+    transform: none;
+  }
+  .qv-hit:hover .qv-mark-scale,
+  .qv-hit:focus-visible .qv-mark-scale,
+  .qv-hit:focus .qv-mark-scale {
+    transform: none;
+  }
+}
+
 /*
  * .gl-print base styles apply on-screen too (not just @media print) so the route reads as a
  * formatted page when viewed in a normal browser tab, not flat unstyled text - the @media print

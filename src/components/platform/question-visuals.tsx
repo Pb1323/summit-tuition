@@ -278,6 +278,24 @@ function NvrFillPattern({ id, fill }: { id: string; fill?: NvrFigure["fill"] }) 
   return null;
 }
 
+/**
+ * A small speech-bubble tooltip drawn in SVG space, shown above (x, y) by its parent's `.qv-hit`
+ * hover/focus state (see globals.css) — no React state needed. Kept `pointer-events: none` via CSS
+ * so it never steals the hover/click that revealed it.
+ */
+function ValueTooltip({ x, y, text, color = INK }: { x: number; y: number; text: string; color?: string }) {
+  const width = Math.max(30, text.length * 7.4 + 16);
+  return (
+    <g className="qv-tooltip" transform={`translate(${r2(x - width / 2)}, ${r2(y)})`}>
+      <rect width={width} height={25} rx={6} fill={color} opacity={0.95} />
+      <polygon points={`${r2(width / 2 - 6)},25 ${r2(width / 2 + 6)},25 ${r2(width / 2)},32`} fill={color} opacity={0.95} />
+      <text x={width / 2} y={17} textAnchor="middle" fill="#fff8e7" fontSize={12} fontWeight={800}>
+        {text}
+      </text>
+    </g>
+  );
+}
+
 /** Smallest "nice" axis maximum and tick step so chart values can be read off the scale. */
 function niceScale(maxValue: number) {
   const steps = [1, 2, 5, 10, 20, 50, 100, 200, 500];
@@ -304,7 +322,7 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
       <div className="overflow-x-auto">
         <table className="min-w-full border-separate border-spacing-0 text-center text-sm">
           <thead><tr>{headers.map((header) => <th key={header} scope="col" className="border-b border-gold/20 bg-cream px-4 py-3 font-black text-navy first:rounded-tl-xl last:rounded-tr-xl">{header}</th>)}</tr></thead>
-          <tbody>{rows.map((row, rowIndex) => <tr key={rowIndex} className="qv-step" style={{ animationDelay: `${rowIndex * 0.09}s` }}>{isStringArray(row) ? row.map((cell, index) => <td key={`${rowIndex}-${index}`} className="border-b border-line bg-white px-4 py-3 font-semibold text-ink transition-colors hover:bg-gold/5">{cell}</td>) : <td className="border-b border-line px-4 py-3 text-muted" colSpan={headers.length}>Missing row data</td>}</tr>)}</tbody>
+          <tbody>{rows.map((row, rowIndex) => <tr key={rowIndex} tabIndex={0} className="qv-step outline-none transition-colors hover:bg-gold/10 focus-visible:bg-gold/10" style={{ animationDelay: `${rowIndex * 0.09}s` }}>{isStringArray(row) ? row.map((cell, index) => <td key={`${rowIndex}-${index}`} className="border-b border-line bg-transparent px-4 py-3 font-semibold text-ink transition-colors">{cell}</td>) : <td className="border-b border-line px-4 py-3 text-muted" colSpan={headers.length}>Missing row data</td>}</tr>)}</tbody>
         </table>
       </div>,
       `${title}: ${headers.join(", ")}`
@@ -346,10 +364,19 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
           const barHeight = Math.max(2, (values[index] / scale.max) * plotHeight);
           const barWidth = Math.min(38, slot * 0.55);
           const x = plotLeft + slot * index + (slot - barWidth) / 2;
+          const barTop = plotBottom - barHeight;
           return (
-            <g key={label}>
-              <rect className="qv-rise" style={{ animationDelay: `${index * 0.09}s` }} x={x} y={plotBottom - barHeight} width={barWidth} height={barHeight} rx={5} fill={`url(#${barGradientId})`} stroke={GOLD_DARK} strokeWidth={1} />
+            <g
+              key={label}
+              className="qv-hit"
+              tabIndex={0}
+              role="img"
+              aria-label={`${label}: ${values[index]}`}
+            >
+              <rect className="qv-rise qv-mark" style={{ animationDelay: `${index * 0.09}s` }} x={x} y={barTop} width={barWidth} height={barHeight} rx={5} fill={`url(#${barGradientId})`} stroke={GOLD_DARK} strokeWidth={1} />
+              <rect x={x} y={plotTop} width={barWidth} height={plotBottom - plotTop} fill="transparent" />
               <text x={x + barWidth / 2} y={plotBottom + 20} textAnchor="middle" fill={INK} fontSize={12} fontWeight={700}>{label}</text>
+              <ValueTooltip x={x + barWidth / 2} y={Math.max(plotTop, barTop - 32)} text={String(values[index])} />
             </g>
           );
         })}
@@ -387,9 +414,19 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
         <line x1={plotLeft} y1={plotTop} x2={plotLeft} y2={plotBottom} stroke={INK} strokeWidth={2} />
         <polyline points={points} pathLength={1} className="qv-draw" fill="none" stroke={GOLD_DARK} strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" />
         {values.map((value, index) => (
-          <g key={`${index}-${value}`} className="qv-pop" style={{ animationDelay: `${1.1 + index * 0.12}s` }}>
-            <circle cx={pointX(index)} cy={pointY(value)} r={5} fill={GOLD} stroke={INK} strokeWidth={2} />
+          <g
+            key={`${index}-${value}`}
+            className="qv-pop qv-hit"
+            style={{ animationDelay: `${1.1 + index * 0.12}s` }}
+            tabIndex={0}
+            role="img"
+            aria-label={`${labels[index]}: ${value}`}
+          >
+            <line className="qv-guide" x1={pointX(index)} y1={pointY(value)} x2={pointX(index)} y2={plotBottom} stroke={BLUE} strokeWidth={1.5} strokeDasharray="3 4" />
+            <circle cx={pointX(index)} cy={pointY(value)} r={9} fill="transparent" />
+            <circle className="qv-mark-scale" cx={pointX(index)} cy={pointY(value)} r={5} fill={GOLD} stroke={INK} strokeWidth={2} />
             <text x={pointX(index)} y={plotBottom + 20} textAnchor="middle" fill={INK} fontSize={11} fontWeight={700}>{labels[index]}</text>
+            <ValueTooltip x={pointX(index)} y={pointY(value) - 34} text={String(value)} />
           </g>
         ))}
       </svg>,
@@ -422,9 +459,20 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
         <text x={gx(gridMax) + 14} y={originY + 4} fill={INK} fontSize={12} fontWeight={700}>x</text>
         <text x={originX - 4} y={gy(gridMax) - 14} fill={INK} fontSize={12} fontWeight={700}>y</text>
         {plotted.map((point, index) => (
-          <g key={point.join("-")} className="qv-pop" style={{ animationDelay: `${0.15 + index * 0.15}s` }}>
-            <circle cx={gx(point[0])} cy={gy(point[1])} r={6} fill={GOLD} stroke={INK} strokeWidth={2} />
+          <g
+            key={point.join("-")}
+            className="qv-pop qv-hit"
+            style={{ animationDelay: `${0.15 + index * 0.15}s` }}
+            tabIndex={0}
+            role="img"
+            aria-label={`Point ${String.fromCharCode(65 + index)} at ${point[0]}, ${point[1]}`}
+          >
+            <line className="qv-guide" x1={gx(point[0])} y1={gy(point[1])} x2={gx(point[0])} y2={originY} stroke={BLUE} strokeWidth={1.5} strokeDasharray="3 4" />
+            <line className="qv-guide" x1={originX} y1={gy(point[1])} x2={gx(point[0])} y2={gy(point[1])} stroke={BLUE} strokeWidth={1.5} strokeDasharray="3 4" />
+            <circle cx={gx(point[0])} cy={gy(point[1])} r={11} fill="transparent" />
+            <circle className="qv-mark-scale" cx={gx(point[0])} cy={gy(point[1])} r={6} fill={GOLD} stroke={INK} strokeWidth={2} />
             <text x={gx(point[0]) + 9} y={gy(point[1]) - 7} fill={INK_SOFT} fontSize={13} fontWeight={800}>{String.fromCharCode(65 + index)}</text>
+            <ValueTooltip x={gx(point[0])} y={gy(point[1]) - 40} text={`(${point[0]}, ${point[1]})`} />
           </g>
         ))}
       </svg>,
@@ -446,15 +494,25 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
       <svg viewBox="0 0 360 110" className="h-32 w-full">
         <line x1={34} y1={52} x2={326} y2={52} stroke={INK} strokeWidth={3} strokeLinecap="round" />
         {majorTicks.map((tick) => (
-          <g key={tick}>
-            <line x1={tickX(tick)} y1={38} x2={tickX(tick)} y2={66} stroke={INK} strokeWidth={2} />
+          <g key={tick} className="qv-hit" tabIndex={0} role="img" aria-label={`Tick at ${tick}`}>
+            <rect x={tickX(tick) - 14} y={30} width={28} height={58} fill="transparent" />
+            <line className="qv-mark" x1={tickX(tick)} y1={38} x2={tickX(tick)} y2={66} stroke={INK} strokeWidth={2} />
             <text x={tickX(tick)} y={88} textAnchor="middle" fill={INK} fontSize={12} fontWeight={700}>{tick}</text>
+            <ValueTooltip x={tickX(tick)} y={6} text={String(tick)} color={BLUE_DARK} />
           </g>
         ))}
         {minorTicks.map((tick) => (
-          <line key={tick} x1={tickX(tick)} y1={44} x2={tickX(tick)} y2={60} stroke={INK} strokeWidth={1.5} />
+          <g key={tick} className="qv-hit" tabIndex={0} role="img" aria-label={`Tick at ${tick}`}>
+            <rect x={tickX(tick) - 10} y={38} width={20} height={26} fill="transparent" />
+            <line className="qv-mark" x1={tickX(tick)} y1={44} x2={tickX(tick)} y2={60} stroke={INK} strokeWidth={1.5} />
+            <ValueTooltip x={tickX(tick)} y={6} text={String(tick)} color={BLUE_DARK} />
+          </g>
         ))}
-        <circle className="qv-pulse" cx={tickX(highlight)} cy={52} r={8} fill={GOLD} stroke={GOLD_DARK} strokeWidth={2} />
+        <g className="qv-hit" tabIndex={0} role="img" aria-label={`Highlighted point at ${highlight}`}>
+          <circle cx={tickX(highlight)} cy={52} r={14} fill="transparent" />
+          <circle className="qv-pulse qv-mark-scale" cx={tickX(highlight)} cy={52} r={8} fill={GOLD} stroke={GOLD_DARK} strokeWidth={2} />
+          <ValueTooltip x={tickX(highlight)} y={6} text={String(highlight)} />
+        </g>
       </svg>,
       `${title}: number line from ${min} to ${max} with a highlighted point at ${highlight}`
     );
@@ -487,10 +545,26 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
             </linearGradient>
           </defs>
           <path className="qv-pop" d={path} fill={`url(#${shapeGradientId})`} stroke={INK} strokeWidth={4} strokeLinejoin="round" />
-          <text x={x0 + w / 2} y={y0 - 10} textAnchor="middle" fill={INK_SOFT} fontSize={13} fontWeight={800}>{width} cm</text>
-          <text x={x0 + w + 8} y={y0 + (h - ch) / 2 + 4} fill={INK_SOFT} fontSize={13} fontWeight={800}>{height - cutHeight} cm</text>
-          <text x={x0 + w - cw + 8} y={y0 + h - ch / 2 + 4} fill={INK_SOFT} fontSize={13} fontWeight={800}>{cutHeight} cm</text>
-          <text x={x0 - 8} y={y0 + h / 2 + 4} textAnchor="end" fill={INK_SOFT} fontSize={13} fontWeight={800}>{height} cm</text>
+          <g className="qv-hit" tabIndex={0} role="img" aria-label={`Top side: ${width} cm`}>
+            <line className="qv-mark" x1={x0} y1={y0} x2={x0 + w} y2={y0} stroke="transparent" strokeWidth={8} />
+            <text x={x0 + w / 2} y={y0 - 10} textAnchor="middle" fill={INK_SOFT} fontSize={13} fontWeight={800}>{width} cm</text>
+            <ValueTooltip x={x0 + w / 2} y={y0 - 44} text={`${width} cm`} />
+          </g>
+          <g className="qv-hit" tabIndex={0} role="img" aria-label={`Right upper side: ${height - cutHeight} cm`}>
+            <line className="qv-mark" x1={x0 + w} y1={y0} x2={x0 + w} y2={y0 + (h - ch)} stroke="transparent" strokeWidth={8} />
+            <text x={x0 + w + 8} y={y0 + (h - ch) / 2 + 4} fill={INK_SOFT} fontSize={13} fontWeight={800}>{height - cutHeight} cm</text>
+            <ValueTooltip x={x0 + w + 34} y={y0 + (h - ch) / 2 - 30} text={`${height - cutHeight} cm`} />
+          </g>
+          <g className="qv-hit" tabIndex={0} role="img" aria-label={`Inner step: ${cutHeight} cm`}>
+            <line className="qv-mark" x1={x0 + w - cw} y1={y0 + h - ch} x2={x0 + w - cw} y2={y0 + h} stroke="transparent" strokeWidth={8} />
+            <text x={x0 + w - cw + 8} y={y0 + h - ch / 2 + 4} fill={INK_SOFT} fontSize={13} fontWeight={800}>{cutHeight} cm</text>
+            <ValueTooltip x={x0 + w - cw + 34} y={y0 + h - ch / 2 - 30} text={`${cutHeight} cm`} />
+          </g>
+          <g className="qv-hit" tabIndex={0} role="img" aria-label={`Left side: ${height} cm`}>
+            <line className="qv-mark" x1={x0} y1={y0} x2={x0} y2={y0 + h} stroke="transparent" strokeWidth={8} />
+            <text x={x0 - 8} y={y0 + h / 2 + 4} textAnchor="end" fill={INK_SOFT} fontSize={13} fontWeight={800}>{height} cm</text>
+            <ValueTooltip x={x0 - 40} y={y0 + h / 2 - 30} text={`${height} cm`} />
+          </g>
         </svg>,
         `${title}: L-shaped compound rectilinear shape, labelled sides ${width} cm across the top, ${height - cutHeight} cm on the right, ${cutHeight} cm at the inner step and ${height} cm on the left`
       );
@@ -510,8 +584,16 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
           </linearGradient>
         </defs>
         <rect className="qv-pop" x={x0} y={y0} width={drawWidth} height={drawHeight} fill={`url(#${rectGradientId})`} stroke={INK} strokeWidth={4} rx={3} />
-        <text x={x0 + drawWidth / 2} y={y0 - 12} textAnchor="middle" fill={INK_SOFT} fontSize={13} fontWeight={800}>{width} cm</text>
-        <text x={x0 + drawWidth + 10} y={y0 + drawHeight / 2 + 4} fill={INK_SOFT} fontSize={13} fontWeight={800}>{height} cm</text>
+        <g className="qv-hit" tabIndex={0} role="img" aria-label={`Width: ${width} cm`}>
+          <line className="qv-mark" x1={x0} y1={y0} x2={x0 + drawWidth} y2={y0} stroke="transparent" strokeWidth={8} />
+          <text x={x0 + drawWidth / 2} y={y0 - 12} textAnchor="middle" fill={INK_SOFT} fontSize={13} fontWeight={800}>{width} cm</text>
+          <ValueTooltip x={x0 + drawWidth / 2} y={y0 - 46} text={`width: ${width} cm`} />
+        </g>
+        <g className="qv-hit" tabIndex={0} role="img" aria-label={`Height: ${height} cm`}>
+          <line className="qv-mark" x1={x0 + drawWidth} y1={y0} x2={x0 + drawWidth} y2={y0 + drawHeight} stroke="transparent" strokeWidth={8} />
+          <text x={x0 + drawWidth + 10} y={y0 + drawHeight / 2 + 4} fill={INK_SOFT} fontSize={13} fontWeight={800}>{height} cm</text>
+          <ValueTooltip x={x0 + drawWidth + 44} y={y0 + drawHeight / 2 - 30} text={`height: ${height} cm`} />
+        </g>
       </svg>,
       `${title}: rectangle ${width} cm by ${height} cm`
     );
@@ -543,11 +625,14 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
           const term = index + 1;
           const value = known.get(term);
           const isTarget = term === targetPosition;
+          const isInteractive = value !== undefined || isTarget;
+          const tooltipText = value !== undefined ? `${ordinal(term)} term = ${value}` : `Find the ${ordinal(term)} term`;
           return (
-            <g key={term}>
-              <rect x={boxX(term)} y={52} width={boxWidth} height={34} rx={7} fill={value !== undefined ? "#fff8e7" : isTarget ? "#fde68a" : "#ffffff"} stroke={isTarget ? GOLD_DARK : INK} strokeWidth={isTarget ? 3 : 2} />
+            <g key={term} className={isInteractive ? "qv-hit" : undefined} tabIndex={isInteractive ? 0 : undefined} role={isInteractive ? "img" : undefined} aria-label={isInteractive ? tooltipText : undefined}>
+              <rect className="qv-mark-scale" x={boxX(term)} y={52} width={boxWidth} height={34} rx={7} fill={value !== undefined ? "#fff8e7" : isTarget ? "#fde68a" : "#ffffff"} stroke={isTarget ? GOLD_DARK : INK} strokeWidth={isTarget ? 3 : 2} />
               <text x={boxX(term) + boxWidth / 2} y={74} textAnchor="middle" fill={INK_SOFT} fontSize={13} fontWeight={800}>{value !== undefined ? value : isTarget ? "?" : ""}</text>
               <text x={boxX(term) + boxWidth / 2} y={106} textAnchor="middle" fill={INK} fontSize={10} fontWeight={700}>{ordinal(term)}</text>
+              {isInteractive && <ValueTooltip x={boxX(term) + boxWidth / 2} y={12} text={tooltipText} />}
             </g>
           );
         })}
@@ -565,7 +650,14 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
           {Array.from({ length: denominator }).map((_, index) => (
             <div
               key={index}
-              className={cn("qv-pop h-14 rounded-md border border-gold/30", index < numerator ? "bg-gradient-to-br from-gold/60 to-gold-dark/40 shadow-[inset_0_1px_2px_rgba(255,255,255,0.5)]" : "bg-white")}
+              tabIndex={0}
+              role="img"
+              aria-label={`Part ${index + 1} of ${denominator}, ${index < numerator ? "shaded" : "not shaded"}`}
+              title={`Part ${index + 1} of ${denominator}`}
+              className={cn(
+                "qv-pop h-14 cursor-pointer rounded-md border border-gold/30 outline-none transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_18px_-10px_rgba(180,83,9,0.55)] focus-visible:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-[#3b82f6]",
+                index < numerator ? "bg-gradient-to-br from-gold/60 to-gold-dark/40 shadow-[inset_0_1px_2px_rgba(255,255,255,0.5)]" : "bg-white hover:bg-cream"
+              )}
               style={{ animationDelay: `${index * 0.06}s` }}
             />
           ))}
@@ -588,7 +680,11 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
               {Array.from({ length: values[rowIndex] ?? 1 }).map((_, index) => (
                 <span
                   key={index}
-                  className="qv-pop h-9 flex-1 rounded-md border border-gold/35 bg-gradient-to-b from-gold/35 to-gold/15 shadow-[inset_0_1px_2px_rgba(255,255,255,0.6)]"
+                  tabIndex={0}
+                  role="img"
+                  aria-label={`${label} block ${index + 1} of ${values[rowIndex]}`}
+                  title={`${label}: ${values[rowIndex]} parts`}
+                  className="qv-pop h-9 flex-1 cursor-pointer rounded-md border border-gold/35 bg-gradient-to-b from-gold/35 to-gold/15 shadow-[inset_0_1px_2px_rgba(255,255,255,0.6)] outline-none transition-all duration-200 hover:-translate-y-0.5 hover:from-gold/70 hover:to-gold-dark/40 hover:shadow-[0_10px_18px_-10px_rgba(180,83,9,0.55)] focus-visible:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-[#3b82f6]"
                   style={{ animationDelay: `${(rowIndex * 6 + index) * 0.05}s` }}
                 />
               ))}
@@ -608,13 +704,23 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
           <radialGradient id={`${vennGradientId}-left`}><stop offset="0%" stopColor="#fde68a" stopOpacity={0.75} /><stop offset="100%" stopColor="#fde68a" stopOpacity={0.25} /></radialGradient>
           <radialGradient id={`${vennGradientId}-right`}><stop offset="0%" stopColor={GOLD} stopOpacity={0.55} /><stop offset="100%" stopColor={GOLD} stopOpacity={0.15} /></radialGradient>
         </defs>
-        <circle className="qv-pop" style={{ animationDelay: "0s" }} cx={132} cy={96} r={62} fill={`url(#${vennGradientId}-left)`} stroke={INK} strokeWidth={3} />
-        <circle className="qv-pop" style={{ animationDelay: "0.15s" }} cx={188} cy={96} r={62} fill={`url(#${vennGradientId}-right)`} stroke={INK} strokeWidth={3} />
-        <text x={108} y={36} textAnchor="middle" fill={INK} fontSize={13} fontWeight={800}>{String(visual.data.leftLabel ?? "A")}</text>
-        <text x={212} y={36} textAnchor="middle" fill={INK} fontSize={13} fontWeight={800}>{String(visual.data.rightLabel ?? "B")}</text>
-        <text x={104} y={100} textAnchor="middle" fill={INK_SOFT} fontSize={16} fontWeight={800}>{String(visual.data.left ?? "")}</text>
-        <text x={160} y={100} textAnchor="middle" fill={INK_SOFT} fontSize={16} fontWeight={800}>{String(visual.data.overlap ?? "")}</text>
-        <text x={216} y={100} textAnchor="middle" fill={INK_SOFT} fontSize={16} fontWeight={800}>{String(visual.data.right ?? "")}</text>
+        <g className="qv-hit" tabIndex={0} role="img" aria-label={`${String(visual.data.leftLabel ?? "A")} only: ${String(visual.data.left ?? "")}`}>
+          <circle className="qv-pop qv-mark" style={{ animationDelay: "0s" }} cx={132} cy={96} r={62} fill={`url(#${vennGradientId}-left)`} stroke={INK} strokeWidth={3} />
+          <text x={108} y={36} textAnchor="middle" fill={INK} fontSize={13} fontWeight={800}>{String(visual.data.leftLabel ?? "A")}</text>
+          <text x={104} y={100} textAnchor="middle" fill={INK_SOFT} fontSize={16} fontWeight={800}>{String(visual.data.left ?? "")}</text>
+          <ValueTooltip x={104} y={148} text={`${String(visual.data.leftLabel ?? "A")} only: ${String(visual.data.left ?? "")}`} />
+        </g>
+        <g className="qv-hit" tabIndex={0} role="img" aria-label={`${String(visual.data.rightLabel ?? "B")} only: ${String(visual.data.right ?? "")}`}>
+          <circle className="qv-pop qv-mark" style={{ animationDelay: "0.15s" }} cx={188} cy={96} r={62} fill={`url(#${vennGradientId}-right)`} stroke={INK} strokeWidth={3} />
+          <text x={212} y={36} textAnchor="middle" fill={INK} fontSize={13} fontWeight={800}>{String(visual.data.rightLabel ?? "B")}</text>
+          <text x={216} y={100} textAnchor="middle" fill={INK_SOFT} fontSize={16} fontWeight={800}>{String(visual.data.right ?? "")}</text>
+          <ValueTooltip x={216} y={148} text={`${String(visual.data.rightLabel ?? "B")} only: ${String(visual.data.right ?? "")}`} />
+        </g>
+        <g className="qv-hit" tabIndex={0} role="img" aria-label={`Both: ${String(visual.data.overlap ?? "")}`}>
+          <circle cx={160} cy={96} r={22} fill="transparent" />
+          <text className="qv-mark" x={160} y={100} textAnchor="middle" fill={INK_SOFT} fontSize={16} fontWeight={800}>{String(visual.data.overlap ?? "")}</text>
+          <ValueTooltip x={160} y={12} text={`Both: ${String(visual.data.overlap ?? "")}`} />
+        </g>
       </svg>,
       `${title}: Venn diagram, ${String(visual.data.leftLabel ?? "A")} only ${String(visual.data.left ?? "")}, both ${String(visual.data.overlap ?? "")}, ${String(visual.data.rightLabel ?? "B")} only ${String(visual.data.right ?? "")}`
     );
@@ -631,16 +737,19 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
         <defs>
           <radialGradient id={clockGradientId}><stop offset="0%" stopColor="#fffdf7" /><stop offset="100%" stopColor="#fff3d6" /></radialGradient>
         </defs>
-        <circle cx={110} cy={110} r={82} fill={`url(#${clockGradientId})`} stroke={INK} strokeWidth={4} />
-        {Array.from({ length: 12 }).map((_, index) => {
-          const angle = (index + 1) * 30 - 90;
-          const x = 110 + Math.cos((angle * Math.PI) / 180) * 64;
-          const y = 110 + Math.sin((angle * Math.PI) / 180) * 64;
-          return <text key={index} x={x} y={y + 4} textAnchor="middle" fill={INK} fontSize={12} fontWeight={800}>{index + 1}</text>;
-        })}
-        <line className="qv-draw" pathLength={1} x1={110} y1={110} x2={110 + Math.cos(((hourAngle - 90) * Math.PI) / 180) * 42} y2={110 + Math.sin(((hourAngle - 90) * Math.PI) / 180) * 42} stroke={INK} strokeWidth={6} strokeLinecap="round" />
-        <line className="qv-draw" pathLength={1} style={{ animationDelay: "0.15s" }} x1={110} y1={110} x2={110 + Math.cos(((minuteAngle - 90) * Math.PI) / 180) * 62} y2={110 + Math.sin(((minuteAngle - 90) * Math.PI) / 180) * 62} stroke={GOLD_DARK} strokeWidth={4} strokeLinecap="round" />
-        <circle className="qv-pop" style={{ animationDelay: "0.5s" }} cx={110} cy={110} r={5} fill={GOLD} />
+        <g className="qv-hit" tabIndex={0} role="img" aria-label={`Time: ${hour}:${String(minute).padStart(2, "0")}`}>
+          <circle className="qv-mark" cx={110} cy={110} r={82} fill={`url(#${clockGradientId})`} stroke={INK} strokeWidth={4} />
+          {Array.from({ length: 12 }).map((_, index) => {
+            const angle = (index + 1) * 30 - 90;
+            const x = 110 + Math.cos((angle * Math.PI) / 180) * 64;
+            const y = 110 + Math.sin((angle * Math.PI) / 180) * 64;
+            return <text key={index} x={x} y={y + 4} textAnchor="middle" fill={INK} fontSize={12} fontWeight={800}>{index + 1}</text>;
+          })}
+          <line className="qv-draw" pathLength={1} x1={110} y1={110} x2={110 + Math.cos(((hourAngle - 90) * Math.PI) / 180) * 42} y2={110 + Math.sin(((hourAngle - 90) * Math.PI) / 180) * 42} stroke={INK} strokeWidth={6} strokeLinecap="round" />
+          <line className="qv-draw" pathLength={1} style={{ animationDelay: "0.15s" }} x1={110} y1={110} x2={110 + Math.cos(((minuteAngle - 90) * Math.PI) / 180) * 62} y2={110 + Math.sin(((minuteAngle - 90) * Math.PI) / 180) * 62} stroke={GOLD_DARK} strokeWidth={4} strokeLinecap="round" />
+          <circle className="qv-pop" style={{ animationDelay: "0.5s" }} cx={110} cy={110} r={5} fill={GOLD} />
+          <ValueTooltip x={110} y={2} text={`${hour}:${String(minute).padStart(2, "0")}`} />
+        </g>
       </svg>,
       `${title}: clock showing ${hour}:${String(minute).padStart(2, "0")}`
     );
