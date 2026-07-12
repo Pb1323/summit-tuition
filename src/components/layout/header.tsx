@@ -53,6 +53,11 @@ export function Header() {
             <span className="text-sm font-bold text-muted">Account</span>
           ) : currentUser ? (
             <>
+              {currentUser.role !== "admin" && (
+                <Link href="/notes" className="text-sm font-bold text-navy">
+                  Notes
+                </Link>
+              )}
               <Link href={dashboardHref} className="text-sm font-bold text-navy">
                 {currentUser.role === "admin" ? "Admin" : "Dashboard"}
               </Link>
@@ -104,6 +109,11 @@ export function Header() {
             </span>
           ) : currentUser ? (
             <div className="mt-3 grid gap-2">
+              {currentUser.role !== "admin" && (
+                <Button href="/notes" variant="outline" size="md" className="w-full">
+                  Study Notes
+                </Button>
+              )}
               <Button href={dashboardHref} variant="outline" size="md" className="w-full">
                 {currentUser.role === "admin" ? "Admin dashboard" : "Student dashboard"}
               </Button>
