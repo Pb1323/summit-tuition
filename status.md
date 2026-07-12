@@ -8,19 +8,27 @@ This is a plain-English summary of where the whole project stands — the produc
 
 ## Done
 
-- Placeholder — nothing logged here yet by the new tracker. See section 3/4 below for what's actually built so far.
+- Committed and pushed the 3 Grammar topics from last session (Pronoun Errors, Apostrophes & Possession, Commonly Confused Words).
+- Built and launched the other 3 English revision-notes sections that hadn't been started: Comprehension, Spelling, and Cloze. Each now has its first working set of lesson pages (10 short lessons apiece), so all 4 sections of English notes are live and browsable.
+- Started real Verbal Reasoning and Non-Verbal Reasoning practice content — these were completely empty before. Added a first batch of 20 real questions each (word puzzles/codes for VR, shape/pattern puzzles for NVR) and switched both practice tests on so students can actually sit them now.
+- Made student progress on revision-notes pages actually stick — before, if a student left a lesson page and came back, it forgot they'd already done the questions. Now it remembers.
+- Wrote down (in `TODO.md`) all the "nice to have later" ideas from an earlier brainstorm — achievement badges, progress meters, certificates, and a big general feature wishlist — so they're not lost, without building any of them yet.
 
 ## In Progress
 
-- Placeholder — nothing logged here yet. See section 8 below ("What's sitting uncommitted right now") for the live handover state from the last session.
+- Nothing left mid-build from this session — everything above was finished, checked, and pushed.
+- A different, unrelated piece of work (a redesign of the admin's mock-management screen) is sitting unfinished in the project files from another session — not touched or affected by this work.
 
 ## Next Up
 
-- Placeholder — nothing logged here yet. See `TODO.md` for the full forward-looking backlog.
+- Decide whether to keep expanding Comprehension/Spelling/Cloze (each only has 1 of 10 planned topics so far) or add more Verbal/Non-Verbal Reasoning questions next.
+- The achievement-badges/certificates idea can now actually be built if wanted, since progress-saving (the thing it was blocked on) is done.
+- Full backlog lives in `TODO.md`.
 
 ## Decisions / Notes
 
-- Placeholder — nothing logged here yet.
+- Confirmed the "worksheets" idea from the earlier brainstorm couldn't be found written down anywhere specific — flagged in `TODO.md` for the user to clarify what they meant.
+- Chose to save student progress locally on their device for now (fast to build) rather than in the shared database (bigger job) — fine for a first version, but progress won't yet follow a student between devices.
 
 ---
 
