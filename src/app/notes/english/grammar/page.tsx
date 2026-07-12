@@ -5,9 +5,18 @@ import { Container } from "@/components/ui/container";
 import { RequireAuth, GlowCard, PremiumBadge, RevealOnScroll } from "@/components/platform/ui";
 import { partsOfSpeechErrorsTopic } from "@/components/notes/notes-content/parts-of-speech-errors";
 import { agreementTenseErrorsTopic } from "@/components/notes/notes-content/agreement-tense-errors";
+import { pronounErrorsTopic } from "@/components/notes/notes-content/pronoun-errors";
+import { apostrophesPossessionErrorsTopic } from "@/components/notes/notes-content/apostrophes-possession-errors";
+import { commonlyConfusedWordsTopic } from "@/components/notes/notes-content/commonly-confused-words";
 import type { TopicContent } from "@/components/notes/types";
 
-const TOPICS: TopicContent[] = [partsOfSpeechErrorsTopic, agreementTenseErrorsTopic];
+const TOPICS: TopicContent[] = [
+  partsOfSpeechErrorsTopic,
+  agreementTenseErrorsTopic,
+  pronounErrorsTopic,
+  apostrophesPossessionErrorsTopic,
+  commonlyConfusedWordsTopic,
+];
 
 export default function GrammarNotesHubPage() {
   return (
