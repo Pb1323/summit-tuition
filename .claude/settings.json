@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"systemMessage\": \"Reminder: before finishing, check status.md (project root) and update its Done / In Progress / Next Up / Decisions tracker block if anything changed this session.\", \"suppressOutput\": true}'",
+            "statusMessage": "Checking status.md reminder"
+          }
+        ]
+      }
+    ]
+  }
+}
