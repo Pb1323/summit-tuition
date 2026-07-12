@@ -11,7 +11,7 @@ const STRANDS = [
     name: "Comprehension",
     icon: BookOpen,
     description: "Retrieval, inference, vocabulary in context and text structure — reading skill by skill.",
-    available: false,
+    available: true,
   },
   {
     slug: "grammar",
@@ -25,14 +25,14 @@ const STRANDS = [
     name: "Spelling",
     icon: SpellCheck,
     description: "Spelling patterns, homophones and \"spot the mistake\" spelling technique.",
-    available: false,
+    available: true,
   },
   {
     slug: "cloze",
     name: "Cloze",
     icon: Puzzle,
     description: "Missing word and missing letter passages, with grammar and context clue strategy.",
-    available: false,
+    available: true,
   },
 ];
 

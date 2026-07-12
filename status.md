@@ -6,6 +6,24 @@ This is a plain-English summary of where the whole project stands — the produc
 
 ---
 
+## Done
+
+- Placeholder — nothing logged here yet by the new tracker. See section 3/4 below for what's actually built so far.
+
+## In Progress
+
+- Placeholder — nothing logged here yet. See section 8 below ("What's sitting uncommitted right now") for the live handover state from the last session.
+
+## Next Up
+
+- Placeholder — nothing logged here yet. See `TODO.md` for the full forward-looking backlog.
+
+## Decisions / Notes
+
+- Placeholder — nothing logged here yet.
+
+---
+
 ## 1. What this actually is
 
 Summit Tuition is an online 11+ exam prep platform: a marketing website plus a working student/admin system for sitting practice mocks (English and Maths), getting them marked, and reviewing results. It's built to look and feel premium (navy/gold/cream branding), not like a generic worksheet site.
@@ -35,32 +53,36 @@ This is a separate section of the site from the mocks — think of it as a revis
 Each "page" (we call it a subtopic) is a self-contained mini-lesson: a plain-English explanation, a glossary of key terms, an interactive exercise you click through, a worked example, a quick self-check question, three practice questions with instant right/wrong feedback, a "common mistakes" box, and an exam tip. It's designed to feel like a nicely typeset textbook page, not a plain webpage.
 
 ### Maths — done
+
 Six topics are fully built and live: **Numbers**, **Fractions/Decimals/Percentages**, **Ratio & Proportion**, **Algebra**, **Geometry**, **Averages & Statistics**. Each has 3 subtopic pages with its own custom interactive diagram (e.g. a place-value house, a factor-sorting Venn diagram, a balance-scale for equations). That's 18 pages total, all working.
 
 ### English — in progress, Grammar strand started
+
 The full plan (from an earlier brainstorm) is a 400-page curriculum split into 4 "strands": **Comprehension**, **Grammar** ("spot the mistake" style), **Spelling** ("spot the mistake" style), and **Cloze** (fill-the-gap passages). Only **Grammar** has been started so far — Comprehension, Spelling and Cloze haven't been touched yet.
 
 Grammar so far has **5 topics live, 46 subtopic pages total**:
 
-| Topic | Subtopics | What it covers |
-|---|---|---|
-| Parts of Speech Errors | 10 | Nouns, verbs, adjectives, adverbs, pronouns, prepositions, conjunctions, determiners, confusing one part of speech for another, spotting the odd one out |
-| Agreement & Sentence-Level Errors | 6 | Subject-verb agreement, tense consistency, comparatives/superlatives, double negatives, misplaced modifiers, parallel structure |
-| Pronoun Errors | 10 | Subject vs. object pronouns, possessive vs. contraction, pronoun-antecedent agreement, ambiguous reference, reflexive misuse, who/whom, relative pronouns, demonstrative pronouns, indefinite pronouns, hypercorrection ("between you and I") |
-| Apostrophes & Possession | 10 | Contractions vs. possessives, singular/plural/irregular/joint possession, decades & letters, the "greengrocer's apostrophe," possessive pronouns, names ending in s, mixed review |
-| Commonly Confused Words | 10 | Homophones, affect/effect-type pairs, fewer/less, practice/practise-type pairs, idioms, formal vs. informal wording, look-alike words, near-synonyms, mixed review |
+| Topic                             | Subtopics | What it covers                                                                                                                                                                                                                                |
+| --------------------------------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Parts of Speech Errors            | 10        | Nouns, verbs, adjectives, adverbs, pronouns, prepositions, conjunctions, determiners, confusing one part of speech for another, spotting the odd one out                                                                                      |
+| Agreement & Sentence-Level Errors | 6         | Subject-verb agreement, tense consistency, comparatives/superlatives, double negatives, misplaced modifiers, parallel structure                                                                                                               |
+| Pronoun Errors                    | 10        | Subject vs. object pronouns, possessive vs. contraction, pronoun-antecedent agreement, ambiguous reference, reflexive misuse, who/whom, relative pronouns, demonstrative pronouns, indefinite pronouns, hypercorrection ("between you and I") |
+| Apostrophes & Possession          | 10        | Contractions vs. possessives, singular/plural/irregular/joint possession, decades & letters, the "greengrocer's apostrophe," possessive pronouns, names ending in s, mixed review                                                             |
+| Commonly Confused Words           | 10        | Homophones, affect/effect-type pairs, fewer/less, practice/practise-type pairs, idioms, formal vs. informal wording, look-alike words, near-synonyms, mixed review                                                                            |
 
 The interaction style for all of Grammar is "click the word that's wrong in this sentence" — one consistent format reused across all 46 pages so it only had to be designed once.
 
 **Where the pages sit:** `/notes/english` → strand picker → `/notes/english/grammar` → topic picker → each topic's own page with all its subtopics stacked on one scrollable page.
 
 ### What's not started yet in English
+
 - **Comprehension strand** — 0 of 100 planned pages (retrieval, inference, vocabulary-in-context, figurative language, author's purpose, text structure, summarising, prediction, comparing texts, fact vs. opinion).
 - **Spelling strand** — 0 of 100 planned pages (spelling patterns, homophones, prefixes/suffixes, silent letters, double letters, plurals, commonly misspelled words, etc.).
 - **Cloze strand** — 0 of 100 planned pages (missing-word and missing-letter passages).
 - Within Grammar itself, a few of the original 10 planned topics haven't been built as their own dedicated topic yet: **Prepositions & Conjunctions** (deeper dive — the basics are covered inside "Parts of Speech Errors" already), and **Complete the Sentence / Best-Fit Word Choice**.
 
 ### A technical note worth knowing (not urgent)
+
 Right now none of the Notes pages remember a student's progress between visits — no "you've mastered this subtopic" saved anywhere. That's fine for now, but the gamification ideas below (mastery meters, wax-seal badges, certificates) all need that kind of saved progress to work, so it's worth deciding on that before too many more pages get built on top of the current setup.
 
 ## 5. Ideas on the shelf (brainstormed, not built)
