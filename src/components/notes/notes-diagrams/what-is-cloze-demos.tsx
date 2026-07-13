@@ -1,6 +1,7 @@
 "use client";
 
 import { ClickFillGap } from "./click-fill-gap";
+import { ContextClueHighlighter } from "./context-clue-highlighter";
 
 const INSTRUCTION = "Click the word that correctly fills the gap.";
 
@@ -52,15 +53,41 @@ export function McVsOpenClozeDemo() {
 /** 4. Why cloze tests grammar AND comprehension together */
 export function GrammarAndComprehensionDemo() {
   return (
-    <ClickFillGap
-      instruction={INSTRUCTION}
-      before="The dog wagged"
-      options={["it's", "their", "his", "its"]}
-      correctIdx={3}
-      after="tail happily when its owner came home."
-      correction="“its” is both grammatically correct (the possessive form, no apostrophe) and makes sense (the dog owns the tail) — cloze answers must satisfy grammar and meaning at once."
-      wrongHint="Check both the grammar (is it possessive?) and the meaning (whose tail is it?)."
-    />
+    <>
+      <ClickFillGap
+        instruction={INSTRUCTION}
+        before="The dog wagged"
+        options={["it's", "their", "his", "its"]}
+        correctIdx={3}
+        after="tail happily when its owner came home."
+        correction="“its” is both grammatically correct (the possessive form, no apostrophe) and makes sense (the dog owns the tail) — cloze answers must satisfy grammar and meaning at once."
+        wrongHint="Check both the grammar (is it possessive?) and the meaning (whose tail is it?)."
+      />
+      <ContextClueHighlighter
+        heading="Find the clues that fix the answer"
+        tokens={[
+          { text: "The" },
+          {
+            text: "dog",
+            clue: true,
+            note: "“dog” is a singular, non-person antecedent — that rules out “their” (plural) and “his” (a person), leaving only “its”.",
+          },
+          { text: "wagged" },
+          { text: "___" },
+          { text: "tail" },
+          { text: "happily" },
+          { text: "when" },
+          { text: "its" },
+          {
+            text: "owner",
+            clue: true,
+            note: "“owner” confirms the meaning fits too — the dog owns both the tail and, grammatically, needs the matching possessive “its”.",
+          },
+          { text: "came" },
+          { text: "home." },
+        ]}
+      />
+    </>
   );
 }
 
@@ -97,15 +124,45 @@ export function ClozeMarkingDemo() {
 /** 7. Common misconceptions (grammar fit alone isn't enough) */
 export function ClozeMisconceptionsDemo() {
   return (
-    <ClickFillGap
-      instruction={INSTRUCTION}
-      before="The kitten was so"
-      options={["tired", "square", "seven", "loud"]}
-      correctIdx={0}
-      after="that it slept for most of the day."
-      correction="“tired” makes sense with sleeping all day — a common mistake is picking a word just because it’s the right part of speech, like “square”, without checking that the meaning fits."
-      wrongHint="All the options could grammatically sit in this gap — but only one actually makes sense with the rest of the sentence."
-    />
+    <>
+      <ClickFillGap
+        instruction={INSTRUCTION}
+        before="The kitten was so"
+        options={["tired", "square", "seven", "loud"]}
+        correctIdx={0}
+        after="that it slept for most of the day."
+        correction="“tired” makes sense with sleeping all day — a common mistake is picking a word just because it’s the right part of speech, like “square”, without checking that the meaning fits."
+        wrongHint="All the options could grammatically sit in this gap — but only one actually makes sense with the rest of the sentence."
+      />
+      <ContextClueHighlighter
+        heading="Find the clue that rules out the traps"
+        tokens={[
+          { text: "The" },
+          { text: "kitten" },
+          { text: "was" },
+          { text: "so" },
+          { text: "___" },
+          { text: "that" },
+          { text: "it" },
+          {
+            text: "slept",
+            clue: true,
+            note: "“slept” is the key clue — every option is grammatically possible in the gap, but only “tired” actually connects to sleeping.",
+          },
+          { text: "for" },
+          { text: "most" },
+          { text: "of" },
+          {
+            text: "the",
+          },
+          {
+            text: "day.",
+            clue: true,
+            note: "“most of the day” reinforces it — a long stretch of sleep fits “tired”, not “square”, “seven” or “loud”.",
+          },
+        ]}
+      />
+    </>
   );
 }
 
@@ -127,29 +184,94 @@ export function ReadPassageFirstDemo() {
 /** 9. Combined skills: vocabulary + grammar + comprehension */
 export function CombinedSkillsDemo() {
   return (
-    <ClickFillGap
-      instruction={INSTRUCTION}
-      before="Although she had practised for weeks, Amira still felt"
-      options={["nerve", "nervous", "nervously", "nerved"]}
-      correctIdx={1}
-      after="before walking on stage."
-      correction="“nervous” is the correct adjective form to follow “felt” — choosing it needs grammar (adjective after a linking verb), vocabulary (knowing the word forms), and comprehension (matching the anxious mood of the sentence)."
-      wrongHint="Check the word’s grammatical form as well as whether its meaning fits the feeling being described."
-    />
+    <>
+      <ClickFillGap
+        instruction={INSTRUCTION}
+        before="Although she had practised for weeks, Amira still felt"
+        options={["nerve", "nervous", "nervously", "nerved"]}
+        correctIdx={1}
+        after="before walking on stage."
+        correction="“nervous” is the correct adjective form to follow “felt” — choosing it needs grammar (adjective after a linking verb), vocabulary (knowing the word forms), and comprehension (matching the anxious mood of the sentence)."
+        wrongHint="Check the word’s grammatical form as well as whether its meaning fits the feeling being described."
+      />
+      <ContextClueHighlighter
+        heading="Three skills, three clues"
+        tokens={[
+          { text: "Although" },
+          {
+            text: "she",
+          },
+          { text: "had" },
+          {
+            text: "practised",
+            clue: true,
+            note: "“practised for weeks” tells you this is about a performance — that's the comprehension clue setting the scene.",
+          },
+          { text: "for" },
+          { text: "weeks," },
+          { text: "Amira" },
+          {
+            text: "still",
+            clue: true,
+            note: "“still felt” needs an adjective straight after it, not a noun or adverb — that's the grammar clue narrowing the word form.",
+          },
+          { text: "felt" },
+          { text: "___" },
+          { text: "before" },
+          {
+            text: "walking",
+            clue: true,
+            note: "“walking on stage” confirms the vocabulary clue — the feeling fits stage fright, which is “nervous”, not “nerve” or “nerved”.",
+          },
+          { text: "on" },
+          { text: "stage." },
+        ]}
+      />
+    </>
   );
 }
 
 /** 10. Setting expectations: mixed grammar-fit and meaning-fit review */
 export function ClozeExpectationsDemo() {
   return (
-    <ClickFillGap
-      instruction={INSTRUCTION}
-      before="Although the forecast promised sunshine, the sky grew"
-      options={["darkly", "brighter", "darker", "dark"]}
-      correctIdx={2}
-      after="and heavy rain began to fall."
-      correction="“darker” fits both the grammar (an adjective after “grew”) and the meaning (a change matching the surprise contrast with the sunny forecast and the rain that follows) — combining a grammar-fit trap (“darkly”, the wrong word class) with a meaning-fit trap (“brighter”, the wrong direction)."
-      wrongHint="Check both word class and meaning — one option is the wrong part of speech, another is the wrong idea entirely."
-    />
+    <>
+      <ClickFillGap
+        instruction={INSTRUCTION}
+        before="Although the forecast promised sunshine, the sky grew"
+        options={["darkly", "brighter", "darker", "dark"]}
+        correctIdx={2}
+        after="and heavy rain began to fall."
+        correction="“darker” fits both the grammar (an adjective after “grew”) and the meaning (a change matching the surprise contrast with the sunny forecast and the rain that follows) — combining a grammar-fit trap (“darkly”, the wrong word class) with a meaning-fit trap (“brighter”, the wrong direction)."
+        wrongHint="Check both word class and meaning — one option is the wrong part of speech, another is the wrong idea entirely."
+      />
+      <ContextClueHighlighter
+        heading="Two traps, two clues that rule them out"
+        tokens={[
+          {
+            text: "Although",
+            clue: true,
+            note: "“Although” signals a contrast is coming — the sky should move away from “sunshine”, ruling out “brighter”.",
+          },
+          { text: "the" },
+          { text: "forecast" },
+          { text: "promised" },
+          { text: "sunshine," },
+          { text: "the" },
+          { text: "sky" },
+          { text: "grew" },
+          { text: "___" },
+          { text: "and" },
+          {
+            text: "heavy",
+            clue: true,
+            note: "“heavy rain” confirms the direction of change and the word class — it needs a comparative adjective after “grew”, matching “darker”, not the adverb “darkly”.",
+          },
+          { text: "rain" },
+          { text: "began" },
+          { text: "to" },
+          { text: "fall." },
+        ]}
+      />
+    </>
   );
 }

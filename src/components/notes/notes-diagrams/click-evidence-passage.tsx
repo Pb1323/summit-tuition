@@ -21,6 +21,7 @@ export function ClickEvidencePassage({ instruction, passage, correctIdx, correct
   const [selected, setSelected] = useState<number | null>(null);
   const [correct, setCorrect] = useState(false);
   const [wrong, setWrong] = useState(false);
+  const [hovered, setHovered] = useState<number | null>(null);
 
   const handleClick = (idx: number) => {
     if (correct) return;
@@ -36,22 +37,35 @@ export function ClickEvidencePassage({ instruction, passage, correctIdx, correct
 
   return (
     <div className="px-6 pb-2 pt-5">
-      <p className="mb-4 text-[0.8em] text-[rgba(248,245,238,0.6)]">{instruction}</p>
+      <p className="mb-4 flex items-center gap-2 text-[0.8em] text-[rgba(248,245,238,0.6)]">
+        <span aria-hidden style={{ color: NOTES_GOLD }}>
+          🔍
+        </span>
+        {instruction}
+      </p>
       <p className="m-0 font-serif text-[1.08em] leading-[1.9] text-[#F8F5EE]">
         {passage.map((sentence, idx) => {
           const isCorrectPick = correct && idx === correctIdx;
           const isWrongPick = wrong && idx === selected;
+          const isHovered = !correct && hovered === idx;
           return (
             <span
               key={idx}
               onClick={() => handleClick(idx)}
+              onMouseEnter={() => setHovered(idx)}
+              onMouseLeave={() => setHovered((v) => (v === idx ? null : v))}
               className="cursor-pointer rounded-[6px] px-[3px] py-px transition-[background,box-shadow] duration-300"
               style={{
-                background: isCorrectPick ? "rgba(201,162,75,0.28)" : "transparent",
-                boxShadow: isCorrectPick ? `inset 0 -3px 0 0 ${NOTES_GOLD}` : "none",
+                background: isCorrectPick ? "rgba(201,162,75,0.28)" : isHovered ? "rgba(201,162,75,0.08)" : "transparent",
+                boxShadow: isCorrectPick ? `inset 0 -3px 0 0 ${NOTES_GOLD}` : isHovered ? "inset 0 -2px 0 0 rgba(201,162,75,0.35)" : "none",
                 animation: isWrongPick ? "ntshake 0.4s ease" : "none",
               }}
             >
+              {isCorrectPick && (
+                <span aria-hidden className="mr-1 inline-block animate-[ntpopcheck_0.4s_ease]" style={{ color: NOTES_GOLD }}>
+                  🔍
+                </span>
+              )}
               {sentence}{" "}
             </span>
           );

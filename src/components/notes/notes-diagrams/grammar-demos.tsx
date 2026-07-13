@@ -1,6 +1,7 @@
 "use client";
 
 import { ClickErrorSentence } from "./click-error-sentence";
+import { ParallelListAligner } from "./parallel-list-aligner";
 
 const INSTRUCTION = "One word in this sentence has been used incorrectly. Click the word you think is wrong.";
 
@@ -186,12 +187,31 @@ export function MisplacedModifiersDemo() {
 
 export function ParallelStructureDemo() {
   return (
-    <ClickErrorSentence
-      instruction={INSTRUCTION}
-      words={["Her", "hobbies", "are", "reading,", "painting", "and", "to", "swim."]}
-      errorIdx={6}
-      correction={'the list should use the same grammatical form throughout — "reading" and "painting" are -ing forms, so the third item should match: "swimming", not "to swim".'}
-      wrongHint="two items in this list share the same word-ending pattern — the third one breaks it."
-    />
+    <>
+      <ClickErrorSentence
+        instruction={INSTRUCTION}
+        words={["Her", "hobbies", "are", "reading,", "painting", "and", "to", "swim."]}
+        errorIdx={6}
+        correction={'the list should use the same grammatical form throughout — "reading" and "painting" are -ing forms, so the third item should match: "swimming", not "to swim".'}
+        wrongHint="two items in this list share the same word-ending pattern — the third one breaks it."
+      />
+      <ParallelListAligner
+        heading="Line up the list"
+        lead="Every item in a list should share the same grammatical form. Find the item that breaks the pattern."
+        items={[
+          { text: "reading", form: "-ing" },
+          { text: "painting", form: "-ing" },
+          {
+            text: "to swim",
+            form: "to + verb",
+            broken: {
+              fixedText: "swimming",
+              fixedForm: "-ing",
+              note: "all three items now share the same -ing form — that's parallel structure: reading, painting and swimming.",
+            },
+          },
+        ]}
+      />
+    </>
   );
 }
