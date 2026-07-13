@@ -22,8 +22,18 @@ function toPercent(v: number) {
   return Math.round((v / 100) * 100);
 }
 
+function gcd(a: number, b: number): number {
+  return b === 0 ? a : gcd(b, a % b);
+}
+
+function simplifiedFraction(percent: number): string {
+  const divisor = gcd(percent, 100);
+  return `${percent / divisor}/${100 / divisor}`;
+}
+
 export function PieChartExplorer() {
   const [active, setActive] = useState<string | null>(null);
+  const [asFraction, setAsFraction] = useState(false);
 
   const gradientStops = SLICES.reduce<{ text: string[]; cursor: number }>(
     (acc, s) => {
@@ -73,15 +83,28 @@ export function PieChartExplorer() {
               <span className="h-3 w-3 flex-none rounded-full" style={{ background: s.color }} />
               <span className="text-[0.82em] font-bold text-[#F8F5EE]">{s.label}</span>
               <span className="ml-auto font-mono text-[0.78em]" style={{ color: NOTES_GOLD }}>
-                {s.value}%
+                {asFraction ? simplifiedFraction(s.value) : `${s.value}%`}
               </span>
             </button>
           ))}
         </div>
       </div>
 
-      <div className="px-5 pb-2 text-center text-[0.72em] text-[rgba(248,245,238,0.5)]">
-        Tap a sport to see its share and how many of the {TOTAL_CHILDREN} pupils that represents.
+      <div className="flex flex-col items-center gap-2 px-5 pb-2">
+        <div className="text-center text-[0.72em] text-[rgba(248,245,238,0.5)]">
+          Tap a sport to see its share and how many of the {TOTAL_CHILDREN} pupils that represents.
+        </div>
+        <button
+          onClick={() => setAsFraction((v) => !v)}
+          className="rounded-full border px-3.5 py-1 text-[0.68em] font-bold uppercase tracking-wider transition-all"
+          style={{
+            background: asFraction ? "rgba(201,162,75,0.18)" : "rgba(255,255,255,0.05)",
+            borderColor: "rgba(201,162,75,0.4)",
+            color: NOTES_GOLD,
+          }}
+        >
+          {asFraction ? "Showing as fractions" : "Show as fractions"}
+        </button>
       </div>
 
       <div
@@ -90,7 +113,8 @@ export function PieChartExplorer() {
       >
         {activeSlice ? (
           <div className="text-[0.86em] text-[#F8F5EE]">
-            <b style={{ color: NOTES_GOLD }}>{activeSlice.label}</b>: {activeSlice.value}% of {TOTAL_CHILDREN} pupils = {activeSlice.value}/100 ×{" "}
+            <b style={{ color: NOTES_GOLD }}>{activeSlice.label}</b>: {activeSlice.value}% of {TOTAL_CHILDREN} pupils ={" "}
+            {asFraction ? simplifiedFraction(activeSlice.value) : `${activeSlice.value}/100`} ×{" "}
             {TOTAL_CHILDREN} = <b style={{ color: NOTES_GOLD }}>{activeCount} pupils</b>
           </div>
         ) : (

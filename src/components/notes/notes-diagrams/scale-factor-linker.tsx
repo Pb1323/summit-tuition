@@ -15,17 +15,23 @@ export function ScaleFactorLinker() {
   const [flour, setFlour] = useState(200);
   const sugar = flour / 2;
   const [factor, setFactor] = useState(1);
+  const [previewFactor, setPreviewFactor] = useState<number | null>(null);
 
-  const scaledFlour = Math.round(flour * factor * 100) / 100;
-  const scaledSugar = Math.round(sugar * factor * 100) / 100;
+  const displayFactor = previewFactor ?? factor;
+  const scaledFlour = Math.round(flour * displayFactor * 100) / 100;
+  const scaledSugar = Math.round(sugar * displayFactor * 100) / 100;
 
   return (
     <div>
       <div className="px-6 pb-1 pt-[26px] text-center text-[0.78em] text-[rgba(248,245,238,0.6)]">
         Original recipe ratio flour : sugar = {flour} : {sugar}
       </div>
-      <div className="px-6 pb-4 pt-2 text-center font-mono text-[1.4em] font-bold" style={{ color: NOTES_GOLD }}>
+      <div
+        className="px-6 pb-4 pt-2 text-center font-mono text-[1.4em] font-bold transition-opacity duration-150"
+        style={{ color: NOTES_GOLD, opacity: previewFactor !== null ? 0.6 : 1 }}
+      >
         {scaledFlour}g flour : {scaledSugar}g sugar
+        {previewFactor !== null && <span className="ml-2 text-[0.6em] font-normal text-[rgba(248,245,238,0.5)]">(preview)</span>}
       </div>
 
       <div className="flex justify-center gap-6 px-6 pb-5">
@@ -50,6 +56,10 @@ export function ScaleFactorLinker() {
           <button
             key={s.label}
             onClick={() => setFactor(s.factor)}
+            onMouseEnter={() => setPreviewFactor(s.factor)}
+            onMouseLeave={() => setPreviewFactor(null)}
+            onFocus={() => setPreviewFactor(s.factor)}
+            onBlur={() => setPreviewFactor(null)}
             className="rounded-full border px-3.5 py-2 font-mono text-[0.78em] font-bold transition-all"
             style={{
               background: factor === s.factor ? NOTES_GOLD : "rgba(255,255,255,0.06)",
