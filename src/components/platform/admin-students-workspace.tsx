@@ -1,9 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { CheckCircle2, ClipboardCheck, UserPlus, Users, XCircle } from "lucide-react";
+import { CheckCircle2, ClipboardCheck, Trash2, UserPlus, Users, XCircle } from "lucide-react";
 import { usePlatform } from "@/context/platform-context";
 import { GlowCard, PremiumBadge, StaggerReveal } from "@/components/platform/ui";
+
+function confirmDelete(name: string, email: string) {
+  return window.confirm(`Permanently delete ${name} (${email})?\n\nThis removes their account, attempts and unlocks for good. This cannot be undone. Type OK to confirm.`);
+}
 
 export function AdminStudentsWorkspace({ compact = false }: { compact?: boolean }) {
   const { users, mocks, notes, products, approveUser, rejectUser, approveAndUnlockFirstMock, assignPlan, unlockMock, unlockNote, createTestStudent } = usePlatform();
@@ -45,8 +49,8 @@ export function AdminStudentsWorkspace({ compact = false }: { compact?: boolean 
                   <button onClick={() => approveAndUnlockFirstMock(student.id)} className="inline-flex h-10 items-center gap-2 rounded-full bg-gold px-4 text-sm font-bold text-navy">
                     <ClipboardCheck className="h-4 w-4" /> Approve + Unlock First Mock
                   </button>
-                  <button onClick={() => rejectUser(student.id)} className="inline-flex h-10 items-center gap-2 rounded-full border border-red-200 bg-red-50 px-4 text-sm font-bold text-red-700">
-                    <XCircle className="h-4 w-4" /> Reject
+                  <button onClick={() => confirmDelete(student.name, student.email) && rejectUser(student.id)} className="inline-flex h-10 items-center gap-2 rounded-full border border-red-200 bg-red-50 px-4 text-sm font-bold text-red-700">
+                    <XCircle className="h-4 w-4" /> Reject &amp; delete
                   </button>
                 </div>
               </div>
@@ -84,6 +88,12 @@ export function AdminStudentsWorkspace({ compact = false }: { compact?: boolean 
                     <div className="flex flex-wrap gap-2">
                       <button onClick={() => approveUser(student.id, !student.approved)} className="rounded-full border border-line px-3 py-1 text-sm font-bold text-navy">{student.approved ? "Unapprove" : "Approve"}</button>
                       <button onClick={() => approveAndUnlockFirstMock(student.id)} className="rounded-full bg-gold px-3 py-1 text-sm font-bold text-navy">Approve + unlock</button>
+                      <button
+                        onClick={() => confirmDelete(student.name, student.email) && rejectUser(student.id)}
+                        className="inline-flex items-center gap-1 rounded-full border border-red-200 bg-red-50 px-3 py-1 text-sm font-bold text-red-700"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" /> Delete account
+                      </button>
                     </div>
                   </div>
                 </div>

@@ -175,6 +175,7 @@ export function AdminDashboard() {
     products,
     emailTemplates,
     approveUser,
+    rejectUser,
     assignPlan,
     unlockMock,
     setMockFree,
@@ -240,7 +241,7 @@ export function AdminDashboard() {
         ) : <div className="overflow-x-auto">
           <table className="w-full min-w-[760px] text-left text-sm">
             <caption className="sr-only">Student accounts, plans, payment status, approval status and mock unlock controls</caption>
-            <thead className="text-xs uppercase text-muted"><tr><th scope="col" className="p-3">Student</th><th scope="col">Plan</th><th scope="col">Payment</th><th scope="col">Approved</th><th scope="col">Mock unlocks</th></tr></thead>
+            <thead className="text-xs uppercase text-muted"><tr><th scope="col" className="p-3">Student</th><th scope="col">Plan</th><th scope="col">Payment</th><th scope="col">Approved</th><th scope="col">Mock unlocks</th><th scope="col">Delete</th></tr></thead>
             <tbody>
               {students.map((student) => (
                 <tr key={student.id} className="border-t border-line">
@@ -259,6 +260,16 @@ export function AdminDashboard() {
                         {mock.title}
                       </label>
                     ))}
+                  </td>
+                  <td>
+                    <button
+                      onClick={() => {
+                        if (window.confirm(`Permanently delete ${student.name} (${student.email})?\n\nThis removes their account, attempts and unlocks for good. This cannot be undone.`)) rejectUser(student.id);
+                      }}
+                      className="rounded-full border border-red-200 bg-red-50 px-3 py-1 font-bold text-red-700"
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
