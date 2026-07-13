@@ -4,9 +4,10 @@ import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { RequireAuth, RequireNoteAccess, GlowCard, PremiumBadge, RevealOnScroll } from "@/components/platform/ui";
 import { literalComprehensionRetrievalTopic } from "@/components/notes/notes-content/literal-comprehension-retrieval";
+import { inferenceTopic } from "@/components/notes/notes-content/inference";
 import type { TopicContent } from "@/components/notes/types";
 
-const TOPICS: TopicContent[] = [literalComprehensionRetrievalTopic];
+const TOPICS: TopicContent[] = [literalComprehensionRetrievalTopic, inferenceTopic];
 
 export default function ComprehensionNotesHubPage() {
   return (

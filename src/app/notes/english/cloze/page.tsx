@@ -4,9 +4,10 @@ import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { RequireAuth, RequireNoteAccess, GlowCard, PremiumBadge, RevealOnScroll } from "@/components/platform/ui";
 import { whatIsClozeTopic } from "@/components/notes/notes-content/what-is-cloze";
+import { grammaticalClozeStrategyTopic } from "@/components/notes/notes-content/grammatical-cloze-strategy";
 import type { TopicContent } from "@/components/notes/types";
 
-const TOPICS: TopicContent[] = [whatIsClozeTopic];
+const TOPICS: TopicContent[] = [whatIsClozeTopic, grammaticalClozeStrategyTopic];
 
 export default function ClozeNotesHubPage() {
   return (

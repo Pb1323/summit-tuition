@@ -4,9 +4,10 @@ import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { RequireAuth, RequireNoteAccess, GlowCard, PremiumBadge, RevealOnScroll } from "@/components/platform/ui";
 import { spellingPatternsRulesTopic } from "@/components/notes/notes-content/spelling-patterns-rules";
+import { homophonesTopic } from "@/components/notes/notes-content/homophones";
 import type { TopicContent } from "@/components/notes/types";
 
-const TOPICS: TopicContent[] = [spellingPatternsRulesTopic];
+const TOPICS: TopicContent[] = [spellingPatternsRulesTopic, homophonesTopic];
 
 export default function SpellingNotesHubPage() {
   return (
