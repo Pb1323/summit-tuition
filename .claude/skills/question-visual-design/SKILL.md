@@ -89,7 +89,7 @@ than a sentence.
 
 `research/gl-layout-spec.md` has real GL Assessment page measurements (A4, margins, fonts, line
 spacing) extracted via `pdfplumber` from official papers in `research/gl-papers/` (gitignored locally —
-never publish these PDFs, only the extracted numbers, per `PROJECT_CONTEXT.md`). The numbers are wired
+never publish these PDFs, only the extracted numbers, per `CLAUDE.md`). The numbers are wired
 into `src/app/globals.css` as `--gl-print-*` custom properties plus a `@media print` block: wrap any
 future printable/exportable mock page in a `.gl-print` container with `.gl-print-page` (or
 `.gl-print-page-diagram` for diagram-heavy pages, which use GL's smaller top margin) per printed sheet,

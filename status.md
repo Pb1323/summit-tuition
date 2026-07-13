@@ -2,7 +2,7 @@
 
 Last updated: 2026-07-12
 
-This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `PROJECT_CONTEXT.md` and `README.md` if you ever need it.
+This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
 

@@ -3,7 +3,7 @@
 Source: https://passelevenplus.co.uk/11-plus-exam-papers/gl-assessment-practice-papers/ (fetched 2026-07-11).
 Official GL Assessment practice papers, question papers (QP) and mark schemes (MS). Downloaded once
 so future sessions can measure real layout (margins, fonts, spacing) without re-fetching or guessing.
-These are reference-only per `PROJECT_CONTEXT.md` — never copy their question content into the product,
+These are reference-only per `CLAUDE.md` — never copy their question content into the product,
 only structural/layout metrics (see `gl-layout-spec.md`, generated from these).
 
 18 unique files (some mark schemes/parent guides cover multiple question papers, which is why the

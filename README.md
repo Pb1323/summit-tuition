@@ -214,7 +214,7 @@ Types already support `VR` and `NVR`, including future question types. Add quest
 
 ## Study Notes
 
-Interactive study notes live at `/notes` (subject index) and `/notes/maths/[topic]`, separate from the mock/exam system. Content and diagrams are defined in `src/components/notes/notes-content/*.ts` and `src/components/notes/notes-diagrams/*.tsx`; see `PROJECT_CONTEXT.md` for the full file map.
+Interactive study notes live at `/notes` (subject index) and `/notes/maths/[topic]`, separate from the mock/exam system. Content and diagrams are defined in `src/components/notes/notes-content/*.ts` and `src/components/notes/notes-diagrams/*.tsx`; see `CLAUDE.md` for the full file map.
 
 ## Content Rules
 

@@ -39,7 +39,7 @@ constants, and treat top margin as content-dependent (diagram page vs. text page
   e.g. Inter/Source Sans, at the same 12pt/~15pt line-height ratio) for questions/instructions; a serif
   at the same 12pt only for English reading passages, matching GL's own distinction.
 - This is layout/typography metadata only — never reproduce GL's actual question text/images in the
-  product (see `PROJECT_CONTEXT.md`).
+  product (see `CLAUDE.md`).
 
 ## Caveats
 

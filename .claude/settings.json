@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '{\"systemMessage\": \"Reminder: before finishing, check status.md (project root) and update its Done / In Progress / Next Up / Decisions tracker block if anything changed this session.\", \"suppressOutput\": true}'",
+            "command": "echo '{\"systemMessage\": \"Reminder: before finishing, check status.md (project root) and update its Done / In Progress / Next Up / Decisions tracker block if anything changed this session. Also check CLAUDE.md (auto-loaded into every session) and update its Recent Feature State / routes / known limitations if this session added or changed a feature, route, or data model.\", \"suppressOutput\": true}'",
             "statusMessage": "Checking status.md reminder"
           }
         ]

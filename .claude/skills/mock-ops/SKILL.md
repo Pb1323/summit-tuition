@@ -6,7 +6,7 @@ description: Day-to-day operational workflow for running the Summit Tuition plat
 # Summit Tuition day-to-day ops
 
 Solo-founder workflow for running the platform in `src/`, not a general Next.js
-guide — see `PROJECT_CONTEXT.md` (repo root) for architecture and current state,
+guide — see `CLAUDE.md` (repo root) for architecture and current state,
 and re-read it first since it's meant to be kept current.
 
 ## Core admin flow (student lifecycle)
@@ -36,7 +36,7 @@ hangs off.
 
 ## Before every push
 
-Run, in order, and don't skip on time pressure — `PROJECT_CONTEXT.md` states
+Run, in order, and don't skip on time pressure — `CLAUDE.md` states
 these currently pass, so a regression here is a signal something's wrong:
 
 ```bash
@@ -48,7 +48,7 @@ npm.cmd run test:e2e
 
 PowerShell blocks `npm.ps1` on this machine — always use `npm.cmd`, not `npm`.
 
-Update `PROJECT_CONTEXT.md` before pushing if the change affects architecture,
+Update `CLAUDE.md` before pushing if the change affects architecture,
 routes, data model, or known limitations — it's the recovery point for a cold
 session and goes stale fast otherwise.
 
