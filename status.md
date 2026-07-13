@@ -1,6 +1,6 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-12
+Last updated: 2026-07-13
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
@@ -8,27 +8,34 @@ This is a plain-English summary of where the whole project stands — the produc
 
 ## Done
 
-- Committed and pushed the 3 Grammar topics from last session (Pronoun Errors, Apostrophes & Possession, Commonly Confused Words).
-- Built and launched the other 3 English revision-notes sections that hadn't been started: Comprehension, Spelling, and Cloze. Each now has its first working set of lesson pages (10 short lessons apiece), so all 4 sections of English notes are live and browsable.
-- Started real Verbal Reasoning and Non-Verbal Reasoning practice content — these were completely empty before. Added a first batch of 20 real questions each (word puzzles/codes for VR, shape/pattern puzzles for NVR) and switched both practice tests on so students can actually sit them now.
-- Made student progress on revision-notes pages actually stick — before, if a student left a lesson page and came back, it forgot they'd already done the questions. Now it remembers.
-- Wrote down (in `TODO.md`) all the "nice to have later" ideas from an earlier brainstorm — achievement badges, progress meters, certificates, and a big general feature wishlist — so they're not lost, without building any of them yet.
+- Went through the whole site to answer "what's left before this is shareable with real clients" — found and fixed several real gaps.
+- Removed the fake phone number (020 3870 1142 was never real) from the contact page, footer, safeguarding page, and site metadata. Contact email now defaults to a real inbox.
+- Calendly booking widget is now live on `/book-a-call` (done by the user just before this session; confirmed it's committed and pushed).
+- **Fixed a serious security hole**: the endpoint used to create the admin account had no protection — anyone on the internet who guessed the admin email could have taken over the admin account with a password of their choosing. It now requires a secret key (`ADMIN_BOOTSTRAP_SECRET`) the user sets themselves and only uses once.
+- Added basic brute-force protection (rate limiting) to login, registration, the admin-creation endpoint, and the contact form, so those can't be hammered or spammed.
+- **Fixed mock content being exposed early**: every mock's correct answers, mark schemes, and explanations were being sent to a student's browser the moment they loaded the app — visible in dev tools before they'd even started the exam. Now those are hidden until a report is officially released for that student's attempt. Grading itself was already done safely on the server, so this didn't affect scoring, just what leaked to the browser.
+- The enquiry form now also emails the parent a "we got your message" confirmation (before, it only tried to notify the admin, and only if email sending was configured — otherwise it silently did nothing).
+- Reviewed all admin-only API routes — confirmed they're all properly locked to admin accounts, no gaps found there.
 
 ## In Progress
 
-- Nothing left mid-build from this session — everything above was finished, checked, and pushed.
-- A different, unrelated piece of work (a redesign of the admin's mock-management screen) is sitting unfinished in the project files from another session — not touched or affected by this work.
+- Nothing left mid-build from this session — everything above was finished, checked (typecheck/lint/build all pass), committed, and pushed.
+- User still needs to set a few things up on their end (their Vercel/Resend/database accounts) — see Next Up.
 
 ## Next Up
 
-- Decide whether to keep expanding Comprehension/Spelling/Cloze (each only has 1 of 10 planned topics so far) or add more Verbal/Non-Verbal Reasoning questions next.
-- The achievement-badges/certificates idea can now actually be built if wanted, since progress-saving (the thing it was blocked on) is done.
+- **User action needed** — three things only the user can do (needs their own account access):
+  1. Set up email delivery (Resend account + API key) and an admin notification address so enquiries/bookings actually reach someone.
+  2. Connect a real shared database (e.g. Supabase Postgres) so student accounts/mocks aren't stuck in each browser's local storage.
+  3. Set `ADMIN_BOOTSTRAP_SECRET`, `AUTH_SECRET`, and a real `ADMIN_PASSWORD` in the Vercel dashboard (not local `.env`).
+- VR/NVR mocks intentionally left as-is this session (user said leave them for now).
+- Decide whether to keep expanding Comprehension/Spelling/Cloze notes or add more VR/NVR questions next — unchanged from last session.
 - Full backlog lives in `TODO.md`.
 
 ## Decisions / Notes
 
-- Confirmed the "worksheets" idea from the earlier brainstorm couldn't be found written down anywhere specific — flagged in `TODO.md` for the user to clarify what they meant.
-- Chose to save student progress locally on their device for now (fast to build) rather than in the shared database (bigger job) — fine for a first version, but progress won't yet follow a student between devices.
+- User confirmed: fix the mock-content-exposure issue, but explicitly leave VR/NVR mocks alone for now.
+- `.env.example` is intentionally not committed to git (covered by `.gitignore`'s `.env*` rule) — it's a local-only reference file, so the new `ADMIN_BOOTSTRAP_SECRET` line added to it won't show up in git history.
 
 ---
 
