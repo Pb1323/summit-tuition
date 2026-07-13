@@ -251,6 +251,13 @@ function SegmentMistakeAnswer({
   isCorrectOption: (option: string) => boolean;
 }) {
   const { instruction, segments, noMistakeOption } = parseSegmentQuestion(question);
+  // The clauses must stay in reading order to make grammatical sense, but which
+  // letter labels which clause doesn't have to — shuffle the label assignment per
+  // question so the correct letter isn't predictably clustered (e.g. always "B").
+  const letters = useMemo(() => {
+    const pool = Array.from({ length: segments.length + (noMistakeOption ? 1 : 0) }, (_, i) => String.fromCharCode(65 + i));
+    return seededShuffle(pool, question.id + "-letters");
+  }, [segments.length, noMistakeOption, question.id]);
   const segmentButton = (option: string, letter: string) => {
     const selected = value === option;
     const showCorrect = review && isCorrectOption(option);
@@ -277,11 +284,11 @@ function SegmentMistakeAnswer({
     <div className="rounded-2xl border border-gold/20 bg-cream/60 p-5">
       {instruction && <p className="text-xs font-black uppercase tracking-[0.14em] text-gold-dark">{instruction}</p>}
       <p className="mt-3 font-serif text-lg leading-[2.1] text-navy">
-        {segments.map((segment, index) => segmentButton(segment, String.fromCharCode(65 + index)))}
+        {segments.map((segment, index) => segmentButton(segment, letters[index]))}
       </p>
       {noMistakeOption && (
         <div className="mt-4 border-t border-gold/15 pt-4">
-          {segmentButton(noMistakeOption, String.fromCharCode(65 + segments.length))}
+          {segmentButton(noMistakeOption, letters[segments.length])}
           <span className="ml-2 text-sm font-semibold text-muted">if you think there is no mistake</span>
         </div>
       )}
