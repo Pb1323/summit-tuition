@@ -54,13 +54,14 @@ model User {
   email         String        @unique
   passwordHash  String
   role          Role          @default(student)
-  approved      Boolean       @default(false)
+  approved      Boolean       @default(true)
   plan          String
   paymentStatus PaymentStatus @default(pending)
   createdAt     DateTime      @default(now())
   sessions      Session[]
   attempts      Attempt[]
   unlocks       MockUnlock[]
+  noteUnlocks   NoteUnlock[]
 }
 
 model Session {
@@ -88,6 +89,7 @@ model MockExam {
   releaseDate              DateTime
   tier                     String
   description              String
+  isFree                   Boolean     @default(false)
   attempts                 Attempt[]
   unlocks                  MockUnlock[]
 }
@@ -150,6 +152,24 @@ model MockUnlock {
   mock   MockExam @relation(fields: [mockId], references: [id], onDelete: Cascade)
 
   @@id([userId, mockId])
+}
+
+model Note {
+  id      String       @id
+  subject Subject
+  slug    String
+  title   String
+  isFree  Boolean      @default(false)
+  unlocks NoteUnlock[]
+}
+
+model NoteUnlock {
+  userId String
+  noteId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  note   Note @relation(fields: [noteId], references: [id], onDelete: Cascade)
+
+  @@id([userId, noteId])
 }
 
 model ReferenceSource {

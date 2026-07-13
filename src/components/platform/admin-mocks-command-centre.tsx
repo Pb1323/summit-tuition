@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Archive, BookOpenCheck, CheckCircle2, ChevronDown, ClipboardList, Copy, Eye, FileSearch, FlaskConical, ListChecks, PencilLine, Search, XCircle } from "lucide-react";
 import { usePlatform } from "@/context/platform-context";
 import { evaluateMockQuality, qualityTone, type MockQualityResult } from "@/lib/mock-quality";
+import { autoGenerateReport } from "@/lib/assessment";
 import { AnimatedButton, GlowCard, PremiumBadge, QuestionRenderer, RevealOnScroll, StaggerReveal } from "@/components/platform/ui";
 import { AdminMockWorkspace } from "@/components/platform/admin-mock-workspace";
 import type { Attempt, MockExam, Passage, Question, Subject } from "@/types/platform";
@@ -164,7 +165,15 @@ export function AdminMocksCommandCentre() {
                 {attempt.status === "submitted" && (
                   <div className="mt-4 space-y-3">
                     <textarea value={feedback[attempt.id] ?? attempt.adminFeedback} onChange={(event) => setFeedback((prev) => ({ ...prev, [attempt.id]: event.target.value }))} placeholder="Manual feedback notes" className="min-h-20 w-full rounded-xl border border-line p-3 text-sm outline-none focus:border-gold" />
-                    <div className="flex gap-3">
+                    <div className="flex flex-wrap gap-3">
+                      {mock && (
+                        <button
+                          onClick={() => setFeedback((prev) => ({ ...prev, [attempt.id]: autoGenerateReport(mock, attempt, questions) }))}
+                          className="rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-sm font-bold text-navy"
+                        >
+                          Auto-fill statistics report
+                        </button>
+                      )}
                       <button onClick={() => addFeedback(attempt.id, feedback[attempt.id] ?? attempt.adminFeedback)} className="rounded-full border border-line px-3 py-1 text-sm font-bold text-navy">Save feedback</button>
                       <button onClick={() => releaseReport(attempt.id, feedback[attempt.id] ?? attempt.adminFeedback)} className="rounded-full bg-gold px-3 py-1 text-sm font-bold text-navy">Release report</button>
                     </div>

@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { isCorrect, topicBreakdown, recommendationsForTopics } from "@/lib/assessment";
+import { isCorrect, analyseAttempt, patternDescription, recommendationsForTopics } from "@/lib/assessment";
 import { usePlatform } from "@/context/platform-context";
 import { Container } from "@/components/ui/container";
 import { GlowCard, PremiumBadge, ProgressBar, QuestionRenderer, ReportPreview, RequireAuth, WeakTopicBreakdown } from "@/components/platform/ui";
@@ -66,8 +66,14 @@ export default function MockReviewPage() {
             <div className="grid gap-6 lg:grid-cols-2">
               <GlowCard className="p-6">
                 <h2 className="text-xl font-black text-navy">Topic breakdown</h2>
+                <p className="mt-1 text-sm text-muted">Exactly where marks were lost, and whether it looks like a careless slip, a concept gap, or timing pressure.</p>
                 <div className="mt-4 space-y-4">
-                  {topicBreakdown(mock, attempt, questionBank).map((topic) => <ProgressBar key={topic.topic} value={topic.maxScore ? (topic.score / topic.maxScore) * 100 : 0} label={`${topic.topic}: ${topic.score}/${topic.maxScore}`} />)}
+                  {analyseAttempt(mock, attempt.answers, questionBank).topicBreakdown.map((topic) => (
+                    <div key={topic.topic}>
+                      <ProgressBar value={topic.maxScore ? (topic.score / topic.maxScore) * 100 : 0} label={`${topic.topic}: ${topic.score}/${topic.maxScore}`} />
+                      {topic.missedMarks > 0 && <p className="mt-1 text-xs font-semibold text-muted">Lost {topic.missedMarks} mark{topic.missedMarks === 1 ? "" : "s"} — {patternDescription(topic.pattern)}.</p>}
+                    </div>
+                  ))}
                 </div>
               </GlowCard>
               <GlowCard className="p-6">

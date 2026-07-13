@@ -2,12 +2,28 @@ import type {
   Attempt,
   EmailTemplate,
   MockExam,
+  NotePage,
   Passage,
   ProductPlan,
   Question,
   ReferenceSource,
   StudentAccount,
 } from "@/types/platform";
+
+/** Every strand-level notes page (subject hub -> strand hub -> topic articles). Gating happens
+ * at this strand level: unlocking "english-grammar" unlocks the strand hub and every topic page under it. */
+export const NOTE_PAGES: NotePage[] = [
+  { id: "english-comprehension", subject: "English", slug: "/notes/english/comprehension", title: "English: Comprehension", isFree: true },
+  { id: "english-grammar", subject: "English", slug: "/notes/english/grammar", title: "English: Grammar", isFree: false },
+  { id: "english-spelling", subject: "English", slug: "/notes/english/spelling", title: "English: Spelling", isFree: false },
+  { id: "english-cloze", subject: "English", slug: "/notes/english/cloze", title: "English: Cloze", isFree: false },
+  { id: "maths-numbers", subject: "Maths", slug: "/notes/maths/numbers", title: "Maths: Numbers", isFree: true },
+  { id: "maths-fractions-decimals-percentages", subject: "Maths", slug: "/notes/maths/fractions-decimals-percentages", title: "Maths: Fractions, Decimals & Percentages", isFree: false },
+  { id: "maths-algebra", subject: "Maths", slug: "/notes/maths/algebra", title: "Maths: Algebra", isFree: false },
+  { id: "maths-geometry", subject: "Maths", slug: "/notes/maths/geometry", title: "Maths: Geometry", isFree: false },
+  { id: "maths-averages-statistics", subject: "Maths", slug: "/notes/maths/averages-statistics", title: "Maths: Averages & Statistics", isFree: false },
+  { id: "maths-ratio-proportion", subject: "Maths", slug: "/notes/maths/ratio-proportion", title: "Maths: Ratio & Proportion", isFree: false },
+];
 
 export const MASTER_ADMIN_EMAIL = "admin@summittuition.local";
 
@@ -21,6 +37,7 @@ export const SEEDED_USERS: StudentAccount[] = [
     plan: "Complete 11+ Programme",
     paymentStatus: "paid",
     unlockedMockIds: ["maths-gl-1", "english-gl-1"],
+    unlockedNoteIds: NOTE_PAGES.map((note) => note.id),
     createdAt: "2026-07-01T09:00:00.000Z",
   },
   {
@@ -32,6 +49,7 @@ export const SEEDED_USERS: StudentAccount[] = [
     plan: "Weekly Mock Club Plus",
     paymentStatus: "paid",
     unlockedMockIds: ["maths-gl-1", "english-gl-1"],
+    unlockedNoteIds: NOTE_PAGES.filter((note) => note.isFree).map((note) => note.id),
     createdAt: "2026-07-01T10:00:00.000Z",
   },
   {
@@ -39,10 +57,11 @@ export const SEEDED_USERS: StudentAccount[] = [
     name: "Test Student",
     email: "test-student@example.com",
     role: "student",
-    approved: false,
+    approved: true,
     plan: "Diagnostic Assessment",
     paymentStatus: "pending",
     unlockedMockIds: [],
+    unlockedNoteIds: NOTE_PAGES.filter((note) => note.isFree).map((note) => note.id),
     createdAt: "2026-07-01T11:00:00.000Z",
   },
 ];
@@ -9632,6 +9651,7 @@ export const MOCKS: MockExam[] = [
     releaseDate: "2026-07-01",
     tier: "Diagnostic Assessment",
     description: "Short original online-only diagnostic sample covering arithmetic, fractions, ratio, geometry and data handling. Full generated mocks default to 50 questions.",
+    isFree: true,
   },
   {
     id: "english-gl-1",
@@ -9645,6 +9665,7 @@ export const MOCKS: MockExam[] = [
     releaseDate: "2026-07-01",
     tier: "Diagnostic Assessment",
     description: "Short original comprehension diagnostic sample. Full generated English mocks default to 50 questions with a longer passage.",
+    isFree: true,
   },
   {
     id: "english-gl-2-stretch",
@@ -9800,7 +9821,7 @@ export const MOCKS: MockExam[] = [
     published: true,
     releaseDate: "2026-07-18",
     tier: "Diagnostic Assessment",
-    description: "The first full-length, elite-difficulty English paper matching the real GL Assessment 11+ structure exactly: Q1-28 reading comprehension on an original passage, 'The Cartographer's Apprentice' (retrieval, inference, vocabulary-in-context, embedded grammar and literary technique/author's purpose), Q29-37 spelling in the authentic segment 'find the mistake, or choose N' format, Q38-46 grammar-mistake spotting in the same format (agreement, comparatives, dangling modifiers, tense and pronoun errors), and Q47-54 cloze. Comprehension distractors are deliberately close paraphrases of the correct text so answers cannot be found by elimination or skimming — every option must be checked against the exact wording and paragraph. Not copied from any third-party paper — an original Summit Tuition paper, calibrated so a strong candidate should expect to score around 65-70%.",
+    description: "The first full-length, elite-difficulty English paper matching the real GL Assessment 11+ structure exactly: Q1-28 reading comprehension on an original passage, 'The Cartographer's Apprentice' (retrieval, inference, vocabulary-in-context, embedded grammar and literary technique/author's purpose), Q29-37 spelling in the authentic segment 'find the mistake, or choose N' format, Q38-46 grammar-mistake spotting in the same format (agreement, comparatives, dangling modifiers, tense and pronoun errors), and Q47-54 cloze. Comprehension distractors are deliberately close paraphrases of the correct text so answers cannot be found by elimination or skimming — every option must be checked against the exact wording and paragraph. Not copied from any third-party paper — an original Summit Tuition paper designed to stretch even strong 11+ candidates.",
   },
   {
     id: "english-gl-9-elite",
@@ -9821,7 +9842,7 @@ export const MOCKS: MockExam[] = [
     published: true,
     releaseDate: "2026-07-19",
     tier: "Diagnostic Assessment",
-    description: "The second full-length, elite-difficulty English paper matching the real GL Assessment 11+ structure exactly: Q1-28 reading comprehension on an original passage, 'The Glass-Blower's Legacy' (retrieval, inference, vocabulary-in-context, embedded grammar and literary technique/author's purpose), Q29-37 spelling in the authentic segment 'find the mistake, or choose N' format, Q38-46 grammar-mistake spotting in the same format (agreement, comparatives, dangling modifiers, tense and pronoun errors), and Q47-54 cloze. Comprehension distractors are deliberately close paraphrases of the correct text so answers cannot be found by elimination or skimming — every option must be checked against the exact wording and paragraph. Not copied from any third-party paper — an original Summit Tuition paper, calibrated so a strong candidate should expect to score around 65-70%.",
+    description: "The second full-length, elite-difficulty English paper matching the real GL Assessment 11+ structure exactly: Q1-28 reading comprehension on an original passage, 'The Glass-Blower's Legacy' (retrieval, inference, vocabulary-in-context, embedded grammar and literary technique/author's purpose), Q29-37 spelling in the authentic segment 'find the mistake, or choose N' format, Q38-46 grammar-mistake spotting in the same format (agreement, comparatives, dangling modifiers, tense and pronoun errors), and Q47-54 cloze. Comprehension distractors are deliberately close paraphrases of the correct text so answers cannot be found by elimination or skimming — every option must be checked against the exact wording and paragraph. Not copied from any third-party paper — an original Summit Tuition paper designed to stretch even strong 11+ candidates.",
   },
   {
     id: "vr-placeholder",

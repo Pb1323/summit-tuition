@@ -1,8 +1,8 @@
 import "server-only";
-import { ATTEMPTS, EMAIL_TEMPLATES, MOCKS, PASSAGES, PRODUCT_PLANS, QUESTIONS, REFERENCES, SEEDED_USERS } from "@/data/platform";
+import { ATTEMPTS, EMAIL_TEMPLATES, MOCKS, NOTE_PAGES, PASSAGES, PRODUCT_PLANS, QUESTIONS, REFERENCES, SEEDED_USERS } from "@/data/platform";
 import { isDatabaseConfigured, prisma } from "@/lib/server/db";
 import { publicUser } from "@/lib/server/auth";
-import type { Attempt, EmailTemplate, MockExam, Passage, ProductPlan, Question, ReferenceSource, StudentAccount } from "@/types/platform";
+import type { Attempt, EmailTemplate, MockExam, NotePage, Passage, ProductPlan, Question, ReferenceSource, StudentAccount } from "@/types/platform";
 
 export type PlatformBootstrap = {
   currentUser: StudentAccount | null;
@@ -15,6 +15,7 @@ export type PlatformBootstrap = {
   references: ReferenceSource[];
   products: ProductPlan[];
   emailTemplates: EmailTemplate[];
+  notes: NotePage[];
 };
 
 function fromPrismaReferenceStyle(style: string) {
@@ -40,11 +41,12 @@ export async function getPlatformBootstrap(currentUser: StudentAccount | null): 
       references: currentUser?.role === "admin" ? REFERENCES : REFERENCES.filter((reference) => reference.style === "GL-style"),
       products: PRODUCT_PLANS,
       emailTemplates: currentUser?.role === "admin" ? EMAIL_TEMPLATES : [],
+      notes: NOTE_PAGES,
     };
   }
 
-  const [users, mocks, questions, passages, attempts, references, products, emailTemplates] = await Promise.all([
-    currentUser?.role === "admin" ? prisma.user.findMany({ include: { unlocks: true }, orderBy: { createdAt: "desc" } }) : Promise.resolve([]),
+  const [users, mocks, questions, passages, attempts, references, products, emailTemplates, notes] = await Promise.all([
+    currentUser?.role === "admin" ? prisma.user.findMany({ include: { unlocks: true, noteUnlocks: true }, orderBy: { createdAt: "desc" } }) : Promise.resolve([]),
     prisma.mockExam.findMany({ where: currentUser?.role === "admin" ? {} : { published: true } }),
     prisma.question.findMany(),
     prisma.passage.findMany(),
@@ -56,6 +58,7 @@ export async function getPlatformBootstrap(currentUser: StudentAccount | null): 
     prisma.referenceSource.findMany(),
     prisma.productPlan.findMany(),
     currentUser?.role === "admin" ? prisma.emailTemplate.findMany() : Promise.resolve([]),
+    prisma.note.findMany(),
   ]);
 
   return {
@@ -77,6 +80,7 @@ export async function getPlatformBootstrap(currentUser: StudentAccount | null): 
       releaseDate: toDateOnly(mock.releaseDate),
       tier: mock.tier,
       description: mock.description,
+      isFree: mock.isFree,
     })),
     questions: questions.map((question) => ({
       id: question.id,
@@ -127,5 +131,12 @@ export async function getPlatformBootstrap(currentUser: StudentAccount | null): 
     })),
     products: products.map((product) => ({ ...product, badge: product.badge ?? undefined })),
     emailTemplates,
+    notes: notes.map((note) => ({
+      id: note.id,
+      subject: note.subject as NotePage["subject"],
+      slug: note.slug,
+      title: note.title,
+      isFree: note.isFree,
+    })),
   };
 }

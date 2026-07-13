@@ -83,6 +83,33 @@ export function analyseAttempt(mock: MockExam, answers: Record<string, string>, 
   };
 }
 
+export function patternDescription(pattern: "careless_error" | "concept_gap" | "timing_pressure") {
+  if (pattern === "careless_error") return "mostly single-mark slips on standard questions — likely careless errors rather than a knowledge gap";
+  if (pattern === "timing_pressure") return "several questions left unanswered — likely timing pressure on this section";
+  return "a genuine concept gap needing focused revision";
+}
+
+export function autoGenerateReport(mock: MockExam, attempt: Attempt, bank: Question[] = QUESTIONS) {
+  const { weakTopics } = analyseAttempt(mock, attempt.answers, bank);
+  const percentage = attempt.maxScore ? Math.round((attempt.score / attempt.maxScore) * 100) : 0;
+  const lines = [`Overall: ${attempt.score}/${attempt.maxScore} marks (${percentage}%).`];
+  if (weakTopics.length === 0) {
+    lines.push("No significant weak topics — strong, consistent performance across the paper.");
+  } else {
+    lines.push("Topics to focus on:");
+    for (const topic of weakTopics) {
+      const topicPercentage = topic.maxMarks ? Math.round((topic.missedMarks / topic.maxMarks) * 100) : 0;
+      lines.push(`- ${topic.topic}: lost ${topic.missedMarks}/${topic.maxMarks} marks (${topicPercentage}%) — ${patternDescription(topic.pattern)}.`);
+    }
+    lines.push("Suggested next steps:");
+    for (const item of recommendationsForTopics(weakTopics.map((topic) => topic.topic))) {
+      lines.push(`- ${item}`);
+    }
+  }
+  lines.push("Full question-by-question review, including the exact questions missed and correct answers, is available in the released report.");
+  return lines.join("\n");
+}
+
 export function recommendationsForTopics(topics: string[]) {
   if (topics.length === 0) return ["Maintain momentum with one mixed GL-style practice set this week."];
   return topics.map((topic) => {

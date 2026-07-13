@@ -37,6 +37,7 @@ export interface StudentAccount {
   plan: string;
   paymentStatus: PaymentStatus;
   unlockedMockIds: string[];
+  unlockedNoteIds: string[];
   createdAt: string;
 }
 
@@ -131,6 +132,15 @@ export interface MockExam {
   releaseDate: string;
   tier: string;
   description: string;
+  isFree?: boolean;
+}
+
+export interface NotePage {
+  id: string;
+  subject: Subject;
+  slug: string;
+  title: string;
+  isFree: boolean;
 }
 
 export interface Attempt {

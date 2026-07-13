@@ -16,28 +16,27 @@ export function StudentDashboard() {
   const pending = studentAttempts.filter((attempt) => attempt.status === "submitted");
   const weakTopics = Array.from(new Set(released.flatMap((attempt) => attempt.weakTopics)));
   const unlocked = mocks.filter((mock) => currentUser?.unlockedMockIds.includes(mock.id) && mock.published);
-  const locked = mocks.filter((mock) => mock.published && !currentUser?.unlockedMockIds.includes(mock.id));
   const nextMock = unlocked.find((mock) => !studentAttempts.some((attempt) => attempt.mockId === mock.id && attempt.status !== "in_progress"));
   const inProgress = studentAttempts.find((attempt) => attempt.status === "in_progress");
   const nextAction = !currentUser?.approved
-    ? "Your account is waiting for manual approval after payment."
+    ? "Your account access has been paused. Contact Summit Tuition if you think this is a mistake."
     : pending.length
       ? "Your submitted mock is with the marking team."
       : nextMock
         ? "Your next unlocked mock is ready to take online."
-        : "You are ready for the next mock unlock from admin.";
+        : "You've completed your free mocks — contact Summit Tuition to unlock more.";
 
   if (currentUser && !currentUser.approved) {
     return (
       <div className="mx-auto max-w-4xl">
         <GlowCard className="p-8">
-          <PremiumBadge tone="red">Approval pending</PremiumBadge>
-          <h1 className="mt-4 text-3xl font-black tracking-tight text-navy">Your account is awaiting approval</h1>
-          <p className="mt-3 max-w-2xl text-muted">You&apos;ll be able to access mocks once your account has been reviewed. If you have already paid, approval may take a short time.</p>
+          <PremiumBadge tone="red">Account paused</PremiumBadge>
+          <h1 className="mt-4 text-3xl font-black tracking-tight text-navy">Your account access has been paused</h1>
+          <p className="mt-3 max-w-2xl text-muted">Get in touch with Summit Tuition if you think this is a mistake.</p>
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
             <div className="rounded-xl bg-cream p-4">
               <p className="text-sm font-black uppercase tracking-[0.14em] text-muted">Status</p>
-              <p className="mt-1 text-xl font-black text-navy">Pending</p>
+              <p className="mt-1 text-xl font-black text-navy">Paused</p>
             </div>
             <div className="rounded-xl bg-cream p-4 sm:col-span-2">
               <p className="text-sm font-black uppercase tracking-[0.14em] text-muted">Plan</p>
@@ -57,7 +56,7 @@ export function StudentDashboard() {
     <div className="space-y-10">
       <section className="grid gap-6 lg:grid-cols-[1.4fr_0.8fr]">
         <GlowCard className="p-8">
-          <PremiumBadge tone={currentUser?.approved ? "green" : "red"}>{currentUser?.approved ? "Approved student" : "Approval pending"}</PremiumBadge>
+          <PremiumBadge tone="green">Active student</PremiumBadge>
           <h1 className="mt-4 text-3xl font-black tracking-tight text-navy">Welcome back, {currentUser?.name}</h1>
           <p className="mt-3 max-w-2xl text-muted">Complete mocks inside the platform, then wait for Summit Tuition to release your marked report and full review.</p>
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
@@ -96,8 +95,8 @@ export function StudentDashboard() {
       <section className="grid gap-3 md:grid-cols-4">
         {[
           ["Register", "Complete"],
-          ["Pay", currentUser?.paymentStatus === "paid" ? "Complete" : "Pending"],
-          ["Admin approves", currentUser?.approved ? "Complete" : "Pending"],
+          ["Free mocks unlocked", "Complete"],
+          ["Pay for more", currentUser?.paymentStatus === "paid" ? "Complete" : "Optional"],
           ["Report released", released.length ? "Ready" : pending.length ? "In marking" : "After mock"],
         ].map(([label, state], idx) => (
           <div key={label} className="premium-card-hover rounded-2xl border border-line bg-white/85 p-4 shadow-[0_18px_44px_-36px_rgba(17,24,39,0.42)]">
@@ -113,7 +112,7 @@ export function StudentDashboard() {
           <GlowCard className="p-6">
             <h2 className="text-xl font-bold text-navy">Progress overview</h2>
             <div className="mt-5 space-y-4">
-              <ProgressBar value={currentUser?.approved ? 100 : 35} label="Access readiness" />
+              <ProgressBar value={100} label="Access readiness" />
               <ProgressBar value={released.length ? 72 : 20} label="Mock completion" />
               <ProgressBar value={weakTopics.length ? 55 : 82} label="Weak-topic confidence" />
             </div>
@@ -133,7 +132,7 @@ export function StudentDashboard() {
         <h2 className="text-2xl font-black text-navy">Available mocks</h2>
         <div className="mt-5 grid gap-6 lg:grid-cols-2">
           {unlocked.map((mock) => <MockCard key={mock.id} mock={mock} attempt={studentAttempts.find((attempt) => attempt.mockId === mock.id)} />)}
-          {unlocked.length === 0 && <EmptyState icon={<Lock />} title="No mocks unlocked yet" text="Register, complete payment, then wait for manual admin approval." />}
+          {unlocked.length === 0 && <EmptyState icon={<Lock />} title="No mocks unlocked yet" text="Contact Summit Tuition to unlock a mock." />}
         </div>
       </section>
 
@@ -149,13 +148,6 @@ export function StudentDashboard() {
             return mock ? <GlowCard key={attempt.id} className="p-6"><PremiumBadge tone="navy">Report pending</PremiumBadge><h3 className="mt-3 text-xl font-bold text-navy">{mock.title}</h3><p className="mt-2 text-muted">Submitted {attempt.submittedAt?.slice(0, 10) ?? "recently"}. Your result and review will be released after marking.</p></GlowCard> : null;
           })}
           {released.length === 0 && pending.length === 0 && <EmptyState icon={<ClipboardList />} title="No reports yet" text="Completed mocks and pending marking updates will appear here." />}
-        </div>
-      </section>
-
-      <section>
-        <h2 className="text-2xl font-black text-navy">Locked mocks</h2>
-        <div className="mt-5 grid gap-6 lg:grid-cols-2">
-          {locked.map((mock) => <MockCard key={mock.id} mock={mock} locked />)}
         </div>
       </section>
 
@@ -177,6 +169,7 @@ export function AdminDashboard() {
   const {
     users,
     mocks,
+    notes,
     attempts,
     references,
     products,
@@ -184,6 +177,8 @@ export function AdminDashboard() {
     approveUser,
     assignPlan,
     unlockMock,
+    setMockFree,
+    setNoteFree,
     releaseReport,
     addFeedback,
     addReference,
@@ -196,7 +191,7 @@ export function AdminDashboard() {
 
   const stats = useMemo(() => [
     { label: "Students", value: students.length, icon: <Users /> },
-    { label: "Pending approval", value: students.filter((student) => !student.approved).length, icon: <ShieldCheck /> },
+    { label: "Paused accounts", value: students.filter((student) => !student.approved).length, icon: <ShieldCheck /> },
     { label: "Submitted attempts", value: attempts.filter((attempt) => attempt.status === "submitted").length, icon: <ClipboardList /> },
     { label: "Published mocks", value: mocks.filter((mock) => mock.published).length, icon: <BookOpenCheck /> },
   ], [attempts, mocks, students]);
@@ -226,7 +221,7 @@ export function AdminDashboard() {
 
       <section className="grid gap-4 lg:grid-cols-4">
         {[
-          ["Approve accounts", pendingApprovals, "Review payment and access status."],
+          ["Review paused accounts", pendingApprovals, "Review payment and access status."],
           ["Release reports", submittedAttempts, "Mark submitted mocks and publish feedback."],
           ["Publish mocks", draftMocks, "Review drafts before student unlocks."],
           ["Classify references", unclassifiedReferences, "Tag GL, non-GL or unknown."],
@@ -270,6 +265,34 @@ export function AdminDashboard() {
             </tbody>
           </table>
         </div>}
+      </AdminPanel>
+
+      <AdminPanel title="Free / demo access" icon={<ShieldCheck />}>
+        <p className="mb-4 text-sm text-muted">Every new student automatically gets whatever is marked &ldquo;Free&rdquo; below the moment they register — no admin action needed. Tick more mocks or notes pages here only if you want them free for everyone by default; grant access to one specific student instead from the table above.</p>
+        <div className="grid gap-6 lg:grid-cols-2">
+          <div>
+            <h3 className="mb-2 text-sm font-black uppercase tracking-[0.14em] text-muted">Mocks</h3>
+            <div className="flex flex-wrap gap-2">
+              {mocks.filter((mock) => mock.published).map((mock) => (
+                <label key={mock.id} className="inline-flex items-center gap-2 rounded-full bg-cream px-3 py-1 text-sm font-semibold text-navy">
+                  <input type="checkbox" checked={Boolean(mock.isFree)} onChange={(event) => setMockFree(mock.id, event.target.checked)} />
+                  {mock.title}
+                </label>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 className="mb-2 text-sm font-black uppercase tracking-[0.14em] text-muted">Notes pages</h3>
+            <div className="flex flex-wrap gap-2">
+              {notes.map((note) => (
+                <label key={note.id} className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-sm font-semibold text-navy">
+                  <input type="checkbox" checked={note.isFree} onChange={(event) => setNoteFree(note.id, event.target.checked)} />
+                  {note.title}
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
       </AdminPanel>
 
       <AdminPanel title="Attempts, marking and report release" icon={<Eye />}>

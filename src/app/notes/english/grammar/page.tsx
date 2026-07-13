@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
-import { RequireAuth, GlowCard, PremiumBadge, RevealOnScroll } from "@/components/platform/ui";
+import { RequireAuth, RequireNoteAccess, GlowCard, PremiumBadge, RevealOnScroll } from "@/components/platform/ui";
 import { partsOfSpeechErrorsTopic } from "@/components/notes/notes-content/parts-of-speech-errors";
 import { agreementTenseErrorsTopic } from "@/components/notes/notes-content/agreement-tense-errors";
 import { pronounErrorsTopic } from "@/components/notes/notes-content/pronoun-errors";
@@ -21,6 +21,7 @@ const TOPICS: TopicContent[] = [
 export default function GrammarNotesHubPage() {
   return (
     <RequireAuth role="student">
+      <RequireNoteAccess noteId="english-grammar">
       <Container className="py-10">
         <RevealOnScroll>
           <Link href="/notes/english" className="text-sm font-semibold text-gold-dark hover:underline">
@@ -51,6 +52,7 @@ export default function GrammarNotesHubPage() {
           ))}
         </div>
       </Container>
+      </RequireNoteAccess>
     </RequireAuth>
   );
 }

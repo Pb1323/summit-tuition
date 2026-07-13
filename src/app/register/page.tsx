@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { Container } from "@/components/ui/container";
 import { Card } from "@/components/ui/card";
 import { AnimatedButton, PremiumBadge, RevealOnScroll } from "@/components/platform/ui";
-import { PRODUCT_PLANS } from "@/data/platform";
 import { usePlatform } from "@/context/platform-context";
 
 export default function RegisterPage() {
@@ -15,12 +14,11 @@ export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [plan, setPlan] = useState("Diagnostic Assessment");
-  const [message, setMessage] = useState("Payment creates a pending access request. Admin approval unlocks mocks.");
+  const [message, setMessage] = useState("");
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const result = await register({ name, email, password, plan });
+    const result = await register({ name, email, password });
     if (!result.ok) {
       setMessage(result.message);
       return;
@@ -34,7 +32,7 @@ export default function RegisterPage() {
         <Card className="p-8">
           <PremiumBadge>Create student account</PremiumBadge>
           <h1 className="mt-4 text-3xl font-bold text-navy">Register for online 11+ mocks</h1>
-          <p className="mt-2 text-muted">One account belongs to one student. After payment, Summit Tuition manually approves access and unlocks the correct mocks.</p>
+          <p className="mt-2 text-muted">Instant access — sign in straight away with one free English mock, one free Maths mock and one free notes page. Summit Tuition unlocks further mocks and notes individually as you progress.</p>
           <form onSubmit={onSubmit} className="mt-8 grid gap-5">
             <div>
               <label className="text-sm font-bold text-navy" htmlFor="name">Student name</label>
@@ -48,14 +46,8 @@ export default function RegisterPage() {
               <label className="text-sm font-bold text-navy" htmlFor="password">Password</label>
               <input id="password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} className="mt-2 h-12 w-full rounded-xl border border-line px-4 outline-none focus:border-gold" required minLength={8} />
             </div>
-            <div>
-              <label className="text-sm font-bold text-navy" htmlFor="plan">Requested plan</label>
-              <select id="plan" value={plan} onChange={(event) => setPlan(event.target.value)} className="mt-2 h-12 w-full rounded-xl border border-line bg-white px-4 outline-none focus:border-gold">
-                {PRODUCT_PLANS.map((product) => <option key={product.id}>{product.name}</option>)}
-              </select>
-            </div>
-            <p className="rounded-xl bg-cream p-3 text-sm text-muted">{message}</p>
-            <AnimatedButton type="submit" className="w-full">Create pending account</AnimatedButton>
+            {message && <p className="rounded-xl bg-cream p-3 text-sm text-muted">{message}</p>}
+            <AnimatedButton type="submit" className="w-full">Create my account</AnimatedButton>
           </form>
           <p className="mt-5 text-center text-sm text-muted">
             Already registered? <Link href="/login" className="font-bold text-navy underline">Sign in</Link>

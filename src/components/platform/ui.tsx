@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -11,6 +11,24 @@ import { VisualRenderer } from "@/components/platform/question-visuals";
 import type { Attempt, MockExam, Passage, Question, Role } from "@/types/platform";
 
 const COMPACT_QUESTION_NAV_THRESHOLD = 15;
+
+// Deterministic per-question shuffle so multiple-choice answers aren't left in a
+// predictable sequential order (e.g. always option A) while staying stable across
+// renders/sessions for the same question.
+function seededShuffle<T>(items: T[], seed: string): T[] {
+  const arr = [...items];
+  let state = 0;
+  for (let i = 0; i < seed.length; i++) state = (state * 31 + seed.charCodeAt(i)) >>> 0;
+  const next = () => {
+    state = (state * 1664525 + 1013904223) >>> 0;
+    return state / 4294967296;
+  };
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(next() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 
 export function AnimatedButton({
   href,
@@ -134,6 +152,23 @@ export function RequireAuth({ role, children }: { role?: Role; children: React.R
   }
   if (role && currentUser.role !== role) return null;
   return <>{children}</>;
+}
+
+export function RequireNoteAccess({ noteId, children }: { noteId: string; children: React.ReactNode }) {
+  const { currentUser, notes } = usePlatform();
+  const note = notes.find((item) => item.id === noteId);
+  const unlocked = note?.isFree || currentUser?.role === "admin" || currentUser?.unlockedNoteIds.includes(noteId);
+  if (unlocked) return <>{children}</>;
+  return (
+    <div className="mx-auto max-w-3xl px-6 py-24 text-center">
+      <Lock className="mx-auto h-10 w-10 text-gold-dark" />
+      <h1 className="mt-4 text-3xl font-bold text-navy">This notes page is locked</h1>
+      <p className="mt-2 text-muted">{note?.title ?? "This strand"} is not part of your free access yet. Contact Summit Tuition to unlock it.</p>
+      <Link href="/contact" className="mt-6 inline-flex items-center gap-2 rounded-full bg-gold px-5 py-2.5 text-sm font-bold text-navy">
+        Contact Summit Tuition <ArrowRight className="h-4 w-4" />
+      </Link>
+    </div>
+  );
 }
 
 export function MockTimer({ durationMinutes, initialElapsedSeconds = 0, onExpire, visible = true }: { durationMinutes: number; initialElapsedSeconds?: number; onExpire: () => void; visible?: boolean }) {
@@ -273,10 +308,13 @@ export function QuestionRenderer({
 }) {
   const correct = value ? String(question.correctAnswer).toLowerCase() === value.toLowerCase() : false;
   const hasText = typeof question.text === "string" && question.text.trim().length > 0;
-  const options = Array.isArray(question.options) ? question.options : [];
+  const rawOptions = useMemo(() => (Array.isArray(question.options) ? question.options : []), [question.options]);
+  const isSegmentFormat = question.tags?.includes("segment-format") && rawOptions.length > 0;
+  // Segment-format options map to fixed lettered sentence positions and must stay in order;
+  // everything else gets a per-question shuffle so the correct answer isn't always in the same slot.
+  const options = useMemo(() => (isSegmentFormat ? rawOptions : seededShuffle(rawOptions, question.id)), [isSegmentFormat, question.id, rawOptions]);
   const hasOptions = options.length > 0;
   const isChoiceQuestion = question.questionType === "multiple_choice" || question.questionType === "cloze";
-  const isSegmentFormat = question.tags?.includes("segment-format") && options.length > 0;
   const expected = Array.isArray(question.correctAnswer) ? question.correctAnswer : [question.correctAnswer];
   const isCorrectOption = (option: string) => expected.some((item) => item.trim().toLowerCase() === option.trim().toLowerCase());
   const qualityWarnings = [

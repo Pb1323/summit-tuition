@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
-import { RequireAuth, GlowCard, PremiumBadge, RevealOnScroll } from "@/components/platform/ui";
+import { RequireAuth, RequireNoteAccess, GlowCard, PremiumBadge, RevealOnScroll } from "@/components/platform/ui";
 import { whatIsClozeTopic } from "@/components/notes/notes-content/what-is-cloze";
 import type { TopicContent } from "@/components/notes/types";
 
@@ -11,6 +11,7 @@ const TOPICS: TopicContent[] = [whatIsClozeTopic];
 export default function ClozeNotesHubPage() {
   return (
     <RequireAuth role="student">
+      <RequireNoteAccess noteId="english-cloze">
       <Container className="py-10">
         <RevealOnScroll>
           <Link href="/notes/english" className="text-sm font-semibold text-gold-dark hover:underline">
@@ -40,6 +41,7 @@ export default function ClozeNotesHubPage() {
           ))}
         </div>
       </Container>
+      </RequireNoteAccess>
     </RequireAuth>
   );
 }

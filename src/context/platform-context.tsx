@@ -1,10 +1,10 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useSyncExternalStore } from "react";
-import { ATTEMPTS, EMAIL_TEMPLATES, MASTER_ADMIN_EMAIL, MOCKS, PASSAGES, PRODUCT_PLANS, QUESTIONS, REFERENCES, SEEDED_USERS } from "@/data/platform";
+import { ATTEMPTS, EMAIL_TEMPLATES, MASTER_ADMIN_EMAIL, MOCKS, NOTE_PAGES, PASSAGES, PRODUCT_PLANS, QUESTIONS, REFERENCES, SEEDED_USERS } from "@/data/platform";
 import { analyseAttempt, scoreAnswers, weakTopicsForAttempt } from "@/lib/assessment";
 import { generateMockFromReferenceProfile, type GenerateMockInput } from "@/lib/mock-generation";
-import type { Attempt, EmailTemplate, MockExam, Passage, ProductPlan, Question, ReferenceSource, ReferenceStyle, StudentAccount, Subject } from "@/types/platform";
+import type { Attempt, EmailTemplate, MockExam, NotePage, Passage, ProductPlan, Question, ReferenceSource, ReferenceStyle, StudentAccount, Subject } from "@/types/platform";
 
 type PlatformState = {
   users: StudentAccount[];
@@ -15,13 +15,13 @@ type PlatformState = {
   references: ReferenceSource[];
   products: ProductPlan[];
   emailTemplates: EmailTemplate[];
+  notes: NotePage[];
 };
 
 type RegisterInput = {
   name: string;
   email: string;
   password: string;
-  plan: string;
 };
 
 type PlatformContextValue = PlatformState & {
@@ -36,7 +36,10 @@ type PlatformContextValue = PlatformState & {
   createTestStudent: () => Promise<void>;
   assignPlan: (studentId: string, plan: string) => Promise<void>;
   unlockMock: (studentId: string, mockId: string, unlocked: boolean) => Promise<void>;
+  unlockNote: (studentId: string, noteId: string, unlocked: boolean) => Promise<void>;
   setMockPublished: (mockId: string, published: boolean) => Promise<void>;
+  setMockFree: (mockId: string, isFree: boolean) => Promise<void>;
+  setNoteFree: (noteId: string, isFree: boolean) => Promise<void>;
   createOriginalMockFromReference: (referenceId: string, subject: Subject) => void;
   generateMockDraft: (input: Omit<GenerateMockInput, "reference"> & { referenceId: string }) => { ok: true; mockId: string; questionCount: number; totalMarks: number } | { ok: false; message: string };
   updateMockDraft: (mockId: string, patch: Partial<MockExam>) => void;
@@ -63,6 +66,7 @@ const initialState: PlatformState = {
   references: REFERENCES,
   products: PRODUCT_PLANS,
   emailTemplates: EMAIL_TEMPLATES,
+  notes: NOTE_PAGES,
 };
 
 const PlatformContext = createContext<PlatformContextValue | null>(null);
@@ -113,6 +117,7 @@ function loadState() {
       references: mergeCatalogById(parsed.references, initialState.references),
       products: mergeCatalogById(parsed.products, initialState.products),
       emailTemplates: mergeCatalogById(parsed.emailTemplates, initialState.emailTemplates),
+      notes: mergeCatalogById(parsed.notes, initialState.notes),
     };
   } catch {
     return initialState;
@@ -153,6 +158,7 @@ async function refreshFromServer(): Promise<boolean> {
       references: data.references,
       products: data.products,
       emailTemplates: data.emailTemplates,
+      notes: data.notes ?? NOTE_PAGES,
     };
     memoryCurrentUserId = data.currentUser?.id ?? null;
     if (memoryCurrentUserId) window.localStorage.setItem(SESSION_KEY, memoryCurrentUserId);
@@ -294,10 +300,11 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
         email,
         passwordHash: hashPassword(input.password, id),
         role: email === MASTER_ADMIN_EMAIL ? "admin" : "student",
-        approved: email === MASTER_ADMIN_EMAIL,
-        plan: input.plan,
+        approved: true,
+        plan: "Diagnostic Assessment",
         paymentStatus: "pending",
-        unlockedMockIds: [],
+        unlockedMockIds: state.mocks.filter((mock) => mock.isFree && mock.published).map((mock) => mock.id),
+        unlockedNoteIds: state.notes.filter((note) => note.isFree).map((note) => note.id),
         createdAt: new Date().toISOString(),
       };
       updateStore((prev) => ({ ...prev, users: [...prev.users, user] }));
@@ -345,10 +352,11 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
             name: "Test Student",
             email: `test-student-${Date.now()}@example.com`,
             role: "student",
-            approved: false,
+            approved: true,
             plan: "Weekly Mock Club Plus",
             paymentStatus: "pending",
-            unlockedMockIds: [],
+            unlockedMockIds: prev.mocks.filter((mock) => mock.isFree && mock.published).map((mock) => mock.id),
+            unlockedNoteIds: prev.notes.filter((note) => note.isFree).map((note) => note.id),
             createdAt: new Date().toISOString(),
           },
         ],
@@ -372,10 +380,33 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
         })
       );
     },
+    async unlockNote(studentId, noteId, unlocked) {
+      if (currentUser?.role !== "admin") return;
+      if (await postAndRefresh(`/api/admin/students/${studentId}/unlock-note`, { noteId, unlocked })) return;
+      updateUsers((users) =>
+        users.map((user) => {
+          if (user.id !== studentId) return user;
+          const ids = new Set(user.unlockedNoteIds);
+          if (unlocked) ids.add(noteId);
+          else ids.delete(noteId);
+          return { ...user, unlockedNoteIds: Array.from(ids) };
+        })
+      );
+    },
     async setMockPublished(mockId, published) {
       if (currentUser?.role !== "admin") return;
       if (await postAndRefresh(`/api/admin/mocks/${mockId}/publish`, { published })) return;
       updateStore((prev) => ({ ...prev, mocks: prev.mocks.map((mock) => (mock.id === mockId ? { ...mock, published } : mock)) }));
+    },
+    async setMockFree(mockId, isFree) {
+      if (currentUser?.role !== "admin") return;
+      if (await postAndRefresh(`/api/admin/mocks/${mockId}/set-free`, { isFree })) return;
+      updateStore((prev) => ({ ...prev, mocks: prev.mocks.map((mock) => (mock.id === mockId ? { ...mock, isFree } : mock)) }));
+    },
+    async setNoteFree(noteId, isFree) {
+      if (currentUser?.role !== "admin") return;
+      if (await postAndRefresh(`/api/admin/notes/${noteId}/set-free`, { isFree })) return;
+      updateStore((prev) => ({ ...prev, notes: prev.notes.map((note) => (note.id === noteId ? { ...note, isFree } : note)) }));
     },
     createOriginalMockFromReference(referenceId, subject) {
       if (currentUser?.role !== "admin") return;

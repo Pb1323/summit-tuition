@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
-import { RequireAuth, GlowCard, PremiumBadge, RevealOnScroll } from "@/components/platform/ui";
+import { RequireAuth, RequireNoteAccess, GlowCard, PremiumBadge, RevealOnScroll } from "@/components/platform/ui";
 import { spellingPatternsRulesTopic } from "@/components/notes/notes-content/spelling-patterns-rules";
 import type { TopicContent } from "@/components/notes/types";
 
@@ -11,6 +11,7 @@ const TOPICS: TopicContent[] = [spellingPatternsRulesTopic];
 export default function SpellingNotesHubPage() {
   return (
     <RequireAuth role="student">
+      <RequireNoteAccess noteId="english-spelling">
       <Container className="py-10">
         <RevealOnScroll>
           <Link href="/notes/english" className="text-sm font-semibold text-gold-dark hover:underline">
@@ -41,6 +42,7 @@ export default function SpellingNotesHubPage() {
           ))}
         </div>
       </Container>
+      </RequireNoteAccess>
     </RequireAuth>
   );
 }

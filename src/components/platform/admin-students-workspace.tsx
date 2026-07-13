@@ -6,7 +6,7 @@ import { usePlatform } from "@/context/platform-context";
 import { GlowCard, PremiumBadge, StaggerReveal } from "@/components/platform/ui";
 
 export function AdminStudentsWorkspace({ compact = false }: { compact?: boolean }) {
-  const { users, mocks, products, approveUser, rejectUser, approveAndUnlockFirstMock, assignPlan, unlockMock, createTestStudent } = usePlatform();
+  const { users, mocks, notes, products, approveUser, rejectUser, approveAndUnlockFirstMock, assignPlan, unlockMock, unlockNote, createTestStudent } = usePlatform();
   const students = users.filter((user) => user.role === "student");
   const pending = students.filter((student) => !student.approved);
   const publishedMocks = mocks.filter((mock) => mock.published);
@@ -91,7 +91,15 @@ export function AdminStudentsWorkspace({ compact = false }: { compact?: boolean 
                   {publishedMocks.map((mock) => (
                     <label key={mock.id} className="inline-flex items-center gap-2 rounded-full bg-cream px-3 py-1 text-sm font-semibold text-navy">
                       <input type="checkbox" checked={student.unlockedMockIds.includes(mock.id)} onChange={(event) => unlockMock(student.id, mock.id, event.target.checked)} />
-                      {mock.title}
+                      {mock.title}{mock.isFree && <span className="text-xs font-black text-gold-dark">FREE</span>}
+                    </label>
+                  ))}
+                </div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {notes.map((note) => (
+                    <label key={note.id} className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-sm font-semibold text-navy">
+                      <input type="checkbox" checked={student.unlockedNoteIds.includes(note.id)} onChange={(event) => unlockNote(student.id, note.id, event.target.checked)} />
+                      {note.title}{note.isFree && <span className="text-xs font-black text-gold-dark">FREE</span>}
                     </label>
                   ))}
                 </div>

@@ -7,7 +7,7 @@
  */
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PRODUCT_PLANS, EMAIL_TEMPLATES, PASSAGES, QUESTIONS, MOCKS, REFERENCES } from "../src/data/platform";
+import { PRODUCT_PLANS, EMAIL_TEMPLATES, PASSAGES, QUESTIONS, MOCKS, REFERENCES, NOTE_PAGES } from "../src/data/platform";
 import type { $Enums } from "../src/generated/prisma/client";
 
 function toPrismaReferenceStyle(style: string): $Enums.ReferenceStyle {
@@ -22,7 +22,7 @@ async function main() {
   }
   const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }) });
 
-  console.log(`Seeding ${PRODUCT_PLANS.length} products, ${EMAIL_TEMPLATES.length} email templates, ${PASSAGES.length} passages, ${QUESTIONS.length} questions, ${MOCKS.length} mocks, ${REFERENCES.length} references...`);
+  console.log(`Seeding ${PRODUCT_PLANS.length} products, ${EMAIL_TEMPLATES.length} email templates, ${PASSAGES.length} passages, ${QUESTIONS.length} questions, ${MOCKS.length} mocks, ${REFERENCES.length} references, ${NOTE_PAGES.length} notes pages...`);
 
   // Sequential, not one giant $transaction: a single batched transaction over a
   // pgbouncer transaction-mode pooler is unreliable at this volume (prepared
@@ -77,8 +77,13 @@ async function main() {
       releaseDate: new Date(mock.releaseDate),
       tier: mock.tier,
       description: mock.description,
+      isFree: mock.isFree ?? false,
     };
     await prisma.mockExam.upsert({ where: { id: mock.id }, update: data, create: { id: mock.id, ...data } });
+  }
+  for (const note of NOTE_PAGES) {
+    const data = { subject: note.subject, slug: note.slug, title: note.title, isFree: note.isFree };
+    await prisma.note.upsert({ where: { id: note.id }, update: data, create: { id: note.id, ...data } });
   }
   for (const reference of REFERENCES) {
     const data = {
