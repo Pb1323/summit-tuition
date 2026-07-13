@@ -306,7 +306,7 @@ export function NotesTopicPage({ topic }: { topic: TopicContent }) {
           </div>
         </header>
 
-        <div className="relative mx-auto flex max-w-[1400px] items-start gap-0 px-8">
+        <div className="relative mx-auto flex max-w-[1400px] items-start gap-10 px-8">
           {/* sidebar */}
           <aside
             className={
