@@ -1,41 +1,42 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-13
+Last updated: 2026-07-13 (Study Notes interactivity pass)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
 
-## Done
+## Done (this session — Study Notes interactivity pass)
 
-- Went through the whole site to answer "what's left before this is shareable with real clients" — found and fixed several real gaps.
-- Removed the fake phone number (020 3870 1142 was never real) from the contact page, footer, safeguarding page, and site metadata. Contact email now defaults to a real inbox.
-- Calendly booking widget is now live on `/book-a-call` (done by the user just before this session; confirmed it's committed and pushed).
-- **Fixed a serious security hole**: the endpoint used to create the admin account had no protection — anyone on the internet who guessed the admin email could have taken over the admin account with a password of their choosing. It now requires a secret key (`ADMIN_BOOTSTRAP_SECRET`) the user sets themselves and only uses once.
-- Added basic brute-force protection (rate limiting) to login, registration, the admin-creation endpoint, and the contact form, so those can't be hammered or spammed.
-- **Fixed mock content being exposed early**: every mock's correct answers, mark schemes, and explanations were being sent to a student's browser the moment they loaded the app — visible in dev tools before they'd even started the exam. Now those are hidden until a report is officially released for that student's attempt. Grading itself was already done safely on the server, so this didn't affect scoring, just what leaked to the browser.
-- The enquiry form now also emails the parent a "we got your message" confirmation (before, it only tried to notify the admin, and only if email sending was configured — otherwise it silently did nothing).
-- Reviewed all admin-only API routes — confirmed they're all properly locked to admin accounts, no gaps found there.
+User asked to push the Study Notes feature further before a Claude usage window reset, explicitly prioritising "more interactive for English" first. Audited every English diagram component and found all ~76 English subtopics (Grammar/Spelling/Comprehension/Cloze) funnel through one of three generic shared components (click-the-word, click-the-sentence, click-the-gap) — genuinely just worksheet-style exercises with no diagram surface at all.
 
-## In Progress
+- **New bespoke diagram components** (`src/components/notes/notes-diagrams/`): `reference-arrow-diagram.tsx` (clickable pronoun-to-antecedent arrow diagram, tests a reading and colours it gold/red with an explanation), `parallel-list-aligner.tsx` (aligns list items with grammatical "form tags", click-to-fix pops mismatched rows into alignment), `word-anatomy-breakdown.tsx` (segments a word into prefix/root/suffix blocks, hover for the rule, click to compare against the common misspelling), `context-clue-highlighter.tsx` (dotted-underline clue words in a cloze sentence, click to reveal why each points to the answer).
+- **Wired into the highest-value subtopics**: 4 Pronoun Errors subtopics (number agreement, ambiguous reference, reflexive misuse, who/whom), Parallel Structure (Parts of Speech Errors), 5 Spelling Patterns subtopics (able/ible, ance/ence, doubling consonants, y-to-i, silent e), 4 Cloze subtopics.
+- **Upgraded the shared Comprehension component** (`click-evidence-passage.tsx`, used by all 10 Comprehension subtopics at once): added hover-scan highlighting while reading, plus a "found it" magnifying-glass pop-in on the correct sentence — uplifts every Comprehension subtopic for free.
+- **Maths enrichment**: added a genuine second interactive layer to the 3 weakest of the 18 Maths diagrams (fewest lines, no hover affordances) — `percent-of-amount.tsx` (reference tick marks + a "show the working" step-by-step reveal), `pie-chart-explorer.tsx` (a "show as fractions" toggle that re-renders each slice's share as a simplified fraction), `scale-factor-linker.tsx` (hover/focus a scale button to preview the resulting ratio before committing with a click).
+- **Fixed a repo hygiene issue found along the way**: `npm run lint` was silently producing 3000+ warnings/errors from a generated `playwright-report/` trace bundle and a stray `.claude/worktrees/` checkout that eslint wasn't ignoring — neither is app source. Added both to `eslint.config.mjs`'s ignore list; lint is clean again.
+- All of the above verified with `npm run typecheck`, `npm run lint`, and a full `npm run build` (every affected notes route — pronoun-errors, parts-of-speech-errors, spelling-patterns-rules, what-is-cloze, literal-comprehension-retrieval — statically prerenders with no errors). Three separate commits, each pushed immediately.
 
-- Nothing left mid-build from this session — everything above was finished, checked (typecheck/lint/build all pass), committed, and pushed.
-- User still needs to set a few things up on their end (their Vercel/Resend/database accounts) — see Next Up.
+## In Progress / Deliberately Not Done This Session
+
+- **14 of the 18 Maths diagrams untouched** — only the 3 weakest were enriched given the time budget; the rest were already reasonably interactive (hooks + click handlers) and lower priority per the user's explicit "English first" instruction.
+- **~41 remaining English subtopics still on the plain shared components** (untouched): the other Grammar subtopics beyond the 5 touched, the other 6 Spelling subtopics, the other 6 Cloze subtopics, and (implicitly) any future Comprehension subtopics beyond the shared-component upgrade. These are lower-value to enrich (many are genuinely fine as plain click exercises — not every subtopic needs a bespoke diagram) but were not audited one-by-one for a second pass.
+- **Priority 3 (new English content topics) not started**: remaining Grammar topics (Prepositions & Conjunctions, Complete-the-Sentence/Best-Fit), and 2nd topics for Comprehension/Spelling/Cloze. Ran out of safely-committable budget before starting — each needs a new content data file + new diagram(s) + a new route folder, and starting one without finishing it would risk leaving main in a half-built state, which was the one thing to avoid. See `TODO.md`, unchanged from before this session.
 
 ## Next Up
 
-- **User action needed** — three things only the user can do (needs their own account access):
+- **User action needed** — same three items as before, still outstanding (needs the user's own account access):
   1. Set up email delivery (Resend account + API key) and an admin notification address so enquiries/bookings actually reach someone.
   2. Connect a real shared database (e.g. Supabase Postgres) so student accounts/mocks aren't stuck in each browser's local storage.
   3. Set `ADMIN_BOOTSTRAP_SECRET`, `AUTH_SECRET`, and a real `ADMIN_PASSWORD` in the Vercel dashboard (not local `.env`).
-- VR/NVR mocks intentionally left as-is this session (user said leave them for now).
-- Decide whether to keep expanding Comprehension/Spelling/Cloze notes or add more VR/NVR questions next — unchanged from last session.
+- Next Notes session: either (a) do a second interactivity pass over the remaining ~41 plain English subtopics (spot-check, don't force a diagram on every one), or (b) start Priority 3 content build-out (remaining Grammar topics, 2nd topics for Comprehension/Spelling/Cloze) — user's call.
 - Full backlog lives in `TODO.md`.
 
 ## Decisions / Notes
 
-- User confirmed: fix the mock-content-exposure issue, but explicitly leave VR/NVR mocks alone for now.
+- User confirmed: fix the mock-content-exposure issue, but explicitly leave VR/NVR mocks alone for now (unchanged from prior session).
 - `.env.example` is intentionally not committed to git (covered by `.gitignore`'s `.env*` rule) — it's a local-only reference file, so the new `ADMIN_BOOTSTRAP_SECRET` line added to it won't show up in git history.
+- Design judgment call this session: rather than replace all ~76 English subtopic demos, upgraded the three *shared* base components where an upgrade is safe/universal (Comprehension's hover+found-it effect applies to all 10 subtopics for free) and reserved genuinely bespoke new diagrams (arrows, aligners, anatomy breakdowns, clue highlighters) for subtopics where the concept is visual enough to earn one — matching the brief's "don't force a diagram onto content that doesn't need one."
 
 ---
 

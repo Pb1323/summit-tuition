@@ -1,19 +1,29 @@
 # Summit Tuition — To-Do / Roadmap
 
-Last updated: 2026-07-12. Companion to `status.md` (current state) — this file is the forward-looking list: what's next now, and what's parked for later. Plain English, not a spec.
+Last updated: 2026-07-13 (Study Notes interactivity pass). Companion to `status.md` (current state) — this file is the forward-looking list: what's next now, and what's parked for later. Plain English, not a spec.
 
 I could only find two backlog docs matching "meters/badges/certificates" from an earlier brainstorm — see the note at the bottom if there's a third one I'm missing (couldn't find a distinct "worksheets" item anywhere).
 
 ---
 
-## Now (this batch, in progress)
+## Just done (2026-07-13 interactivity pass)
 
-- [ ] **Comprehension strand** — first gold-standard topic (10 subtopics), locking the "click to highlight the evidence in a passage" interaction.
-- [ ] **Spelling strand** — first gold-standard topic (10 subtopics), reusing the "click the wrong word" interaction already built for Grammar.
-- [ ] **Cloze strand** — first gold-standard topic (10 subtopics), locking a new "click to fill the gap" interaction.
+- [x] Audited every English Notes diagram — confirmed all ~76 English subtopics were reusing one of three generic shared "click the word/sentence/gap" components with no real diagram surface.
+- [x] Added 4 new bespoke diagram components and wired them into the highest-value subtopics: pronoun-antecedent arrow diagram (4 Pronoun Errors subtopics), parallel-structure list aligner (Parts of Speech Errors), word-anatomy prefix/root/suffix breakdown (5 Spelling Patterns subtopics), cloze context-clue highlighter (4 Cloze subtopics).
+- [x] Upgraded the shared Comprehension click-evidence component (hover-scan + "found it" pop) — uplifts all 10 Comprehension subtopics at once.
+- [x] Enriched the 3 weakest of the 18 Maths diagrams (percent-of-amount, pie-chart-explorer, scale-factor-linker) with a second interactive layer each.
+- [x] Fixed `eslint.config.mjs` ignoring generated `playwright-report/` and a stray `.claude/worktrees/` checkout that were silently breaking `npm run lint`.
+
+## Now (next up)
+
+- [ ] **Second interactivity pass over remaining ~41 English subtopics** still on the plain shared components (rest of Grammar beyond the 5 touched subtopics, 6 of 10 Spelling subtopics, 6 of 10 Cloze subtopics) — spot-check each, don't force a diagram where the concept doesn't need one.
+- [ ] **Comprehension strand** — only the shared component was upgraded this pass; the strand itself (`literal-comprehension-retrieval`, 10 subtopics) is still the only Comprehension topic live.
+- [ ] **Spelling strand** — likewise still only `spelling-patterns-rules` (10 subtopics) live.
+- [ ] **Cloze strand** — likewise still only `what-is-cloze` (10 subtopics) live.
 - [ ] **VR (Verbal Reasoning) content** — replace the empty `vr-placeholder` mock (currently 0 questions) with a real first batch: sequences, analogies, word codes, missing letters.
 - [ ] **NVR (Non-Verbal Reasoning) content** — replace the empty `nvr-placeholder` mock (currently 0 questions) with a real first batch: series, analogies, matrices, rotations/reflections, odd-one-out.
-- [ ] **Real progress-saving for Study Notes** — right now a student's "3/3 correct" tracking resets every time they leave a Notes page. Add persistence (starting with browser storage, same pattern the platform already uses elsewhere) so progress survives a revisit. This is the prerequisite for everything in the "Gamification" section below.
+- [ ] **Real progress-saving for Study Notes** — now saved locally on-device (shipped in an earlier session) but not yet synced across devices via the database. This is the prerequisite for everything in the "Gamification" section below.
+- [ ] **Remaining 14 of 18 Maths diagrams** — not audited for a second interactive layer this pass; lower priority than English per explicit user instruction, but worth a look next time Maths comes up.
 
 ## Next (once the above lands)
 
