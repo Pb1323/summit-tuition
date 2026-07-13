@@ -8,6 +8,8 @@ import { agreementTenseErrorsTopic } from "@/components/notes/notes-content/agre
 import { pronounErrorsTopic } from "@/components/notes/notes-content/pronoun-errors";
 import { apostrophesPossessionErrorsTopic } from "@/components/notes/notes-content/apostrophes-possession-errors";
 import { commonlyConfusedWordsTopic } from "@/components/notes/notes-content/commonly-confused-words";
+import { prepositionsConjunctionsTopic } from "@/components/notes/notes-content/prepositions-conjunctions";
+import { completeTheSentenceTopic } from "@/components/notes/notes-content/complete-the-sentence";
 import type { TopicContent } from "@/components/notes/types";
 
 const TOPICS: TopicContent[] = [
@@ -16,6 +18,8 @@ const TOPICS: TopicContent[] = [
   pronounErrorsTopic,
   apostrophesPossessionErrorsTopic,
   commonlyConfusedWordsTopic,
+  prepositionsConjunctionsTopic,
+  completeTheSentenceTopic,
 ];
 
 export default function GrammarNotesHubPage() {
