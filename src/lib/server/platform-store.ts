@@ -4,6 +4,31 @@ import { isDatabaseConfigured, prisma } from "@/lib/server/db";
 import { publicUser } from "@/lib/server/auth";
 import type { Attempt, EmailTemplate, MockExam, NotePage, Passage, ProductPlan, Question, ReferenceSource, StudentAccount } from "@/types/platform";
 
+/**
+ * Answers/mark schemes/explanations must never reach a student's browser for
+ * a question they haven't had a report released for yet — grading happens
+ * server-side in /api/attempts/submit, which fetches full question data
+ * independently, so redacting here doesn't affect scoring.
+ */
+function revealedQuestionIds(mocks: MockExam[], attempts: Attempt[], userId: string): Set<string> {
+  const releasedMockIds = new Set(
+    attempts.filter((attempt) => attempt.studentId === userId && attempt.status === "report_released").map((attempt) => attempt.mockId)
+  );
+  const ids = new Set<string>();
+  for (const mock of mocks) {
+    if (releasedMockIds.has(mock.id)) {
+      for (const questionId of mock.questionIds) ids.add(questionId);
+    }
+  }
+  return ids;
+}
+
+function redactQuestionsForStudent(questions: Question[], revealed: Set<string>): Question[] {
+  return questions.map((question) =>
+    revealed.has(question.id) ? question : { ...question, correctAnswer: "", markScheme: "", explanation: "" }
+  );
+}
+
 export type PlatformBootstrap = {
   currentUser: StudentAccount | null;
   mode?: "demo";
@@ -30,12 +55,16 @@ function toDateOnly(value: Date | string) {
 
 export async function getPlatformBootstrap(currentUser: StudentAccount | null): Promise<PlatformBootstrap> {
   if (!isDatabaseConfigured()) {
+    const questions =
+      currentUser?.role === "admin"
+        ? QUESTIONS
+        : redactQuestionsForStudent(QUESTIONS, currentUser ? revealedQuestionIds(MOCKS, ATTEMPTS, currentUser.id) : new Set());
     return {
       currentUser,
       mode: "demo",
       users: currentUser?.role === "admin" ? SEEDED_USERS : currentUser ? [currentUser] : [],
       mocks: MOCKS,
-      questions: QUESTIONS,
+      questions,
       passages: PASSAGES,
       attempts: currentUser?.role === "admin" ? ATTEMPTS : currentUser ? ATTEMPTS.filter((attempt) => attempt.studentId === currentUser.id) : [],
       references: currentUser?.role === "admin" ? REFERENCES : REFERENCES.filter((reference) => reference.style === "GL-style"),
@@ -60,6 +89,22 @@ export async function getPlatformBootstrap(currentUser: StudentAccount | null): 
     currentUser?.role === "admin" ? prisma.emailTemplate.findMany() : Promise.resolve([]),
     prisma.note.findMany(),
   ]);
+
+  const revealed =
+    currentUser && currentUser.role !== "admin"
+      ? (() => {
+          const releasedMockIds = new Set(
+            attempts.filter((attempt) => attempt.status === "report_released").map((attempt) => attempt.mockId)
+          );
+          const ids = new Set<string>();
+          for (const mock of mocks) {
+            if (releasedMockIds.has(mock.id)) {
+              for (const questionId of mock.questionIds as string[]) ids.add(questionId);
+            }
+          }
+          return ids;
+        })()
+      : null;
 
   return {
     currentUser,
@@ -93,9 +138,9 @@ export async function getPlatformBootstrap(currentUser: StudentAccount | null): 
       paragraphRefs: (question.paragraphRefs as unknown as number[] | null) ?? undefined,
       text: question.text,
       options: (question.options as unknown as string[] | null) ?? undefined,
-      correctAnswer: question.correctAnswer as string | string[],
-      markScheme: question.markScheme,
-      explanation: question.explanation,
+      correctAnswer: revealed && !revealed.has(question.id) ? "" : (question.correctAnswer as string | string[]),
+      markScheme: revealed && !revealed.has(question.id) ? "" : question.markScheme,
+      explanation: revealed && !revealed.has(question.id) ? "" : question.explanation,
       marks: question.marks,
       visual: (question.visual as unknown as Question["visual"] | null) ?? undefined,
       tags: question.tags as string[],

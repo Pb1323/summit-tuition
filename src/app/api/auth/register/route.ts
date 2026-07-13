@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { hashPasswordServer } from "@/lib/server/auth";
 import { isDatabaseConfigured, prisma } from "@/lib/server/db";
+import { clientIp, isRateLimited } from "@/lib/server/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -12,6 +13,10 @@ export async function POST(request: Request) {
 
   if (!name || !email || password.length < 8) {
     return NextResponse.json({ ok: false, message: "Name, email and an 8+ character password are required." }, { status: 400 });
+  }
+
+  if (isRateLimited(`register:ip:${clientIp(request)}`, 10, 60 * 60 * 1000)) {
+    return NextResponse.json({ ok: false, message: "Too many accounts created recently. Try again later." }, { status: 429 });
   }
 
   if (!isDatabaseConfigured()) {

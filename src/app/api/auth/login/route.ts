@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createSession, hashPasswordServer, isSeedAdmin, publicUser, verifyPassword } from "@/lib/server/auth";
 import { isDatabaseConfigured, prisma } from "@/lib/server/db";
+import { clientIp, isRateLimited } from "@/lib/server/rate-limit";
 import { SEEDED_USERS } from "@/data/platform";
 
 export const runtime = "nodejs";
@@ -11,6 +12,10 @@ export async function POST(request: Request) {
   const password = String(body?.password ?? "");
   if (!email || password.length < 8) {
     return NextResponse.json({ ok: false, message: "Email and an 8+ character password are required." }, { status: 400 });
+  }
+
+  if (isRateLimited(`login:ip:${clientIp(request)}`, 20, 10 * 60 * 1000) || isRateLimited(`login:email:${email}`, 8, 10 * 60 * 1000)) {
+    return NextResponse.json({ ok: false, message: "Too many attempts. Try again in a few minutes." }, { status: 429 });
   }
 
   if (!isDatabaseConfigured()) {
@@ -30,6 +35,15 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
+  if (isRateLimited(`admin-bootstrap:ip:${clientIp(request)}`, 5, 10 * 60 * 1000)) {
+    return NextResponse.json({ ok: false, message: "Too many attempts. Try again in a few minutes." }, { status: 429 });
+  }
+
+  const bootstrapSecret = process.env.ADMIN_BOOTSTRAP_SECRET;
+  if (!bootstrapSecret || request.headers.get("x-admin-bootstrap-secret") !== bootstrapSecret) {
+    return NextResponse.json({ ok: false, message: "Admin bootstrap requires a valid bootstrap secret." }, { status: 403 });
+  }
+
   const body = await request.json().catch(() => null);
   const email = String(body?.email ?? "").trim().toLowerCase();
   const password = String(body?.password ?? "");

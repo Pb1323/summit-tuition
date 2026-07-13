@@ -168,8 +168,11 @@ npm run prisma:push
 ```bash
 curl -X PUT "$NEXT_PUBLIC_SITE_URL/api/auth/login" \
   -H "Content-Type: application/json" \
+  -H "x-admin-bootstrap-secret: $ADMIN_BOOTSTRAP_SECRET" \
   -d "{\"email\":\"$ADMIN_EMAIL\",\"password\":\"$ADMIN_PASSWORD\"}"
 ```
+
+This endpoint is gated by `ADMIN_BOOTSTRAP_SECRET` — set it in Vercel before deploying, and pass it via the `x-admin-bootstrap-secret` header. Without a matching secret the endpoint refuses the request, so an attacker who merely knows/guesses `ADMIN_EMAIL` cannot take over the admin account. Consider unsetting `ADMIN_BOOTSTRAP_SECRET` in Vercel again once the admin account is created, and only restoring it temporarily if you need to rotate the admin password this way in future.
 
 8. Sign in as admin, visit `/admin/students`, and approve/unlock registered students.
 9. Register a student in another browser/profile and confirm that the pending student appears in admin.
