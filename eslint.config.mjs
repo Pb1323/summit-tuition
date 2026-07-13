@@ -15,6 +15,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Generated/local artifacts that should never be linted:
+    "playwright-report/**",
+    ".claude/worktrees/**",
   ]),
 ]);
 
