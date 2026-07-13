@@ -42,7 +42,6 @@ const organizationJsonLd = {
   url: SITE.url,
   description: SITE.description,
   email: SITE.email,
-  telephone: SITE.phone,
   address: { "@type": "PostalAddress", addressLocality: "London", addressCountry: "GB" },
 };
 

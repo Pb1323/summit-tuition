@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { GraduationCap, ShieldCheck, Mail, Phone } from "lucide-react";
+import { GraduationCap, ShieldCheck, Mail } from "lucide-react";
 import { FOOTER_COLUMNS } from "@/data/nav";
 import { SITE } from "@/data/site";
 import { Container } from "@/components/ui/container";
@@ -22,9 +22,6 @@ export function Footer() {
             <div className="mt-5 space-y-2 text-sm">
               <a href={`mailto:${SITE.email}`} className="cursor-pencil flex items-center gap-2 transition-colors duration-300 hover:text-white">
                 <Mail className="h-4 w-4 text-gold-light" /> {SITE.email}
-              </a>
-              <a href={`tel:${SITE.phone.replace(/\s/g, "")}`} className="cursor-pencil flex items-center gap-2 transition-colors duration-300 hover:text-white">
-                <Phone className="h-4 w-4 text-gold-light" /> {SITE.phone}
               </a>
             </div>
           </div>
