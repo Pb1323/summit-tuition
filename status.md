@@ -1,12 +1,21 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-13 (Study Notes interactivity pass)
+Last updated: 2026-07-14 (Verbal Reasoning notes launched)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
 
-## Done (this session — Study Notes interactivity pass)
+## Done (this session — 2026-07-14, Verbal Reasoning notes launched)
+
+User asked for a reusable playbook for building more Study Notes content, plus a first real attempt at Verbal Reasoning notes (previously just a "Coming soon" card). Note: this session shared the working tree with another concurrent agent session — one intermediate attempt got wiped by a `git clean`/`checkout` from that other process before anything was committed; the work below is the successfully-committed redo.
+
+- **New skill**: `.claude/skills/notes-authoring/SKILL.md` — documents the whole notes content model (topic/subtopic data shape, the shared page shell, the four practice-question interaction types, subject/strand/topic routing, and the gating system) so a future session can add a new notes topic for any subject without re-deriving the pattern from scratch.
+- **Verbal Reasoning notes are now live**, matching the same premium/interactive style as the Maths and English notes. Based on real GL Assessment past-paper research already in the project (not guessed): Verbal Reasoning is split into 4 skill families (Word Relationships, Codes & Ciphers, Word Building, Number & Logic Puzzles) — mirroring how English is split into strands.
+- Built out the first one in full: **Word Relationships** (synonyms, antonyms, odd one out, analogies, plus alphabet-letter analogies, trap words, and exam strategy) — 10 subtopics, each with a concept explainer, glossary, a new interactive "click the word" diagram, a worked example, a self-check, 3 practice questions, common mistakes and an exam tip. The other 3 Verbal Reasoning skill families are visible as "Coming soon" cards, not yet built.
+- Verified with `npm run typecheck` (clean) before committing; committed and pushed as a single scoped commit (`3da5d8a`) touching only the 10 new/changed files for this feature.
+
+## Done (previous session — Study Notes interactivity pass)
 
 User asked to push the Study Notes feature further before a Claude usage window reset, explicitly prioritising "more interactive for English" first. Audited every English diagram component and found all ~76 English subtopics (Grammar/Spelling/Comprehension/Cloze) funnel through one of three generic shared components (click-the-word, click-the-sentence, click-the-gap) — genuinely just worksheet-style exercises with no diagram surface at all.
 
@@ -19,6 +28,7 @@ User asked to push the Study Notes feature further before a Claude usage window 
 
 ## In Progress / Deliberately Not Done This Session
 
+- **Verbal Reasoning: 3 of 4 skill families still unbuilt** — Codes & Ciphers, Word Building, and Number & Logic Puzzles are named and stubbed as "Coming soon" on `/notes/verbal-reasoning` but have no content yet. Non-Verbal Reasoning notes weren't touched at all this session (still fully "Coming soon"). The GL archetype research needed to plan all of these already exists in `research/gl-vr-nvr-question-bank.md`.
 - **14 of the 18 Maths diagrams untouched** — only the 3 weakest were enriched given the time budget; the rest were already reasonably interactive (hooks + click handlers) and lower priority per the user's explicit "English first" instruction.
 - **~41 remaining English subtopics still on the plain shared components** (untouched): the other Grammar subtopics beyond the 5 touched, the other 6 Spelling subtopics, the other 6 Cloze subtopics, and (implicitly) any future Comprehension subtopics beyond the shared-component upgrade. These are lower-value to enrich (many are genuinely fine as plain click exercises — not every subtopic needs a bespoke diagram) but were not audited one-by-one for a second pass.
 - **Priority 3 (new English content topics) not started**: remaining Grammar topics (Prepositions & Conjunctions, Complete-the-Sentence/Best-Fit), and 2nd topics for Comprehension/Spelling/Cloze. Ran out of safely-committable budget before starting — each needs a new content data file + new diagram(s) + a new route folder, and starting one without finishing it would risk leaving main in a half-built state, which was the one thing to avoid. See `TODO.md`, unchanged from before this session.
@@ -29,11 +39,13 @@ User asked to push the Study Notes feature further before a Claude usage window 
   1. Set up email delivery (Resend account + API key) and an admin notification address so enquiries/bookings actually reach someone.
   2. Connect a real shared database (e.g. Supabase Postgres) so student accounts/mocks aren't stuck in each browser's local storage.
   3. Set `ADMIN_BOOTSTRAP_SECRET`, `AUTH_SECRET`, and a real `ADMIN_PASSWORD` in the Vercel dashboard (not local `.env`).
-- Next Notes session: either (a) do a second interactivity pass over the remaining ~41 plain English subtopics (spot-check, don't force a diagram on every one), or (b) start Priority 3 content build-out (remaining Grammar topics, 2nd topics for Comprehension/Spelling/Cloze) — user's call.
+- Next Notes session: either (a) build out the remaining 3 Verbal Reasoning skill families using the new `notes-authoring` skill, (b) do a second interactivity pass over the remaining ~41 plain English subtopics (spot-check, don't force a diagram on every one), or (c) start Priority 3 content build-out (remaining Grammar topics, 2nd topics for Comprehension/Spelling/Cloze) — user's call.
 - Full backlog lives in `TODO.md`.
 
 ## Decisions / Notes
 
+- Verbal Reasoning notes use a strand layer (like English: subject → strand → topic), not a flat topic list (like Maths) — VR's ~18 GL question-type archetypes group naturally into 4 skill families, closer to how English splits into Comprehension/Grammar/Spelling/Cloze.
+- This repo had two agent sessions running against the same working tree in parallel this session — confirmed with the user, no lasting damage, but a reminder for future sessions to commit early/often rather than doing many edits before a single verify-then-commit step.
 - User confirmed: fix the mock-content-exposure issue, but explicitly leave VR/NVR mocks alone for now (unchanged from prior session).
 - `.env.example` is intentionally not committed to git (covered by `.gitignore`'s `.env*` rule) — it's a local-only reference file, so the new `ADMIN_BOOTSTRAP_SECRET` line added to it won't show up in git history.
 - Design judgment call this session: rather than replace all ~76 English subtopic demos, upgraded the three *shared* base components where an upgrade is safe/universal (Comprehension's hover+found-it effect applies to all 10 subtopics for free) and reserved genuinely bespoke new diagrams (arrows, aligners, anatomy breakdowns, clue highlighters) for subtopics where the concept is visual enough to earn one — matching the brief's "don't force a diagram onto content that doesn't need one."
