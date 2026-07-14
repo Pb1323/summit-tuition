@@ -24,8 +24,8 @@ const SUBJECTS = [
     slug: "verbal-reasoning",
     name: "Verbal Reasoning",
     icon: Brain,
-    description: "Question-type breakdowns and strategy notes.",
-    available: false,
+    description: "Word relationships, codes, word building and number/logic puzzles — GL-style question type by type.",
+    available: true,
   },
   {
     slug: "non-verbal-reasoning",

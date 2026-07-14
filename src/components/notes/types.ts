@@ -82,7 +82,7 @@ export interface Subtopic {
 
 export interface TopicContent {
   slug: string;
-  subject: "Maths" | "English";
+  subject: "Maths" | "English" | "VR";
   subjectSlug: string;
   title: string;
   description: string;

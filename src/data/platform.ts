@@ -23,6 +23,7 @@ export const NOTE_PAGES: NotePage[] = [
   { id: "maths-geometry", subject: "Maths", slug: "/notes/maths/geometry", title: "Maths: Geometry", isFree: false },
   { id: "maths-averages-statistics", subject: "Maths", slug: "/notes/maths/averages-statistics", title: "Maths: Averages & Statistics", isFree: false },
   { id: "maths-ratio-proportion", subject: "Maths", slug: "/notes/maths/ratio-proportion", title: "Maths: Ratio & Proportion", isFree: false },
+  { id: "vr-word-relationships", subject: "VR", slug: "/notes/verbal-reasoning/word-relationships", title: "Verbal Reasoning: Word Relationships", isFree: true },
 ];
 
 export const MASTER_ADMIN_EMAIL = "admin@summittuition.local";
