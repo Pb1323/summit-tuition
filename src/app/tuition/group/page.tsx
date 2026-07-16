@@ -47,7 +47,7 @@ export default function GroupTuitionPage() {
 
       <section id="pricing" className="bg-cream-dark/50 py-20">
         <Container className="flex flex-col items-center">
-          <SectionHeading align="center" eyebrow="Pricing" title="One monthly rate, billed termly in advance" />
+          <SectionHeading align="center" eyebrow="Pricing" title="Simple pay-per-session pricing" />
           <div className="mt-10 w-full max-w-sm">
             {GROUP_TUITION_PRICING.map((tier) => (
               <PricingCard key={tier.id} tier={tier} />
@@ -60,9 +60,14 @@ export default function GroupTuitionPage() {
         title="Find your child's group"
         description="Tell us their year group and target area and we'll match them to the right class."
         actions={
-          <Button href="/book-a-call?product=group-tuition" size="lg">
-            Enquire About Group Tuition <ArrowRight className="h-4 w-4" />
-          </Button>
+          <>
+            <Button href="/book-a-call?product=group-tuition" size="lg">
+              Enquire About Group Tuition <ArrowRight className="h-4 w-4" />
+            </Button>
+            <Button href="/book-a-call?product=group-tuition&trial=1" variant="light" size="lg">
+              Book a Trial Session
+            </Button>
+          </>
         }
       />
     </>

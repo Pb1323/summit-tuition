@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/container";
 import { DepthField } from "@/components/motion/depth-field";
 import { KineticHeadline } from "@/components/motion/kinetic-headline";
+import { Hero3DBackground } from "@/components/motion/hero-3d-background";
 
 interface HeroSectionProps {
   eyebrow?: string;
@@ -56,7 +57,14 @@ export function HeroSection({
             ))}
           </div>
         </div>
-        {visual && <div className="relative hero-dashboard-tilt">{visual}</div>}
+        {visual && (
+          <div className="flex flex-col gap-6">
+            <div className="hero-dashboard-tilt">{visual}</div>
+            <div className="h-72 w-full sm:h-80">
+              <Hero3DBackground />
+            </div>
+          </div>
+        )}
       </Container>
     </section>
   );

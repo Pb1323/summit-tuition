@@ -95,7 +95,7 @@ export const PRODUCT_PLANS: ProductPlan[] = [
   { id: "mock-plus", name: "Weekly Mock Club Plus", price: "£X", cadence: "/month", badge: "Most Popular", description: "Detailed review, weak-topic analysis and practice plan." },
   { id: "mock-premium", name: "Weekly Mock Club Premium", price: "£X", cadence: "/month", description: "Tutor-reviewed reports and monthly review session." },
   { id: "simulator", name: "Practice Paper Simulator", price: "£X", cadence: "/month", description: "Timed online practice papers and analytics." },
-  { id: "group", name: "Group Tuition", price: "£X", cadence: "/month", description: "Small group teaching programme." },
+  { id: "group", name: "Group Tuition", price: "£X", cadence: "/session", description: "Small group teaching programme." },
   { id: "private", name: "Private Tuition", price: "£X", cadence: "/session", description: "One-to-one targeted tuition." },
   { id: "complete", name: "Complete 11+ Programme", price: "£X", cadence: "/month", badge: "Best Value", description: "Diagnostics, tuition, mocks and reporting." },
   { id: "holiday", name: "Holiday Booster", price: "£X", cadence: "/course", description: "Intensive course for key exam-season gaps." },

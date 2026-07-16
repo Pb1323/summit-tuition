@@ -9,15 +9,18 @@ export function CTASection({
   description,
   actions,
   className,
+  decoration,
 }: {
   eyebrow?: string;
   title: string;
   description?: string;
   actions: React.ReactNode;
   className?: string;
+  decoration?: React.ReactNode;
 }) {
   return (
-    <section className={cn("bg-navy py-20", className)}>
+    <section className={cn("relative bg-navy py-20", className)}>
+      {decoration}
       <Container className="flex flex-col items-center text-center">
         <RevealOnScroll className="flex flex-col items-center">
           {eyebrow && (

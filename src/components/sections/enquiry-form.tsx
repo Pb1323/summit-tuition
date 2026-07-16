@@ -28,7 +28,13 @@ const PRODUCT_OPTIONS: InterestedProduct[] = [
   "Not sure yet",
 ];
 
-export function EnquiryForm({ defaultProduct }: { defaultProduct?: InterestedProduct }) {
+export function EnquiryForm({
+  defaultProduct,
+  defaultMessage,
+}: {
+  defaultProduct?: InterestedProduct;
+  defaultMessage?: string;
+}) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [interestedProduct, setInterestedProduct] = useState<InterestedProduct>(
     defaultProduct ?? "Not sure yet"
@@ -134,6 +140,7 @@ export function EnquiryForm({ defaultProduct }: { defaultProduct?: InterestedPro
         <Textarea
           id="message"
           name="message"
+          defaultValue={defaultMessage}
           placeholder="Tell us a little about your child and what you're looking for..."
         />
       </div>
