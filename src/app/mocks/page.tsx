@@ -112,8 +112,8 @@ export default function MocksPage() {
 
       <section className="bg-cream-dark/50 py-20">
         <Container>
-          <SectionHeading align="center" eyebrow="Plans" title="Choose a mock route" description="All mock routes keep papers online-only and release full review after marking." />
-          <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <SectionHeading align="center" eyebrow="Plan" title="One simple monthly plan" description="Papers stay online-only, with full review released after marking." />
+          <div className="mt-12 mx-auto w-full max-w-sm">
             {MOCK_CLUB_PRICING.map((tier) => <PricingCard key={tier.id} tier={tier} />)}
           </div>
         </Container>

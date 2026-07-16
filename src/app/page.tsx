@@ -241,7 +241,7 @@ export default function HomePage() {
               description="Students sit regular timed mocks and parents receive useful feedback, not just a score."
               className="mx-auto text-cream [&_h2]:text-white [&_p]:text-cream/70"
             />
-            <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <div className="mt-12 mx-auto w-full max-w-sm">
               {MOCK_CLUB_PRICING.map((tier) => (
                 <PricingCard key={tier.id} tier={tier} />
               ))}

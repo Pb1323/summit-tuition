@@ -97,8 +97,8 @@ export const PRODUCT_PLANS: ProductPlan[] = [
   { id: "simulator", name: "Practice Paper Simulator", price: "£X", cadence: "/month", description: "Timed online practice papers and analytics." },
   { id: "group", name: "Group Tuition", price: "£X", cadence: "/session", description: "Small group teaching programme." },
   { id: "private", name: "Private Tuition", price: "£X", cadence: "/session", description: "One-to-one targeted tuition." },
-  { id: "complete", name: "Complete 11+ Programme", price: "£X", cadence: "/month", badge: "Best Value", description: "Diagnostics, tuition, mocks and reporting." },
-  { id: "holiday", name: "Holiday Booster", price: "£X", cadence: "/course", description: "Intensive course for key exam-season gaps." },
+  { id: "complete", name: "Complete 11+ Programme", price: "£X", cadence: "/week", badge: "Best Value", description: "Diagnostics, tuition, mocks and reporting." },
+  { id: "holiday", name: "Holiday Booster", price: "£X", cadence: "/week", description: "Intensive course for key exam-season gaps." },
 ];
 
 export const PASSAGES: Passage[] = [
