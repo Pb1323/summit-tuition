@@ -27,13 +27,22 @@ import { FeatureGrid } from "@/components/ui/feature-grid";
 import { PricingCard } from "@/components/ui/pricing-card";
 import { TestimonialCard } from "@/components/ui/testimonial-card";
 import { HeroSection } from "@/components/sections/hero-section";
-import { HeroDashboard } from "@/components/sections/hero-dashboard";
 import { ProductLadder } from "@/components/sections/product-ladder";
 import { CTASection } from "@/components/sections/cta-section";
 import { ComparisonTable } from "@/components/sections/comparison-table";
 import { MockReportPreview } from "@/components/sections/mock-report-preview";
+import { TryAQuestion } from "@/components/sections/try-a-question";
+import { BeforeAfterSlider } from "@/components/sections/before-after-slider";
+import { YearGroupPicker } from "@/components/sections/year-group-picker";
 import { MOCK_CLUB_PRICING } from "@/data/pricing";
 import { UPSELL_PRODUCTS } from "@/data/products";
+import { Magnetic } from "@/components/motion/magnetic";
+import { AnimatedCounter } from "@/components/motion/animated-counter";
+import { CursorRing } from "@/components/motion/cursor-ring";
+import { ScrollProgress } from "@/components/motion/scroll-progress";
+import { ScrollStoryRail } from "@/components/motion/scroll-story-rail";
+import { TiltCard } from "@/components/motion/tilt-card";
+import { PullQuote } from "@/components/ui/pull-quote";
 
 const START_HERE = [
   {
@@ -122,19 +131,25 @@ const PLATFORM_DIAGRAMS = [
 export default function HomePage() {
   return (
     <>
+      <ScrollProgress />
+      <CursorRing />
       <HeroSection
         eyebrow="11+ Preparation, Done Properly"
         title="Premium 11+ mocks and progress reports that show students exactly what to improve next"
         description="Summit Tuition combines interactive online English and maths mocks, manual report release, diagnostic assessments and tuition support for selective entrance preparation."
-        visual={<HeroDashboard />}
+        visual={<TryAQuestion />}
         actions={
           <>
-            <Button href="/diagnostic-assessment" variant="navy" size="lg">
-              Start with a Diagnostic Assessment
-            </Button>
-            <Button href="/book-a-call" size="lg">
-              Book a Free Parent Call
-            </Button>
+            <Magnetic>
+              <Button href="/diagnostic-assessment" variant="navy" size="lg">
+                Start with a Diagnostic Assessment
+              </Button>
+            </Magnetic>
+            <Magnetic>
+              <Button href="/book-a-call" size="lg">
+                Book a Free Parent Call
+              </Button>
+            </Magnetic>
             <Link href="/login" className="inline-flex h-12 items-center justify-center text-sm font-bold text-navy underline decoration-gold/60 underline-offset-4 hover:text-gold-dark">
               Student Login
             </Link>
@@ -161,6 +176,9 @@ export default function HomePage() {
                 </Card>
               ))}
             </div>
+          </RevealOnScroll>
+          <RevealOnScroll delay={0.12} className="mt-10">
+            <YearGroupPicker />
           </RevealOnScroll>
         </Container>
       </section>
@@ -198,7 +216,10 @@ export default function HomePage() {
             </Button>
           </RevealOnScroll>
           <RevealOnScroll delay={0.1}>
-            <MockReportPreview />
+            <div className="space-y-6">
+              <MockReportPreview />
+              <BeforeAfterSlider />
+            </div>
           </RevealOnScroll>
         </Container>
       </section>
@@ -333,18 +354,19 @@ export default function HomePage() {
             />
             <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {UPSELL_PRODUCTS.map((u) => (
-                <Link
-                  key={u.name}
-                  href={u.href}
-                  className="premium-card-hover cursor-pencil flex flex-col rounded-2xl border border-line bg-white p-6"
-                >
-                  <h3 className="text-base font-semibold text-navy">{u.name}</h3>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{u.description}</p>
-                  <div className="mt-4 flex items-center justify-between border-t border-line pt-4">
-                    <span className="text-sm font-bold text-navy">{u.price}</span>
-                    <ArrowRight className="h-4 w-4 text-gold-dark" />
-                  </div>
-                </Link>
+                <TiltCard key={u.name} className="h-full">
+                  <Link
+                    href={u.href}
+                    className="premium-card-hover cursor-pencil flex h-full flex-col rounded-2xl border border-line bg-white p-6"
+                  >
+                    <h3 className="text-base font-semibold text-navy">{u.name}</h3>
+                    <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{u.description}</p>
+                    <div className="mt-4 flex items-center justify-between border-t border-line pt-4">
+                      <span className="text-sm font-bold text-navy">{u.price}</span>
+                      <ArrowRight className="h-4 w-4 text-gold-dark" />
+                    </div>
+                  </Link>
+                </TiltCard>
               ))}
             </div>
           </RevealOnScroll>
@@ -352,23 +374,28 @@ export default function HomePage() {
       </section>
 
       {/* How it works */}
-      <section className="bg-cream-dark/50 py-20">
+      <section className="bg-navy py-24">
         <Container>
           <RevealOnScroll>
-            <SectionHeading align="center" eyebrow="How It Works" title="A clear, structured path to exam day" />
-            <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
-              {HOW_IT_WORKS.map((step, i) => (
-                <div key={step.title} className="premium-card-hover relative rounded-2xl border border-line bg-white p-6">
-                  <span className="text-xs font-bold text-gold-dark">0{i + 1}</span>
-                  <div className="mt-3 flex h-10 w-10 items-center justify-center rounded-xl bg-navy/5 text-navy">
-                    {step.icon}
-                  </div>
-                  <h3 className="mt-4 text-sm font-semibold text-navy">{step.title}</h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-muted">{step.description}</p>
-                </div>
-              ))}
+            <SectionHeading
+              align="center"
+              eyebrow="How It Works"
+              title="A clear, structured path to exam day"
+              className="mx-auto text-cream [&_h2]:text-white [&_p]:text-cream/70"
+            />
+            <div className="mt-14">
+              <ScrollStoryRail steps={HOW_IT_WORKS.map((s) => ({ title: s.title, text: s.description }))} />
             </div>
           </RevealOnScroll>
+        </Container>
+      </section>
+
+      <section className="py-16">
+        <Container>
+          <PullQuote>
+            &ldquo;We don&apos;t promise a place at a grammar school — we promise your child will know
+            exactly what to fix before exam day.&rdquo;
+          </PullQuote>
         </Container>
       </section>
 
@@ -401,7 +428,7 @@ export default function HomePage() {
                     <p className="mt-2 text-sm text-muted">Students see readiness, subject bars, weak topics and a recommended next step after admin releases the report.</p>
                   </div>
                   <div className="grid gap-3 sm:grid-cols-3">
-                    <div className="rounded-2xl bg-cream p-4"><p className="text-3xl font-black text-navy">78%</p><p className="text-sm text-muted">Readiness score</p></div>
+                    <div className="rounded-2xl bg-cream p-4"><p className="text-3xl font-black text-navy"><AnimatedCounter value={78} suffix="%" /></p><p className="text-sm text-muted">Readiness score</p></div>
                     <div className="rounded-2xl bg-cream p-4"><p className="text-sm font-bold text-navy">Subject bars</p><div className="mt-3 space-y-2"><span className="block h-2 rounded-full bg-gold" /><span className="block h-2 w-2/3 rounded-full bg-navy" /></div></div>
                     <div className="rounded-2xl bg-cream p-4"><p className="text-sm font-bold text-navy">Next step</p><p className="mt-2 text-xs text-muted">Ratio practice pack before the next timed mock.</p></div>
                   </div>
@@ -419,7 +446,9 @@ export default function HomePage() {
             <SectionHeading eyebrow="Why Parents Choose Us" title="Built to be honest, not just reassuring" />
             <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-3">
               {TRUST_STATEMENTS.map((t) => (
-                <TestimonialCard key={t.context} statement={t.statement} context={t.context} />
+                <TiltCard key={t.context} className="h-full">
+                  <TestimonialCard statement={t.statement} context={t.context} className="h-full" />
+                </TiltCard>
               ))}
             </div>
             <div className="mt-6 flex items-start gap-2 text-sm text-muted">
@@ -440,12 +469,16 @@ export default function HomePage() {
         description="Book a free 15-minute call and we'll help you choose the right starting point."
         actions={
           <>
-            <Button href="/book-a-call" size="lg">
-              Book a Free Parent Call
-            </Button>
-            <Button href="/diagnostic-assessment" variant="light" size="lg">
-              Book Diagnostic Assessment
-            </Button>
+            <Magnetic>
+              <Button href="/book-a-call" size="lg">
+                Book a Free Parent Call
+              </Button>
+            </Magnetic>
+            <Magnetic>
+              <Button href="/diagnostic-assessment" variant="light" size="lg">
+                Book Diagnostic Assessment
+              </Button>
+            </Magnetic>
           </>
         }
       />
