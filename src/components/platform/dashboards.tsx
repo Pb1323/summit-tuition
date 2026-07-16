@@ -326,6 +326,7 @@ export function AdminDashboard() {
                 <textarea value={feedback[attempt.id] ?? attempt.adminFeedback} onChange={(event) => setFeedback((prev) => ({ ...prev, [attempt.id]: event.target.value }))} className="mt-3 min-h-20 w-full rounded-xl border border-line p-3 text-sm outline-none focus:border-gold" placeholder="Manual feedback notes" />
                 <div className="mt-3 flex flex-wrap gap-2">
                   <button onClick={() => addFeedback(attempt.id, feedback[attempt.id] ?? attempt.adminFeedback)} className="rounded-full border border-line px-3 py-1 text-sm font-bold text-navy">Save feedback</button>
+                  <Link href={`/admin/reports/${attempt.id}/preview`} className="rounded-full border border-gold/50 bg-white px-3 py-1 text-sm font-bold text-navy">Preview student report</Link>
                   <button onClick={() => releaseReport(attempt.id, feedback[attempt.id] ?? attempt.adminFeedback)} className="rounded-full bg-gold px-3 py-1 text-sm font-bold text-navy">Release report</button>
                 </div>
               </div>
