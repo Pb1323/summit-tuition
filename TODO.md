@@ -16,6 +16,8 @@ I could only find two backlog docs matching "meters/badges/certificates" from an
 
 ## Now (next up)
 
+- [ ] **2 more Maths Elite mocks (80Q, all-topics) + 2 more English Elite mocks** — a 2026-07-16 session shipped one of each (`maths-elite-1`, `english-gl-10-elite`) hand-authored to the existing Elite quality bar (new original passage + 54 marks for English, 80 fresh questions across all 6 Maths topics). The remaining 2+2 requested by the user were explicitly deferred this session to protect the time/token budget — same authoring approach (new passage per English mock, fresh questions per Maths mock, no recycling from other mocks' question banks) should be used when picked back up.
+
 - [ ] **Second interactivity pass over remaining ~41 English subtopics** still on the plain shared components (rest of Grammar beyond the 5 touched subtopics, 6 of 10 Spelling subtopics, 6 of 10 Cloze subtopics) — spot-check each, don't force a diagram where the concept doesn't need one.
 - [ ] **Comprehension strand** — only the shared component was upgraded this pass; the strand itself (`literal-comprehension-retrieval`, 10 subtopics) is still the only Comprehension topic live.
 - [ ] **Spelling strand** — likewise still only `spelling-patterns-rules` (10 subtopics) live.

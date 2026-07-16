@@ -30,6 +30,7 @@ type PlatformContextValue = PlatformState & {
   login: (email: string, password: string) => Promise<{ ok: true; user: StudentAccount } | { ok: false; message: string }>;
   register: (input: RegisterInput) => Promise<{ ok: true } | { ok: false; message: string }>;
   logout: () => Promise<void>;
+  updateAccount: (patch: { name?: string; currentPassword?: string; newPassword?: string }) => Promise<{ ok: true } | { ok: false; message: string }>;
   approveUser: (studentId: string, approved: boolean) => Promise<void>;
   rejectUser: (studentId: string) => Promise<void>;
   approveAndUnlockFirstMock: (studentId: string) => Promise<void>;
@@ -315,6 +316,25 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
       memoryCurrentUserId = null;
       window.localStorage.removeItem(SESSION_KEY);
       emitChange();
+    },
+    async updateAccount(patch) {
+      if (!currentUser) return { ok: false, message: "You need to be signed in." };
+      if (patch.newPassword) {
+        if (patch.newPassword.length < 8) return { ok: false, message: "Use at least 8 characters for the new password." };
+        const expectedCurrent = hashPassword(patch.currentPassword ?? "", currentUser.id);
+        if (currentUser.passwordHash && currentUser.passwordHash !== expectedCurrent) {
+          return { ok: false, message: "Current password did not match." };
+        }
+      }
+      const nextPasswordHash = patch.newPassword ? hashPassword(patch.newPassword, currentUser.id) : currentUser.passwordHash;
+      await fetch("/api/account/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ name: patch.name, newPassword: patch.newPassword, currentPassword: patch.currentPassword }),
+      }).catch(() => undefined);
+      updateUsers((users) => users.map((user) => (user.id === currentUser.id ? { ...user, name: patch.name ?? user.name, passwordHash: nextPasswordHash } : user)));
+      return { ok: true };
     },
     async approveUser(studentId, approved) {
       if (currentUser?.role !== "admin") return;

@@ -64,6 +64,10 @@ export function StudentDashboard() {
             <Metric label="Completed" value={released.length} />
             <Metric label="Pending reports" value={pending.length} />
           </div>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <Link href="/dashboard/settings" className="rounded-full border border-line bg-white px-4 py-2 text-sm font-bold text-navy hover:border-gold">Account settings</Link>
+            <Link href="/dashboard/family" className="rounded-full border border-line bg-white px-4 py-2 text-sm font-bold text-navy hover:border-gold">Family / payments</Link>
+          </div>
         </GlowCard>
         <GlowCard className="p-8">
           <PremiumBadge>Next mock</PremiumBadge>
@@ -158,7 +162,7 @@ export function StudentDashboard() {
         </GlowCard>
         <GlowCard className="p-6">
           <h2 className="text-xl font-bold text-navy">Content protection</h2>
-          <p className="mt-3 text-sm text-muted">Mocks are online-only, require an approved login, and do not include PDF downloads or print views. Basic copy protection is active in the mock room while keeping form controls accessible.</p>
+          <p className="mt-3 text-sm text-muted">Scored mocks are online-only and require an approved login — no PDF downloads. Printable practice papers (no score or report) are available separately in the mocks list. Basic copy protection is active in the mock room while keeping form controls accessible.</p>
         </GlowCard>
       </section>
     </div>

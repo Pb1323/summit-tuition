@@ -11,7 +11,7 @@ import { AdminMockWorkspace } from "@/components/platform/admin-mock-workspace";
 import type { Attempt, MockExam, Passage, Question, Subject } from "@/types/platform";
 
 export function AdminMocksCommandCentre() {
-  const { mocks, questions, passages, attempts, references, setMockPublished, cloneMock, archiveMock, addFeedback, releaseReport } = usePlatform();
+  const { mocks, questions, passages, attempts, users, references, setMockPublished, cloneMock, archiveMock, addFeedback, releaseReport } = usePlatform();
   const [selectedVisualId, setSelectedVisualId] = useState("show-table");
   const [actionMessage, setActionMessage] = useState("");
   const [feedback, setFeedback] = useState<Record<string, string>>({});
@@ -154,12 +154,13 @@ export function AdminMocksCommandCentre() {
         <div className="mt-5 grid gap-4">
           {attempts.filter((attempt) => attempt.status !== "in_progress").map((attempt) => {
             const mock = mocks.find((item) => item.id === attempt.mockId);
+            const student = users.find((item) => item.id === attempt.studentId);
             return (
               <GlowCard key={attempt.id} className="p-5">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
                     <h3 className="font-black text-navy">{mock?.title ?? "Unknown mock"}</h3>
-                    <p className="text-sm text-muted">Generic demo account / {attempt.score}/{attempt.maxScore} / {attempt.status.replaceAll("_", " ")}</p>
+                    <p className="text-sm text-muted">{student?.name ?? "Unknown student"} / {attempt.score}/{attempt.maxScore} / {attempt.status.replaceAll("_", " ")}</p>
                   </div>
                   <PremiumBadge tone={attempt.status === "report_released" ? "green" : "navy"}>{attempt.status.replaceAll("_", " ")}</PremiumBadge>
                 </div>

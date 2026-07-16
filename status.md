@@ -1,12 +1,25 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-14 (Verbal Reasoning notes launched)
+Last updated: 2026-07-16 (operational punch list: bug fixes, admin UX, student accounts, mobile page, printable mocks)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
 
-## Done (this session — 2026-07-14, Verbal Reasoning notes launched)
+## Done (this session — 2026-07-16, operational punch list)
+
+A 2-hour autonomous session working through a founder-facing operational checklist (bugs found while actually running the platform, plus new features). Ran solo without stopping for review between items; verified with `npm run typecheck` / `npm run lint` / `npm run build` (all clean) before committing.
+
+- **Fixed a real bug**: the admin Attempts tab (`src/components/platform/admin-mocks-command-centre.tsx`) showed a hardcoded "Generic demo account" for every attempt instead of the actual student's name — `users` was never pulled from `usePlatform()`. Now looks up `attempt.studentId` against the real user list.
+- **Fixed clunky admin student-unlock UX**: the old "All Student Accounts" panel rendered ~30 unlabeled checkboxes per student in one flat wrapped block (30 mocks/notes × 6 students = visually overwhelming). Replaced with a collapsed-by-default `UnlockPanel` per student — search box, grouped by subject with per-subject unlock/lock-all buttons, and a running "X/Y unlocked" count (`admin-students-workspace.tsx`).
+- **Added a demo student account** (`student-demo-testing` / Priya Chen, `priya.demo@summittuition.local`) for the founder's own manual testing. Decided against building isolated per-user staging/feature-flag infrastructure — `npm run dev` on localhost covers pre-push testing at effectively zero cost, so that's the recommended workflow instead.
+- **Student account settings** (`/dashboard/settings`): change name, change password (new `/api/account/update` route, DB-backed when configured, no-op-but-ok in demo mode), and a dashboard-scoped dark mode toggle (`data-dashboard-theme` attribute + CSS variable overrides in `globals.css`, not a full site theme system).
+- **Parent/family view** (`/dashboard/family`): lessons remaining, upcoming lesson date/time, and a payment-status placeholder that explicitly says payments populate once Stripe is connected. Added `lessonsRemaining`/`upcomingLessons` as optional fields on `StudentAccount` — currently admin-editable seed data only, no real booking system yet.
+- **Mobile WhatsApp landing page** (`/welcome`): a short, lightweight, mobile-first page (no heavy motion components) for sharing a link outside the main desktop-oriented landing page. Still inherits the shared Header/Footer.
+- **Printable practice mocks** — a new mock category distinct from scored online mocks: `MockExam.printOnly`, a `/mocks/[id]/print` browser-print view (`@media print` CSS, no PDF library, no score/report), and one placeholder mock (`maths-print-sample`, reusing the existing `m1`-`m9` diagnostic questions). **Updated `CLAUDE.md`'s Design Notes** — the old blanket "no printable mocks" rule now explicitly carves out this print-only category while keeping scored mocks online-only.
+- **Two new Elite-difficulty mocks**, hand-authored to match the existing Elite quality bar: `maths-elite-1` (80 original questions spanning all 6 Maths topics, ~45% stretch difficulty, calibrated toward a ~65% average) and `english-gl-10-elite` (a new original passage, "The Weaver's Last Thread", + 54 marks: 28 comprehension, 9 spelling, 9 grammar, 8 cloze, matching the `english-gl-8-elite`/`-9-elite` structure exactly). The user originally asked for 3 of each; scoped down to 1+1 this session to protect quality over quantity — the other 4 are logged in `TODO.md`.
+
+## Done (previous session — 2026-07-14, Verbal Reasoning notes launched)
 
 User asked for a reusable playbook for building more Study Notes content, plus a first real attempt at Verbal Reasoning notes (previously just a "Coming soon" card). Note: this session shared the working tree with another concurrent agent session — one intermediate attempt got wiped by a `git clean`/`checkout` from that other process before anything was committed; the work below is the successfully-committed redo.
 

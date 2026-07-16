@@ -77,13 +77,7 @@ Important: this repo has `AGENTS.md` warning that this is a newer Next.js with b
 
 Prisma schema lives in `prisma/schema.prisma`.
 
-Key models:
-- `User`, `Session`, `MockUnlock`.
-- `MockExam`, `Question`, `Passage`, `Attempt`.
-- `ReferenceSource`, `ProductPlan`, `EmailTemplate`.
-- `PaymentRequest`.
-
-Full model/enum list from `prisma/schema.prisma`: enums `Role`, `Subject`, `ReferenceStyle`, `AttemptStatus`, `PaymentStatus`, `PaymentRequestStatus`; models `User`, `Session`, `MockExam`, `Question`, `Passage`, `Attempt`, `MockUnlock`, `ReferenceSource`, `ProductPlan`, `EmailTemplate`, `PaymentRequest`.
+Models: `User`, `Session`, `MockExam`, `Question`, `Passage`, `Attempt`, `MockUnlock`, `ReferenceSource`, `ProductPlan`, `EmailTemplate`, `PaymentRequest`. Enums: `Role`, `Subject`, `ReferenceStyle`, `AttemptStatus`, `PaymentStatus`, `PaymentRequestStatus`.
 
 Seed/static catalog lives in `src/data/platform.ts`:
 - Demo admin and students.
@@ -105,34 +99,30 @@ Seed/static catalog lives in `src/data/platform.ts`:
 
 ## Recent Feature State
 
-- **Study Notes feature** (`src/components/notes/**` and `src/app/notes/**`): interactive, letterhead-styled study pages, separate from the mock/exam system. `src/components/notes/notes-shell.tsx` and `notes-blocks.tsx` render topic content defined per-subtopic in `src/components/notes/notes-content/*.ts`, each paired with bespoke interactive SVG diagrams in `src/components/notes/notes-diagrams/*.tsx` (e.g. `balance-scale-equation.tsx`, `angle-sum-explorer.tsx`, `pie-chart-explorer.tsx`). Theming lives in `notes-theme.ts`; CSS is namespaced `nt-`/`notes-` in `globals.css`. Wired into the student dashboard as an entry point.
-  - **Maths** — 6 topics fully built and live: Numbers, Fractions/Decimals/Percentages, Ratio & Proportion, Algebra, Geometry, Averages & Statistics (18 subtopic pages total).
-  - **English** (`src/app/notes/english/**`) — 4 strands: Grammar, Comprehension, Spelling, Cloze, reached via `/notes/english` strand picker. **Grammar** has 5 of ~10 planned topics live (46 subtopic pages): Parts of Speech Errors, Agreement & Sentence-Level Errors, Pronoun Errors, Apostrophes & Possession, Commonly Confused Words. **Comprehension**, **Spelling**, and **Cloze** each have their first topic live (10 subtopics apiece) as of 2026-07-13, with 9 more topics planned per strand — see `TODO.md`.
-  - Student progress on Notes pages is now persisted (previously reset on leaving a page) — currently saved locally on-device (not yet synced across devices via the database). This unblocks the parked gamification backlog (mastery meters, wax-seal badges, certificates) documented in `TODO.md`.
-- **Uncommitted site-wide UX polish pass** (working tree as of 2026-07-12, not yet committed): touches `src/app/page.tsx`, `about/page.tsx`, `tuition/page.tsx`, `diagnostic-assessment/page.tsx`, `components/layout/header.tsx` + `footer.tsx`, `components/sections/cta-section.tsx`, `components/platform/dashboards.tsx`, `components/ui/badge.tsx`, `components/ui/testimonial-card.tsx`, and `globals.css`. Adds two new editorial components — `src/components/ui/drop-cap.tsx` and `pull-quote.tsx` — plus new CSS: `.editorial-drop-cap`, `.editorial-pull-quote`, `.cursor-pencil` (custom pencil cursor for interactive text), and a `premium-card-hover` utility now applied to dashboard step/stat cards. This is a restrained subset of the visual/editorial half of the brainstorm in [docs/ideas/11plus-premium-craft-and-gamification.md](docs/ideas/11plus-premium-craft-and-gamification.md); the "wax-seal" gamification half of that doc was deliberately not started (deferred until Notes is stable).
-- Added `maths-gl-2-stretch` ("Maths GL-Style Stretch Paper") to `src/data/platform.ts`: a full 50-question, 57-mark original Maths mock (questions `mh1`-`mh50`) replicating the real GL 11+ Maths paper format section-for-section — arithmetic, fractions, percentages, ratio, algebra, geometry, measurement, time/money, data handling, number patterns and multi-step challenge word problems — mirroring the structure of `english-gl-2-stretch`. Passes every `evaluateMockQuality` gate in `src/lib/mock-quality.ts` (50+ questions, 30%+ visual ratio, 30%+ stretch difficulty, balanced topic spread, challenge questions present, marks reconcile). Uses only pre-existing visual types (bar_chart, line_graph, table, coordinateGrid, numberLine, shape, sequence, fraction, ratioBlocks, venn, clock) — did not touch `question-visuals.tsx` or `types/platform.ts`, which were mid-edit by another session adding NVR/VR visual renderers.
-- Added 4 more original Maths Summit Stretch mocks to `src/data/platform.ts` (190 questions total, all verified by hand and passing `tsc`): `maths-summit-p1` ("Number Focus", 50 Q/60 marks, arithmetic/fractions/decimals/percentages/ratio), `maths-summit-q1` ("Geometry & Measurement Focus", 42 Q/54 marks), `maths-summit-r1` ("Data, Patterns & Reasoning Focus", 48 Q/76 marks), and `maths-summit-s1` ("Maths GL-Style Stretch Paper III", 50 Q/70 marks, mirrors `maths-gl-2-stretch`'s full GL topic weighting exactly). Question ids use `mp`/`mq`/`mr`/`ms` prefixes to avoid clashing with the existing `mh`/`m` ids.
-- Mock room visuals have been polished with dedicated renderers in `src/components/platform/question-visuals.tsx`, now with hover/focus interactivity (tooltips, value highlights, guide lines) and subtle animated draw-ins across all Maths visual types (bar/line charts, tables, number lines, coordinate grids, shapes, fractions, ratio blocks, Venn diagrams, clocks, sequences) via a `.qv-hit`/`.qv-mark`/`.qv-tooltip` CSS system in `globals.css`; respects `prefers-reduced-motion`. NVR/VR renderers untouched.
-- The mock room supports compact 50-question navigation, keyboard left/right movement, flagging, draft resume, submit confirmation, and admin preview mode.
-- Admin mock command centre includes overview, drafts, published, generator, visual showcase, attempts, references, quality checks, and archive.
-- Clone and archive buttons now work:
-  - Clone duplicates a mock and its questions as an unpublished `Admin draft`.
-  - Archive unpublishes a mock, sets `tier` to `Archived`, and moves it to the Archive section.
-- Playwright coverage includes admin nav/session persistence and 50-question navigator desktop/mobile screenshots.
-- **VR/NVR practice content**: previously empty `vr-placeholder`/`nvr-placeholder` mocks now have a first real batch of 20 questions each (VR: word puzzles/codes; NVR: shape/pattern puzzles) and are switched on for students to sit. Full mock's worth of questions per subject and publishing (`published: false`, `tier: "Future"` today) is still pending — see `TODO.md`. VR/NVR was flagged in business research (`COMPETITOR_GAP_ANALYSIS.md`) as the single biggest content gap versus competitors.
-- Mock room now has a timer show/hide toggle, and 2 new elite-difficulty English mocks were added.
-- New admin API routes exist for note-progress admin actions and per-student note unlocking: `src/app/api/admin/notes/`, `src/app/api/admin/students/[id]/unlock-note/`, `src/app/api/admin/mocks/[id]/set-free/`.
-- Fixed both elite English mocks (`english-gl-8-elite`, `english-gl-9-elite`) having a predictable answer pattern (correct answer was always the first listed option). `QuestionRenderer` (`src/components/platform/ui.tsx`) now applies a deterministic per-question `seededShuffle` to multiple-choice/cloze options app-wide (stable across renders, so a student sees the same order every time); segment-format "find the mistake" questions are left in their fixed lettered order since those letters map to sentence positions, not shuffleable content.
-- Elite mock descriptions no longer state an expected score band (was tutor-facing calibration text, inappropriate for students to read); descriptions now focus on paper structure/content only.
-- Removed the "Locked mocks" section from the student dashboard (`src/components/platform/dashboards.tsx`) — students no longer see mocks they don't have access to.
-- Added `autoGenerateReport()` and `patternDescription()` to `src/lib/assessment.ts`, built on the existing `analyseAttempt()` topic/pattern analysis (careless error / concept gap / timing pressure). Admin's attempts panel (`admin-mocks-command-centre.tsx`) has an "Auto-fill statistics report" button that generates a per-topic marks-lost breakdown into the feedback textarea before release. The student review page (`/mocks/[id]/review`) now also surfaces missed-marks-per-topic and the same pattern label, alongside the existing full question-by-question review (exact question, student's answer, correct answer, explanation, mark scheme).
+Full narrative history of what was built/changed and when now lives in `status.md` (read explicitly when needed) — this section only keeps facts a session needs to not regress or duplicate existing work.
+
+- **Study Notes** (`src/components/notes/**`, `src/app/notes/**`): letterhead-styled study pages, separate from mocks. `notes-shell.tsx`/`notes-blocks.tsx` render content from `notes-content/*.ts`, paired with SVG diagrams in `notes-diagrams/*.tsx`. Theming in `notes-theme.ts`; CSS namespaced `nt-`/`notes-`.
+  - **Maths**: 6 topics, 18 subtopics, fully live.
+  - **English** (`/notes/english`, strand picker → Grammar/Comprehension/Spelling/Cloze): Grammar 5 of ~10 topics live (46 subtopics); Comprehension/Spelling/Cloze each have 1 of 10 topics live. Remaining scope tracked in `TODO.md`.
+  - Notes progress now persists locally on-device (not yet synced via DB) — unblocks the gamification backlog in `TODO.md`.
+- Mock data lives in `src/data/platform.ts`; question-id prefixes are namespaced per mock batch (`mh`, `mp`/`mq`/`mr`/`ms`, etc.) to avoid collisions — follow that convention when adding new mocks.
+- Mock room visuals render via `src/components/platform/question-visuals.tsx` with hover/focus interactivity and animated draw-ins (`.qv-hit`/`.qv-mark`/`.qv-tooltip` in `globals.css`, respects `prefers-reduced-motion`). NVR/VR renderers are separate and untouched by the Maths visual work.
+- Mock room: compact 50-question navigation, keyboard left/right, flagging, draft resume, submit confirmation, admin preview mode, timer show/hide toggle.
+- Admin mock command centre: overview, drafts, published, generator, visual showcase, attempts, references, quality checks, archive. Clone duplicates a mock as unpublished `Admin draft`; Archive unpublishes + sets `tier: "Archived"`.
+- VR/NVR practice mocks (`vr-placeholder`, `nvr-placeholder`) each have a first batch of 20 real questions and are switched on for students; full-length content still pending (`published: false`, `tier: "Future"`) — see `TODO.md`. Flagged in `COMPETITOR_GAP_ANALYSIS.md` as the biggest content gap vs. competitors.
+- Admin note-progress/unlock API routes: `src/app/api/admin/notes/`, `src/app/api/admin/students/[id]/unlock-note/`, `src/app/api/admin/mocks/[id]/set-free/`.
+- `QuestionRenderer` (`src/components/platform/ui.tsx`) applies a deterministic per-question `seededShuffle` to multiple-choice/cloze options app-wide (stable across renders) — don't reintroduce a fixed/predictable option order. Segment-format "find the mistake" questions keep fixed lettered order since letters map to sentence positions, not shuffleable content.
+- Elite mock descriptions intentionally omit expected score bands (tutor-facing calibration info, not for students).
+- Student dashboard has no "locked mocks" section by design — students should only see mocks they can access.
+- `src/lib/assessment.ts` has `autoGenerateReport()`/`patternDescription()` (built on `analyseAttempt()`) powering the admin "Auto-fill statistics report" button and the student review page's missed-marks-per-topic + pattern label.
 
 ## Design Notes
 
 - Keep the app as a product/tool first, not a generic landing page.
 - Use existing components in `src/components/ui`, `src/components/layout`, `src/components/sections`, and `src/components/platform`.
 - The current visual identity uses navy, gold, cream, white, and restrained motion.
-- Do not add PDF downloads or printable mocks.
+- Scored mocks stay online-only — do not add PDF downloads or print views for marked mocks.
+- A separate "Printable Practice" mock category is allowed: mocks with `printOnly: true` on `MockExam`, rendered via a plain browser `@media print` view (`/mocks/[id]/print`, `src/app/globals.css`) — no PDF generation library, no score, no report. Keep this category clearly distinct from scored online mocks in UI copy.
 - Do not copy third-party paper content. Reference sources are metadata only.
 
 ## Known Limitations
@@ -144,17 +134,9 @@ Seed/static catalog lives in `src/data/platform.ts`:
 - Generated mocks and admin draft edits need durable database persistence/versioning in a later pass.
 - Clone/archive currently follow the existing local draft mock model rather than writing to Prisma.
 
-## Environment Variables (from `.env.example`)
+## Environment Variables
 
-- App: `NEXT_PUBLIC_APP_NAME`, `NEXT_PUBLIC_APP_SHORT_NAME`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_CONTACT_EMAIL`.
-- Booking embed: `NEXT_PUBLIC_CALENDLY_URL`.
-- Database: `DATABASE_URL`, optional `DIRECT_URL` (Supabase Postgres recommended; without it the app runs on the localStorage demo fallback).
-- Auth/session: `AUTH_SECRET`, `AUTH_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`.
-- Admin seed: `ADMIN_EMAIL` (defaults to `admin@summittuition.local`), `ADMIN_PASSWORD` (never commit a real one).
-- Stripe: `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`.
-- Email (Resend-compatible): `RESEND_API_KEY`, `EMAIL_FROM`, `ADMIN_NOTIFICATION_EMAIL`.
-- AI mock generation: `MOCK_GENERATION_PROVIDER` (default `deterministic`), `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_BASE_URL`, `ANTHROPIC_API_KEY`, `ANTHROPIC_MODEL`.
-- `ADMIN_GENERATION_SECRET` — temporary guard for server-side admin AI generation until cookie auth/database is fully adopted in the UI.
+Full list with defaults lives in `.env.example` — read it directly when you need exact names. Notable non-obvious ones: `DATABASE_URL` unset falls back to localStorage demo mode; `ADMIN_GENERATION_SECRET` is a temporary guard for server-side admin AI generation until cookie auth/database is fully adopted in the UI; `MOCK_GENERATION_PROVIDER` defaults to `deterministic` (no AI key needed) with `OPENAI_*`/`ANTHROPIC_*` as opt-in.
 
 ## How To Run Locally
 

@@ -1,9 +1,11 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import Link from "next/link";
-import { CheckCircle2, ClipboardCheck, Trash2, UserPlus, Users, XCircle } from "lucide-react";
+import { CheckCircle2, ClipboardCheck, ChevronDown, Search, Trash2, UserPlus, Users, XCircle } from "lucide-react";
 import { usePlatform } from "@/context/platform-context";
 import { GlowCard, PremiumBadge, StaggerReveal } from "@/components/platform/ui";
+import type { MockExam, NotePage, Subject } from "@/types/platform";
 
 function confirmDelete(name: string, email: string) {
   return window.confirm(`Permanently delete ${name} (${email})?\n\nThis removes their account, attempts and unlocks for good. This cannot be undone. Type OK to confirm.`);
@@ -97,28 +99,144 @@ export function AdminStudentsWorkspace({ compact = false }: { compact?: boolean 
                     </div>
                   </div>
                 </div>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {publishedMocks.map((mock) => (
-                    <label key={mock.id} className="inline-flex items-center gap-2 rounded-full bg-cream px-3 py-1 text-sm font-semibold text-navy">
-                      <input type="checkbox" checked={student.unlockedMockIds.includes(mock.id)} onChange={(event) => unlockMock(student.id, mock.id, event.target.checked)} />
-                      {mock.title}{mock.isFree && <span className="text-xs font-black text-gold-dark">FREE</span>}
-                    </label>
-                  ))}
-                </div>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {notes.map((note) => (
-                    <label key={note.id} className="inline-flex items-center gap-2 rounded-full bg-navy/5 px-3 py-1 text-sm font-semibold text-navy">
-                      <input type="checkbox" checked={student.unlockedNoteIds.includes(note.id)} onChange={(event) => unlockNote(student.id, note.id, event.target.checked)} />
-                      {note.title}{note.isFree && <span className="text-xs font-black text-gold-dark">FREE</span>}
-                    </label>
-                  ))}
-                </div>
+                <UnlockPanel
+                  studentId={student.id}
+                  studentName={student.name}
+                  mocks={publishedMocks}
+                  notes={notes}
+                  unlockedMockIds={student.unlockedMockIds}
+                  unlockedNoteIds={student.unlockedNoteIds}
+                  onToggleMock={unlockMock}
+                  onToggleNote={unlockNote}
+                />
               </div>
             ))}
             {students.length === 0 && <div className="rounded-2xl border border-line bg-cream p-6"><h3 className="font-black text-navy">No students yet</h3><p className="mt-2 text-sm text-muted">New registered students will appear here.</p></div>}
           </StaggerReveal>
         </GlowCard>
       )}
+    </div>
+  );
+}
+
+function groupBySubject<T extends { subject: Subject; title: string }>(items: T[], query: string) {
+  const q = query.trim().toLowerCase();
+  const filtered = q ? items.filter((item) => item.title.toLowerCase().includes(q)) : items;
+  const groups = new Map<Subject, T[]>();
+  for (const item of filtered) {
+    const list = groups.get(item.subject) ?? [];
+    list.push(item);
+    groups.set(item.subject, list);
+  }
+  return groups;
+}
+
+function UnlockPanel({
+  studentId,
+  studentName,
+  mocks,
+  notes,
+  unlockedMockIds,
+  unlockedNoteIds,
+  onToggleMock,
+  onToggleNote,
+}: {
+  studentId: string;
+  studentName: string;
+  mocks: MockExam[];
+  notes: NotePage[];
+  unlockedMockIds: string[];
+  unlockedNoteIds: string[];
+  onToggleMock: (studentId: string, mockId: string, unlocked: boolean) => void;
+  onToggleNote: (studentId: string, noteId: string, unlocked: boolean) => void;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const [query, setQuery] = useState("");
+  const mockGroups = useMemo(() => groupBySubject(mocks, query), [mocks, query]);
+  const noteGroups = useMemo(() => groupBySubject(notes, query), [notes, query]);
+  const mockCount = unlockedMockIds.length;
+  const noteCount = unlockedNoteIds.length;
+
+  return (
+    <div className="mt-4 rounded-2xl border border-line bg-cream/40">
+      <button type="button" onClick={() => setExpanded((prev) => !prev)} className="flex w-full items-center justify-between gap-3 px-4 py-3 text-sm font-bold text-navy">
+        <span>Unlocks for {studentName} — {mockCount}/{mocks.length} mocks, {noteCount}/{notes.length} notes</span>
+        <ChevronDown className={`h-4 w-4 shrink-0 transition-transform ${expanded ? "rotate-180" : ""}`} />
+      </button>
+      {expanded && (
+        <div className="space-y-4 border-t border-line px-4 py-4">
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search mocks or notes by title..."
+              className="h-9 w-full rounded-xl border border-line bg-white pl-9 pr-3 text-sm outline-none focus:border-gold"
+            />
+          </div>
+
+          <UnlockGroup
+            label="Mocks"
+            groups={mockGroups}
+            checkedIds={unlockedMockIds}
+            onToggleAll={(ids, checked) => ids.forEach((id) => onToggleMock(studentId, id, checked))}
+            onToggleOne={(id, checked) => onToggleMock(studentId, id, checked)}
+          />
+          <UnlockGroup
+            label="Notes"
+            groups={noteGroups}
+            checkedIds={unlockedNoteIds}
+            onToggleAll={(ids, checked) => ids.forEach((id) => onToggleNote(studentId, id, checked))}
+            onToggleOne={(id, checked) => onToggleNote(studentId, id, checked)}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function UnlockGroup<T extends { id: string; subject: Subject; title: string; isFree?: boolean }>({
+  label,
+  groups,
+  checkedIds,
+  onToggleAll,
+  onToggleOne,
+}: {
+  label: string;
+  groups: Map<Subject, T[]>;
+  checkedIds: string[];
+  onToggleAll: (ids: string[], checked: boolean) => void;
+  onToggleOne: (id: string, checked: boolean) => void;
+}) {
+  if (groups.size === 0) return null;
+  return (
+    <div>
+      <p className="text-xs font-black uppercase tracking-wide text-muted">{label}</p>
+      <div className="mt-2 space-y-3">
+        {Array.from(groups.entries()).map(([subject, items]) => {
+          const ids = items.map((item) => item.id);
+          const allChecked = ids.every((id) => checkedIds.includes(id));
+          return (
+            <div key={subject} className="rounded-xl border border-line bg-white p-3">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-sm font-bold text-navy">{subject} <span className="font-semibold text-muted">({ids.filter((id) => checkedIds.includes(id)).length}/{ids.length})</span></span>
+                <div className="flex gap-2">
+                  <button type="button" onClick={() => onToggleAll(ids, true)} className="rounded-full border border-line px-2 py-0.5 text-xs font-bold text-navy hover:border-gold">Unlock all</button>
+                  <button type="button" onClick={() => onToggleAll(ids, false)} className="rounded-full border border-line px-2 py-0.5 text-xs font-bold text-navy hover:border-gold">Lock all</button>
+                </div>
+              </div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {items.map((item) => (
+                  <label key={item.id} className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold text-navy ${allChecked || checkedIds.includes(item.id) ? "bg-gold/15" : "bg-navy/5"}`}>
+                    <input type="checkbox" checked={checkedIds.includes(item.id)} onChange={(event) => onToggleOne(item.id, event.target.checked)} />
+                    {item.title}{item.isFree && <span className="text-xs font-black text-gold-dark">FREE</span>}
+                  </label>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

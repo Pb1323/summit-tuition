@@ -39,6 +39,8 @@ export interface StudentAccount {
   unlockedMockIds: string[];
   unlockedNoteIds: string[];
   createdAt: string;
+  lessonsRemaining?: number;
+  upcomingLessons?: { date: string; time: string; note?: string }[];
 }
 
 export interface QuestionVisual {
@@ -133,6 +135,7 @@ export interface MockExam {
   tier: string;
   description: string;
   isFree?: boolean;
+  printOnly?: boolean;
 }
 
 export interface NotePage {

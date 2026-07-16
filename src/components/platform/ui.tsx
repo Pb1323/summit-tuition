@@ -518,6 +518,13 @@ export function MockCard({ mock, attempt, locked }: { mock: MockExam; attempt?: 
           <div className="rounded-2xl border border-line bg-cream p-3 text-sm text-muted">
             <strong className="text-navy">Locked.</strong> Admin approval and a manual mock unlock are required before this online paper opens.
           </div>
+        ) : mock.printOnly ? (
+          <div className="space-y-3">
+            <div className="rounded-2xl border border-gold/30 bg-gold/10 p-3 text-sm text-navy">
+              <strong>Printable practice.</strong> No online marking or report for this paper — print it and complete it on paper.
+            </div>
+            <AnimatedButton href={`/mocks/${mock.id}/print`}>Open printable paper</AnimatedButton>
+          </div>
         ) : attempt?.status === "in_progress" ? (
           <div className="flex flex-wrap items-center gap-3">
             <AnimatedButton href={`/mocks/${mock.id}`}>Resume mock</AnimatedButton>

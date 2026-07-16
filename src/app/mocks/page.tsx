@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 const FEATURES = [
-  { icon: <FileLock2 className="h-5 w-5" />, title: "Online-only papers", description: "Mocks are completed inside the platform with no PDF downloads or printable papers." },
+  { icon: <FileLock2 className="h-5 w-5" />, title: "Online-only scored mocks", description: "Marked mocks are completed inside the platform — no PDFs. A separate printable practice section is available for offline paper practice, with no score or report." },
   { icon: <BookOpenCheck className="h-5 w-5" />, title: "GL-style structure", description: "Maths and English mocks follow GL-style topic coverage and question rhythm, with original Summit content." },
   { icon: <Sparkles className="h-5 w-5" />, title: "Summit Stretch", description: "Slightly harder wording, richer inference and more multi-step reasoning without becoming unfair." },
   { icon: <LineChart className="h-5 w-5" />, title: "Released reports", description: "Students submit, wait for marking, then unlock the full review when the report is released." },
