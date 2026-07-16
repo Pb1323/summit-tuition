@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { Archive, BookOpenCheck, CheckCircle2, ChevronDown, ClipboardList, Copy, Eye, FileSearch, FlaskConical, ListChecks, PencilLine, Search, XCircle } from "lucide-react";
 import { usePlatform } from "@/context/platform-context";
 import { evaluateMockQuality, qualityTone, type MockQualityResult } from "@/lib/mock-quality";
@@ -166,6 +167,7 @@ export function AdminMocksCommandCentre() {
                   <div className="mt-4 space-y-3">
                     <textarea value={feedback[attempt.id] ?? attempt.adminFeedback} onChange={(event) => setFeedback((prev) => ({ ...prev, [attempt.id]: event.target.value }))} placeholder="Manual feedback notes" className="min-h-20 w-full rounded-xl border border-line p-3 text-sm outline-none focus:border-gold" />
                     <div className="flex flex-wrap gap-3">
+                      <Link href={`/admin/reports/${attempt.id}`} className="rounded-full border border-navy/40 bg-navy/5 px-3 py-1 text-sm font-bold text-navy">View auto report</Link>
                       {mock && (
                         <button
                           onClick={() => setFeedback((prev) => ({ ...prev, [attempt.id]: autoGenerateReport(mock, attempt, questions) }))}
