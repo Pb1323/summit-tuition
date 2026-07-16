@@ -178,10 +178,6 @@ export function AdminDashboard() {
     references,
     products,
     emailTemplates,
-    approveUser,
-    rejectUser,
-    assignPlan,
-    unlockMock,
     setMockFree,
     setNoteFree,
     releaseReport,
@@ -218,7 +214,7 @@ export function AdminDashboard() {
         </div>
       </GlowCard>
 
-      <AdminStudentsWorkspace compact />
+      <AdminStudentsWorkspace />
 
       <section className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => <GlowCard key={stat.label} className="p-5"><div className="flex items-center gap-3 text-gold-dark">{stat.icon}</div><p className="mt-4 text-3xl font-black text-navy">{stat.value}</p><p className="text-sm text-muted">{stat.label}</p></GlowCard>)}
@@ -238,49 +234,6 @@ export function AdminDashboard() {
           </div>
         ))}
       </section>
-
-      <AdminPanel title="Students and manual access" icon={<Users />}>
-        {students.length === 0 ? (
-          <AdminEmpty title="No students yet" text="New registered students will appear here." />
-        ) : <div className="overflow-x-auto">
-          <table className="w-full min-w-[760px] text-left text-sm">
-            <caption className="sr-only">Student accounts, plans, payment status, approval status and mock unlock controls</caption>
-            <thead className="text-xs uppercase text-muted"><tr><th scope="col" className="p-3">Student</th><th scope="col">Plan</th><th scope="col">Payment</th><th scope="col">Approved</th><th scope="col">Mock unlocks</th><th scope="col">Delete</th></tr></thead>
-            <tbody>
-              {students.map((student) => (
-                <tr key={student.id} className="border-t border-line">
-                  <th scope="row" className="p-3 text-left font-bold text-navy">{student.name}<br /><span className="font-normal text-muted">{student.email}</span></th>
-                  <td>
-                    <select aria-label={`Assign plan for ${student.name}`} value={student.plan} onChange={(event) => assignPlan(student.id, event.target.value)} className="rounded-lg border border-line bg-white px-2 py-2">
-                      {products.map((product) => <option key={product.id}>{product.name}</option>)}
-                    </select>
-                  </td>
-                  <td><PremiumBadge tone={student.paymentStatus === "paid" ? "green" : "navy"}>{student.paymentStatus}</PremiumBadge></td>
-                  <td><button onClick={() => approveUser(student.id, !student.approved)} className="rounded-full border border-line px-3 py-1 font-bold text-navy">{student.approved ? "Unapprove" : "Approve"}</button></td>
-                  <td className="space-y-2 py-3">
-                    {mocks.filter((mock) => mock.published).map((mock) => (
-                      <label key={mock.id} className="mr-2 inline-flex items-center gap-2 rounded-full bg-cream px-3 py-1">
-                        <input type="checkbox" checked={student.unlockedMockIds.includes(mock.id)} onChange={(event) => unlockMock(student.id, mock.id, event.target.checked)} />
-                        {mock.title}
-                      </label>
-                    ))}
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => {
-                        if (window.confirm(`Permanently delete ${student.name} (${student.email})?\n\nThis removes their account, attempts and unlocks for good. This cannot be undone.`)) rejectUser(student.id);
-                      }}
-                      className="rounded-full border border-red-200 bg-red-50 px-3 py-1 font-bold text-red-700"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>}
-      </AdminPanel>
 
       <AdminPanel title="Free / demo access" icon={<ShieldCheck />}>
         <p className="mb-4 text-sm text-muted">Every new student automatically gets whatever is marked &ldquo;Free&rdquo; below the moment they register — no admin action needed. Tick more mocks or notes pages here only if you want them free for everyone by default; grant access to one specific student instead from the table above.</p>

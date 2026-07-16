@@ -58,6 +58,8 @@ model User {
   plan          String
   paymentStatus PaymentStatus @default(pending)
   createdAt     DateTime      @default(now())
+  lessonsRemaining Int?
+  upcomingLessons  Json?
   sessions      Session[]
   attempts      Attempt[]
   unlocks       MockUnlock[]
