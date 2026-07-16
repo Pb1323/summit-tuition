@@ -1,8 +1,23 @@
 import { QUESTIONS } from "@/data/platform";
 import type { Attempt, MockExam, Question } from "@/types/platform";
 
+// Unit/currency wording and coordinate-pair spacing are not part of correctness for
+// typed numeric answers (e.g. "38m" / "38 m" / "38" should all mark as correct against
+// a stored answer of "38", and "(1,5)" should match "(1, 5)") — strip them symmetrically
+// from both sides before comparing, rather than requiring an exact string match.
+const UNIT_WORDS = /\b(centimetres squared|centimetre squared|metres squared|metre squared|square centimetres|square metres|cm squared|m squared|sq cm|sq m|centimetres|centimetre|millimetres|millimetre|kilometres|kilometre|minutes|minute|mins|min|hours|hour|hrs|hr|marks|mark|metres|metre|grams|gram|kg|km|mm|cm|m|g)\b/g;
+
 export function normaliseAnswer(value: string) {
-  return value.trim().toLowerCase().replace(/\s+/g, " ");
+  let v = value.trim().toLowerCase();
+  v = v.replace(/[£$]/g, "");
+  v = v.replace(/(cm²|m²|cm2|m2|°)/g, "");
+  // split a unit glued directly onto a number ("38m" -> "38 m") so the word-boundary
+  // strip below can remove it the same way it removes a space-separated unit.
+  v = v.replace(/(\d)(km|mm|cm|kg|m|g)\b/g, "$1 $2");
+  v = v.replace(UNIT_WORDS, "");
+  v = v.replace(/\s*([(),])\s*/g, "$1");
+  v = v.replace(/\s+/g, " ").trim();
+  return v;
 }
 
 export function isCorrect(question: Question, answer?: string) {
