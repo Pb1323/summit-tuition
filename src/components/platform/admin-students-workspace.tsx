@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { CheckCircle2, ClipboardCheck, ChevronDown, Search, Trash2, UserPlus, Users, XCircle } from "lucide-react";
+import { CheckCircle2, ClipboardCheck, ChevronDown, Plus, Search, Trash2, UserPlus, Users, X, XCircle } from "lucide-react";
 import { usePlatform } from "@/context/platform-context";
 import { GlowCard, PremiumBadge, StaggerReveal } from "@/components/platform/ui";
 import type { MockExam, NotePage, Subject } from "@/types/platform";
@@ -12,7 +12,7 @@ function confirmDelete(name: string, email: string) {
 }
 
 export function AdminStudentsWorkspace({ compact = false }: { compact?: boolean }) {
-  const { users, mocks, notes, products, approveUser, rejectUser, approveAndUnlockFirstMock, assignPlan, unlockMock, unlockNote, createTestStudent } = usePlatform();
+  const { users, mocks, notes, products, approveUser, rejectUser, approveAndUnlockFirstMock, assignPlan, unlockMock, unlockNote, createTestStudent, setStudentLessons } = usePlatform();
   const students = users.filter((user) => user.role === "student");
   const pending = students.filter((student) => !student.approved);
   const publishedMocks = mocks.filter((mock) => mock.published);
@@ -108,6 +108,12 @@ export function AdminStudentsWorkspace({ compact = false }: { compact?: boolean 
                   unlockedNoteIds={student.unlockedNoteIds}
                   onToggleMock={unlockMock}
                   onToggleNote={unlockNote}
+                />
+                <LessonsEditor
+                  studentId={student.id}
+                  lessonsRemaining={student.lessonsRemaining ?? 0}
+                  upcomingLessons={student.upcomingLessons ?? []}
+                  onSave={setStudentLessons}
                 />
               </div>
             ))}
@@ -237,6 +243,66 @@ function UnlockGroup<T extends { id: string; subject: Subject; title: string; is
           );
         })}
       </div>
+    </div>
+  );
+}
+
+function LessonsEditor({
+  studentId,
+  lessonsRemaining,
+  upcomingLessons,
+  onSave,
+}: {
+  studentId: string;
+  lessonsRemaining: number;
+  upcomingLessons: { date: string; time: string; note?: string }[];
+  onSave: (studentId: string, lessonsRemaining: number, upcomingLessons: { date: string; time: string; note?: string }[]) => void;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const [remaining, setRemaining] = useState(lessonsRemaining);
+  const [lessons, setLessons] = useState(upcomingLessons);
+
+  function save(nextRemaining: number, nextLessons: typeof lessons) {
+    setRemaining(nextRemaining);
+    setLessons(nextLessons);
+    onSave(studentId, nextRemaining, nextLessons);
+  }
+
+  return (
+    <div className="mt-3 rounded-2xl border border-line bg-cream/40">
+      <button type="button" onClick={() => setExpanded((prev) => !prev)} className="flex w-full items-center justify-between gap-3 px-4 py-3 text-sm font-bold text-navy">
+        <span>Lessons — {remaining} remaining, {lessons.length} upcoming</span>
+        <ChevronDown className={`h-4 w-4 shrink-0 transition-transform ${expanded ? "rotate-180" : ""}`} />
+      </button>
+      {expanded && (
+        <div className="space-y-3 border-t border-line px-4 py-4">
+          <label className="flex items-center gap-2 text-sm font-semibold text-navy">
+            Lessons remaining
+            <input
+              type="number"
+              min={0}
+              value={remaining}
+              onChange={(event) => save(Number(event.target.value) || 0, lessons)}
+              className="h-9 w-20 rounded-lg border border-line bg-white px-2 text-sm outline-none focus:border-gold"
+            />
+          </label>
+          <div className="space-y-2">
+            {lessons.map((lesson, index) => (
+              <div key={index} className="flex flex-wrap items-center gap-2">
+                <input type="date" value={lesson.date} onChange={(event) => save(remaining, lessons.map((item, i) => (i === index ? { ...item, date: event.target.value } : item)))} className="h-9 rounded-lg border border-line bg-white px-2 text-sm outline-none focus:border-gold" />
+                <input type="time" value={lesson.time} onChange={(event) => save(remaining, lessons.map((item, i) => (i === index ? { ...item, time: event.target.value } : item)))} className="h-9 rounded-lg border border-line bg-white px-2 text-sm outline-none focus:border-gold" />
+                <input type="text" placeholder="Subject / note" value={lesson.note ?? ""} onChange={(event) => save(remaining, lessons.map((item, i) => (i === index ? { ...item, note: event.target.value } : item)))} className="h-9 flex-1 min-w-32 rounded-lg border border-line bg-white px-2 text-sm outline-none focus:border-gold" />
+                <button type="button" onClick={() => save(remaining, lessons.filter((_, i) => i !== index))} className="rounded-full border border-red-200 bg-red-50 p-1.5 text-red-700" aria-label="Remove lesson">
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            ))}
+          </div>
+          <button type="button" onClick={() => save(remaining, [...lessons, { date: "", time: "", note: "" }])} className="inline-flex items-center gap-1 rounded-full border border-line px-3 py-1.5 text-sm font-bold text-navy hover:border-gold">
+            <Plus className="h-3.5 w-3.5" /> Add upcoming lesson
+          </button>
+        </div>
+      )}
     </div>
   );
 }

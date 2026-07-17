@@ -37,6 +37,7 @@ type PlatformContextValue = PlatformState & {
   createTestStudent: () => Promise<void>;
   assignPlan: (studentId: string, plan: string) => Promise<void>;
   unlockMock: (studentId: string, mockId: string, unlocked: boolean) => Promise<void>;
+  setStudentLessons: (studentId: string, lessonsRemaining: number, upcomingLessons: { date: string; time: string; note?: string }[]) => Promise<void>;
   unlockNote: (studentId: string, noteId: string, unlocked: boolean) => Promise<void>;
   setMockPublished: (mockId: string, published: boolean) => Promise<void>;
   setMockFree: (mockId: string, isFree: boolean) => Promise<void>;
@@ -399,6 +400,11 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
           return { ...user, unlockedMockIds: Array.from(ids) };
         })
       );
+    },
+    async setStudentLessons(studentId, lessonsRemaining, upcomingLessons) {
+      if (currentUser?.role !== "admin") return;
+      if (await postAndRefresh(`/api/admin/students/${studentId}/set-lessons`, { lessonsRemaining, upcomingLessons })) return;
+      updateUsers((users) => users.map((user) => (user.id === studentId ? { ...user, lessonsRemaining, upcomingLessons } : user)));
     },
     async unlockNote(studentId, noteId, unlocked) {
       if (currentUser?.role !== "admin") return;
