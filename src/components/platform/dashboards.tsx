@@ -96,19 +96,35 @@ export function StudentDashboard() {
         </GlowCard>
       </section>
 
-      <section className="grid gap-3 md:grid-cols-4">
-        {[
-          ["Register", "Complete"],
-          ["Free mocks unlocked", "Complete"],
-          ["Pay for more", currentUser?.paymentStatus === "paid" ? "Complete" : "Optional"],
-          ["Report released", released.length ? "Ready" : pending.length ? "In marking" : "After mock"],
-        ].map(([label, state], idx) => (
-          <div key={label} className="premium-card-hover rounded-2xl border border-line bg-white/85 p-4 shadow-[0_18px_44px_-36px_rgba(17,24,39,0.42)]">
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-gold-dark">Step {idx + 1}</p>
-            <p className="mt-2 font-bold text-navy">{label}</p>
-            <p className="text-sm text-muted">{state}</p>
-          </div>
-        ))}
+      <section>
+        {(() => {
+          const paid = currentUser?.paymentStatus === "paid";
+          const steps: [string, boolean, string][] = [
+            ["Register", true, "Complete"],
+            ["Free mocks unlocked", true, "Complete"],
+            ["Report released", released.length > 0, released.length ? "Ready" : pending.length ? "In marking" : "After mock"],
+            ["Pay for more", paid, paid ? "Complete" : "Optional"],
+          ];
+          const percent = Math.round((steps.filter(([, done]) => done).length / steps.length) * 100);
+          return (
+            <GlowCard className="p-6">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h2 className="text-xl font-bold text-navy">Getting started</h2>
+                <span className="text-sm font-black text-gold-dark">{percent}% complete</span>
+              </div>
+              <div className="mt-4"><ProgressBar value={percent} /></div>
+              <div className="mt-5 grid gap-3 md:grid-cols-4">
+                {steps.map(([label, done, state], idx) => (
+                  <div key={label} className="premium-card-hover rounded-2xl border border-line bg-white/85 p-4 shadow-[0_18px_44px_-36px_rgba(17,24,39,0.42)]">
+                    <p className="text-xs font-black uppercase tracking-[0.18em] text-gold-dark">Step {idx + 1}{done ? " ✓" : ""}</p>
+                    <p className="mt-2 font-bold text-navy">{label}</p>
+                    <p className="text-sm text-muted">{state}</p>
+                  </div>
+                ))}
+              </div>
+            </GlowCard>
+          );
+        })()}
       </section>
 
       <section className="grid gap-6 lg:grid-cols-3">
@@ -149,7 +165,19 @@ export function StudentDashboard() {
           })}
           {pending.map((attempt) => {
             const mock = mocks.find((item) => item.id === attempt.mockId);
-            return mock ? <GlowCard key={attempt.id} className="p-6"><PremiumBadge tone="navy">Report pending</PremiumBadge><h3 className="mt-3 text-xl font-bold text-navy">{mock.title}</h3><p className="mt-2 text-muted">Submitted {attempt.submittedAt?.slice(0, 10) ?? "recently"}. Your result and review will be released after marking.</p></GlowCard> : null;
+            if (!mock) return null;
+            const percentage = attempt.maxScore ? Math.round((attempt.score / attempt.maxScore) * 100) : 0;
+            return (
+              <GlowCard key={attempt.id} className="p-6">
+                <PremiumBadge tone="navy">Report pending</PremiumBadge>
+                <h3 className="mt-3 text-xl font-bold text-navy">{mock.title}</h3>
+                <div className="mt-4 rounded-xl bg-cream p-4">
+                  <p className="text-xs font-black uppercase tracking-[0.14em] text-muted">Raw score</p>
+                  <p className="mt-1 text-2xl font-black text-navy">{attempt.score}/{attempt.maxScore} <span className="text-base font-bold text-muted">({percentage}%)</span></p>
+                </div>
+                <p className="mt-3 text-sm text-muted">Submitted {attempt.submittedAt?.slice(0, 10) ?? "recently"}. This is your raw mark — the full topic breakdown, tutor feedback and review will be released once marking is complete.</p>
+              </GlowCard>
+            );
           })}
           {released.length === 0 && pending.length === 0 && <EmptyState icon={<ClipboardList />} title="No reports yet" text="Completed mocks and pending marking updates will appear here." />}
         </div>
