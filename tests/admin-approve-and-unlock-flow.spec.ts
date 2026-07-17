@@ -23,10 +23,14 @@ test("admin assigns a plan and unlocks a mock/note for a pending student", async
   await expect(planSelect).toHaveValue("Weekly Mock Club Plus");
 
   // Unlock a published mock (student-2 starts with zero unlocked mocks).
+  // The unlock panel is now a collapsed "Unlocks for {name}" disclosure (part of the
+  // "Fix duplicate/clunky student unlock table" rework) — expand it before locating
+  // the per-mock checkbox.
   // Use a plain click + a polling expect (rather than `.check()`, whose own built-in
   // re-verification window is shorter than the round-trip these demo-mode admin actions
   // take: they always attempt a real POST first, get a 503 since no DATABASE_URL is set,
   // and only then fall back to a local state update).
+  await studentRow.getByRole("button", { name: /Unlocks for Test Student/ }).click();
   const mockCheckbox = studentRow.locator("label", { hasText: "Maths Diagnostic Sample" }).locator('input[type="checkbox"]');
   await expect(mockCheckbox).not.toBeChecked();
   await mockCheckbox.click();
@@ -43,6 +47,7 @@ test("admin assigns a plan and unlocks a mock/note for a pending student", async
   await page.reload();
   const reloadedRow = studentRowLocator(page, SEEDED.student2.email);
   await expect(reloadedRow.getByLabel("Assign plan for Test Student")).toHaveValue("Weekly Mock Club Plus");
+  await reloadedRow.getByRole("button", { name: /Unlocks for Test Student/ }).click();
   await expect(reloadedRow.locator("label", { hasText: "Maths Diagnostic Sample" }).locator('input[type="checkbox"]')).toBeChecked();
   await expect(reloadedRow.locator("label", { hasText: "English: Grammar" }).locator('input[type="checkbox"]')).toBeChecked();
 });
