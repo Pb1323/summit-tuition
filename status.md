@@ -87,8 +87,8 @@ There are two other, unrelated projects sitting in the same repo folder that you
 ## 3. What's actually working right now (the core platform)
 
 - **Marketing site** — homepage, pricing, FAQs, about, tuition options, diagnostic assessment page, booking, policies. This is the public-facing side people land on before signing up.
-- **Student sign-up** — a student registers, picks a plan, and sits in "pending" until you (the admin) manually approve them. This is deliberate — no student gets access without you personally saying yes.
-- **Admin panel** (`/admin`) — you sign in, approve/reject students, assign plans, and manually unlock specific mocks for specific students.
+- **Student sign-up** — a student registers, picks a plan, and gets instant account access. There is no manual review gate on signup — the real manual step is you unlocking specific mocks for them, not approving the account itself. (The admin panel still has a pause/re-approve toggle for suspending an existing account after the fact.)
+- **Admin panel** (`/admin`) — you sign in, assign plans, and manually unlock specific mocks for specific students. You can also pause or reject an account if needed.
 - **Mock exams** — students sit English and Maths mocks online (GL 11+ style — arithmetic, fractions, ratio, algebra, geometry, comprehension, grammar, spelling, cloze, etc.), the system autosaves their answers as they go, and they submit at the end.
 - **Marking & reports** — after a student submits, you (admin) review it, add feedback, and release the report. Only then does the student see their score, a breakdown by topic, their weak spots, and full answer explanations.
 - **No PDFs, no printing** — deliberately kept online-only; this was a specific decision to protect the content and keep everything inside the platform.

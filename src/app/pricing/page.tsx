@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Gauge, Repeat, Users } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { PricingCard } from "@/components/ui/pricing-card";
 import { HeroSection } from "@/components/sections/hero-section";
@@ -16,23 +18,71 @@ export const metadata: Metadata = {
     `Transparent pricing for every ${SITE.name} product: diagnostic assessment, practice paper simulator, weekly mock club, tuition and the Complete 11+ Programme.`,
 };
 
+const NOT_SURE_CARDS = [
+  {
+    icon: <Gauge className="h-6 w-6" />,
+    title: "I want to know my child's level",
+    description: "Start with a Diagnostic Assessment for a complete baseline.",
+    cta: "See Diagnostic Assessment",
+    href: "/diagnostic-assessment",
+  },
+  {
+    icon: <Repeat className="h-6 w-6" />,
+    title: "I want weekly exam practice",
+    description: "Most families start with Weekly Mock Club — £29/month.",
+    cta: "See Weekly Mock Club",
+    href: "/weekly-mock-club",
+    highlight: true,
+  },
+  {
+    icon: <Users className="h-6 w-6" />,
+    title: "I want teaching and support",
+    description: "Group or private tuition, from £15/session.",
+    cta: "See Tuition Options",
+    href: "/tuition",
+  },
+];
+
 export default function PricingPage() {
   return (
     <>
       <HeroSection
         eyebrow="Pricing"
         title="Clear pricing, no surprises"
-        description="Every product below comes with transparent, parent-facing reporting. Cancel subscriptions any time — no long-term tie-in."
+        description="Every product below comes with transparent, parent-facing reporting. Accounts get instant access — no waiting on approval. Cancel subscriptions any time, no long-term tie-in."
         align="center"
         actions={
           <Button href="/book-a-call" size="lg">
-            Not sure where to start? Book a call <ArrowRight className="h-4 w-4" />
+            Still not sure? Book a free call <ArrowRight className="h-4 w-4" />
           </Button>
         }
       />
 
+      <section className="py-16">
+        <Container>
+          <RevealOnScroll>
+            <SectionHeading align="center" eyebrow="Not Sure Where To Start?" title="Tell us what you need — we'll point you to the right price" />
+            <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
+              {NOT_SURE_CARDS.map((item) => (
+                <Card key={item.title} className={`flex flex-col p-7 ${item.highlight ? "border-gold/50 ring-1 ring-gold/30" : ""}`}>
+                  {item.highlight && <Badge variant="gold" className="mb-3 w-fit">Most families start here</Badge>}
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-navy text-gold-light">
+                    {item.icon}
+                  </div>
+                  <h3 className="mt-5 text-xl font-semibold text-navy">{item.title}</h3>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{item.description}</p>
+                  <Button href={item.href} variant="outline" className="mt-6 w-fit">
+                    {item.cta} <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </Card>
+              ))}
+            </div>
+          </RevealOnScroll>
+        </Container>
+      </section>
+
       {ALL_PRICING_GROUPS.map((group, i) => (
-        <section key={group.id} className={i % 2 === 0 ? "py-16" : "bg-cream-dark/50 py-16"}>
+        <section key={group.id} className={i % 2 === 0 ? "bg-cream-dark/50 py-16" : "py-16"}>
           <Container>
             <RevealOnScroll>
             <SectionHeading title={group.title} />

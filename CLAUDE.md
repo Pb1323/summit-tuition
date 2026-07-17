@@ -46,8 +46,8 @@ Important: this repo has `AGENTS.md` warning that this is a newer Next.js with b
 
 - Public marketing routes explain diagnostic assessments, tuition, mocks, practice packs, pricing, FAQs, policies, and booking/contact.
 - Students open interactive Study Notes at `/notes` (subject index) and `/notes/maths/[topic]` (Numbers, Fractions/Decimals/Percentages, Ratio & Proportion, Algebra, Geometry, Averages & Statistics), wired in from the student dashboard.
-- Students register at `/register`, choose a plan, and remain pending until admin approval.
-- Admin signs in at `/login`, opens `/admin`, approves students, assigns plans, and unlocks mocks.
+- Students register at `/register`, choose a plan, and get instant account access — there is no manual approval gate on signup (`approved: true` is set at registration in both the demo and DB-backed paths). The real manual step is per-mock unlocking, not account approval.
+- Admin signs in at `/login`, opens `/admin`, assigns plans, and unlocks mocks. Admin can still pause/re-approve or reject an existing account (`/api/admin/students/[id]/approve`, `reject`) — this is for suspending accounts after the fact, not gating new signups. The "Paused Student Accounts" panel on `/admin` only ever lists accounts an admin has manually paused.
 - Students open `/dashboard`, start unlocked online mocks, autosave drafts, submit attempts, then wait for admin release.
 - Admin opens `/admin/mocks` to inspect mocks, generate draft mocks, publish/unpublish, preview as student, review attempts, add feedback, and release reports.
 - Released attempts can be reviewed by students at `/mocks/[id]/review`.
@@ -55,9 +55,10 @@ Important: this repo has `AGENTS.md` warning that this is a newer Next.js with b
 ## Important Routes
 
 - `/` landing page.
-- `/login`, `/register`, `/dashboard`.
+- `/login`, `/register`, `/dashboard`, `/dashboard/settings` (name/password/dark-mode toggle), `/dashboard/family` (parent view: lessons remaining, upcoming lessons, payment-status placeholder).
+- `/welcome` — lightweight mobile-first landing page (no heavy motion) for sharing outside the main desktop-oriented site, e.g. via WhatsApp.
 - `/admin`, `/admin/students`, `/admin/mocks`, `/admin/mocks/[id]/preview`.
-- `/mocks`, `/mocks/[id]`, `/mocks/[id]/review`.
+- `/mocks`, `/mocks/[id]`, `/mocks/[id]/review`, `/mocks/[id]/print` (printable practice mocks — `printOnly: true`, no score/report, see Design Notes).
 - `/notes`, `/notes/maths`, `/notes/maths/numbers`, `/notes/maths/fractions-decimals-percentages`, `/notes/maths/ratio-proportion`, `/notes/maths/algebra`, `/notes/maths/geometry`, `/notes/maths/averages-statistics`.
 - `/notes/english`, `/notes/english/grammar` (+ 5 topic pages), `/notes/english/comprehension`, `/notes/english/spelling`, `/notes/english/cloze` (each strand's first topic live; see Recent Feature State below).
 - Marketing pages: `/pricing`, `/contact`, `/book-a-call`, `/about`, `/faq`, `/tuition`, `/tuition/group`, `/tuition/private`, `/diagnostic-assessment`, `/weekly-mock-club`, `/practice-paper-simulator`, `/practice-packs`, `/complete-programme`, `/holiday-booster`, `/privacy-policy`, `/terms`, `/safeguarding`.
@@ -115,6 +116,12 @@ Full narrative history of what was built/changed and when now lives in `status.m
 - Elite mock descriptions intentionally omit expected score bands (tutor-facing calibration info, not for students).
 - Student dashboard has no "locked mocks" section by design — students should only see mocks they can access.
 - `src/lib/assessment.ts` has `autoGenerateReport()`/`patternDescription()` (built on `analyseAttempt()`) powering the admin "Auto-fill statistics report" button and the student review page's missed-marks-per-topic + pattern label.
+- Student account settings live at `/dashboard/settings`: name/password change (`/api/account/update`, DB-backed when configured, no-op-but-ok in demo mode) and a dashboard-scoped dark mode toggle (`data-dashboard-theme` attribute + CSS variable overrides in `globals.css` — not a full site theme system).
+- Parent/family view at `/dashboard/family`: `lessonsRemaining`/`upcomingLessons` optional fields on `StudentAccount`/`User`, currently admin-editable via an inline collapsible editor on the admin students page — no real booking system yet, and the payment section explicitly states it populates once Stripe is connected.
+- A demo student test account exists for founder testing: `student-demo-testing` / Priya Chen (`priya.demo@summittuition.local`). No isolated staging environment — `npm run dev` on localhost is the recommended pre-push testing workflow.
+- Admin students UX: `AdminStudentsWorkspace`'s top panel only ever lists accounts an admin has manually paused (`approved: false`) — it is NOT a new-signup review queue (registration grants instant access, see Main Product Flows). The rest of the page uses a collapsed-by-default `UnlockPanel` per student (search, grouped-by-subject unlock/lock-all, running unlock count) rather than one flat block of checkboxes.
+- Admin Attempts tab (`admin-mocks-command-centre.tsx`) resolves the real student name from `usePlatform()`'s `users` list per `attempt.studentId` — don't reintroduce a hardcoded placeholder name.
+- Elite-difficulty mock roster includes `maths-elite-1` (80 questions, all 6 Maths topics) and `english-gl-10-elite` ("The Weaver's Last Thread" passage, 54 marks) alongside the earlier `english-gl-8-elite`/`-9-elite`. Deferred Elite mocks are tracked in `TODO.md`.
 
 ## Design Notes
 

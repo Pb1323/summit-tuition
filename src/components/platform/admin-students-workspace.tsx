@@ -22,9 +22,9 @@ export function AdminStudentsWorkspace({ compact = false }: { compact?: boolean 
       <GlowCard className="p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <PremiumBadge tone={pending.length ? "red" : "green"}>{pending.length ? `${pending.length} pending` : "No pending approvals"}</PremiumBadge>
-            <h2 className="mt-3 text-2xl font-black text-navy">Pending Student Approvals</h2>
-            <p className="mt-2 max-w-3xl text-sm text-muted">Newly registered students appear here for review. Approve, assign a plan, and unlock the first mock from one place.</p>
+            <PremiumBadge tone={pending.length ? "red" : "green"}>{pending.length ? `${pending.length} paused` : "No paused accounts"}</PremiumBadge>
+            <h2 className="mt-3 text-2xl font-black text-navy">Paused Student Accounts</h2>
+            <p className="mt-2 max-w-3xl text-sm text-muted">Students register with instant access — this list only shows accounts you&apos;ve manually paused. Re-approve, assign a plan, and unlock the first mock from one place.</p>
           </div>
           <button onClick={createTestStudent} className="inline-flex h-11 items-center gap-2 rounded-full border border-line bg-white px-4 text-sm font-bold text-navy hover:border-gold">
             <UserPlus className="h-4 w-4" /> Create Test Student
@@ -38,7 +38,7 @@ export function AdminStudentsWorkspace({ compact = false }: { compact?: boolean 
                   <h3 className="text-lg font-black text-navy">{student.name}</h3>
                   <p className="text-sm text-muted">{student.email}</p>
                   <div className="mt-3 flex flex-wrap gap-2">
-                    <PremiumBadge tone="navy">Pending approval</PremiumBadge>
+                    <PremiumBadge tone="navy">Access paused</PremiumBadge>
                     <PremiumBadge>{student.paymentStatus}</PremiumBadge>
                     <span className="rounded-full border border-line bg-white px-3 py-1 text-xs font-bold text-muted">Created {student.createdAt.slice(0, 10)}</span>
                   </div>
@@ -310,8 +310,8 @@ function LessonsEditor({
 function EmptyApproval() {
   return (
     <div className="rounded-2xl border border-line bg-white p-6">
-      <h3 className="text-lg font-black text-navy">No pending student approvals.</h3>
-      <p className="mt-2 text-sm text-muted">New registered students will appear here for review.</p>
+      <h3 className="text-lg font-black text-navy">No paused student accounts.</h3>
+      <p className="mt-2 text-sm text-muted">Students register with instant access — an account only shows up here if you&apos;ve manually paused it.</p>
     </div>
   );
 }

@@ -35,14 +35,17 @@ function makeJaggedPeak(radius: number, height: number, radialSegments: number, 
     const z = pos.getZ(i);
     const heightRatio = THREE.MathUtils.clamp((y + height / 2) / height, 0, 1);
     const angle = Math.atan2(z, x);
-    const n = hash(angle * 3.1 + seed, heightRatio * 5.4 + seed) * 2 - 1;
-    const displacement = n * radius * 0.17 * (1 - heightRatio * 0.55);
+    // Two noise octaves: broad ridges plus finer rock-face detail, for real contour instead of a smooth silhouette.
+    const broad = hash(angle * 3.1 + seed, heightRatio * 5.4 + seed) * 2 - 1;
+    const fine = hash(angle * 9.7 + seed * 1.7, heightRatio * 13.2 + seed * 1.3) * 2 - 1;
+    const n = broad * 0.72 + fine * 0.28;
+    const displacement = n * radius * 0.2 * (1 - heightRatio * 0.5);
     const len = Math.sqrt(x * x + z * z) || 1;
     const nx = x / len;
     const nz = z / len;
     pos.setX(i, x + nx * displacement);
     pos.setZ(i, z + nz * displacement);
-    pos.setY(i, y + n * 0.06 * (1 - heightRatio));
+    pos.setY(i, y + n * 0.08 * (1 - heightRatio));
 
     heightColor(heightRatio, tmpColor);
     colorArray[i * 3] = tmpColor.r;
@@ -94,9 +97,9 @@ function Peaks() {
   const scrollRef = useRef(0);
   const pointerRef = useRef({ x: 0, y: 0 });
 
-  const mainGeo = useMemo(() => makeJaggedPeak(1.35, 2.4, 9, 6, 3.1), []);
-  const leftGeo = useMemo(() => makeJaggedPeak(0.95, 1.6, 8, 5, 7.4), []);
-  const rightGeo = useMemo(() => makeJaggedPeak(0.7, 1.15, 8, 5, 11.8), []);
+  const mainGeo = useMemo(() => makeJaggedPeak(1.35, 2.4, 18, 11, 3.1), []);
+  const leftGeo = useMemo(() => makeJaggedPeak(0.95, 1.6, 14, 8, 7.4), []);
+  const rightGeo = useMemo(() => makeJaggedPeak(0.7, 1.15, 12, 7, 11.8), []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -134,16 +137,16 @@ function Peaks() {
   return (
     <group ref={groupRef} position={[0, -0.7, 0]}>
       <mesh geometry={mainGeo} position={[0, 0.9, 0]} castShadow>
-        <meshStandardMaterial vertexColors flatShading roughness={0.72} metalness={0.06} />
+        <meshPhysicalMaterial vertexColors flatShading roughness={0.62} metalness={0.08} clearcoat={0.25} clearcoatRoughness={0.55} />
       </mesh>
       <Flag />
 
       <mesh geometry={leftGeo} position={[-1.75, 0.45, -0.9]} rotation={[0, 0.4, 0]}>
-        <meshStandardMaterial vertexColors flatShading roughness={0.75} metalness={0.05} />
+        <meshPhysicalMaterial vertexColors flatShading roughness={0.68} metalness={0.06} clearcoat={0.2} clearcoatRoughness={0.6} />
       </mesh>
 
       <mesh geometry={rightGeo} position={[1.6, 0.15, -0.6]} rotation={[0, -0.3, 0]}>
-        <meshStandardMaterial vertexColors flatShading roughness={0.75} metalness={0.05} />
+        <meshPhysicalMaterial vertexColors flatShading roughness={0.68} metalness={0.06} clearcoat={0.2} clearcoatRoughness={0.6} />
       </mesh>
 
       <mesh position={[0, -0.55, 0]} rotation={[-Math.PI / 2, 0, 0]}>
@@ -165,18 +168,18 @@ export function Hero3DScene() {
   return (
     <Canvas
       dpr={[1, 1.5]}
-      camera={{ position: [0, 1, 7.4], fov: 40 }}
+      camera={{ position: [0, 1.1, 8.2], fov: 42 }}
       gl={{ antialias: true, alpha: true }}
       style={{ width: "100%", height: "100%" }}
     >
-      <hemisphereLight args={["#dce8ff", "#3a2a12", 0.7]} />
-      <ambientLight intensity={0.42} />
-      <directionalLight position={[4, 6, 4]} intensity={2} color="#fff7e6" />
-      <directionalLight position={[-4, 2.5, -4]} intensity={0.9} color="#e7c874" />
+      <hemisphereLight args={["#dce8ff", "#3a2a12", 0.75]} />
+      <ambientLight intensity={0.4} />
+      <directionalLight position={[4, 6, 4]} intensity={2.1} color="#fff7e6" />
+      <directionalLight position={[-4, 2.5, -4]} intensity={1} color="#e7c874" />
       <pointLight position={[0, 3, 4]} intensity={0.6} color="#fff2cf" />
       <Peaks />
       <EffectComposer>
-        <Bloom intensity={0.55} luminanceThreshold={0.42} luminanceSmoothing={0.3} mipmapBlur />
+        <Bloom intensity={0.5} luminanceThreshold={0.44} luminanceSmoothing={0.3} mipmapBlur />
       </EffectComposer>
     </Canvas>
   );

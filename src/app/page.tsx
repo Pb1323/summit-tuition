@@ -16,6 +16,8 @@ import {
   Repeat2,
   TrendingUp,
   Sparkles,
+  Moon,
+  Printer,
 } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
@@ -94,6 +96,12 @@ const HOW_IT_WORKS = [
   { icon: <Repeat2 className="h-5 w-5" />, title: "Track progress", description: "Regular reports show exactly how your child is moving forward." },
 ];
 
+const FAMILY_FEATURES = [
+  { icon: <Users className="h-5 w-5" />, title: "Parent / family dashboard", description: "Lessons remaining, upcoming lesson times, and a payments view — one place to see where things stand." },
+  { icon: <Moon className="h-5 w-5" />, title: "Student account settings", description: "Your child can update their name and password, and switch their dashboard to dark mode." },
+  { icon: <Printer className="h-5 w-5" />, title: "Printable practice papers", description: "Offline, pen-and-paper practice for exam day realism — separate from scored online mocks." },
+];
+
 const TRUST_STATEMENTS = [
   {
     statement: "Every tutor is DBS-checked and trained in our safeguarding policy before working with any child.",
@@ -124,7 +132,7 @@ const PLATFORM_DIAGRAMS = [
   },
   {
     title: "Access flow",
-    items: ["Register", "Pay", "Admin approves", "Mock unlocked", "Student completes", "Report released"],
+    items: ["Register", "Instant account access", "Admin unlocks your mocks", "Student completes", "Report released"],
   },
 ];
 
@@ -405,7 +413,7 @@ export default function HomePage() {
             <SectionHeading
               eyebrow="Platform Map"
               title="The full Summit Tuition operating system"
-              description="The public site, student portal, admin approval flow and report release process all point to one outcome: clearer improvement decisions after every mock."
+              description="The public site, student portal, admin mock-unlock flow and report release process all point to one outcome: clearer improvement decisions after every mock."
             />
             <div className="mt-10 grid gap-6 lg:grid-cols-2">
               {PLATFORM_DIAGRAMS.map((diagram) => (
@@ -434,6 +442,27 @@ export default function HomePage() {
                   </div>
                 </div>
               </Card>
+            </div>
+          </RevealOnScroll>
+        </Container>
+      </section>
+
+      {/* Family features */}
+      <section className="bg-cream-dark/50 py-20">
+        <Container>
+          <RevealOnScroll>
+            <SectionHeading
+              eyebrow="Built For The Whole Family"
+              title="Every account comes with more than just mocks"
+              description="Once you're in, students and parents each get their own dedicated space."
+            />
+            <div className="mt-10">
+              <FeatureGrid items={FAMILY_FEATURES} columns={3} />
+            </div>
+            <div className="mt-8">
+              <Button href="/register" size="lg">
+                Create Your Free Account <ArrowRight className="h-4 w-4" />
+              </Button>
             </div>
           </RevealOnScroll>
         </Container>
