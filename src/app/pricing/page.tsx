@@ -81,26 +81,18 @@ export default function PricingPage() {
         </Container>
       </section>
 
-      {ALL_PRICING_GROUPS.map((group, i) => (
-        <section key={group.id} className={i % 2 === 0 ? "bg-cream-dark/50 py-16" : "py-16"}>
-          <Container>
-            <RevealOnScroll>
-            <SectionHeading title={group.title} />
-            </RevealOnScroll>
-            <StaggerReveal
-              className={`mt-8 grid grid-cols-1 gap-6 ${
-                group.tiers.length === 3
-                  ? "lg:grid-cols-3"
-                  : "mx-auto max-w-sm"
-              }`}
-            >
-              {group.tiers.map((tier) => (
-                <PricingCard key={tier.id} tier={tier} />
-              ))}
-            </StaggerReveal>
-          </Container>
-        </section>
-      ))}
+      <section className="bg-cream-dark/50 py-16">
+        <Container>
+          <RevealOnScroll>
+            <SectionHeading align="center" eyebrow="Every Product" title="Pick what fits, mix and match as you go" />
+          </RevealOnScroll>
+          <StaggerReveal className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {ALL_PRICING_GROUPS.flatMap((group) => group.tiers).map((tier) => (
+              <PricingCard key={tier.id} tier={tier} />
+            ))}
+          </StaggerReveal>
+        </Container>
+      </section>
 
       <CTASection
         title="Still deciding?"

@@ -8,6 +8,20 @@ import type { Role, StudentAccount } from "@/types/platform";
 export const SESSION_COOKIE = process.env.NODE_ENV === "production" ? "__Host-summit_session" : "summit_session";
 const SESSION_DAYS = 30;
 
+// Demo mode (no DATABASE_URL) has no database to persist sessions in, so we keep an
+// in-memory map of random token -> seeded userId for this server process. This means a
+// session cookie can never be forged just by knowing/guessing a seeded user id (e.g.
+// "admin-1") the way a raw-userId cookie could be.
+const demoSessions = new Map<string, string>();
+
+// If DATABASE_URL is ever missing in a real production deployment (misconfigured env
+// var), refuse to fall back into demo mode for auth — that fallback exists purely for
+// local/demo convenience and would otherwise let anyone authenticate as any seeded
+// account (including the seed admin) with no real credentials.
+export function isProductionWithoutDatabase() {
+  return process.env.NODE_ENV === "production" && !isDatabaseConfigured();
+}
+
 function hashToken(token: string) {
   return createHash("sha256").update(token).digest("hex");
 }
@@ -47,8 +61,12 @@ export async function getCurrentUser() {
   const token = cookieStore.get(SESSION_COOKIE)?.value;
   if (!token) return null;
 
+  if (isProductionWithoutDatabase()) return null;
+
   if (!isDatabaseConfigured()) {
-    const seeded = SEEDED_USERS.find((user) => user.id === token);
+    const userId = demoSessions.get(hashToken(token));
+    if (!userId) return null;
+    const seeded = SEEDED_USERS.find((user) => user.id === userId);
     return seeded ?? null;
   }
 
@@ -62,6 +80,10 @@ export async function getCurrentUser() {
 }
 
 export async function createSession(userId: string) {
+  if (isProductionWithoutDatabase()) {
+    throw new Error("Refusing to create a session: DATABASE_URL is required in production.");
+  }
+
   const token = randomBytes(32).toString("base64url");
   const expiresAt = new Date(Date.now() + SESSION_DAYS * 24 * 60 * 60 * 1000);
   const cookieStore = await cookies();
@@ -70,9 +92,11 @@ export async function createSession(userId: string) {
     await prisma.session.create({
       data: { userId, tokenHash: hashToken(token), expiresAt },
     });
+  } else {
+    demoSessions.set(hashToken(token), userId);
   }
 
-  cookieStore.set(SESSION_COOKIE, isDatabaseConfigured() ? token : userId, {
+  cookieStore.set(SESSION_COOKIE, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
@@ -84,8 +108,12 @@ export async function createSession(userId: string) {
 export async function clearSession() {
   const cookieStore = await cookies();
   const token = cookieStore.get(SESSION_COOKIE)?.value;
-  if (token && isDatabaseConfigured()) {
-    await prisma.session.deleteMany({ where: { tokenHash: hashToken(token) } });
+  if (token) {
+    if (isDatabaseConfigured()) {
+      await prisma.session.deleteMany({ where: { tokenHash: hashToken(token) } });
+    } else {
+      demoSessions.delete(hashToken(token));
+    }
   }
   cookieStore.delete(SESSION_COOKIE);
 }

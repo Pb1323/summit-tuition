@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createSession, hashPasswordServer, isSeedAdmin, publicUser, verifyPassword } from "@/lib/server/auth";
+import { createSession, hashPasswordServer, isProductionWithoutDatabase, isSeedAdmin, publicUser, verifyPassword } from "@/lib/server/auth";
 import { isDatabaseConfigured, prisma } from "@/lib/server/db";
 import { clientIp, isRateLimited } from "@/lib/server/rate-limit";
 import { SEEDED_USERS } from "@/data/platform";
@@ -16,6 +16,11 @@ export async function POST(request: Request) {
 
   if (isRateLimited(`login:ip:${clientIp(request)}`, 20, 10 * 60 * 1000) || isRateLimited(`login:email:${email}`, 8, 10 * 60 * 1000)) {
     return NextResponse.json({ ok: false, message: "Too many attempts. Try again in a few minutes." }, { status: 429 });
+  }
+
+  if (isProductionWithoutDatabase()) {
+    console.error("Login blocked: DATABASE_URL is missing in production.");
+    return NextResponse.json({ ok: false, message: "Server is not configured correctly. Please contact support." }, { status: 500 });
   }
 
   if (!isDatabaseConfigured()) {

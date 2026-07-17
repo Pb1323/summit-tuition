@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { hashPasswordServer } from "@/lib/server/auth";
+import { hashPasswordServer, isProductionWithoutDatabase } from "@/lib/server/auth";
 import { isDatabaseConfigured, prisma } from "@/lib/server/db";
 import { clientIp, isRateLimited } from "@/lib/server/rate-limit";
 
@@ -17,6 +17,11 @@ export async function POST(request: Request) {
 
   if (isRateLimited(`register:ip:${clientIp(request)}`, 10, 60 * 60 * 1000)) {
     return NextResponse.json({ ok: false, message: "Too many accounts created recently. Try again later." }, { status: 429 });
+  }
+
+  if (isProductionWithoutDatabase()) {
+    console.error("Registration blocked: DATABASE_URL is missing in production.");
+    return NextResponse.json({ ok: false, message: "Server is not configured correctly. Please contact support." }, { status: 500 });
   }
 
   if (!isDatabaseConfigured()) {
