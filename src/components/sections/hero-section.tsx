@@ -60,8 +60,13 @@ export function HeroSection({
         {visual && (
           <div className="flex flex-col gap-6">
             <div className="hero-dashboard-tilt">{visual}</div>
-            <div className="h-72 w-full sm:h-80">
-              <Hero3DBackground />
+            <div className="flex flex-col items-center gap-4 sm:flex-row">
+              <div className="h-56 w-full shrink-0 sm:h-64 sm:w-3/5">
+                <Hero3DBackground />
+              </div>
+              <p className="text-center text-lg font-semibold leading-snug text-navy sm:text-left">
+                We help your child get to the <span className="text-gold-dark">top</span>.
+              </p>
             </div>
           </div>
         )}

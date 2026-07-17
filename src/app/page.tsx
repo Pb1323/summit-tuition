@@ -42,7 +42,6 @@ import { ScrollProgress } from "@/components/motion/scroll-progress";
 import { ScrollStoryRail } from "@/components/motion/scroll-story-rail";
 import { TiltCard } from "@/components/motion/tilt-card";
 import { WarpGrid } from "@/components/motion/warp-grid";
-import { MiniScene } from "@/components/motion/mini-scene";
 import { PullQuote } from "@/components/ui/pull-quote";
 
 const START_HERE = [
@@ -162,10 +161,7 @@ export default function HomePage() {
       <section className="py-20">
         <Container>
           <RevealOnScroll>
-            <div className="flex items-start justify-between gap-6">
-              <SectionHeading eyebrow="Start Here" title="Tell us what you need — we'll point you to the right place" />
-              <MiniScene geometry="pen-paper" className="hidden h-32 w-32 shrink-0 sm:block" />
-            </div>
+            <SectionHeading eyebrow="Start Here" title="Tell us what you need — we'll point you to the right place" />
             <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
               {START_HERE.map((item) => (
                 <Card key={item.title} className="flex flex-col p-7">
@@ -204,8 +200,7 @@ export default function HomePage() {
       </section>
 
       {/* Diagnostic Assessment */}
-      <section id="diagnostic" className="relative py-20">
-        <MiniScene geometry="peak" className="pointer-events-none absolute -right-4 top-8 hidden h-36 w-36 opacity-80 lg:block" />
+      <section id="diagnostic" className="py-20">
         <Container className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
           <RevealOnScroll>
             <SectionHeading
@@ -230,8 +225,7 @@ export default function HomePage() {
       </section>
 
       {/* Weekly Mock Club */}
-      <section id="mocks" className="relative bg-navy py-20">
-        <MiniScene geometry="seal" className="pointer-events-none absolute left-8 top-8 hidden h-32 w-32 opacity-80 lg:block" />
+      <section id="mocks" className="bg-navy py-20">
         <Container>
           <RevealOnScroll>
             <SectionHeading
@@ -312,8 +306,7 @@ export default function HomePage() {
       <section className="py-20">
         <Container>
           <RevealOnScroll>
-            <div className="relative overflow-hidden rounded-3xl border border-gold/40 bg-navy">
-              <MiniScene geometry="seal" className="absolute -right-8 -top-8 z-10 hidden h-40 w-40 opacity-90 sm:block" />
+            <div className="overflow-hidden rounded-3xl border border-gold/40 bg-navy">
               <div className="grid grid-cols-1 gap-10 p-8 sm:p-12 lg:grid-cols-2 lg:items-center">
                 <div>
                   <Badge variant="gold">Best Value</Badge>
@@ -409,14 +402,11 @@ export default function HomePage() {
       <section className="py-20">
         <Container>
           <RevealOnScroll>
-            <div className="flex items-start justify-between gap-6">
-              <SectionHeading
-                eyebrow="Platform Map"
-                title="The full Summit Tuition operating system"
-                description="The public site, student portal, admin approval flow and report release process all point to one outcome: clearer improvement decisions after every mock."
-              />
-              <MiniScene geometry="peak" className="hidden h-32 w-32 shrink-0 sm:block" />
-            </div>
+            <SectionHeading
+              eyebrow="Platform Map"
+              title="The full Summit Tuition operating system"
+              description="The public site, student portal, admin approval flow and report release process all point to one outcome: clearer improvement decisions after every mock."
+            />
             <div className="mt-10 grid gap-6 lg:grid-cols-2">
               {PLATFORM_DIAGRAMS.map((diagram) => (
                 <Card key={diagram.title} className="p-6">
@@ -453,10 +443,7 @@ export default function HomePage() {
       <section className="py-20">
         <Container>
           <RevealOnScroll>
-            <div className="flex items-start justify-between gap-6">
-              <SectionHeading eyebrow="Why Parents Choose Us" title="Built to be honest, not just reassuring" />
-              <MiniScene geometry="pen-paper" className="hidden h-32 w-32 shrink-0 sm:block" />
-            </div>
+            <SectionHeading eyebrow="Why Parents Choose Us" title="Built to be honest, not just reassuring" />
             <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-3">
               {TRUST_STATEMENTS.map((t) => (
                 <TiltCard key={t.context} className="h-full">
@@ -480,9 +467,6 @@ export default function HomePage() {
         eyebrow="Next Step"
         title="Ready to see exactly where your child stands?"
         description="Book a free 15-minute call and we'll help you choose the right starting point."
-        decoration={
-          <MiniScene geometry="peak" className="pointer-events-none absolute right-8 top-8 hidden h-36 w-36 opacity-80 sm:block" />
-        }
         actions={
           <>
             <Magnetic>
