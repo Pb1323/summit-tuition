@@ -90,15 +90,15 @@ export const SEEDED_USERS: StudentAccount[] = [
 ];
 
 export const PRODUCT_PLANS: ProductPlan[] = [
-  { id: "diagnostic", name: "Diagnostic Assessment", price: "£X", cadence: "one-off", description: "Baseline assessment and improvement report." },
-  { id: "mock-starter", name: "Weekly Mock Club Starter", price: "£X", cadence: "/month", description: "Weekly online mock and parent summary." },
-  { id: "mock-plus", name: "Weekly Mock Club Plus", price: "£X", cadence: "/month", badge: "Most Popular", description: "Detailed review, weak-topic analysis and practice plan." },
-  { id: "mock-premium", name: "Weekly Mock Club Premium", price: "£X", cadence: "/month", description: "Tutor-reviewed reports and monthly review session." },
-  { id: "simulator", name: "Practice Paper Simulator", price: "£X", cadence: "/month", description: "Timed online practice papers and analytics." },
-  { id: "group", name: "Group Tuition", price: "£X", cadence: "/session", description: "Small group teaching programme." },
-  { id: "private", name: "Private Tuition", price: "£X", cadence: "/session", description: "One-to-one targeted tuition." },
-  { id: "complete", name: "Complete 11+ Programme", price: "£X", cadence: "/week", badge: "Best Value", description: "Diagnostics, tuition, mocks and reporting." },
-  { id: "holiday", name: "Holiday Booster", price: "£X", cadence: "/week", description: "Intensive course for key exam-season gaps." },
+  { id: "diagnostic", name: "Diagnostic Assessment", price: "£X", cadence: "one-off", description: "Baseline assessment and improvement report.", includedMockIds: [], includedNoteIds: [] },
+  { id: "mock-starter", name: "Weekly Mock Club Starter", price: "£X", cadence: "/month", description: "Weekly online mock and parent summary.", includedMockIds: [], includedNoteIds: [] },
+  { id: "mock-plus", name: "Weekly Mock Club Plus", price: "£X", cadence: "/month", badge: "Most Popular", description: "Detailed review, weak-topic analysis and practice plan.", includedMockIds: [], includedNoteIds: [] },
+  { id: "mock-premium", name: "Weekly Mock Club Premium", price: "£X", cadence: "/month", description: "Tutor-reviewed reports and monthly review session.", includedMockIds: [], includedNoteIds: [] },
+  { id: "simulator", name: "Practice Paper Simulator", price: "£X", cadence: "/month", description: "Timed online practice papers and analytics.", includedMockIds: [], includedNoteIds: [] },
+  { id: "group", name: "Group Tuition", price: "£X", cadence: "/session", description: "Small group teaching programme.", includedMockIds: [], includedNoteIds: [] },
+  { id: "private", name: "Private Tuition", price: "£X", cadence: "/session", description: "One-to-one targeted tuition.", includedMockIds: [], includedNoteIds: [] },
+  { id: "complete", name: "Complete 11+ Programme", price: "£X", cadence: "/week", badge: "Best Value", description: "Diagnostics, tuition, mocks and reporting.", includedMockIds: [], includedNoteIds: [] },
+  { id: "holiday", name: "Holiday Booster", price: "£X", cadence: "/week", description: "Intensive course for key exam-season gaps.", includedMockIds: [], includedNoteIds: [] },
 ];
 
 export const PASSAGES: Passage[] = [

@@ -61,7 +61,7 @@ export function AnimatedButton({
 
 export function GlowCard({ className, children }: { className?: string; children: React.ReactNode }) {
   return (
-    <div className={cn("group relative overflow-hidden rounded-2xl border border-line bg-white shadow-[0_18px_60px_-42px_rgba(17,24,39,0.45)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_70px_-38px_rgba(180,83,9,0.45)]", className)}>
+    <div className={cn("premium-card group relative overflow-hidden rounded-2xl transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_70px_-38px_rgba(180,83,9,0.45)]", className)}>
       <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-gold/20 blur-3xl transition group-hover:bg-gold/35" />
       <div className="relative">{children}</div>
     </div>

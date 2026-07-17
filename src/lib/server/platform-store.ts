@@ -174,7 +174,12 @@ export async function getPlatformBootstrap(currentUser: StudentAccount | null): 
       lastAnalysedAt: toDateOnly(reference.lastAnalysedAt),
       topicStyleProfile: (reference.topicStyleProfile as unknown as ReferenceSource["topicStyleProfile"] | null) ?? undefined,
     })),
-    products: products.map((product) => ({ ...product, badge: product.badge ?? undefined })),
+    products: products.map((product) => ({
+      ...product,
+      badge: product.badge ?? undefined,
+      includedMockIds: (product.includedMockIds as string[] | null) ?? [],
+      includedNoteIds: (product.includedNoteIds as string[] | null) ?? [],
+    })),
     emailTemplates,
     notes: notes.map((note) => ({
       id: note.id,

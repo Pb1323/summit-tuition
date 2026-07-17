@@ -121,6 +121,91 @@ export function AdminStudentsWorkspace({ compact = false }: { compact?: boolean 
           </StaggerReveal>
         </GlowCard>
       )}
+
+      {!compact && (
+        <GlowCard className="p-6">
+          <PremiumBadge>Plan bundles</PremiumBadge>
+          <h2 className="mt-3 text-2xl font-black text-navy">What Each Plan Unlocks</h2>
+          <p className="mt-2 max-w-3xl text-sm text-muted">
+            Pick which mocks and notes are automatically unlocked when a student is assigned a plan below. This is additive only —
+            changing a bundle never re-locks content a student already has access to.
+          </p>
+          <div className="mt-5 space-y-3">
+            {products.map((product) => (
+              <PlanBundleEditor key={product.id} plan={product} mocks={publishedMocks} notes={notes} />
+            ))}
+          </div>
+        </GlowCard>
+      )}
+    </div>
+  );
+}
+
+function PlanBundleEditor({
+  plan,
+  mocks,
+  notes,
+}: {
+  plan: { id: string; name: string; includedMockIds: string[]; includedNoteIds: string[] };
+  mocks: MockExam[];
+  notes: NotePage[];
+}) {
+  const { setPlanContent } = usePlatform();
+  const [expanded, setExpanded] = useState(false);
+  const [query, setQuery] = useState("");
+  const mockGroups = useMemo(() => groupBySubject(mocks, query), [mocks, query]);
+  const noteGroups = useMemo(() => groupBySubject(notes, query), [notes, query]);
+
+  return (
+    <div className="rounded-2xl border border-line bg-cream/40">
+      <button type="button" onClick={() => setExpanded((prev) => !prev)} className="flex w-full items-center justify-between gap-3 px-4 py-3 text-sm font-bold text-navy">
+        <span>{plan.name} — {plan.includedMockIds.length}/{mocks.length} mocks, {plan.includedNoteIds.length}/{notes.length} notes</span>
+        <ChevronDown className={`h-4 w-4 shrink-0 transition-transform ${expanded ? "rotate-180" : ""}`} />
+      </button>
+      {expanded && (
+        <div className="space-y-4 border-t border-line px-4 py-4">
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search mocks or notes by title..."
+              className="h-9 w-full rounded-xl border border-line bg-white pl-9 pr-3 text-sm outline-none focus:border-gold"
+            />
+          </div>
+
+          <UnlockGroup
+            label="Mocks"
+            groups={mockGroups}
+            checkedIds={plan.includedMockIds}
+            onToggleAll={(ids, checked) => {
+              const mockIds = new Set(plan.includedMockIds);
+              ids.forEach((id) => (checked ? mockIds.add(id) : mockIds.delete(id)));
+              setPlanContent(plan.id, Array.from(mockIds), plan.includedNoteIds);
+            }}
+            onToggleOne={(id, checked) => {
+              const mockIds = new Set(plan.includedMockIds);
+              if (checked) mockIds.add(id); else mockIds.delete(id);
+              setPlanContent(plan.id, Array.from(mockIds), plan.includedNoteIds);
+            }}
+          />
+          <UnlockGroup
+            label="Notes"
+            groups={noteGroups}
+            checkedIds={plan.includedNoteIds}
+            onToggleAll={(ids, checked) => {
+              const noteIds = new Set(plan.includedNoteIds);
+              ids.forEach((id) => (checked ? noteIds.add(id) : noteIds.delete(id)));
+              setPlanContent(plan.id, plan.includedMockIds, Array.from(noteIds));
+            }}
+            onToggleOne={(id, checked) => {
+              const noteIds = new Set(plan.includedNoteIds);
+              if (checked) noteIds.add(id); else noteIds.delete(id);
+              setPlanContent(plan.id, plan.includedMockIds, Array.from(noteIds));
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }

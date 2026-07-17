@@ -100,11 +100,26 @@ export default function WelcomePage() {
               <Button href="/book-a-call" variant="navy" size="lg" className="w-full">
                 Book a Free Parent Call
               </Button>
+              <a href={`mailto:${SITE.email}`} className="text-center text-xs font-bold text-muted underline decoration-gold/50 underline-offset-4">
+                Or message us directly →
+              </a>
             </div>
           </div>
         </section>
 
         <div className="mx-auto max-w-md space-y-10 px-5">
+          {/* Pricing — shown early so parents see cost before scrolling */}
+          <RevealOnScroll>
+            <h2 className="text-lg font-black text-navy">Plans and pricing</h2>
+            <p className="mt-1 text-sm text-muted">Tap a plan to compare — book straight from here.</p>
+            <div className="mt-4">
+              <WelcomePricingTabs />
+            </div>
+            <Link href="/pricing" className="mt-4 block text-center text-sm font-bold text-gold-dark">
+              See all plans →
+            </Link>
+          </RevealOnScroll>
+
           {/* Stat strip */}
           <RevealOnScroll>
             <div className="premium-card grid grid-cols-3 gap-2 rounded-2xl p-4 text-center">
@@ -153,18 +168,6 @@ export default function WelcomePage() {
                 </Link>
               ))}
             </div>
-          </RevealOnScroll>
-
-          {/* Pricing */}
-          <RevealOnScroll>
-            <h2 className="text-lg font-black text-navy">Plans and pricing</h2>
-            <p className="mt-1 text-sm text-muted">Tap a plan to compare — book straight from here.</p>
-            <div className="mt-4">
-              <WelcomePricingTabs />
-            </div>
-            <Link href="/pricing" className="mt-4 block text-center text-sm font-bold text-gold-dark">
-              See all plans →
-            </Link>
           </RevealOnScroll>
 
           {/* Trust */}

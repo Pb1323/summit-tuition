@@ -36,6 +36,7 @@ type PlatformContextValue = PlatformState & {
   approveAndUnlockFirstMock: (studentId: string) => Promise<void>;
   createTestStudent: () => Promise<void>;
   assignPlan: (studentId: string, plan: string) => Promise<void>;
+  setPlanContent: (planId: string, mockIds: string[], noteIds: string[]) => Promise<void>;
   unlockMock: (studentId: string, mockId: string, unlocked: boolean) => Promise<void>;
   setStudentLessons: (studentId: string, lessonsRemaining: number, upcomingLessons: { date: string; time: string; note?: string }[]) => Promise<void>;
   unlockNote: (studentId: string, noteId: string, unlocked: boolean) => Promise<void>;
@@ -386,7 +387,33 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
     async assignPlan(studentId, plan) {
       if (currentUser?.role !== "admin") return;
       if (await postAndRefresh(`/api/admin/students/${studentId}/assign-plan`, { plan })) return;
-      updateUsers((users) => users.map((user) => (user.id === studentId ? { ...user, plan, paymentStatus: plan ? "paid" : user.paymentStatus } : user)));
+      const productPlan = state.products.find((product) => product.name === plan);
+      updateUsers((users) =>
+        users.map((user) => {
+          if (user.id !== studentId) return user;
+          const mockIds = new Set(user.unlockedMockIds);
+          const noteIds = new Set(user.unlockedNoteIds);
+          (productPlan?.includedMockIds ?? []).forEach((id) => mockIds.add(id));
+          (productPlan?.includedNoteIds ?? []).forEach((id) => noteIds.add(id));
+          return {
+            ...user,
+            plan,
+            paymentStatus: plan ? "paid" : user.paymentStatus,
+            unlockedMockIds: Array.from(mockIds),
+            unlockedNoteIds: Array.from(noteIds),
+          };
+        })
+      );
+    },
+    async setPlanContent(planId, mockIds, noteIds) {
+      if (currentUser?.role !== "admin") return;
+      if (await postAndRefresh(`/api/admin/plans/${planId}/set-content`, { mockIds, noteIds })) return;
+      updateStore((prev) => ({
+        ...prev,
+        products: prev.products.map((product) =>
+          product.id === planId ? { ...product, includedMockIds: mockIds, includedNoteIds: noteIds } : product
+        ),
+      }));
     },
     async unlockMock(studentId, mockId, unlocked) {
       if (currentUser?.role !== "admin") return;

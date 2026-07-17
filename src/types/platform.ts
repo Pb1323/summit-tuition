@@ -186,6 +186,10 @@ export interface ProductPlan {
   cadence: string;
   badge?: string;
   description: string;
+  /** Mock ids automatically unlocked for a student when this plan is assigned. */
+  includedMockIds: string[];
+  /** Note ids automatically unlocked for a student when this plan is assigned. */
+  includedNoteIds: string[];
 }
 
 export interface EmailTemplate {

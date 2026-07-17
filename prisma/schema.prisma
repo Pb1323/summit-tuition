@@ -186,12 +186,14 @@ model ReferenceSource {
 }
 
 model ProductPlan {
-  id          String  @id
-  name        String
-  price       String
-  cadence     String
-  badge       String?
-  description String
+  id              String  @id
+  name            String
+  price           String
+  cadence         String
+  badge           String?
+  description     String
+  includedMockIds Json    @default("[]")
+  includedNoteIds Json    @default("[]")
 }
 
 model EmailTemplate {
