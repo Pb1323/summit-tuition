@@ -1,10 +1,16 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-16 (operational punch list: bug fixes, admin UX, student accounts, mobile page, printable mocks)
+Last updated: 2026-07-16 (report preview matched to real PDF format, per-student lessons editor, prod DB fixes)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (this session — 2026-07-16, follow-up fixes)
+
+- **Two production DB fixes**: (1) `npm run db:seed` was run against the shared prod database — new mocks/questions/passages from the previous session hadn't reached the live site since it's DB-backed, not the static seed file. (2) Found the *actual* clunky "Students and manual access" table the user meant (a second, separate one on the main `/admin` dashboard, distinct from the one already fixed on `/admin/students`) — removed the duplicate, now reuses the same grouped/searchable unlock panel everywhere.
+- **Report preview corrected**: the "preview before releasing" feature initially pointed to a new, differently-styled page. User clarified they wanted it to match an existing real report PDF (`Lupin-English-GL-Style-II-Report.pdf`) — which turned out to already be almost exactly what `AdminAttemptReport`/`/admin/reports/[attemptId]` produces (donut score, marks-by-topic bars, skill spotlight, every-question-missed). Repointed "Preview report" links there and added the one missing section from the reference PDF: **"What they don't know yet"** — a deduped plain-English rule explanation per missed sub-skill.
+- **Per-student lessons editor**: added `lessonsRemaining`/`upcomingLessons` (date/time/note rows) to the `User` model, pushed directly to the shared production Supabase DB (via the *direct* non-pooled connection — `prisma db push` hangs indefinitely over the pgbouncer transaction pooler on port 6543; use the `DIRECT_URL` on port 5432 with `--url` for any future schema pushes), plus an inline collapsible editor on the admin students page. This backs the parent/family dashboard view (`/dashboard/family`) with real per-student data instead of only the static demo seed.
 
 ## Done (this session — 2026-07-16, operational punch list)
 
