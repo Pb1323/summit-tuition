@@ -190,7 +190,7 @@ export function StudentDashboard() {
         </GlowCard>
         <GlowCard className="p-6">
           <h2 className="text-xl font-bold text-navy">Content protection</h2>
-          <p className="mt-3 text-sm text-muted">Scored mocks are online-only and require an approved login — no PDF downloads. Printable practice papers (no score or report) are available separately in the mocks list. Basic copy protection is active in the mock room while keeping form controls accessible.</p>
+          <p className="mt-3 text-sm text-muted">Scored mocks themselves are online-only and require an approved login — the exam content is never downloadable. Once your report is released, though, you can save/print it as a PDF from the review page. Printable practice papers (no score or report) are available separately in the mocks list. Basic copy protection is active in the mock room while keeping form controls accessible.</p>
         </GlowCard>
       </section>
     </div>

@@ -531,7 +531,10 @@ export function MockCard({ mock, attempt, locked }: { mock: MockExam; attempt?: 
             <span className="text-sm font-semibold text-muted">{answeredCount}/{mock.questionIds.length} answered locally</span>
           </div>
         ) : attempt?.status === "report_released" ? (
-          <AnimatedButton href={`/mocks/${mock.id}/review`}>Open review</AnimatedButton>
+          <div className="flex flex-wrap items-center gap-3">
+            <AnimatedButton href={`/mocks/${mock.id}/review`}>Open review</AnimatedButton>
+            <Link href={`/mocks/${mock.id}/report`} className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-sm font-bold text-navy hover:border-gold">View report (PDF)</Link>
+          </div>
         ) : attempt?.status === "submitted" ? (
           <div className="rounded-2xl border border-line bg-cream p-3 text-sm text-muted">
             <PremiumBadge tone="navy">Report pending</PremiumBadge>
@@ -583,6 +586,10 @@ export function ReportPreview({ attempt, mock }: { attempt: Attempt; mock: MockE
       </div>
       <div className="mt-5"><ProgressBar value={percentage} label="Overall score" /></div>
       <p className="mt-4 rounded-xl bg-cream p-4 text-sm text-muted">{attempt.adminFeedback || "Tutor feedback will appear here after marking."}</p>
+      <div className="mt-4 flex flex-wrap gap-3">
+        <Link href={`/mocks/${mock.id}/review`} className="inline-flex items-center gap-2 rounded-full bg-gold px-4 py-2 text-sm font-bold text-navy hover:brightness-95">Open review</Link>
+        <Link href={`/mocks/${mock.id}/report`} className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-sm font-bold text-navy hover:border-gold">View report (PDF)</Link>
+      </div>
     </GlowCard>
   );
 }

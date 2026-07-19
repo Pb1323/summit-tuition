@@ -6,10 +6,11 @@ import { PremiumBadge } from "@/components/platform/ui";
 import type { Attempt, MockExam } from "@/types/platform";
 
 // Auto-generated stats report: computed live from stored answers, never persisted
-// separately, so it's always in sync with the attempt. This is the PDF admins print
-// and send to families directly; in-app student access still goes through the
-// separate release flow (ReportPreview / StudentReportView).
-export function AdminAttemptReport({ attempt, mock }: { attempt: Attempt; mock: MockExam }) {
+// separately, so it's always in sync with the attempt. Admins print this from
+// /admin/reports/[attemptId]; once a report is released, students get the same
+// component (audience="student") at /mocks/[id]/report so the PDF they see matches
+// exactly what the admin previewed.
+export function AdminAttemptReport({ attempt, mock, audience = "admin" }: { attempt: Attempt; mock: MockExam; audience?: "admin" | "student" }) {
   const { users, questions: bank } = usePlatform();
   const student = users.find((user) => user.id === attempt.studentId);
   const questions = bank.filter((question) => mock.questionIds.includes(question.id));
@@ -44,7 +45,7 @@ export function AdminAttemptReport({ attempt, mock }: { attempt: Attempt; mock: 
     <div className="space-y-6 rounded-2xl border border-navy/15 bg-gradient-to-b from-navy/[0.04] to-white p-6 print:border-0 print:bg-white print:p-0 print:shadow-none">
       <div className="flex flex-wrap items-start justify-between gap-4 rounded-2xl bg-gradient-to-r from-navy-dark to-navy px-6 py-5 print:rounded-none">
         <div>
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-gold-light">Summit Tuition &middot; Admin-only report</p>
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-gold-light">Summit Tuition &middot; {audience === "admin" ? "Admin-only report" : "Marked report"}</p>
           <h2 className="mt-1 text-2xl font-black text-white">{mock.title}</h2>
           <p className="text-sm text-white/70">{student?.name ?? "Unknown student"} &middot; {student?.email} &middot; {attempt.submittedAt?.slice(0, 10) ?? "recently"}</p>
         </div>

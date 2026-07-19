@@ -2,7 +2,7 @@
 
 # Summit Tuition Project Context
 
-Last updated: 2026-07-13. Plain-English project status and forward-looking roadmap live in `status.md` and `TODO.md` — read those first for current state/next steps; this file is the technical companion, and it's what's auto-loaded into every session (unlike `status.md`/`TODO.md`, which must be read explicitly).
+Last updated: 2026-07-19. Plain-English project status and forward-looking roadmap live in `status.md` and `TODO.md` — read those first for current state/next steps; this file is the technical companion, and it's what's auto-loaded into every session (unlike `status.md`/`TODO.md`, which must be read explicitly).
 
 ## Sibling Projects In This Repo
 
@@ -48,7 +48,7 @@ Important: this repo has `AGENTS.md` warning that this is a newer Next.js with b
 - Students open interactive Study Notes at `/notes` (subject index) and `/notes/maths/[topic]` (Numbers, Fractions/Decimals/Percentages, Ratio & Proportion, Algebra, Geometry, Averages & Statistics), wired in from the student dashboard.
 - Students register at `/register`, choose a plan, and get instant account access — there is no manual approval gate on signup (`approved: true` is set at registration in both the demo and DB-backed paths). The real manual step is per-mock unlocking, not account approval.
 - Admin signs in at `/login`, opens `/admin`, assigns plans, and unlocks mocks. Admin can still pause/re-approve or reject an existing account (`/api/admin/students/[id]/approve`, `reject`) — this is for suspending accounts after the fact, not gating new signups. The "Paused Student Accounts" panel on `/admin` only ever lists accounts an admin has manually paused.
-- Students open `/dashboard`, start unlocked online mocks, autosave drafts, submit attempts, then wait for admin release.
+- Students open `/dashboard`, start unlocked online mocks, autosave drafts, submit attempts, and now see raw scores immediately on submission (2026-07-17 goal-gradient change — see Recent Feature State) while waiting for the full marked report/feedback to be released by admin.
 - Admin opens `/admin/mocks` to inspect mocks, generate draft mocks, publish/unpublish, preview as student, review attempts, add feedback, and release reports.
 - Released attempts can be reviewed by students at `/mocks/[id]/review`.
 
@@ -56,7 +56,7 @@ Important: this repo has `AGENTS.md` warning that this is a newer Next.js with b
 
 - `/` landing page.
 - `/login`, `/register`, `/dashboard`, `/dashboard/settings` (name/password/dark-mode toggle), `/dashboard/family` (parent view: lessons remaining, upcoming lessons, payment-status placeholder).
-- `/welcome` — lightweight mobile-first landing page (no heavy motion) for sharing outside the main desktop-oriented site, e.g. via WhatsApp.
+- `/welcome` — lightweight mobile-first landing page (no heavy motion) for sharing outside the main desktop-oriented site, e.g. via WhatsApp. Redesigned 2026-07-17 with pricing tabs (`src/components/sections/welcome-pricing-tabs.tsx`: Mock Club, Group/Private Tuition, Holiday Booster, Complete Programme) and a sticky bottom booking bar (`welcome-sticky-cta.tsx`).
 - `/admin`, `/admin/students`, `/admin/mocks`, `/admin/mocks/[id]/preview`.
 - `/mocks`, `/mocks/[id]`, `/mocks/[id]/review`, `/mocks/[id]/print` (printable practice mocks — `printOnly: true`, no score/report, see Design Notes).
 - `/notes`, `/notes/maths`, `/notes/maths/numbers`, `/notes/maths/fractions-decimals-percentages`, `/notes/maths/ratio-proportion`, `/notes/maths/algebra`, `/notes/maths/geometry`, `/notes/maths/averages-statistics`.
@@ -79,6 +79,10 @@ Important: this repo has `AGENTS.md` warning that this is a newer Next.js with b
 Prisma schema lives in `prisma/schema.prisma`.
 
 Models: `User`, `Session`, `MockExam`, `Question`, `Passage`, `Attempt`, `MockUnlock`, `ReferenceSource`, `ProductPlan`, `EmailTemplate`, `PaymentRequest`. Enums: `Role`, `Subject`, `ReferenceStyle`, `AttemptStatus`, `PaymentStatus`, `PaymentRequestStatus`.
+
+`ProductPlan` has `includedMockIds`/`includedNoteIds` (2026-07-17): assigning a plan to a student additively grants that bundle's mocks/notes via `set-content`/`assign-plan` admin routes — see Recent Feature State.
+
+Schema CLI commands (`migrate`/`push`) must use `DIRECT_URL` (port 5432), not the pooled `DATABASE_URL` — the pgbouncer transaction pooler on 6543 hangs indefinitely on schema commands. `prisma.config.ts` is already wired for this.
 
 Seed/static catalog lives in `src/data/platform.ts`:
 - Demo admin and students.
@@ -122,19 +126,22 @@ Full narrative history of what was built/changed and when now lives in `status.m
 - Admin students UX: `AdminStudentsWorkspace`'s top panel only ever lists accounts an admin has manually paused (`approved: false`) — it is NOT a new-signup review queue (registration grants instant access, see Main Product Flows). The rest of the page uses a collapsed-by-default `UnlockPanel` per student (search, grouped-by-subject unlock/lock-all, running unlock count) rather than one flat block of checkboxes.
 - Admin Attempts tab (`admin-mocks-command-centre.tsx`) resolves the real student name from `usePlatform()`'s `users` list per `attempt.studentId` — don't reintroduce a hardcoded placeholder name.
 - Elite-difficulty mock roster includes `maths-elite-1` (80 questions, all 6 Maths topics) and `english-gl-10-elite` ("The Weaver's Last Thread" passage, 54 marks) alongside the earlier `english-gl-8-elite`/`-9-elite`. Deferred Elite mocks are tracked in `TODO.md`.
+- **2026-07-17 session**: fixed a critical demo-mode auth bypass — demo sessions (no `DATABASE_URL`) previously encoded the raw user id directly in the `summit_session` cookie, so setting `summit_session=admin-1` forged admin access with no login. Demo sessions now use an unguessable random token backed by an in-memory map, matching the DB-backed model; production also now hard-refuses to fall into demo auth if `DATABASE_URL` is missing, instead of silently degrading. Pricing page also fixed: layout was branching on `tiers.length === 3` but every group now has exactly one tier post-consolidation, so every section rendered as a single cramped card — replaced with one unified responsive grid.
+- **2026-07-17 session**: student dashboard applies goal-gradient/reciprocity UX patterns — onboarding never shows 0% (registration + free mock unlock always count as complete steps), and raw scores surface immediately on submission instead of being withheld until report release (`src/components/platform/dashboards.tsx`).
+- **2026-07-17 session**: `ProductPlan` bundles — `includedMockIds`/`includedNoteIds` fields let admins define what each plan grants via a new bundle editor on the admin students page; assigning a plan to a student now additively unlocks its bundle (`src/app/api/admin/plans/[id]/set-content/route.ts`, `assign-plan/route.ts`).
 
 ## Design Notes
 
 - Keep the app as a product/tool first, not a generic landing page.
 - Use existing components in `src/components/ui`, `src/components/layout`, `src/components/sections`, and `src/components/platform`.
 - The current visual identity uses navy, gold, cream, white, and restrained motion.
-- Scored mocks stay online-only — do not add PDF downloads or print views for marked mocks.
+- Scored mocks stay online-only — do not add PDF downloads or print views of the exam content itself. The one exception: once a report is released, the student's *marked report* (score, topic breakdown, missed questions) is printable/PDF-able at `/mocks/[id]/report`, mirroring the admin's `/admin/reports/[attemptId]` view (`AdminAttemptReport` with `audience="student"`) — this was a deliberate 2026-07-19 fix, not a regression of the "no PDF" rule, which still applies to the underlying mock questions/content.
 - A separate "Printable Practice" mock category is allowed: mocks with `printOnly: true` on `MockExam`, rendered via a plain browser `@media print` view (`/mocks/[id]/print`, `src/app/globals.css`) — no PDF generation library, no score, no report. Keep this category clearly distinct from scored online mocks in UI copy.
 - Do not copy third-party paper content. Reference sources are metadata only.
 
 ## Known Limitations
 
-- Auth/session/password handling works for the demo and current app but still needs production hardening.
+- Auth/session/password handling works for the demo and current app; the critical demo-mode session-forging bypass was fixed 2026-07-17 (see Recent Feature State), but the area still hasn't had a full production security hardening pass.
 - Full mock content is bundled client-side for demo speed; move sensitive content server-side before production.
 - Stripe is scaffolded but not live until keys/webhook are configured.
 - Email provider is a placeholder and logs in development.
