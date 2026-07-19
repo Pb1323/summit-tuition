@@ -12,6 +12,7 @@ function simplify(numerator: number, denominator: number) {
 export function FractionPercentBar() {
   const [denominator, setDenominator] = useState(4);
   const [numerator, setNumerator] = useState(1);
+  const [showWorking, setShowWorking] = useState(false);
 
   const n = Math.min(numerator, denominator);
   const decimal = n / denominator;
@@ -30,6 +31,36 @@ export function FractionPercentBar() {
           </div>
         )}
       </div>
+
+      <div className="flex justify-center px-6 pb-3">
+        <button
+          onClick={() => setShowWorking((v) => !v)}
+          className="rounded-full border px-4 py-1.5 text-[0.72em] font-bold uppercase tracking-wider transition-all"
+          style={{
+            background: showWorking ? "rgba(201,162,75,0.18)" : "rgba(255,255,255,0.05)",
+            borderColor: "rgba(201,162,75,0.4)",
+            color: NOTES_GOLD,
+            cursor: "pointer",
+          }}
+        >
+          {showWorking ? "Hide the working" : "Show the working"}
+        </button>
+      </div>
+      {showWorking && (
+        <div
+          className="mx-6 mb-5 animate-[ntfadein_0.3s_ease] rounded-xl border px-4 py-3 text-center font-mono text-[0.82em] leading-relaxed"
+          style={{ background: "rgba(201,162,75,0.1)", borderColor: "rgba(201,162,75,0.3)", color: "#F8F5EE" }}
+        >
+          {n}/{denominator} &nbsp;→&nbsp; divide: {n} ÷ {denominator} = {decimal.toFixed(2)} &nbsp;→&nbsp; ×100 ={" "}
+          <b style={{ color: NOTES_GOLD }}>{percent}%</b>
+          {simplified.d !== denominator && (
+            <>
+              <br />
+              simplify first: {n}/{denominator} ÷ {denominator / simplified.d} = <b style={{ color: NOTES_GOLD }}>{simplified.n}/{simplified.d}</b> (same value, smaller numbers)
+            </>
+          )}
+        </div>
+      )}
 
       <div className="flex justify-center px-6 pb-5">
         <div className="flex h-14 w-full max-w-[440px] overflow-hidden rounded-xl border" style={{ borderColor: "rgba(201,162,75,0.4)" }}>
