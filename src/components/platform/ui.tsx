@@ -328,13 +328,20 @@ export function ClozeGapRenderer({
   value,
   onChange,
   review,
+  options: optionsProp,
 }: {
   question: Question;
   value?: string;
   onChange: (value: string) => void;
   review?: boolean;
+  /** Pre-shuffled options from the caller (QuestionRenderer's per-question seededShuffle).
+   * Falls back to raw question.options order if omitted, but callers should always pass the
+   * shuffled list: every cloze template's source data (clozeTemplates in mock-generation.ts)
+   * hardcodes the correct answer as options[0], so skipping the shuffle here would make every
+   * cloze question's correct letter predictably "A" - the exact bug this branch exists to fix. */
+  options?: string[];
 }) {
-  const options = Array.isArray(question.options) ? question.options : [];
+  const options = optionsProp ?? (Array.isArray(question.options) ? question.options : []);
   const expected = (Array.isArray(question.correctAnswer) ? question.correctAnswer[0] : question.correctAnswer) ?? "";
   const [before, after = ""] = question.text.split(/_{3,}/);
   return (
@@ -449,7 +456,7 @@ export function QuestionRenderer({
       {isSegmentFormat ? (
         <SegmentMistakeAnswer question={question} value={value} onChange={onChange} review={review} isCorrectOption={isCorrectOption} />
       ) : isCloze ? (
-        <ClozeGapRenderer question={question} value={value} onChange={onChange} review={review} />
+        <ClozeGapRenderer question={question} value={value} onChange={onChange} review={review} options={options} />
       ) : hasOptions ? (
         <fieldset className="grid gap-3">
           <legend className="sr-only">Answer options for {hasText ? question.text : "this question"}</legend>
