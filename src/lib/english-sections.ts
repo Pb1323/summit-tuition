@@ -56,12 +56,19 @@ export const englishSectionMeta = (id: EnglishSectionId) => ENGLISH_SECTIONS.fin
  * "English GL-Style Stretch Paper" static mock in src/data/platform.ts uses
  * topic "Grammar" for its punctuation questions, so topic alone is not a
  * reliable signal — tags are consistent across both sources).
+ *
+ * "grammar-mistake" is treated as the same section as "punctuation": the
+ * hand-authored Elite English mocks (english-gl-8/9/10-elite) tag their
+ * segment-format grammar-error questions "grammar-mistake" rather than
+ * "punctuation" — same GL "find the lettered group with the mistake"
+ * mechanic, just named after the error type it drills instead of GL's own
+ * section label. Both map to the one "punctuation" EnglishSectionId.
  */
 export function getEnglishSectionId(question: Question): EnglishSectionId | undefined {
   const tags = (question.tags ?? []).map((tag) => tag.toLowerCase());
   if (question.questionType === "cloze" || tags.includes("cloze")) return "cloze";
   if (tags.includes("spelling")) return "spelling";
-  if (tags.includes("punctuation")) return "punctuation";
+  if (tags.includes("punctuation") || tags.includes("grammar-mistake")) return "punctuation";
   if (question.subject === "English") return "comprehension";
   return undefined;
 }

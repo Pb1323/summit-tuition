@@ -327,6 +327,40 @@ export const PASSAGES: Passage[] = [
     text:
       "Elin had learned to read wool the way other apprentices read faces: by its grain, its tension, the places where a single fibre pulled tighter than the rest as though holding something back. For three years she had worked in Mistress Sabo's crowded workshop above the wool market, carding fleece, mixing dyes from madder root and walnut husk, and copying patterns from her mentor's faded sketchbooks onto fresh warp threads. She could recite the exact tension needed for every weave in the workshop's repertoire without glancing at a single note. What she could not do, however carefully her hands moved, was touch the ceremonial shuttle kept locked in the cedar chest by the door. That privilege, Mistress Sabo said, belonged only to a weaver who had earned the wool's trust, and she had never once explained how such trust might be earned.\n\nThe tapestry that troubled Elin most hung half-finished on the north wall: a weaving of Millbrook Bridge, commissioned by the town council years before Elin's apprenticeship began. Mistress Sabo had started it twice and abandoned it twice, claiming the pattern refused to sit straight no matter how carefully she counted the threads. Elin suspected a different reason. The unwoven gap in the design sat almost exactly where the old bridge railing had once stood, in the section that had given way during the flood that took Elin's older brother six winters ago. Whenever Mistress Sabo's shuttle approached that part of the loom, her hand would slow, then stop altogether, as though the thread itself had grown heavier beneath her fingers.\n\nElin never asked her about it directly. Instead she asked about dyes, about why madder root produced a duller red in wet weather, about how a weaver could tell a well-spun thread from a poorly spun one simply by its shine under lamplight. Mistress Sabo answered these questions patiently, generously even, filling whole evenings with everything she knew about wool and colour and pattern. Yet Elin had slowly come to understand that patience and trust were not woven from the same thread at all. Her mentor would teach her everything the loom had taught her, it seemed, except how to face that one unfinished bridge without flinching. Elin told herself this did not matter. She told herself this most days without quite believing it.\n\nThe accident happened on a rain-slicked morning in early spring. Mistress Sabo slipped on the workshop's stone steps while carrying a bolt of undyed cloth, and though nothing broke, she wrenched her wrist badly enough that she could not grip a shuttle without wincing. Within the hour, a messenger arrived from the town council: the ceremonial tapestry for that evening's Founding Festival, the one meant to hang above the new bridge at its unveiling, still needed its final third completed, and every other weaver in the district was already committed to festival banners elsewhere. There was no time to send for outside help, and the council's deadline could not be moved for anyone.\n\nElin took up the shuttle Mistress Sabo could no longer hold, working through the afternoon and long into the evening in a hush she had never known the workshop to keep. She wove thread after thread exactly as she had been trained, resisting every urge to hurry even as the light through the high window faded to grey, because a rushed weave, her mentor always said, was no different from a wrong one. By the time the workshop bell rang for the festival procession, Elin had finished not only the bridge but the small figure that had always been missing from beside it — a boy, standing at the railing, exactly where the pattern books had left blank.\n\nMistress Sabo said nothing when she finally saw the completed tapestry, though her eyes rested a long moment on the small woven figure by the railing, its threads worked with the same careful precision as every other part of the design. She did not praise the work, and she did not explain the years of silence about the bridge. She simply crossed the workshop, lifted the ceremonial shuttle from the cedar chest, and set it down in Elin's open palm without a word. Elin understood, finally, that this silence was not the absence of trust but its whole, complicated shape.",
   },
+  {
+    "id": "passage-river-map-r1",
+    "title": "The River Map",
+    "source": "original",
+    "paragraphs": [
+      "The map arrived folded inside a brown envelope, though nobody in the house admitted to posting it. It was not a modern map with tidy roads and bright symbols. It was drawn in blue ink on thick cream paper, and the river curled across it like a question waiting to be answered.",
+      "Nia found it on the kitchen table before breakfast. Her father was searching for his keys, her little brother was arguing with a cereal box, and the rain tapped busily against the windows. At first, Nia assumed it belonged to school, but then she saw her grandmother's initials written beside the compass rose.",
+      "Grandmother Isha had been a surveyor before she became too ill to climb the valley paths. She had once told Nia that a good map did not simply show where places were; it showed what mattered to the person who made it. On this map, the village was only a cluster of dots, but the river was careful and detailed, marked with bends, shallows and tiny handwritten notes.",
+      "One note, beside a narrow loop of water, read: Listen where the stones are white. Another, close to the old railway bridge, said: The answer is not always downstream. Nia felt a small tightening in her chest, the kind that came before a difficult maths problem or a secret.",
+      "By nine o'clock the rain had thinned to mist. Nia packed the map in a plastic folder, pulled on her boots, and told her father she was walking to the library. This was not exactly untrue; the path to the library crossed the river twice. Still, she avoided mentioning the envelope.",
+      "At the first crossing, the river looked ordinary: brown-green water, nettles along the bank, a crisp packet trapped under a root. Nia checked the map. The blue ink showed stepping stones just beyond the bridge, but in real life the water covered them completely. She waited, listening. Beneath the rush of the current, she heard a faint hollow tapping, as if pebbles were knocking together under the surface.",
+      "The sound led her upstream to a bank of pale stones. They were arranged in a crescent, not naturally scattered but placed with patient care. Nia crouched and noticed that one stone was flatter than the rest. Under it lay a metal key, dark with age but wrapped in oilcloth.",
+      "For a moment she simply stared. The valley, which had always seemed familiar, rearranged itself around her. The river was no longer just a route through the village; it was a sentence Grandmother Isha had written slowly over many years, and Nia had only just learned how to read the first word.",
+      "The key was smaller than Nia expected and strangely warm from the oilcloth. She turned it over in her palm and saw three tiny lines scratched into the metal. They matched three blue marks on the map near the railway bridge, where the river narrowed and slipped beneath an arch of blackened brick.",
+      "Nia nearly went home then. The sensible part of her mind began listing objections: her boots were already muddy, her father would notice if she was late, and old keys did not always open interesting doors. Yet the map seemed to pull her attention back each time she tried to fold it away.",
+      "At the bridge, ivy hung over the parapet like a curtain. Behind it, half-hidden by leaves, was a square iron door set into the stonework. Nia fitted the key into the lock. It resisted at first, then turned with a reluctant click that seemed much louder than the river.",
+      "Inside was not treasure, not exactly. A narrow chamber held measuring rods, notebooks wrapped in cloth and a brass instrument in a wooden case. On the first page of the top notebook, Grandmother Isha had written: Some places disappear only because nobody is taught how to notice them. Nia read the sentence twice, understanding that the map was not a puzzle made for one morning, but an invitation to become more observant than she had been before."
+    ],
+    "text": "The map arrived folded inside a brown envelope, though nobody in the house admitted to posting it. It was not a modern map with tidy roads and bright symbols. It was drawn in blue ink on thick cream paper, and the river curled across it like a question waiting to be answered.\n\nNia found it on the kitchen table before breakfast. Her father was searching for his keys, her little brother was arguing with a cereal box, and the rain tapped busily against the windows. At first, Nia assumed it belonged to school, but then she saw her grandmother's initials written beside the compass rose.\n\nGrandmother Isha had been a surveyor before she became too ill to climb the valley paths. She had once told Nia that a good map did not simply show where places were; it showed what mattered to the person who made it. On this map, the village was only a cluster of dots, but the river was careful and detailed, marked with bends, shallows and tiny handwritten notes.\n\nOne note, beside a narrow loop of water, read: Listen where the stones are white. Another, close to the old railway bridge, said: The answer is not always downstream. Nia felt a small tightening in her chest, the kind that came before a difficult maths problem or a secret.\n\nBy nine o'clock the rain had thinned to mist. Nia packed the map in a plastic folder, pulled on her boots, and told her father she was walking to the library. This was not exactly untrue; the path to the library crossed the river twice. Still, she avoided mentioning the envelope.\n\nAt the first crossing, the river looked ordinary: brown-green water, nettles along the bank, a crisp packet trapped under a root. Nia checked the map. The blue ink showed stepping stones just beyond the bridge, but in real life the water covered them completely. She waited, listening. Beneath the rush of the current, she heard a faint hollow tapping, as if pebbles were knocking together under the surface.\n\nThe sound led her upstream to a bank of pale stones. They were arranged in a crescent, not naturally scattered but placed with patient care. Nia crouched and noticed that one stone was flatter than the rest. Under it lay a metal key, dark with age but wrapped in oilcloth.\n\nFor a moment she simply stared. The valley, which had always seemed familiar, rearranged itself around her. The river was no longer just a route through the village; it was a sentence Grandmother Isha had written slowly over many years, and Nia had only just learned how to read the first word.\n\nThe key was smaller than Nia expected and strangely warm from the oilcloth. She turned it over in her palm and saw three tiny lines scratched into the metal. They matched three blue marks on the map near the railway bridge, where the river narrowed and slipped beneath an arch of blackened brick.\n\nNia nearly went home then. The sensible part of her mind began listing objections: her boots were already muddy, her father would notice if she was late, and old keys did not always open interesting doors. Yet the map seemed to pull her attention back each time she tried to fold it away.\n\nAt the bridge, ivy hung over the parapet like a curtain. Behind it, half-hidden by leaves, was a square iron door set into the stonework. Nia fitted the key into the lock. It resisted at first, then turned with a reluctant click that seemed much louder than the river.\n\nInside was not treasure, not exactly. A narrow chamber held measuring rods, notebooks wrapped in cloth and a brass instrument in a wooden case. On the first page of the top notebook, Grandmother Isha had written: Some places disappear only because nobody is taught how to notice them. Nia read the sentence twice, understanding that the map was not a puzzle made for one morning, but an invitation to become more observant than she had been before."
+  } as Passage,
+  {
+    "id": "passage-performance-day-r1",
+    "title": "Performance Day",
+    "source": "original",
+    "paragraphs": [
+      "Backstage, the hum of the audience grew louder as the lights dimmed. Priya smoothed the front of her costume and counted her breaths, the way her drama teacher had taught her.",
+      "She could hear Theo pacing behind the curtain, his shoes tapping an uneven rhythm against the wooden floor. Neither of them had spoken since the final rehearsal ended.",
+      "A stagehand leaned close and whispered that the microphones were finally working again, though nobody had explained what had gone wrong with them in the first place.",
+      "Priya peered through the gap in the curtain. Rows of parents sat fanning themselves with programmes, and somewhere near the back her grandmother was already recording on her phone.",
+      "The stage manager raised three fingers, then two, then one. Priya felt her stomach tighten, though she reminded herself that this feeling always faded within the first minute.",
+      "When the curtain finally lifted, the applause arrived before she had taken a single step, warm and sudden, and for a moment it carried her forward better than her own legs could."
+    ],
+    "text": "Backstage, the hum of the audience grew louder as the lights dimmed. Priya smoothed the front of her costume and counted her breaths, the way her drama teacher had taught her.\n\nShe could hear Theo pacing behind the curtain, his shoes tapping an uneven rhythm against the wooden floor. Neither of them had spoken since the final rehearsal ended.\n\nA stagehand leaned close and whispered that the microphones were finally working again, though nobody had explained what had gone wrong with them in the first place.\n\nPriya peered through the gap in the curtain. Rows of parents sat fanning themselves with programmes, and somewhere near the back her grandmother was already recording on her phone.\n\nThe stage manager raised three fingers, then two, then one. Priya felt her stomach tighten, though she reminded herself that this feeling always faded within the first minute.\n\nWhen the curtain finally lifted, the applause arrived before she had taken a single step, warm and sudden, and for a moment it carried her forward better than her own legs could."
+  } as Passage,
 ];
 
 export const QUESTIONS: Question[] = [
@@ -11970,6 +12004,2596 @@ export const QUESTIONS: Question[] = [
 
   { id: "mu79", subject: "Maths", topic: "Data handling", subtopic: "Survey data", difficulty: "standard", questionType: "table_graph", text: "The Venn diagram shows how many of 35 pupils play chess and play an instrument. How many pupils do neither?", options: ["9", "26", "17", "14"], correctAnswer: "9", markScheme: "9+5+12=26 pupils do at least one activity. 35-26=9 do neither.", explanation: "Reads a Venn diagram then subtracts from the total surveyed.", marks: 1, visual: { type: "venn", title: "Chess and instrument", data: { leftLabel: "Chess", rightLabel: "Instrument", left: 9, overlap: 5, right: 12 } }, tags: ["data-handling", "venn"], timeEstimateSeconds: 65 },
   { id: "mu80", subject: "Maths", topic: "Data handling", subtopic: "Bar chart reasoning", difficulty: "standard", questionType: "table_graph", text: "The bar chart shows how many badges four scouts collected. How many fewer badges did Robin collect than Priya?", options: ["7", "3", "11", "4"], correctAnswer: "7", markScheme: "26 - 19 = 7.", explanation: "Reading and comparing two bars on a chart.", marks: 1, visual: { type: "bar_chart", title: "Badges collected", data: { labels: ["Priya", "Robin", "Sam", "Tia"], values: [26, 19, 22, 15] } }, tags: ["data-handling", "bar-chart"], timeEstimateSeconds: 55 },
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "inference",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-inference-secret-r1-comp-q1",
+    "subtopic": "Character motivation",
+    "paragraphRefs": [
+      4,
+      5
+    ],
+    "text": "Why does Nia avoid mentioning the envelope to her father?",
+    "options": [
+      "She senses the map may be private or mysterious",
+      "She has lost the map",
+      "She dislikes walking to the library",
+      "She wants to avoid breakfast"
+    ],
+    "correctAnswer": "She senses the map may be private or mysterious",
+    "markScheme": "Award 1 mark for recognising that Nia is secretive because the map feels significant or mysterious.",
+    "explanation": "The passage says she avoids mentioning the envelope after feeling it may contain a secret."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "inference",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-inference-continue-r1-comp-q2",
+    "subtopic": "Character motivation",
+    "paragraphRefs": [
+      10
+    ],
+    "text": "Why does Nia decide to carry on despite the objections listed in paragraph 10?",
+    "options": [
+      "The map keeps pulling her attention back",
+      "Her father tells her to continue",
+      "She is no longer worried about being late",
+      "She wants to avoid the rain"
+    ],
+    "correctAnswer": "The map keeps pulling her attention back",
+    "markScheme": "Award 1 mark for recognising the map's pull overrides her sensible doubts.",
+    "explanation": "Paragraph 10 states the map seemed to pull her attention back each time she tried to fold it away."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "inference",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-inference-morning-r1-comp-q3",
+    "subtopic": "Evidence across paragraphs",
+    "paragraphRefs": [
+      2
+    ],
+    "text": "What does the busy morning scene in paragraph 2 suggest about why nobody questions where the map came from?",
+    "options": [
+      "Everyone is too distracted to notice properly",
+      "Nobody in the family can read maps",
+      "The family already knew about the map",
+      "Nia hides the map before anyone sees it"
+    ],
+    "correctAnswer": "Everyone is too distracted to notice properly",
+    "markScheme": "Award 1 mark for linking the chaotic breakfast scene to nobody noticing.",
+    "explanation": "The father is searching for keys and the brother is arguing, so nobody is paying close attention."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "inference",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-inference-secret-r1-comp-q4",
+    "subtopic": "Character motivation",
+    "paragraphRefs": [
+      4,
+      5
+    ],
+    "text": "Why does Nia avoid mentioning the envelope to her father?",
+    "options": [
+      "She senses the map may be private or mysterious",
+      "She has lost the map",
+      "She dislikes walking to the library",
+      "She wants to avoid breakfast"
+    ],
+    "correctAnswer": "She senses the map may be private or mysterious",
+    "markScheme": "Award 1 mark for recognising that Nia is secretive because the map feels significant or mysterious.",
+    "explanation": "The passage says she avoids mentioning the envelope after feeling it may contain a secret."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "inference",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-inference-continue-r1-comp-q5",
+    "subtopic": "Character motivation",
+    "paragraphRefs": [
+      10
+    ],
+    "text": "Why does Nia decide to carry on despite the objections listed in paragraph 10?",
+    "options": [
+      "The map keeps pulling her attention back",
+      "Her father tells her to continue",
+      "She is no longer worried about being late",
+      "She wants to avoid the rain"
+    ],
+    "correctAnswer": "The map keeps pulling her attention back",
+    "markScheme": "Award 1 mark for recognising the map's pull overrides her sensible doubts.",
+    "explanation": "Paragraph 10 states the map seemed to pull her attention back each time she tried to fold it away."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "inference",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-inference-morning-r1-comp-q6",
+    "subtopic": "Evidence across paragraphs",
+    "paragraphRefs": [
+      2
+    ],
+    "text": "What does the busy morning scene in paragraph 2 suggest about why nobody questions where the map came from?",
+    "options": [
+      "Everyone is too distracted to notice properly",
+      "Nobody in the family can read maps",
+      "The family already knew about the map",
+      "Nia hides the map before anyone sees it"
+    ],
+    "correctAnswer": "Everyone is too distracted to notice properly",
+    "markScheme": "Award 1 mark for linking the chaotic breakfast scene to nobody noticing.",
+    "explanation": "The father is searching for keys and the brother is arguing, so nobody is paying close attention."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "inference",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-inference-secret-r1-comp-q7",
+    "subtopic": "Character motivation",
+    "paragraphRefs": [
+      4,
+      5
+    ],
+    "text": "Why does Nia avoid mentioning the envelope to her father?",
+    "options": [
+      "She senses the map may be private or mysterious",
+      "She has lost the map",
+      "She dislikes walking to the library",
+      "She wants to avoid breakfast"
+    ],
+    "correctAnswer": "She senses the map may be private or mysterious",
+    "markScheme": "Award 1 mark for recognising that Nia is secretive because the map feels significant or mysterious.",
+    "explanation": "The passage says she avoids mentioning the envelope after feeling it may contain a secret."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "inference",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-inference-continue-r1-comp-q8",
+    "subtopic": "Character motivation",
+    "paragraphRefs": [
+      10
+    ],
+    "text": "Why does Nia decide to carry on despite the objections listed in paragraph 10?",
+    "options": [
+      "The map keeps pulling her attention back",
+      "Her father tells her to continue",
+      "She is no longer worried about being late",
+      "She wants to avoid the rain"
+    ],
+    "correctAnswer": "The map keeps pulling her attention back",
+    "markScheme": "Award 1 mark for recognising the map's pull overrides her sensible doubts.",
+    "explanation": "Paragraph 10 states the map seemed to pull her attention back each time she tried to fold it away."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "inference",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-inference-morning-r1-comp-q9",
+    "subtopic": "Evidence across paragraphs",
+    "paragraphRefs": [
+      2
+    ],
+    "text": "What does the busy morning scene in paragraph 2 suggest about why nobody questions where the map came from?",
+    "options": [
+      "Everyone is too distracted to notice properly",
+      "Nobody in the family can read maps",
+      "The family already knew about the map",
+      "Nia hides the map before anyone sees it"
+    ],
+    "correctAnswer": "Everyone is too distracted to notice properly",
+    "markScheme": "Award 1 mark for linking the chaotic breakfast scene to nobody noticing.",
+    "explanation": "The father is searching for keys and the brother is arguing, so nobody is paying close attention."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "inference",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-inference-secret-r1-comp-q10",
+    "subtopic": "Character motivation",
+    "paragraphRefs": [
+      4,
+      5
+    ],
+    "text": "Why does Nia avoid mentioning the envelope to her father?",
+    "options": [
+      "She senses the map may be private or mysterious",
+      "She has lost the map",
+      "She dislikes walking to the library",
+      "She wants to avoid breakfast"
+    ],
+    "correctAnswer": "She senses the map may be private or mysterious",
+    "markScheme": "Award 1 mark for recognising that Nia is secretive because the map feels significant or mysterious.",
+    "explanation": "The passage says she avoids mentioning the envelope after feeling it may contain a secret."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "inference",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-inference-continue-r1-comp-q11",
+    "subtopic": "Character motivation",
+    "paragraphRefs": [
+      10
+    ],
+    "text": "Why does Nia decide to carry on despite the objections listed in paragraph 10?",
+    "options": [
+      "The map keeps pulling her attention back",
+      "Her father tells her to continue",
+      "She is no longer worried about being late",
+      "She wants to avoid the rain"
+    ],
+    "correctAnswer": "The map keeps pulling her attention back",
+    "markScheme": "Award 1 mark for recognising the map's pull overrides her sensible doubts.",
+    "explanation": "Paragraph 10 states the map seemed to pull her attention back each time she tried to fold it away."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "inference",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-inference-morning-r1-comp-q12",
+    "subtopic": "Evidence across paragraphs",
+    "paragraphRefs": [
+      2
+    ],
+    "text": "What does the busy morning scene in paragraph 2 suggest about why nobody questions where the map came from?",
+    "options": [
+      "Everyone is too distracted to notice properly",
+      "Nobody in the family can read maps",
+      "The family already knew about the map",
+      "Nia hides the map before anyone sees it"
+    ],
+    "correctAnswer": "Everyone is too distracted to notice properly",
+    "markScheme": "Award 1 mark for linking the chaotic breakfast scene to nobody noticing.",
+    "explanation": "The father is searching for keys and the brother is arguing, so nobody is paying close attention."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "inference",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-inference-secret-r1-comp-q13",
+    "subtopic": "Character motivation",
+    "paragraphRefs": [
+      4,
+      5
+    ],
+    "text": "Why does Nia avoid mentioning the envelope to her father?",
+    "options": [
+      "She senses the map may be private or mysterious",
+      "She has lost the map",
+      "She dislikes walking to the library",
+      "She wants to avoid breakfast"
+    ],
+    "correctAnswer": "She senses the map may be private or mysterious",
+    "markScheme": "Award 1 mark for recognising that Nia is secretive because the map feels significant or mysterious.",
+    "explanation": "The passage says she avoids mentioning the envelope after feeling it may contain a secret."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "inference",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-inference-continue-r1-comp-q14",
+    "subtopic": "Character motivation",
+    "paragraphRefs": [
+      10
+    ],
+    "text": "Why does Nia decide to carry on despite the objections listed in paragraph 10?",
+    "options": [
+      "The map keeps pulling her attention back",
+      "Her father tells her to continue",
+      "She is no longer worried about being late",
+      "She wants to avoid the rain"
+    ],
+    "correctAnswer": "The map keeps pulling her attention back",
+    "markScheme": "Award 1 mark for recognising the map's pull overrides her sensible doubts.",
+    "explanation": "Paragraph 10 states the map seemed to pull her attention back each time she tried to fold it away."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "inference",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-inference-morning-r1-comp-q15",
+    "subtopic": "Evidence across paragraphs",
+    "paragraphRefs": [
+      2
+    ],
+    "text": "What does the busy morning scene in paragraph 2 suggest about why nobody questions where the map came from?",
+    "options": [
+      "Everyone is too distracted to notice properly",
+      "Nobody in the family can read maps",
+      "The family already knew about the map",
+      "Nia hides the map before anyone sees it"
+    ],
+    "correctAnswer": "Everyone is too distracted to notice properly",
+    "markScheme": "Award 1 mark for linking the chaotic breakfast scene to nobody noticing.",
+    "explanation": "The father is searching for keys and the brother is arguing, so nobody is paying close attention."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "inference",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-inference-secret-r1-comp-q16",
+    "subtopic": "Character motivation",
+    "paragraphRefs": [
+      4,
+      5
+    ],
+    "text": "Why does Nia avoid mentioning the envelope to her father?",
+    "options": [
+      "She senses the map may be private or mysterious",
+      "She has lost the map",
+      "She dislikes walking to the library",
+      "She wants to avoid breakfast"
+    ],
+    "correctAnswer": "She senses the map may be private or mysterious",
+    "markScheme": "Award 1 mark for recognising that Nia is secretive because the map feels significant or mysterious.",
+    "explanation": "The passage says she avoids mentioning the envelope after feeling it may contain a secret."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "inference",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-inference-continue-r1-comp-q17",
+    "subtopic": "Character motivation",
+    "paragraphRefs": [
+      10
+    ],
+    "text": "Why does Nia decide to carry on despite the objections listed in paragraph 10?",
+    "options": [
+      "The map keeps pulling her attention back",
+      "Her father tells her to continue",
+      "She is no longer worried about being late",
+      "She wants to avoid the rain"
+    ],
+    "correctAnswer": "The map keeps pulling her attention back",
+    "markScheme": "Award 1 mark for recognising the map's pull overrides her sensible doubts.",
+    "explanation": "Paragraph 10 states the map seemed to pull her attention back each time she tried to fold it away."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "inference",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-inference-morning-r1-comp-q18",
+    "subtopic": "Evidence across paragraphs",
+    "paragraphRefs": [
+      2
+    ],
+    "text": "What does the busy morning scene in paragraph 2 suggest about why nobody questions where the map came from?",
+    "options": [
+      "Everyone is too distracted to notice properly",
+      "Nobody in the family can read maps",
+      "The family already knew about the map",
+      "Nia hides the map before anyone sees it"
+    ],
+    "correctAnswer": "Everyone is too distracted to notice properly",
+    "markScheme": "Award 1 mark for linking the chaotic breakfast scene to nobody noticing.",
+    "explanation": "The father is searching for keys and the brother is arguing, so nobody is paying close attention."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "vocabulary",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-vocab-assumed-r1-comp-q19",
+    "subtopic": "Meaning in context",
+    "paragraphRefs": [
+      2
+    ],
+    "text": "Which word is closest in meaning to 'assumed' as it is used in paragraph 2?",
+    "options": [
+      "guessed",
+      "carried",
+      "proved",
+      "forgot"
+    ],
+    "correctAnswer": "guessed",
+    "markScheme": "Assumed means guessed or supposed without being certain.",
+    "explanation": "Nia thinks the map belongs to school before she has checked properly."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "vocabulary",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-vocab-reluctant-r1-comp-q20",
+    "subtopic": "Meaning in context",
+    "paragraphRefs": [
+      11
+    ],
+    "text": "Which word is closest in meaning to 'reluctant' as it is used in paragraph 11 ('turned with a reluctant click')?",
+    "options": [
+      "unwilling",
+      "sudden",
+      "loud",
+      "broken"
+    ],
+    "correctAnswer": "unwilling",
+    "markScheme": "Reluctant means unwilling or hesitant.",
+    "explanation": "The lock seems to resist turning, as if unwilling to open."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "vocabulary",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-vocab-objections-r1-comp-q21",
+    "subtopic": "Meaning in context",
+    "paragraphRefs": [
+      10
+    ],
+    "text": "Which word is closest in meaning to 'objections' as it is used in paragraph 10?",
+    "options": [
+      "reasons against",
+      "questions",
+      "jokes",
+      "plans"
+    ],
+    "correctAnswer": "reasons against",
+    "markScheme": "Objections are reasons put forward against doing something.",
+    "explanation": "Nia's sensible side is listing reasons not to continue."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "vocabulary",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-vocab-assumed-r1-comp-q22",
+    "subtopic": "Meaning in context",
+    "paragraphRefs": [
+      2
+    ],
+    "text": "Which word is closest in meaning to 'assumed' as it is used in paragraph 2?",
+    "options": [
+      "guessed",
+      "carried",
+      "proved",
+      "forgot"
+    ],
+    "correctAnswer": "guessed",
+    "markScheme": "Assumed means guessed or supposed without being certain.",
+    "explanation": "Nia thinks the map belongs to school before she has checked properly."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "vocabulary",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-vocab-reluctant-r1-comp-q23",
+    "subtopic": "Meaning in context",
+    "paragraphRefs": [
+      11
+    ],
+    "text": "Which word is closest in meaning to 'reluctant' as it is used in paragraph 11 ('turned with a reluctant click')?",
+    "options": [
+      "unwilling",
+      "sudden",
+      "loud",
+      "broken"
+    ],
+    "correctAnswer": "unwilling",
+    "markScheme": "Reluctant means unwilling or hesitant.",
+    "explanation": "The lock seems to resist turning, as if unwilling to open."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "vocabulary",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-vocab-objections-r1-comp-q24",
+    "subtopic": "Meaning in context",
+    "paragraphRefs": [
+      10
+    ],
+    "text": "Which word is closest in meaning to 'objections' as it is used in paragraph 10?",
+    "options": [
+      "reasons against",
+      "questions",
+      "jokes",
+      "plans"
+    ],
+    "correctAnswer": "reasons against",
+    "markScheme": "Objections are reasons put forward against doing something.",
+    "explanation": "Nia's sensible side is listing reasons not to continue."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "vocabulary",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-vocab-assumed-r1-comp-q25",
+    "subtopic": "Meaning in context",
+    "paragraphRefs": [
+      2
+    ],
+    "text": "Which word is closest in meaning to 'assumed' as it is used in paragraph 2?",
+    "options": [
+      "guessed",
+      "carried",
+      "proved",
+      "forgot"
+    ],
+    "correctAnswer": "guessed",
+    "markScheme": "Assumed means guessed or supposed without being certain.",
+    "explanation": "Nia thinks the map belongs to school before she has checked properly."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "vocabulary",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-vocab-reluctant-r1-comp-q26",
+    "subtopic": "Meaning in context",
+    "paragraphRefs": [
+      11
+    ],
+    "text": "Which word is closest in meaning to 'reluctant' as it is used in paragraph 11 ('turned with a reluctant click')?",
+    "options": [
+      "unwilling",
+      "sudden",
+      "loud",
+      "broken"
+    ],
+    "correctAnswer": "unwilling",
+    "markScheme": "Reluctant means unwilling or hesitant.",
+    "explanation": "The lock seems to resist turning, as if unwilling to open."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "vocabulary",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-vocab-objections-r1-comp-q27",
+    "subtopic": "Meaning in context",
+    "paragraphRefs": [
+      10
+    ],
+    "text": "Which word is closest in meaning to 'objections' as it is used in paragraph 10?",
+    "options": [
+      "reasons against",
+      "questions",
+      "jokes",
+      "plans"
+    ],
+    "correctAnswer": "reasons against",
+    "markScheme": "Objections are reasons put forward against doing something.",
+    "explanation": "Nia's sensible side is listing reasons not to continue."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "vocabulary",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-vocab-assumed-r1-comp-q28",
+    "subtopic": "Meaning in context",
+    "paragraphRefs": [
+      2
+    ],
+    "text": "Which word is closest in meaning to 'assumed' as it is used in paragraph 2?",
+    "options": [
+      "guessed",
+      "carried",
+      "proved",
+      "forgot"
+    ],
+    "correctAnswer": "guessed",
+    "markScheme": "Assumed means guessed or supposed without being certain.",
+    "explanation": "Nia thinks the map belongs to school before she has checked properly."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "retrieval",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-retrieval-table-r1-comp-q29",
+    "subtopic": "Precise detail",
+    "paragraphRefs": [
+      2
+    ],
+    "text": "Where did Nia find the map?",
+    "options": [
+      "On the kitchen table",
+      "In her school bag",
+      "Under her pillow",
+      "In the garden shed"
+    ],
+    "correctAnswer": "On the kitchen table",
+    "markScheme": "Award 1 mark for identifying the kitchen table.",
+    "explanation": "Paragraph 2 states Nia found the map on the kitchen table before breakfast."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "retrieval",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-retrieval-key-r1-comp-q30",
+    "subtopic": "Precise detail",
+    "paragraphRefs": [
+      7
+    ],
+    "text": "What did Nia find under the flatter stone?",
+    "options": [
+      "A metal key wrapped in oilcloth",
+      "A second map",
+      "A handwritten letter",
+      "A small brass compass"
+    ],
+    "correctAnswer": "A metal key wrapped in oilcloth",
+    "markScheme": "Award 1 mark for identifying the key wrapped in oilcloth.",
+    "explanation": "Paragraph 7 states that under the flatter stone lay a metal key wrapped in oilcloth."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "retrieval",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-retrieval-envelope-r1-comp-q31",
+    "subtopic": "Precise detail",
+    "paragraphRefs": [
+      1
+    ],
+    "text": "What was unusual about the map when it arrived?",
+    "options": [
+      "It was folded inside a brown envelope",
+      "It was printed on plastic",
+      "It showed bright modern roads",
+      "It was sent by Nia's teacher"
+    ],
+    "correctAnswer": "It was folded inside a brown envelope",
+    "markScheme": "Award 1 mark for identifying the brown envelope detail.",
+    "explanation": "The first paragraph states that the map arrived folded inside a brown envelope."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "retrieval",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-retrieval-table-r1-comp-q32",
+    "subtopic": "Precise detail",
+    "paragraphRefs": [
+      2
+    ],
+    "text": "Where did Nia find the map?",
+    "options": [
+      "On the kitchen table",
+      "In her school bag",
+      "Under her pillow",
+      "In the garden shed"
+    ],
+    "correctAnswer": "On the kitchen table",
+    "markScheme": "Award 1 mark for identifying the kitchen table.",
+    "explanation": "Paragraph 2 states Nia found the map on the kitchen table before breakfast."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "retrieval",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-retrieval-key-r1-comp-q33",
+    "subtopic": "Precise detail",
+    "paragraphRefs": [
+      7
+    ],
+    "text": "What did Nia find under the flatter stone?",
+    "options": [
+      "A metal key wrapped in oilcloth",
+      "A second map",
+      "A handwritten letter",
+      "A small brass compass"
+    ],
+    "correctAnswer": "A metal key wrapped in oilcloth",
+    "markScheme": "Award 1 mark for identifying the key wrapped in oilcloth.",
+    "explanation": "Paragraph 7 states that under the flatter stone lay a metal key wrapped in oilcloth."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "retrieval",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-retrieval-envelope-r1-comp-q34",
+    "subtopic": "Precise detail",
+    "paragraphRefs": [
+      1
+    ],
+    "text": "What was unusual about the map when it arrived?",
+    "options": [
+      "It was folded inside a brown envelope",
+      "It was printed on plastic",
+      "It showed bright modern roads",
+      "It was sent by Nia's teacher"
+    ],
+    "correctAnswer": "It was folded inside a brown envelope",
+    "markScheme": "Award 1 mark for identifying the brown envelope detail.",
+    "explanation": "The first paragraph states that the map arrived folded inside a brown envelope."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "retrieval",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-retrieval-table-r1-comp-q35",
+    "subtopic": "Precise detail",
+    "paragraphRefs": [
+      2
+    ],
+    "text": "Where did Nia find the map?",
+    "options": [
+      "On the kitchen table",
+      "In her school bag",
+      "Under her pillow",
+      "In the garden shed"
+    ],
+    "correctAnswer": "On the kitchen table",
+    "markScheme": "Award 1 mark for identifying the kitchen table.",
+    "explanation": "Paragraph 2 states Nia found the map on the kitchen table before breakfast."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "retrieval",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-retrieval-key-r1-comp-q36",
+    "subtopic": "Precise detail",
+    "paragraphRefs": [
+      7
+    ],
+    "text": "What did Nia find under the flatter stone?",
+    "options": [
+      "A metal key wrapped in oilcloth",
+      "A second map",
+      "A handwritten letter",
+      "A small brass compass"
+    ],
+    "correctAnswer": "A metal key wrapped in oilcloth",
+    "markScheme": "Award 1 mark for identifying the key wrapped in oilcloth.",
+    "explanation": "Paragraph 7 states that under the flatter stone lay a metal key wrapped in oilcloth."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "grammar",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-grammar-adjectives-r1-comp-q37",
+    "subtopic": "Word class in context",
+    "paragraphRefs": [
+      3
+    ],
+    "text": "How many adjectives are in this sentence from paragraph 3: 'but the river was careful and detailed, marked with bends, shallows and tiny handwritten notes'?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "correctAnswer": "4",
+    "markScheme": "The adjectives are careful, detailed, tiny and handwritten.",
+    "explanation": "Count only the words that describe a noun: careful, detailed, tiny, handwritten."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "grammar",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-grammar-wordclass-r1-comp-q38",
+    "subtopic": "Word class in context",
+    "paragraphRefs": [
+      11
+    ],
+    "text": "What type of word is 'reluctant' in paragraph 11 ('turned with a reluctant click')?",
+    "options": [
+      "Noun",
+      "Verb",
+      "Adjective",
+      "Adverb"
+    ],
+    "correctAnswer": "Adjective",
+    "markScheme": "Reluctant describes the click, so it is an adjective.",
+    "explanation": "An adjective describes a noun; here it describes the click."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "grammar",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-grammar-verbs-r1-comp-q39",
+    "subtopic": "Word class in context",
+    "paragraphRefs": [
+      5
+    ],
+    "text": "What type of words are the following, all taken from paragraph 5: packed, pulled, told?",
+    "options": [
+      "Nouns",
+      "Verbs",
+      "Adjectives",
+      "Prepositions"
+    ],
+    "correctAnswer": "Verbs",
+    "markScheme": "Packed, pulled and told are all doing/action words.",
+    "explanation": "Each word describes an action Nia carries out."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "grammar",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-grammar-adjectives-r1-comp-q40",
+    "subtopic": "Word class in context",
+    "paragraphRefs": [
+      3
+    ],
+    "text": "How many adjectives are in this sentence from paragraph 3: 'but the river was careful and detailed, marked with bends, shallows and tiny handwritten notes'?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "correctAnswer": "4",
+    "markScheme": "The adjectives are careful, detailed, tiny and handwritten.",
+    "explanation": "Count only the words that describe a noun: careful, detailed, tiny, handwritten."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "grammar",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-grammar-wordclass-r1-comp-q41",
+    "subtopic": "Word class in context",
+    "paragraphRefs": [
+      11
+    ],
+    "text": "What type of word is 'reluctant' in paragraph 11 ('turned with a reluctant click')?",
+    "options": [
+      "Noun",
+      "Verb",
+      "Adjective",
+      "Adverb"
+    ],
+    "correctAnswer": "Adjective",
+    "markScheme": "Reluctant describes the click, so it is an adjective.",
+    "explanation": "An adjective describes a noun; here it describes the click."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "grammar",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-grammar-verbs-r1-comp-q42",
+    "subtopic": "Word class in context",
+    "paragraphRefs": [
+      5
+    ],
+    "text": "What type of words are the following, all taken from paragraph 5: packed, pulled, told?",
+    "options": [
+      "Nouns",
+      "Verbs",
+      "Adjectives",
+      "Prepositions"
+    ],
+    "correctAnswer": "Verbs",
+    "markScheme": "Packed, pulled and told are all doing/action words.",
+    "explanation": "Each word describes an action Nia carries out."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "language_analysis",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-literary-simile1-r1-comp-q43",
+    "subtopic": "Literary device",
+    "paragraphRefs": [
+      1
+    ],
+    "text": "'the river curled across it like a question waiting to be answered' (paragraph 1) is an example of...",
+    "options": [
+      "A simile",
+      "A metaphor",
+      "Personification",
+      "Alliteration"
+    ],
+    "correctAnswer": "A simile",
+    "markScheme": "The comparison uses 'like', which signals a simile.",
+    "explanation": "Similes compare two things using 'like' or 'as'."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Reading comprehension",
+    "difficulty": "standard",
+    "questionType": "language_analysis",
+    "passageId": "passage-river-map-r1",
+    "marks": 1,
+    "tags": [
+      "comprehension",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 70,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-literary-metaphor1-r1-comp-q44",
+    "subtopic": "Literary device",
+    "paragraphRefs": [
+      8
+    ],
+    "text": "'it was a sentence Grandmother Isha had written slowly over many years' (paragraph 8) is an example of...",
+    "options": [
+      "A metaphor",
+      "A simile",
+      "Onomatopoeia",
+      "A proverb"
+    ],
+    "correctAnswer": "A metaphor",
+    "markScheme": "The river is directly described as a sentence, without 'like' or 'as', so it is a metaphor.",
+    "explanation": "Metaphors describe one thing as if it were another thing entirely."
+  } as Question,
+  {
+    "id": "gen-eng-spell-comittee-r1-spelling-q1",
+    "subject": "English",
+    "topic": "Spelling",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "grammar",
+    "text": "Find the group of words with the spelling mistake in it. If there is no mistake, choose N.\n\"The comittee's decision to postpone the tournament caused widespread disappointment.\"",
+    "options": [
+      "The comittee's decision",
+      "to postpone the tournament",
+      "caused widespread",
+      "disappointment.",
+      "No mistake"
+    ],
+    "correctAnswer": "The comittee's decision",
+    "marks": 1,
+    "markScheme": "'Comittee's' should be 'committee's' (double t, double e).",
+    "explanation": "'Comittee's' should be 'committee's' (double t, double e).",
+    "tags": [
+      "spelling",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-spell-irresistable-r1-spelling-q2",
+    "subject": "English",
+    "topic": "Spelling",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "grammar",
+    "text": "Find the group of words with the spelling mistake in it. If there is no mistake, choose N.\n\"Her irresistable urge to interrupt the meeting embarrassed her colleagues.\"",
+    "options": [
+      "Her irresistable urge",
+      "to interrupt the meeting",
+      "embarrassed her",
+      "colleagues.",
+      "No mistake"
+    ],
+    "correctAnswer": "Her irresistable urge",
+    "marks": 1,
+    "markScheme": "'Irresistable' should be 'irresistible' (-ible, not -able).",
+    "explanation": "'Irresistable' should be 'irresistible' (-ible, not -able).",
+    "tags": [
+      "spelling",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-spell-recieved-r1-spelling-q3",
+    "subject": "English",
+    "topic": "Spelling",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "grammar",
+    "text": "Find the group of words with the spelling mistake in it. If there is no mistake, choose N.\n\"Priya recieved an elaborate invitation to the exclusive concert.\"",
+    "options": [
+      "Priya recieved an",
+      "elaborate invitation",
+      "to the exclusive",
+      "concert.",
+      "No mistake"
+    ],
+    "correctAnswer": "Priya recieved an",
+    "marks": 1,
+    "markScheme": "'Recieved' should be 'received' — i before e except after c.",
+    "explanation": "'Recieved' should be 'received' — i before e except after c.",
+    "tags": [
+      "spelling",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-spell-persued-r1-spelling-q4",
+    "subject": "English",
+    "topic": "Spelling",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "grammar",
+    "text": "Find the group of words with the spelling mistake in it. If there is no mistake, choose N.\n\"The company persued the customers who had not paid on time.\"",
+    "options": [
+      "The company persued",
+      "the customers who",
+      "had not paid",
+      "on time.",
+      "No mistake"
+    ],
+    "correctAnswer": "The company persued",
+    "marks": 1,
+    "markScheme": "'Persued' should be 'pursued'.",
+    "explanation": "'Persued' should be 'pursued'.",
+    "tags": [
+      "spelling",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-spell-consistant-r1-spelling-q5",
+    "subject": "English",
+    "topic": "Spelling",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "grammar",
+    "text": "Find the group of words with the spelling mistake in it. If there is no mistake, choose N.\n\"Consistant hard work has contributed to significant improvements.\"",
+    "options": [
+      "Consistant hard work",
+      "has contributed to",
+      "significant",
+      "improvements.",
+      "No mistake"
+    ],
+    "correctAnswer": "Consistant hard work",
+    "marks": 1,
+    "markScheme": "'Consistant' should be 'consistent'.",
+    "explanation": "'Consistant' should be 'consistent'.",
+    "tags": [
+      "spelling",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-spell-correct1-r1-spelling-q6",
+    "subject": "English",
+    "topic": "Spelling",
+    "subtopic": "No mistake",
+    "difficulty": "standard",
+    "questionType": "grammar",
+    "text": "Find the group of words with the spelling mistake in it. If there is no mistake, choose N.\n\"The professor's fascinating lecture on ancient civilisations captivated the audience.\"",
+    "options": [
+      "The professor's fascinating lecture",
+      "on ancient civilisations",
+      "captivated the",
+      "audience.",
+      "No mistake"
+    ],
+    "correctAnswer": "No mistake",
+    "marks": 1,
+    "markScheme": "Every word is spelled correctly, so N is the answer.",
+    "explanation": "A deliberately-correct item so N cannot be eliminated by pattern-guessing.",
+    "tags": [
+      "spelling",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-spell-permision-r1-spelling-q7",
+    "subject": "English",
+    "topic": "Spelling",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "grammar",
+    "text": "Find the group of words with the spelling mistake in it. If there is no mistake, choose N.\n\"Oli asked his mother for permision to attend the charity concert.\"",
+    "options": [
+      "Oli asked his mother",
+      "for permision to attend",
+      "the charity",
+      "concert.",
+      "No mistake"
+    ],
+    "correctAnswer": "for permision to attend",
+    "marks": 1,
+    "markScheme": "'Permision' should be 'permission' (double s).",
+    "explanation": "'Permision' should be 'permission' (double s).",
+    "tags": [
+      "spelling",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-spell-correct2-r1-spelling-q8",
+    "subject": "English",
+    "topic": "Spelling",
+    "subtopic": "No mistake",
+    "difficulty": "standard",
+    "questionType": "grammar",
+    "text": "Find the group of words with the spelling mistake in it. If there is no mistake, choose N.\n\"Julia regretted postponing her annual expedition to the mountains.\"",
+    "options": [
+      "Julia regretted postponing",
+      "her annual expedition",
+      "to the",
+      "mountains.",
+      "No mistake"
+    ],
+    "correctAnswer": "No mistake",
+    "marks": 1,
+    "markScheme": "Every word is spelled correctly, so N is the answer.",
+    "explanation": "A deliberately-correct item so N cannot be eliminated by pattern-guessing.",
+    "tags": [
+      "spelling",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-spell-comittee-r1-spelling-q9",
+    "subject": "English",
+    "topic": "Spelling",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "grammar",
+    "text": "Find the group of words with the spelling mistake in it. If there is no mistake, choose N.\n\"The comittee's decision to postpone the tournament caused widespread disappointment.\"",
+    "options": [
+      "The comittee's decision",
+      "to postpone the tournament",
+      "caused widespread",
+      "disappointment.",
+      "No mistake"
+    ],
+    "correctAnswer": "The comittee's decision",
+    "marks": 1,
+    "markScheme": "'Comittee's' should be 'committee's' (double t, double e).",
+    "explanation": "'Comittee's' should be 'committee's' (double t, double e).",
+    "tags": [
+      "spelling",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-spell-irresistable-r1-spelling-q10",
+    "subject": "English",
+    "topic": "Spelling",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "grammar",
+    "text": "Find the group of words with the spelling mistake in it. If there is no mistake, choose N.\n\"Her irresistable urge to interrupt the meeting embarrassed her colleagues.\"",
+    "options": [
+      "Her irresistable urge",
+      "to interrupt the meeting",
+      "embarrassed her",
+      "colleagues.",
+      "No mistake"
+    ],
+    "correctAnswer": "Her irresistable urge",
+    "marks": 1,
+    "markScheme": "'Irresistable' should be 'irresistible' (-ible, not -able).",
+    "explanation": "'Irresistable' should be 'irresistible' (-ible, not -able).",
+    "tags": [
+      "spelling",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-spell-recieved-r1-spelling-q11",
+    "subject": "English",
+    "topic": "Spelling",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "grammar",
+    "text": "Find the group of words with the spelling mistake in it. If there is no mistake, choose N.\n\"Priya recieved an elaborate invitation to the exclusive concert.\"",
+    "options": [
+      "Priya recieved an",
+      "elaborate invitation",
+      "to the exclusive",
+      "concert.",
+      "No mistake"
+    ],
+    "correctAnswer": "Priya recieved an",
+    "marks": 1,
+    "markScheme": "'Recieved' should be 'received' — i before e except after c.",
+    "explanation": "'Recieved' should be 'received' — i before e except after c.",
+    "tags": [
+      "spelling",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-spell-persued-r1-spelling-q12",
+    "subject": "English",
+    "topic": "Spelling",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "grammar",
+    "text": "Find the group of words with the spelling mistake in it. If there is no mistake, choose N.\n\"The company persued the customers who had not paid on time.\"",
+    "options": [
+      "The company persued",
+      "the customers who",
+      "had not paid",
+      "on time.",
+      "No mistake"
+    ],
+    "correctAnswer": "The company persued",
+    "marks": 1,
+    "markScheme": "'Persued' should be 'pursued'.",
+    "explanation": "'Persued' should be 'pursued'.",
+    "tags": [
+      "spelling",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-spell-consistant-r1-spelling-q13",
+    "subject": "English",
+    "topic": "Spelling",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "grammar",
+    "text": "Find the group of words with the spelling mistake in it. If there is no mistake, choose N.\n\"Consistant hard work has contributed to significant improvements.\"",
+    "options": [
+      "Consistant hard work",
+      "has contributed to",
+      "significant",
+      "improvements.",
+      "No mistake"
+    ],
+    "correctAnswer": "Consistant hard work",
+    "marks": 1,
+    "markScheme": "'Consistant' should be 'consistent'.",
+    "explanation": "'Consistant' should be 'consistent'.",
+    "tags": [
+      "spelling",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-punct-its-r1-punct-q1",
+    "subject": "English",
+    "topic": "Punctuation",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "punctuation",
+    "text": "Find the group of words with the punctuation mistake in it. If there is no mistake, choose N.\n\"Its clear that the students homework was finished on time.\"",
+    "options": [
+      "Its clear that",
+      "the students homework",
+      "was finished",
+      "on time",
+      "No mistake"
+    ],
+    "correctAnswer": "Its clear that",
+    "marks": 1,
+    "markScheme": "'Its' needs an apostrophe here: 'It's clear' (it is clear).",
+    "explanation": "'Its' needs an apostrophe here: 'It's clear' (it is clear).",
+    "tags": [
+      "punctuation",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-punct-question-r1-punct-q2",
+    "subject": "English",
+    "topic": "Punctuation",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "punctuation",
+    "text": "Find the group of words with the punctuation mistake in it. If there is no mistake, choose N.\n\"Mention the word hippo and you probably think of a robust animal. But how accurate is this\"",
+    "options": [
+      "Mention the word hippo",
+      "and you probably think",
+      "of a robust animal.",
+      "But how accurate is this",
+      "No mistake"
+    ],
+    "correctAnswer": "But how accurate is this",
+    "marks": 1,
+    "markScheme": "The sentence needs a question mark: 'But how accurate is this?'",
+    "explanation": "The sentence needs a question mark: 'But how accurate is this?'",
+    "tags": [
+      "punctuation",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-punct-possessive-r1-punct-q3",
+    "subject": "English",
+    "topic": "Punctuation",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "punctuation",
+    "text": "Find the group of words with the punctuation mistake in it. If there is no mistake, choose N.\n\"The suns harmful rays can damage skin that is not protected.\"",
+    "options": [
+      "The suns harmful rays",
+      "can damage skin",
+      "that is not",
+      "protected",
+      "No mistake"
+    ],
+    "correctAnswer": "The suns harmful rays",
+    "marks": 1,
+    "markScheme": "'Suns' needs an apostrophe: 'sun's harmful rays' (possessive).",
+    "explanation": "'Suns' needs an apostrophe: 'sun's harmful rays' (possessive).",
+    "tags": [
+      "punctuation",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-punct-contraction-r1-punct-q4",
+    "subject": "English",
+    "topic": "Punctuation",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "punctuation",
+    "text": "Find the group of words with the punctuation mistake in it. If there is no mistake, choose N.\n\"Its true that hippos are omnivores, but they are not gentle creatures.\"",
+    "options": [
+      "Its true that hippos",
+      "are omnivores, but",
+      "they are not",
+      "gentle creatures",
+      "No mistake"
+    ],
+    "correctAnswer": "Its true that hippos",
+    "marks": 1,
+    "markScheme": "'Its' should be 'It's' (it is true).",
+    "explanation": "'Its' should be 'It's' (it is true).",
+    "tags": [
+      "punctuation",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-punct-bracket-r1-punct-q5",
+    "subject": "English",
+    "topic": "Punctuation",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "punctuation",
+    "text": "Find the group of words with the punctuation mistake in it. If there is no mistake, choose N.\n\"They can run at speed (up to 30 kilometres per hour and are surprisingly fast.\"",
+    "options": [
+      "They can run at speed",
+      "(up to 30 kilometres",
+      "per hour and",
+      "are surprisingly fast.",
+      "No mistake"
+    ],
+    "correctAnswer": "(up to 30 kilometres",
+    "marks": 1,
+    "markScheme": "The opening bracket is never closed — it needs a closing bracket after 'hour)'.",
+    "explanation": "The opening bracket is never closed — it needs a closing bracket after 'hour)'.",
+    "tags": [
+      "punctuation",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-punct-correct1-r1-punct-q6",
+    "subject": "English",
+    "topic": "Punctuation",
+    "subtopic": "No mistake",
+    "difficulty": "standard",
+    "questionType": "punctuation",
+    "text": "Find the group of words with the punctuation mistake in it. If there is no mistake, choose N.\n\"Hippos typically do their running at night, whilst hunting for food.\"",
+    "options": [
+      "Hippos typically do",
+      "their running at night,",
+      "whilst hunting",
+      "for food.",
+      "No mistake"
+    ],
+    "correctAnswer": "No mistake",
+    "marks": 1,
+    "markScheme": "Every mark of punctuation is correct, so N is the answer.",
+    "explanation": "A deliberately-correct item so N cannot be eliminated by pattern-guessing.",
+    "tags": [
+      "punctuation",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-punct-list-r1-punct-q7",
+    "subject": "English",
+    "topic": "Punctuation",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "punctuation",
+    "text": "Find the group of words with the punctuation mistake in it. If there is no mistake, choose N.\n\"Nia packed the map in a plastic folder pulled on her boots, and left.\"",
+    "options": [
+      "Nia packed the map",
+      "in a plastic folder",
+      "pulled on her boots,",
+      "and left.",
+      "No mistake"
+    ],
+    "correctAnswer": "in a plastic folder",
+    "marks": 1,
+    "markScheme": "A comma is missing after 'folder' to separate the list of actions.",
+    "explanation": "A comma is missing after 'folder' to separate the list of actions.",
+    "tags": [
+      "punctuation",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-punct-correct2-r1-punct-q8",
+    "subject": "English",
+    "topic": "Punctuation",
+    "subtopic": "No mistake",
+    "difficulty": "standard",
+    "questionType": "punctuation",
+    "text": "Find the group of words with the punctuation mistake in it. If there is no mistake, choose N.\n\"During the day, hippos usually stay in the water to keep their skin cool.\"",
+    "options": [
+      "During the day, hippos",
+      "usually stay in",
+      "the water to keep",
+      "their skin cool.",
+      "No mistake"
+    ],
+    "correctAnswer": "No mistake",
+    "marks": 1,
+    "markScheme": "Every mark of punctuation is correct, so N is the answer.",
+    "explanation": "A deliberately-correct item so N cannot be eliminated by pattern-guessing.",
+    "tags": [
+      "punctuation",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-punct-its-r1-punct-q9",
+    "subject": "English",
+    "topic": "Punctuation",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "punctuation",
+    "text": "Find the group of words with the punctuation mistake in it. If there is no mistake, choose N.\n\"Its clear that the students homework was finished on time.\"",
+    "options": [
+      "Its clear that",
+      "the students homework",
+      "was finished",
+      "on time",
+      "No mistake"
+    ],
+    "correctAnswer": "Its clear that",
+    "marks": 1,
+    "markScheme": "'Its' needs an apostrophe here: 'It's clear' (it is clear).",
+    "explanation": "'Its' needs an apostrophe here: 'It's clear' (it is clear).",
+    "tags": [
+      "punctuation",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-punct-question-r1-punct-q10",
+    "subject": "English",
+    "topic": "Punctuation",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "punctuation",
+    "text": "Find the group of words with the punctuation mistake in it. If there is no mistake, choose N.\n\"Mention the word hippo and you probably think of a robust animal. But how accurate is this\"",
+    "options": [
+      "Mention the word hippo",
+      "and you probably think",
+      "of a robust animal.",
+      "But how accurate is this",
+      "No mistake"
+    ],
+    "correctAnswer": "But how accurate is this",
+    "marks": 1,
+    "markScheme": "The sentence needs a question mark: 'But how accurate is this?'",
+    "explanation": "The sentence needs a question mark: 'But how accurate is this?'",
+    "tags": [
+      "punctuation",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-punct-possessive-r1-punct-q11",
+    "subject": "English",
+    "topic": "Punctuation",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "punctuation",
+    "text": "Find the group of words with the punctuation mistake in it. If there is no mistake, choose N.\n\"The suns harmful rays can damage skin that is not protected.\"",
+    "options": [
+      "The suns harmful rays",
+      "can damage skin",
+      "that is not",
+      "protected",
+      "No mistake"
+    ],
+    "correctAnswer": "The suns harmful rays",
+    "marks": 1,
+    "markScheme": "'Suns' needs an apostrophe: 'sun's harmful rays' (possessive).",
+    "explanation": "'Suns' needs an apostrophe: 'sun's harmful rays' (possessive).",
+    "tags": [
+      "punctuation",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-punct-contraction-r1-punct-q12",
+    "subject": "English",
+    "topic": "Punctuation",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "punctuation",
+    "text": "Find the group of words with the punctuation mistake in it. If there is no mistake, choose N.\n\"Its true that hippos are omnivores, but they are not gentle creatures.\"",
+    "options": [
+      "Its true that hippos",
+      "are omnivores, but",
+      "they are not",
+      "gentle creatures",
+      "No mistake"
+    ],
+    "correctAnswer": "Its true that hippos",
+    "marks": 1,
+    "markScheme": "'Its' should be 'It's' (it is true).",
+    "explanation": "'Its' should be 'It's' (it is true).",
+    "tags": [
+      "punctuation",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "id": "gen-eng-punct-bracket-r1-punct-q13",
+    "subject": "English",
+    "topic": "Punctuation",
+    "subtopic": "Find the mistake",
+    "difficulty": "standard",
+    "questionType": "punctuation",
+    "text": "Find the group of words with the punctuation mistake in it. If there is no mistake, choose N.\n\"They can run at speed (up to 30 kilometres per hour and are surprisingly fast.\"",
+    "options": [
+      "They can run at speed",
+      "(up to 30 kilometres",
+      "per hour and",
+      "are surprisingly fast.",
+      "No mistake"
+    ],
+    "correctAnswer": "(up to 30 kilometres",
+    "marks": 1,
+    "markScheme": "The opening bracket is never closed — it needs a closing bracket after 'hour)'.",
+    "explanation": "The opening bracket is never closed — it needs a closing bracket after 'hour)'.",
+    "tags": [
+      "punctuation",
+      "segment-format",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 45,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Cloze",
+    "difficulty": "standard",
+    "questionType": "cloze",
+    "passageId": "passage-performance-day-r1",
+    "marks": 1,
+    "tags": [
+      "cloze",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 55,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-cloze-nerves-r1-cloze-q1",
+    "subtopic": "Tense agreement",
+    "paragraphRefs": [
+      1
+    ],
+    "text": "Backstage, the hum of the audience ____ louder as the lights dimmed.",
+    "options": [
+      "grew",
+      "grow",
+      "growing",
+      "has grew",
+      "grows"
+    ],
+    "correctAnswer": "grew",
+    "markScheme": "Past tense 'grew' matches the rest of the passage's past-tense narration.",
+    "explanation": "Every other verb in this paragraph is in the simple past tense."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Cloze",
+    "difficulty": "standard",
+    "questionType": "cloze",
+    "passageId": "passage-performance-day-r1",
+    "marks": 1,
+    "tags": [
+      "cloze",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 55,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-cloze-pacing-r1-cloze-q2",
+    "subtopic": "Preposition choice",
+    "paragraphRefs": [
+      2
+    ],
+    "text": "She could hear Theo pacing behind the curtain, his shoes tapping ____ rhythm against the wooden floor.",
+    "options": [
+      "an uneven",
+      "a uneven",
+      "the uneven",
+      "uneven a",
+      "an unevenly"
+    ],
+    "correctAnswer": "an uneven",
+    "markScheme": "'Uneven' starts with a vowel sound, so it takes 'an', and the noun 'rhythm' needs an article.",
+    "explanation": "Article agreement with the following adjective/noun."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Cloze",
+    "difficulty": "standard",
+    "questionType": "cloze",
+    "passageId": "passage-performance-day-r1",
+    "marks": 1,
+    "tags": [
+      "cloze",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 55,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-cloze-mics-r1-cloze-q3",
+    "subtopic": "Conjunction choice",
+    "paragraphRefs": [
+      3
+    ],
+    "text": "A stagehand whispered that the microphones were finally working again, ____ nobody had explained what had gone wrong.",
+    "options": [
+      "though",
+      "so",
+      "because",
+      "and",
+      "unless"
+    ],
+    "correctAnswer": "though",
+    "markScheme": "'Though' correctly signals the contrast between the mics working and the mystery of the fault.",
+    "explanation": "The second clause contrasts with the first, so a contrast conjunction is needed."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Cloze",
+    "difficulty": "standard",
+    "questionType": "cloze",
+    "passageId": "passage-performance-day-r1",
+    "marks": 1,
+    "tags": [
+      "cloze",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 55,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-cloze-grandmother-r1-cloze-q4",
+    "subtopic": "Homophone choice",
+    "paragraphRefs": [
+      4
+    ],
+    "text": "Rows of parents sat fanning themselves with programmes, and somewhere near the back ____ grandmother was already recording.",
+    "options": [
+      "her",
+      "their",
+      "there",
+      "they're",
+      "hers"
+    ],
+    "correctAnswer": "her",
+    "markScheme": "'Her' correctly shows the grandmother belongs to Priya (singular possessive).",
+    "explanation": "The grandmother belongs to Priya specifically, so the singular possessive is needed."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Cloze",
+    "difficulty": "standard",
+    "questionType": "cloze",
+    "passageId": "passage-performance-day-r1",
+    "marks": 1,
+    "tags": [
+      "cloze",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 55,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-cloze-fingers-r1-cloze-q5",
+    "subtopic": "Tense agreement",
+    "paragraphRefs": [
+      5
+    ],
+    "text": "Priya felt her stomach tighten, though she reminded herself that this feeling always ____ within the first minute.",
+    "options": [
+      "faded",
+      "fades",
+      "fade",
+      "had faded",
+      "will fade"
+    ],
+    "correctAnswer": "fades",
+    "markScheme": "This is a general habitual truth Priya reminds herself of, so present simple 'fades' is correct.",
+    "explanation": "A general truth or habit uses present simple tense, not past tense."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Cloze",
+    "difficulty": "standard",
+    "questionType": "cloze",
+    "passageId": "passage-performance-day-r1",
+    "marks": 1,
+    "tags": [
+      "cloze",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 55,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-cloze-applause-r1-cloze-q6",
+    "subtopic": "Adjective vs adverb",
+    "paragraphRefs": [
+      6
+    ],
+    "text": "When the curtain finally lifted, the applause arrived before she had taken a single step, warm and ____.",
+    "options": [
+      "sudden",
+      "suddenly",
+      "suddenness",
+      "more sudden",
+      "suddenest"
+    ],
+    "correctAnswer": "sudden",
+    "markScheme": "'Sudden' pairs with 'warm' as a matching adjective describing the applause, not an adverb.",
+    "explanation": "Both words in the pair describe the noun 'applause', so both must be adjectives."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Cloze",
+    "difficulty": "standard",
+    "questionType": "cloze",
+    "passageId": "passage-performance-day-r1",
+    "marks": 1,
+    "tags": [
+      "cloze",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 55,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-cloze-nerves-r1-cloze-q7",
+    "subtopic": "Tense agreement",
+    "paragraphRefs": [
+      1
+    ],
+    "text": "Backstage, the hum of the audience ____ louder as the lights dimmed.",
+    "options": [
+      "grew",
+      "grow",
+      "growing",
+      "has grew",
+      "grows"
+    ],
+    "correctAnswer": "grew",
+    "markScheme": "Past tense 'grew' matches the rest of the passage's past-tense narration.",
+    "explanation": "Every other verb in this paragraph is in the simple past tense."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Cloze",
+    "difficulty": "standard",
+    "questionType": "cloze",
+    "passageId": "passage-performance-day-r1",
+    "marks": 1,
+    "tags": [
+      "cloze",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 55,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-cloze-pacing-r1-cloze-q8",
+    "subtopic": "Preposition choice",
+    "paragraphRefs": [
+      2
+    ],
+    "text": "She could hear Theo pacing behind the curtain, his shoes tapping ____ rhythm against the wooden floor.",
+    "options": [
+      "an uneven",
+      "a uneven",
+      "the uneven",
+      "uneven a",
+      "an unevenly"
+    ],
+    "correctAnswer": "an uneven",
+    "markScheme": "'Uneven' starts with a vowel sound, so it takes 'an', and the noun 'rhythm' needs an article.",
+    "explanation": "Article agreement with the following adjective/noun."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Cloze",
+    "difficulty": "standard",
+    "questionType": "cloze",
+    "passageId": "passage-performance-day-r1",
+    "marks": 1,
+    "tags": [
+      "cloze",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 55,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-cloze-mics-r1-cloze-q9",
+    "subtopic": "Conjunction choice",
+    "paragraphRefs": [
+      3
+    ],
+    "text": "A stagehand whispered that the microphones were finally working again, ____ nobody had explained what had gone wrong.",
+    "options": [
+      "though",
+      "so",
+      "because",
+      "and",
+      "unless"
+    ],
+    "correctAnswer": "though",
+    "markScheme": "'Though' correctly signals the contrast between the mics working and the mystery of the fault.",
+    "explanation": "The second clause contrasts with the first, so a contrast conjunction is needed."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Cloze",
+    "difficulty": "standard",
+    "questionType": "cloze",
+    "passageId": "passage-performance-day-r1",
+    "marks": 1,
+    "tags": [
+      "cloze",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 55,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-cloze-grandmother-r1-cloze-q10",
+    "subtopic": "Homophone choice",
+    "paragraphRefs": [
+      4
+    ],
+    "text": "Rows of parents sat fanning themselves with programmes, and somewhere near the back ____ grandmother was already recording.",
+    "options": [
+      "her",
+      "their",
+      "there",
+      "they're",
+      "hers"
+    ],
+    "correctAnswer": "her",
+    "markScheme": "'Her' correctly shows the grandmother belongs to Priya (singular possessive).",
+    "explanation": "The grandmother belongs to Priya specifically, so the singular possessive is needed."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Cloze",
+    "difficulty": "standard",
+    "questionType": "cloze",
+    "passageId": "passage-performance-day-r1",
+    "marks": 1,
+    "tags": [
+      "cloze",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 55,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-cloze-fingers-r1-cloze-q11",
+    "subtopic": "Tense agreement",
+    "paragraphRefs": [
+      5
+    ],
+    "text": "Priya felt her stomach tighten, though she reminded herself that this feeling always ____ within the first minute.",
+    "options": [
+      "faded",
+      "fades",
+      "fade",
+      "had faded",
+      "will fade"
+    ],
+    "correctAnswer": "fades",
+    "markScheme": "This is a general habitual truth Priya reminds herself of, so present simple 'fades' is correct.",
+    "explanation": "A general truth or habit uses present simple tense, not past tense."
+  } as Question,
+  {
+    "subject": "English",
+    "topic": "Cloze",
+    "difficulty": "standard",
+    "questionType": "cloze",
+    "passageId": "passage-performance-day-r1",
+    "marks": 1,
+    "tags": [
+      "cloze",
+      "GL-style",
+      "Standard",
+      "gl-4-section-mock"
+    ],
+    "timeEstimateSeconds": 55,
+    "sourceStyle": "GL-style",
+    "originalGenerated": true,
+    "id": "gen-eng-cloze-applause-r1-cloze-q12",
+    "subtopic": "Adjective vs adverb",
+    "paragraphRefs": [
+      6
+    ],
+    "text": "When the curtain finally lifted, the applause arrived before she had taken a single step, warm and ____.",
+    "options": [
+      "sudden",
+      "suddenly",
+      "suddenness",
+      "more sudden",
+      "suddenest"
+    ],
+    "correctAnswer": "sudden",
+    "markScheme": "'Sudden' pairs with 'warm' as a matching adjective describing the applause, not an adverb.",
+    "explanation": "Both words in the pair describe the noun 'applause', so both must be adjectives."
+  } as Question,
 ];
 
 export const MOCKS: MockExam[] = [
@@ -12443,6 +15067,111 @@ export const MOCKS: MockExam[] = [
     printOnly: true,
     isFree: true,
   },
+  {
+    "id": "english-gl-stretch-r1",
+    "title": "English GL-Style Full Paper IV — Rebuilt 4-Section",
+    "subject": "English",
+    "style": "GL-style",
+    "difficultyLabel": "Standard",
+    "sourceProfileId": "ref-english-mme",
+    "generatedFromReferenceId": "ref-english-mme",
+    "topicMix": {
+      "Reading comprehension": 42,
+      "Spelling": 14,
+      "Punctuation": 14,
+      "Cloze": 12
+    },
+    "durationMinutes": 75,
+    "totalMarks": 82,
+    "questionIds": [
+      "gen-eng-inference-secret-r1-comp-q1",
+      "gen-eng-inference-continue-r1-comp-q2",
+      "gen-eng-inference-morning-r1-comp-q3",
+      "gen-eng-inference-secret-r1-comp-q4",
+      "gen-eng-inference-continue-r1-comp-q5",
+      "gen-eng-inference-morning-r1-comp-q6",
+      "gen-eng-inference-secret-r1-comp-q7",
+      "gen-eng-inference-continue-r1-comp-q8",
+      "gen-eng-inference-morning-r1-comp-q9",
+      "gen-eng-inference-secret-r1-comp-q10",
+      "gen-eng-inference-continue-r1-comp-q11",
+      "gen-eng-inference-morning-r1-comp-q12",
+      "gen-eng-inference-secret-r1-comp-q13",
+      "gen-eng-inference-continue-r1-comp-q14",
+      "gen-eng-inference-morning-r1-comp-q15",
+      "gen-eng-inference-secret-r1-comp-q16",
+      "gen-eng-inference-continue-r1-comp-q17",
+      "gen-eng-inference-morning-r1-comp-q18",
+      "gen-eng-vocab-assumed-r1-comp-q19",
+      "gen-eng-vocab-reluctant-r1-comp-q20",
+      "gen-eng-vocab-objections-r1-comp-q21",
+      "gen-eng-vocab-assumed-r1-comp-q22",
+      "gen-eng-vocab-reluctant-r1-comp-q23",
+      "gen-eng-vocab-objections-r1-comp-q24",
+      "gen-eng-vocab-assumed-r1-comp-q25",
+      "gen-eng-vocab-reluctant-r1-comp-q26",
+      "gen-eng-vocab-objections-r1-comp-q27",
+      "gen-eng-vocab-assumed-r1-comp-q28",
+      "gen-eng-retrieval-table-r1-comp-q29",
+      "gen-eng-retrieval-key-r1-comp-q30",
+      "gen-eng-retrieval-envelope-r1-comp-q31",
+      "gen-eng-retrieval-table-r1-comp-q32",
+      "gen-eng-retrieval-key-r1-comp-q33",
+      "gen-eng-retrieval-envelope-r1-comp-q34",
+      "gen-eng-retrieval-table-r1-comp-q35",
+      "gen-eng-retrieval-key-r1-comp-q36",
+      "gen-eng-grammar-adjectives-r1-comp-q37",
+      "gen-eng-grammar-wordclass-r1-comp-q38",
+      "gen-eng-grammar-verbs-r1-comp-q39",
+      "gen-eng-grammar-adjectives-r1-comp-q40",
+      "gen-eng-grammar-wordclass-r1-comp-q41",
+      "gen-eng-grammar-verbs-r1-comp-q42",
+      "gen-eng-literary-simile1-r1-comp-q43",
+      "gen-eng-literary-metaphor1-r1-comp-q44",
+      "gen-eng-spell-comittee-r1-spelling-q1",
+      "gen-eng-spell-irresistable-r1-spelling-q2",
+      "gen-eng-spell-recieved-r1-spelling-q3",
+      "gen-eng-spell-persued-r1-spelling-q4",
+      "gen-eng-spell-consistant-r1-spelling-q5",
+      "gen-eng-spell-correct1-r1-spelling-q6",
+      "gen-eng-spell-permision-r1-spelling-q7",
+      "gen-eng-spell-correct2-r1-spelling-q8",
+      "gen-eng-spell-comittee-r1-spelling-q9",
+      "gen-eng-spell-irresistable-r1-spelling-q10",
+      "gen-eng-spell-recieved-r1-spelling-q11",
+      "gen-eng-spell-persued-r1-spelling-q12",
+      "gen-eng-spell-consistant-r1-spelling-q13",
+      "gen-eng-punct-its-r1-punct-q1",
+      "gen-eng-punct-question-r1-punct-q2",
+      "gen-eng-punct-possessive-r1-punct-q3",
+      "gen-eng-punct-contraction-r1-punct-q4",
+      "gen-eng-punct-bracket-r1-punct-q5",
+      "gen-eng-punct-correct1-r1-punct-q6",
+      "gen-eng-punct-list-r1-punct-q7",
+      "gen-eng-punct-correct2-r1-punct-q8",
+      "gen-eng-punct-its-r1-punct-q9",
+      "gen-eng-punct-question-r1-punct-q10",
+      "gen-eng-punct-possessive-r1-punct-q11",
+      "gen-eng-punct-contraction-r1-punct-q12",
+      "gen-eng-punct-bracket-r1-punct-q13",
+      "gen-eng-cloze-nerves-r1-cloze-q1",
+      "gen-eng-cloze-pacing-r1-cloze-q2",
+      "gen-eng-cloze-mics-r1-cloze-q3",
+      "gen-eng-cloze-grandmother-r1-cloze-q4",
+      "gen-eng-cloze-fingers-r1-cloze-q5",
+      "gen-eng-cloze-applause-r1-cloze-q6",
+      "gen-eng-cloze-nerves-r1-cloze-q7",
+      "gen-eng-cloze-pacing-r1-cloze-q8",
+      "gen-eng-cloze-mics-r1-cloze-q9",
+      "gen-eng-cloze-grandmother-r1-cloze-q10",
+      "gen-eng-cloze-fingers-r1-cloze-q11",
+      "gen-eng-cloze-applause-r1-cloze-q12"
+    ],
+    "published": true,
+    "releaseDate": "2026-07-19",
+    "tier": "Diagnostic Assessment",
+    "description": "Original 4-section English paper generated by the rebuilt GL-ratio generator: Section A reading comprehension (retrieval, inference, vocabulary-in-context, embedded grammar, literary device) on an original passage, 'The River Map', Section B spelling and Section C punctuation in the authentic segment 'find the lettered group with the mistake, or choose N' format, and Section D cloze on a second original passage, 'Performance Day' — sized to the real GL Assessment section ratio (52/17/17/15%, see research/gl-english-question-bank.md) and scaled up to a full ~80-question paper. Not copied from any third-party paper."
+  } as MockExam,
 ];
 
 export const ATTEMPTS: Attempt[] = [
