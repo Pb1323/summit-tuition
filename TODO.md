@@ -12,6 +12,31 @@ I could only find two backlog docs matching "meters/badges/certificates" from an
 - [x] 2 more Maths Elite mocks (`maths-elite-2`, `maths-elite-3`) — the item below is now done.
 - [x] `maths-elite-1` visual ratio fixed (0% → 68.75%).
 
+## ⚠️ REVIEW TOMORROW FIRST — overnight remote agent
+
+A remote (cloud-isolated) agent was launched late on 2026-07-19 to finish the
+English GL mock rebuild unsupervised overnight — task/branch:
+`worktree-english-gl-mock-rebuild`, already pushed to `origin`. It was given:
+merge latest `main` in, finish `mock-room-shell.tsx` section grouping
+(comprehension→spelling→grammar→cloze order), confirm the letter-labelling
+predictability fix is structural, confirm the comprehension side-by-side
+passage/question layout actually renders correctly (told to check in a real
+`npm run dev` session, not just trust a build pass), get every published
+English mock onto the new 4-section ~80-question structure, and get
+typecheck/lint/build/e2e all clean — committing in small chunks throughout
+since nothing could course-correct it mid-run.
+
+**Before trusting any of this**, next session should:
+1. Check whether the agent actually finished or got cut off (`git log
+   worktree-english-gl-mock-rebuild` — look for a coherent final commit and
+   a report, not a stub).
+2. Re-run `npm.cmd run typecheck` / `lint` / `build` / `test:e2e` independently
+   — don't just take the agent's self-report at face value.
+3. Actually look at a comprehension mock in a browser before merging — the
+   side-by-side layout claim needs eyes on it, not just code review.
+4. Only merge into `main` (and push) once verified — nothing from this
+   overnight run has touched `main` yet.
+
 ## Carried over / still open from this session
 
 - [ ] **English mock letter-labelling predictability, comprehension side-by-side layout, question-block section ordering** — a separate background agent (`worktree-english-gl-mock-rebuild`) was mid-rebuild of exactly this when the 2026-07-19 session ran; deliberately left alone to avoid clashing. Check that branch's status next session — it may be ready to review/merge, or may need finishing.
