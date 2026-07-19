@@ -69,3 +69,88 @@ export function InferenceVsOverGuessingDemo() {
     />
   );
 }
+
+export function ClueWordsSignalPhrasesDemo() {
+  return (
+    <ClickEvidencePassage
+      instruction="Click the word or phrase that is the actual clue for how Freya was feeling, not just a neutral fact."
+      passage={[
+        "Freya snapped the pencil case shut and shoved it into her bag.",
+        "The classroom clock showed ten to three.",
+        "Her homework diary was still open on the desk.",
+        "Two other students were queuing at the door.",
+      ]}
+      correctIdx={0}
+      correction={'"snapped... shut and shoved" are the verbs of manner doing the work here — sharp, forceful actions that signal frustration or anger, unlike the neutral facts around them.'}
+      wrongHint="look for a verb describing how something was done forcefully or sharply, not a plain fact about the time or the room."
+    />
+  );
+}
+
+export function InferringCharacterFeelingsDemo() {
+  return (
+    <ClickEvidencePassage
+      instruction="Click the sentence that lets you infer how Tomas was feeling as he waited for the results."
+      passage={[
+        "Tomas gripped the edge of the table until his knuckles whitened.",
+        "The results were due to be posted at midday.",
+        "A noticeboard stood just outside the staffroom.",
+        "Several other students were also waiting nearby.",
+      ]}
+      correctIdx={0}
+      correction={'"gripped the edge of the table until his knuckles whitened" is a physical tension detail that lets a reader infer anxiety or fear — the feeling itself is never named.'}
+      wrongHint="look for a detail describing physical tension in the body, not a neutral fact about the timing or location."
+    />
+  );
+}
+
+export function InferringSettingAtmosphereDemo() {
+  return (
+    <ClickEvidencePassage
+      instruction="Click the sentence that lets you work out roughly what time of day this scene takes place, without a time being stated."
+      passage={[
+        "Long shadows stretched across the yard, and the streetlamps flickered on one by one.",
+        "The school bags were still piled by the back door.",
+        "A dog barked somewhere a few streets away.",
+        "The kettle had been left to boil on the stove.",
+      ]}
+      correctIdx={0}
+      correction={'"long shadows... and the streetlamps flickered on" are setting details that let a reader work out it\'s early evening — no time is ever stated directly.'}
+      wrongHint="look for the sentence describing light and streetlamps, which together point to a particular time of day."
+    />
+  );
+}
+
+export function InferringWritersAttitudeDemo() {
+  return (
+    <ClickEvidencePassage
+      instruction="Click the phrase that reveals the writer's own disapproving attitude towards the councillor, rather than just reporting what he did."
+      passage={[
+        'The councillor "graciously" allowed himself to be photographed beside the new sign he had unveiled.',
+        "The sign had cost the council several thousand pounds.",
+        "It was installed on a Tuesday morning in March.",
+        "A small crowd had gathered to watch.",
+      ]}
+      correctIdx={0}
+      correction={'putting "graciously" in quotation marks is the writer\'s own word choice, signalling sarcasm — a hint that the writer views the councillor as self-important rather than genuinely gracious.'}
+      wrongHint="look for a word the writer has chosen to put in quotation marks — that's usually a sign of the writer's own sarcasm, not a neutral report of events."
+    />
+  );
+}
+
+export function CombiningMultipleCluesDemo() {
+  return (
+    <ClickEvidencePassage
+      instruction="This passage has two separate clues that together support the idea that Priya had been dreading this visit for weeks. Click the second of the two clues (the one appearing later in the passage)."
+      passage={[
+        "Priya had crossed out the date on her calendar the moment the appointment was booked.",
+        "The waiting room smelled faintly of antiseptic.",
+        "She had rehearsed what she would say at least a dozen times in the car.",
+        "A poster on the wall reminded patients to arrive ten minutes early.",
+      ]}
+      correctIdx={2}
+      correction={'combined with "crossed out the date the moment it was booked" earlier in the passage, "rehearsed what she would say at least a dozen times" is the second clue — together the two details support sustained dread, not just a single passing nerve.'}
+      wrongHint="one clue on its own isn't quite enough here — look for the second detail, later in the passage, that combines with the calendar detail to build the full picture."
+    />
+  );
+}
