@@ -1,10 +1,42 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-16 (report preview matched to real PDF format, per-student lessons editor, prod DB fixes)
+Last updated: 2026-07-19 (founder punch-list session — report PDF fix, homework generator, notes expansion, 2 new Elite Maths mocks, maths-elite-1 visual retrofit)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-07-19, founder punch list)
+
+Ran a 2-hour autonomous session against a founder punch list, parallelised across several isolated `git worktree` background agents (merged back into `main` one at a time, verifying `typecheck`/`lint`/`build` after each merge) while a separate, unrelated background agent (`worktree-english-gl-mock-rebuild`) was mid-flight rebuilding English mock structure — deliberately left that one alone rather than risk clashing, see "Deliberately not done" below.
+
+- **Fixed a real bug**: releasing a student's report never actually produced anything printable on the student side — students only ever got the plain in-app `StudentReportView`, while the polished PDF-style report (`AdminAttemptReport`) was gated to admin-only at `/admin/reports/[attemptId]`. Added `/mocks/[id]/report` reusing the same component in a student-audience mode, with print/Save-as-PDF buttons linked from the dashboard and mock-card report states.
+- **New admin feature**: Homework Generator (`/admin/homework`) — pick subject/topic/difficulty/count from the existing question bank, generates a randomised worksheet with a premium letterhead and a separate answer-key page, printable straight to PDF via the same `gl-print` A4 system already used for reports.
+- **Hero mountain flag** repositioned so it visibly plants at the summit instead of down the slope.
+- **Study Notes expanded**: 5 English topics (Prepositions & Conjunctions, Complete-the-Sentence, Inference, Homophones, Grammatical Cloze Strategy) brought from ~4 subtopics each up to the full Foundation(2)/Standard(4)/Extension(3) shape (9 each), closing the depth gap `TODO.md` had flagged.
+- **Diagram interactivity pass**: 12 English subtopics (6 Apostrophes/Possession, 4 Complete-the-Sentence, 2 Prepositions/Conjunctions) and 3 of the remaining untouched Maths diagrams (`fraction-percent-bar`, `sequence-step-visualizer`, `expression-balance`) gained a genuine second interactive layer, not just a colour change.
+- **Maths mock visual-quality audit + fix**: found `maths-elite-1` (the newest 80-question Elite mock) had a 0% visual ratio — failing the platform's own 30% minimum quality check — while every sibling mock sat at 32-78%. Retrofitted accurate `QuestionVisual` diagrams into 55/80 questions (68.75% ratio, 7 visual types).
+- **Two new full-length Maths mocks**: `maths-elite-2`, `maths-elite-3` (80 questions each, all 6 Maths topics, ~50% stretch difficulty, 36-37% visual ratio), grouped as the "Full Practice Mock Exams Set". Each includes 5 original competition-style puzzle questions (tagged `competition-style`/`original-puzzle`, explanation text explicitly states they're original and not reproductions) — real PMC/JMC past papers weren't available to source from, so these are inspired-by-style, not extracted content.
+
+### Deliberately not done this session
+
+- **Letter-labelling predictability, comprehension side-by-side layout, question-block section ordering (comprehension→spelling→grammar→cloze scaled to ~80Q)** — all explicitly requested by the founder, but a separate background agent (`worktree-english-gl-mock-rebuild`) was already mid-rebuild of exactly this (GL-ratio section sizing, new `SpotTheErrorRenderer`/`ClozeGapRenderer`, `mock-room-shell.tsx` section grouping) when this session started. Piling on top of live in-progress work in the same files risked real conflicts, so this was left to that agent — worth checking its status next session.
+- **Full PMC/JMC question bank extraction** — not attempted. No source past papers were available to extract from, and reproducing real competition questions would be a copyright problem (same principle as the existing "don't copy third-party paper content" rule). Original competition-style questions were written instead (see above) rather than a real extracted bank.
+- **3D/immersive diagram overhaul** (the founder's Spline/React-Three-Fiber/GSAP research) — not started. The existing Study Notes diagram system is deliberately SVG-based, matching `notes-theme.ts`'s premium-but-restrained visual language; introducing a second, heavier 3D rendering stack into Notes (separate from the marketing hero's existing R3F scene) is a bigger architectural decision than fit in this session — flagging for a scoped follow-up rather than guessing at it.
+- One background sub-session hit its usage/session limit mid-task with 4 of 5 notes topics' work sitting fully-written but uncommitted in its worktree — recovered and committed by hand rather than re-running the work, no content was lost.
+
+## Done (2026-07-19, docs sync)
+
+- Found `CLAUDE.md` and `status.md` were 5 commits stale (last touched 2026-07-17 12:39, but work continued through 21:47 that day). Updated both to reflect: the critical demo-mode auth bypass fix, the `/welcome` page redesign (pricing tabs + sticky CTA), the goal-gradient student dashboard changes (instant raw scores, no more 0% onboarding), and the new `ProductPlan` bundle fields (`includedMockIds`/`includedNoteIds`).
+- Set up a Claude Code hook (see `.claude/settings.json`) that fires after every `git commit` in this repo and reminds the session to refresh `CLAUDE.md`/`status.md` before finishing, so this gap doesn't reopen silently.
+
+## Done (session — 2026-07-17, security fix + welcome redesign + plan bundles)
+
+- **Critical security fix**: demo-mode sessions (no `DATABASE_URL`) encoded the raw user id directly in the `summit_session` cookie — anyone could set `summit_session=admin-1` and get admin access with zero login. Fixed to use an unguessable random token backed by an in-memory map. Production also now hard-refuses to silently fall back to demo auth if `DATABASE_URL` is missing.
+- **Pricing page layout bug fixed**: every product group now has exactly one tier after an earlier consolidation, but the layout still branched on "3 tiers" and rendered a single cramped card per section — replaced with one unified responsive grid.
+- **`/welcome` mobile landing page redesigned** to match the main site's visual polish: added pricing tabs (Mock Club, Group/Private Tuition, Holiday Booster, Complete Programme) and a sticky bottom booking bar so parents can compare plans and book without losing their place.
+- **Student dashboard UX**: applied "goal-gradient" and "reciprocity" patterns — new students never see 0% onboarding progress (registering + unlocking the free mock now count as completed steps immediately), and raw scores show the moment a mock is submitted instead of being withheld until the full report is released.
+- **Plan bundles shipped**: `ProductPlan` now has `includedMockIds`/`includedNoteIds`; admins can define what each plan includes via a new bundle editor, and assigning a plan to a student now automatically unlocks everything in that bundle. Also fixed `prisma.config.ts` to use the direct (non-pooled) database URL for schema CLI commands — the pooled connection was hanging on `migrate`/`push`.
 
 ## Done (this session — 2026-07-16, follow-up fixes)
 

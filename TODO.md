@@ -1,8 +1,22 @@
 # Summit Tuition — To-Do / Roadmap
 
-Last updated: 2026-07-13 (Study Notes interactivity pass). Companion to `status.md` (current state) — this file is the forward-looking list: what's next now, and what's parked for later. Plain English, not a spec.
+Last updated: 2026-07-19 (founder punch-list session — see `status.md` for full detail). Companion to `status.md` (current state) — this file is the forward-looking list: what's next now, and what's parked for later. Plain English, not a spec.
 
-I could only find two backlog docs matching "meters/badges/certificates" from an earlier brainstorm — see the note at the bottom if there's a third one I'm missing (couldn't find a distinct "worksheets" item anywhere).
+I could only find two backlog docs matching "meters/badges/certificates" from an earlier brainstorm — see the note at the bottom if there's a third one I'm missing (couldn't find a distinct "worksheets" item anywhere — note a printable **Homework Generator** now exists, `/admin/homework`, added 2026-07-19, so this may now be resolved).
+
+## Just done (2026-07-19 founder punch list)
+
+- [x] Fixed released reports never producing a student-visible PDF (`/mocks/[id]/report`).
+- [x] Homework worksheet generator (`/admin/homework`).
+- [x] Prepositions & Conjunctions, Complete-the-Sentence, Inference, Homophones, Grammatical Cloze Strategy each expanded to 9 subtopics.
+- [x] 2 more Maths Elite mocks (`maths-elite-2`, `maths-elite-3`) — the item below is now done.
+- [x] `maths-elite-1` visual ratio fixed (0% → 68.75%).
+
+## Carried over / still open from this session
+
+- [ ] **English mock letter-labelling predictability, comprehension side-by-side layout, question-block section ordering** — a separate background agent (`worktree-english-gl-mock-rebuild`) was mid-rebuild of exactly this when the 2026-07-19 session ran; deliberately left alone to avoid clashing. Check that branch's status next session — it may be ready to review/merge, or may need finishing.
+- [ ] **Real PMC/JMC question bank** — founder asked for one; not attempted, no source past papers available and copying real competition content would be a copyright problem. Original competition-style questions were written instead (5 per new Elite Maths mock, tagged `competition-style`). If a real bank is still wanted, it needs the founder to supply/license actual source material.
+- [ ] **3D/immersive diagram overhaul for Notes** (Spline/React-Three-Fiber/GSAP-style) — founder asked for more visually impressive interactive diagrams generally; the existing Notes system is deliberately SVG-based and a second, heavier 3D stack is an architectural decision that needs scoping, not a quick add.
 
 ---
 
