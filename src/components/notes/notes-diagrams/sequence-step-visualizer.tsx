@@ -14,11 +14,14 @@ const STEPS = [1, 2, 3, 4, 5];
 export function SequenceStepVisualizer() {
   const [first, setFirst] = useState(3);
   const [step, setStep] = useState(4);
+  const [showWorking, setShowWorking] = useState(false);
 
   const terms = Array.from({ length: 6 }, (_, i) => first + step * i);
   const maxTerm = Math.max(...terms);
   const constant = first - step;
   const nthTerm = constant === 0 ? `${step}n` : constant > 0 ? `${step}n + ${constant}` : `${step}n − ${Math.abs(constant)}`;
+  const checkN = 10;
+  const checkValue = first + step * (checkN - 1);
 
   return (
     <div>
@@ -28,6 +31,34 @@ export function SequenceStepVisualizer() {
       <div className="px-6 pb-4 text-center text-[0.78em] text-[rgba(248,245,238,0.6)]">
         nth term rule: <b style={{ color: NOTES_GOLD }}>{nthTerm}</b>
       </div>
+
+      <div className="flex justify-center px-6 pb-2">
+        <button
+          onClick={() => setShowWorking((v) => !v)}
+          className="rounded-full border px-4 py-1.5 text-[0.72em] font-bold uppercase tracking-wider transition-all"
+          style={{
+            background: showWorking ? "rgba(201,162,75,0.18)" : "rgba(255,255,255,0.05)",
+            borderColor: "rgba(201,162,75,0.4)",
+            color: NOTES_GOLD,
+            cursor: "pointer",
+          }}
+        >
+          {showWorking ? "Hide the working" : "Show how the rule was built"}
+        </button>
+      </div>
+      {showWorking && (
+        <div
+          className="mx-6 mb-4 animate-[ntfadein_0.3s_ease] rounded-xl border px-4 py-3 text-center font-mono text-[0.8em] leading-relaxed"
+          style={{ background: "rgba(201,162,75,0.1)", borderColor: "rgba(201,162,75,0.3)", color: "#F8F5EE" }}
+        >
+          common difference = {terms[1]} − {terms[0]} = <b style={{ color: NOTES_GOLD }}>{step}</b>, so the rule starts <b style={{ color: NOTES_GOLD }}>{step}n</b>
+          <br />
+          check n = 1: {step}×1 = {step}, but term 1 is {first}, so adjust by {constant >= 0 ? "+" : "−"}
+          {Math.abs(constant)} → <b style={{ color: NOTES_GOLD }}>{nthTerm}</b>
+          <br />
+          try it on term {checkN}: {nthTerm.replace("n", String(checkN))} = <b style={{ color: NOTES_GOLD }}>{checkValue}</b>
+        </div>
+      )}
 
       <div className="flex items-end justify-center gap-3 px-6 pb-2" style={{ height: 130 }}>
         {terms.map((t, i) => (
