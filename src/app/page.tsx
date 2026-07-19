@@ -16,23 +16,35 @@ import {
   Repeat2,
   TrendingUp,
   Sparkles,
+  Moon,
+  Printer,
 } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Card } from "@/components/ui/card";
+import { RevealOnScroll } from "@/components/platform/ui";
 import { FeatureGrid } from "@/components/ui/feature-grid";
 import { PricingCard } from "@/components/ui/pricing-card";
 import { TestimonialCard } from "@/components/ui/testimonial-card";
 import { HeroSection } from "@/components/sections/hero-section";
-import { HeroDashboard } from "@/components/sections/hero-dashboard";
 import { ProductLadder } from "@/components/sections/product-ladder";
 import { CTASection } from "@/components/sections/cta-section";
 import { ComparisonTable } from "@/components/sections/comparison-table";
 import { MockReportPreview } from "@/components/sections/mock-report-preview";
+import { TryAQuestion } from "@/components/sections/try-a-question";
+import { BeforeAfterSlider } from "@/components/sections/before-after-slider";
+import { YearGroupPicker } from "@/components/sections/year-group-picker";
 import { MOCK_CLUB_PRICING } from "@/data/pricing";
 import { UPSELL_PRODUCTS } from "@/data/products";
+import { Magnetic } from "@/components/motion/magnetic";
+import { AnimatedCounter } from "@/components/motion/animated-counter";
+import { ScrollProgress } from "@/components/motion/scroll-progress";
+import { ScrollStoryRail } from "@/components/motion/scroll-story-rail";
+import { TiltCard } from "@/components/motion/tilt-card";
+import { WarpGrid } from "@/components/motion/warp-grid";
+import { PullQuote } from "@/components/ui/pull-quote";
 
 const START_HERE = [
   {
@@ -84,6 +96,12 @@ const HOW_IT_WORKS = [
   { icon: <Repeat2 className="h-5 w-5" />, title: "Track progress", description: "Regular reports show exactly how your child is moving forward." },
 ];
 
+const FAMILY_FEATURES = [
+  { icon: <Users className="h-5 w-5" />, title: "Parent / family dashboard", description: "Lessons remaining, upcoming lesson times, and a payments view — one place to see where things stand." },
+  { icon: <Moon className="h-5 w-5" />, title: "Student account settings", description: "Your child can update their name and password, and switch their dashboard to dark mode." },
+  { icon: <Printer className="h-5 w-5" />, title: "Printable practice papers", description: "Offline, pen-and-paper practice for exam day realism — separate from scored online mocks." },
+];
+
 const TRUST_STATEMENTS = [
   {
     statement: "Every tutor is DBS-checked and trained in our safeguarding policy before working with any child.",
@@ -114,26 +132,32 @@ const PLATFORM_DIAGRAMS = [
   },
   {
     title: "Access flow",
-    items: ["Register", "Pay", "Admin approves", "Mock unlocked", "Student completes", "Report released"],
+    items: ["Register", "Instant account access", "Admin unlocks your mocks", "Student completes", "Report released"],
   },
 ];
 
 export default function HomePage() {
   return (
     <>
+      <ScrollProgress />
+      <WarpGrid />
       <HeroSection
         eyebrow="11+ Preparation, Done Properly"
         title="Premium 11+ mocks and progress reports that show students exactly what to improve next"
         description="Summit Tuition combines interactive online English and maths mocks, manual report release, diagnostic assessments and tuition support for selective entrance preparation."
-        visual={<HeroDashboard />}
+        visual={<TryAQuestion />}
         actions={
           <>
-            <Button href="/diagnostic-assessment" variant="navy" size="lg">
-              Start with a Diagnostic Assessment
-            </Button>
-            <Button href="/book-a-call" size="lg">
-              Book a Free Parent Call
-            </Button>
+            <Magnetic>
+              <Button href="/diagnostic-assessment" variant="navy" size="lg">
+                Start with a Diagnostic Assessment
+              </Button>
+            </Magnetic>
+            <Magnetic>
+              <Button href="/book-a-call" size="lg">
+                Book a Free Parent Call
+              </Button>
+            </Magnetic>
             <Link href="/login" className="inline-flex h-12 items-center justify-center text-sm font-bold text-navy underline decoration-gold/60 underline-offset-4 hover:text-gold-dark">
               Student Login
             </Link>
@@ -144,42 +168,49 @@ export default function HomePage() {
       {/* Start Here */}
       <section className="py-20">
         <Container>
-          <SectionHeading eyebrow="Start Here" title="Tell us what you need — we'll point you to the right place" />
-          <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
-            {START_HERE.map((item) => (
-              <Card key={item.title} className="flex flex-col p-7">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-navy text-gold-light">
-                  {item.icon}
-                </div>
-                <h3 className="mt-5 text-xl font-semibold text-navy">{item.title}</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{item.description}</p>
-                <Button href={item.href} variant="outline" className="mt-6 w-fit">
-                  {item.cta} <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Card>
-            ))}
-          </div>
+          <RevealOnScroll>
+            <SectionHeading eyebrow="Start Here" title="Tell us what you need — we'll point you to the right place" />
+            <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
+              {START_HERE.map((item) => (
+                <Card key={item.title} className="flex flex-col p-7">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-navy text-gold-light">
+                    {item.icon}
+                  </div>
+                  <h3 className="mt-5 text-xl font-semibold text-navy">{item.title}</h3>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{item.description}</p>
+                  <Button href={item.href} variant="outline" className="mt-6 w-fit">
+                    {item.cta} <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </Card>
+              ))}
+            </div>
+          </RevealOnScroll>
+          <RevealOnScroll delay={0.12} className="mt-10">
+            <YearGroupPicker />
+          </RevealOnScroll>
         </Container>
       </section>
 
       {/* Product ladder */}
       <section className="bg-cream-dark/50 py-20">
         <Container>
-          <SectionHeading
-            eyebrow="The Full Picture"
-            title="From a free call to a fully managed programme"
-            description="Start wherever makes sense for your family, and build up as your child gets closer to exams."
-          />
-          <div className="mt-10">
-            <ProductLadder />
-          </div>
+          <RevealOnScroll>
+            <SectionHeading
+              eyebrow="The Full Picture"
+              title="From a free call to a fully managed programme"
+              description="Start wherever makes sense for your family, and build up as your child gets closer to exams."
+            />
+            <div className="mt-10">
+              <ProductLadder />
+            </div>
+          </RevealOnScroll>
         </Container>
       </section>
 
       {/* Diagnostic Assessment */}
       <section id="diagnostic" className="py-20">
         <Container className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
-          <div>
+          <RevealOnScroll>
             <SectionHeading
               eyebrow="Diagnostic Assessment"
               title="Find out exactly what your child needs to improve"
@@ -191,26 +222,33 @@ export default function HomePage() {
             <Button href="/diagnostic-assessment" size="lg" className="mt-8">
               Book Diagnostic Assessment <ArrowRight className="h-4 w-4" />
             </Button>
-          </div>
-          <MockReportPreview />
+          </RevealOnScroll>
+          <RevealOnScroll delay={0.1}>
+            <div className="space-y-6">
+              <MockReportPreview />
+              <BeforeAfterSlider />
+            </div>
+          </RevealOnScroll>
         </Container>
       </section>
 
       {/* Weekly Mock Club */}
       <section id="mocks" className="bg-navy py-20">
         <Container>
-          <SectionHeading
-            align="center"
-            eyebrow="Weekly Mock Club"
-            title="Weekly 11+ mock exams with clear parent reports"
-            description="Students sit regular timed mocks and parents receive useful feedback, not just a score."
-            className="mx-auto text-cream [&_h2]:text-white [&_p]:text-cream/70"
-          />
-          <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
-            {MOCK_CLUB_PRICING.map((tier) => (
-              <PricingCard key={tier.id} tier={tier} />
-            ))}
-          </div>
+          <RevealOnScroll>
+            <SectionHeading
+              align="center"
+              eyebrow="Weekly Mock Club"
+              title="Weekly 11+ mock exams with clear parent reports"
+              description="Students sit regular timed mocks and parents receive useful feedback, not just a score."
+              className="mx-auto text-cream [&_h2]:text-white [&_p]:text-cream/70"
+            />
+            <div className="mt-12 mx-auto w-full max-w-sm">
+              {MOCK_CLUB_PRICING.map((tier) => (
+                <PricingCard key={tier.id} tier={tier} />
+              ))}
+            </div>
+          </RevealOnScroll>
         </Container>
       </section>
 
@@ -234,17 +272,19 @@ export default function HomePage() {
             </div>
           </Card>
           <div className="order-1 lg:order-2">
-            <SectionHeading
-              eyebrow="Practice Paper Simulator"
-              title="Practice papers that feel like real 11+ mocks"
-              description="Children complete timed online practice papers across English, maths, verbal reasoning and non-verbal reasoning. Parents can see results and improvement areas immediately."
-            />
-            <div className="mt-8">
-              <FeatureGrid items={SIMULATOR_FEATURES} columns={2} />
-            </div>
-            <Button href="/practice-paper-simulator" size="lg" className="mt-8">
-              Try Practice Paper Simulator <ArrowRight className="h-4 w-4" />
-            </Button>
+            <RevealOnScroll>
+              <SectionHeading
+                eyebrow="Practice Paper Simulator"
+                title="Practice papers that feel like real 11+ mocks"
+                description="Children complete timed online practice papers across English, maths, verbal reasoning and non-verbal reasoning. Parents can see results and improvement areas immediately."
+              />
+              <div className="mt-8">
+                <FeatureGrid items={SIMULATOR_FEATURES} columns={2} />
+              </div>
+              <Button href="/practice-paper-simulator" size="lg" className="mt-8">
+                Try Practice Paper Simulator <ArrowRight className="h-4 w-4" />
+              </Button>
+            </RevealOnScroll>
           </div>
         </Container>
       </section>
@@ -252,162 +292,203 @@ export default function HomePage() {
       {/* Tuition comparison */}
       <section className="bg-cream-dark/50 py-20">
         <Container>
-          <SectionHeading
-            eyebrow="Tuition"
-            title="Group, private, or the complete system"
-            description="Compare the three ways to get structured teaching support — and see why most families choose the Complete 11+ Programme."
-          />
-          <div className="mt-10">
-            <ComparisonTable />
-          </div>
-          <div className="mt-8 flex flex-wrap gap-4">
-            <Button href="/tuition/group" variant="outline">Group Tuition</Button>
-            <Button href="/tuition/private" variant="outline">Private Tuition</Button>
-            <Button href="/complete-programme">Apply for Complete Programme</Button>
-          </div>
+          <RevealOnScroll>
+            <SectionHeading
+              eyebrow="Tuition"
+              title="Group, private, or the complete system"
+              description="Compare the three ways to get structured teaching support — and see why most families choose the Complete 11+ Programme."
+            />
+            <div className="mt-10">
+              <ComparisonTable />
+            </div>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Button href="/tuition/group" variant="outline">Group Tuition</Button>
+              <Button href="/tuition/private" variant="outline">Private Tuition</Button>
+              <Button href="/complete-programme">Apply for Complete Programme</Button>
+            </div>
+          </RevealOnScroll>
         </Container>
       </section>
 
       {/* Complete Programme */}
       <section className="py-20">
         <Container>
-          <div className="overflow-hidden rounded-3xl border border-gold/40 bg-navy">
-            <div className="grid grid-cols-1 gap-10 p-8 sm:p-12 lg:grid-cols-2 lg:items-center">
-              <div>
-                <Badge variant="gold">Best Value</Badge>
-                <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                  The complete 11+ preparation system
-                </h2>
-                <p className="mt-4 text-lg leading-relaxed text-cream/70">
-                  Diagnostic assessment, weekly group tuition, weekly mocks, simulator access,
-                  monthly reports and parent check-ins — combined into one managed plan.
-                </p>
-                <Button href="/complete-programme" size="lg" className="mt-8">
-                  Apply for Complete Programme <ArrowRight className="h-4 w-4" />
-                </Button>
+          <RevealOnScroll>
+            <div className="overflow-hidden rounded-3xl border border-gold/40 bg-navy">
+              <div className="grid grid-cols-1 gap-10 p-8 sm:p-12 lg:grid-cols-2 lg:items-center">
+                <div>
+                  <Badge variant="gold">Best Value</Badge>
+                  <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                    The complete 11+ preparation system
+                  </h2>
+                  <p className="mt-4 text-lg leading-relaxed text-cream/70">
+                    Diagnostic assessment, weekly group tuition, weekly mocks, simulator access,
+                    monthly reports and parent check-ins — combined into one managed plan.
+                  </p>
+                  <Button href="/complete-programme" size="lg" className="mt-8">
+                    Apply for Complete Programme <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </div>
+                <ul className="space-y-3 rounded-2xl bg-white/5 p-6">
+                  {[
+                    "Initial diagnostic assessment",
+                    "Weekly group tuition",
+                    "Weekly mock exams",
+                    "Practice Paper Simulator access",
+                    "Monthly progress reports",
+                    "Weak-area tracking",
+                    "Termly parent check-ins",
+                    "Holiday booster discount",
+                  ].map((f) => (
+                    <li key={f} className="flex items-center gap-3 text-sm font-medium text-cream/90">
+                      <Sparkles className="h-4 w-4 shrink-0 text-gold-light" /> {f}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <ul className="space-y-3 rounded-2xl bg-white/5 p-6">
-                {[
-                  "Initial diagnostic assessment",
-                  "Weekly group tuition",
-                  "Weekly mock exams",
-                  "Practice Paper Simulator access",
-                  "Monthly progress reports",
-                  "Weak-area tracking",
-                  "Termly parent check-ins",
-                  "Holiday booster discount",
-                ].map((f) => (
-                  <li key={f} className="flex items-center gap-3 text-sm font-medium text-cream/90">
-                    <Sparkles className="h-4 w-4 shrink-0 text-gold-light" /> {f}
-                  </li>
-                ))}
-              </ul>
             </div>
-          </div>
+          </RevealOnScroll>
         </Container>
       </section>
 
       {/* Upsells */}
       <section className="py-20">
         <Container>
-          <SectionHeading
-            eyebrow="Add-Ons"
-            title="Add extra support when your child needs it"
-            description="Flexible, one-off ways to close a specific gap without committing to a new subscription."
-          />
-          <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {UPSELL_PRODUCTS.map((u) => (
-              <Link
-                key={u.name}
-                href={u.href}
-                className="flex flex-col rounded-2xl border border-line bg-white p-6 transition-shadow hover:shadow-[0_16px_40px_-16px_rgba(15,43,61,0.2)]"
-              >
-                <h3 className="text-base font-semibold text-navy">{u.name}</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{u.description}</p>
-                <div className="mt-4 flex items-center justify-between border-t border-line pt-4">
-                  <span className="text-sm font-bold text-navy">{u.price}</span>
-                  <ArrowRight className="h-4 w-4 text-gold-dark" />
-                </div>
-              </Link>
-            ))}
-          </div>
+          <RevealOnScroll>
+            <SectionHeading
+              eyebrow="Add-Ons"
+              title="Add extra support when your child needs it"
+              description="Flexible, one-off ways to close a specific gap without committing to a new subscription."
+            />
+            <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {UPSELL_PRODUCTS.map((u) => (
+                <TiltCard key={u.name} className="h-full">
+                  <Link
+                    href={u.href}
+                    className="premium-card-hover cursor-pencil flex h-full flex-col rounded-2xl border border-line bg-white p-6"
+                  >
+                    <h3 className="text-base font-semibold text-navy">{u.name}</h3>
+                    <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{u.description}</p>
+                    <div className="mt-4 flex items-center justify-between border-t border-line pt-4">
+                      <span className="text-sm font-bold text-navy">{u.price}</span>
+                      <ArrowRight className="h-4 w-4 text-gold-dark" />
+                    </div>
+                  </Link>
+                </TiltCard>
+              ))}
+            </div>
+          </RevealOnScroll>
         </Container>
       </section>
 
       {/* How it works */}
-      <section className="bg-cream-dark/50 py-20">
+      <section className="bg-navy py-24">
         <Container>
-          <SectionHeading align="center" eyebrow="How It Works" title="A clear, structured path to exam day" />
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
-            {HOW_IT_WORKS.map((step, i) => (
-              <div key={step.title} className="relative rounded-2xl border border-line bg-white p-6">
-                <span className="text-xs font-bold text-gold-dark">0{i + 1}</span>
-                <div className="mt-3 flex h-10 w-10 items-center justify-center rounded-xl bg-navy/5 text-navy">
-                  {step.icon}
-                </div>
-                <h3 className="mt-4 text-sm font-semibold text-navy">{step.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-muted">{step.description}</p>
-              </div>
-            ))}
-          </div>
+          <RevealOnScroll>
+            <SectionHeading
+              align="center"
+              eyebrow="How It Works"
+              title="A clear, structured path to exam day"
+              className="mx-auto text-cream [&_h2]:text-white [&_p]:text-cream/70"
+            />
+            <div className="mt-14">
+              <ScrollStoryRail steps={HOW_IT_WORKS.map((s) => ({ title: s.title, text: s.description }))} />
+            </div>
+          </RevealOnScroll>
+        </Container>
+      </section>
+
+      <section className="py-16">
+        <Container>
+          <PullQuote>
+            &ldquo;We don&apos;t promise a place at a grammar school — we promise your child will know
+            exactly what to fix before exam day.&rdquo;
+          </PullQuote>
         </Container>
       </section>
 
       <section className="py-20">
         <Container>
-          <SectionHeading
-            eyebrow="Platform Map"
-            title="The full Summit Tuition operating system"
-            description="The public site, student portal, admin approval flow and report release process all point to one outcome: clearer improvement decisions after every mock."
-          />
-          <div className="mt-10 grid gap-6 lg:grid-cols-2">
-            {PLATFORM_DIAGRAMS.map((diagram) => (
-              <Card key={diagram.title} className="p-6">
-                <h3 className="text-lg font-bold text-navy">{diagram.title}</h3>
-                <div className="mt-5 flex flex-wrap items-center gap-2">
-                  {diagram.items.map((item, index) => (
-                    <div key={item} className="flex items-center gap-2">
-                      <span className="rounded-full border border-gold/40 bg-gold/10 px-3 py-2 text-xs font-bold text-navy">{item}</span>
-                      {index < diagram.items.length - 1 && <ArrowRight className="h-4 w-4 text-gold-dark" />}
-                    </div>
-                  ))}
+          <RevealOnScroll>
+            <SectionHeading
+              eyebrow="Platform Map"
+              title="The full Summit Tuition operating system"
+              description="The public site, student portal, admin mock-unlock flow and report release process all point to one outcome: clearer improvement decisions after every mock."
+            />
+            <div className="mt-10 grid gap-6 lg:grid-cols-2">
+              {PLATFORM_DIAGRAMS.map((diagram) => (
+                <Card key={diagram.title} className="p-6">
+                  <h3 className="text-lg font-bold text-navy">{diagram.title}</h3>
+                  <div className="mt-5 flex flex-wrap items-center gap-2">
+                    {diagram.items.map((item, index) => (
+                      <div key={item} className="flex items-center gap-2">
+                        <span className="rounded-full border border-gold/40 bg-gold/10 px-3 py-2 text-xs font-bold text-navy">{item}</span>
+                        {index < diagram.items.length - 1 && <ArrowRight className="h-4 w-4 text-gold-dark" />}
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+              ))}
+              <Card className="p-6 lg:col-span-2">
+                <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
+                  <div>
+                    <h3 className="text-lg font-bold text-navy">Dashboard and report preview</h3>
+                    <p className="mt-2 text-sm text-muted">Students see readiness, subject bars, weak topics and a recommended next step after admin releases the report.</p>
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-3">
+                    <div className="gold-shimmer rounded-2xl bg-cream p-4"><p className="text-3xl font-black text-navy"><AnimatedCounter value={78} suffix="%" /></p><p className="text-sm text-muted">Readiness score</p></div>
+                    <div className="rounded-2xl bg-cream p-4"><p className="text-sm font-bold text-navy">Subject bars</p><div className="mt-3 space-y-2"><span className="block h-2 rounded-full bg-gold" /><span className="block h-2 w-2/3 rounded-full bg-navy" /></div></div>
+                    <div className="rounded-2xl bg-cream p-4"><p className="text-sm font-bold text-navy">Next step</p><p className="mt-2 text-xs text-muted">Ratio practice pack before the next timed mock.</p></div>
+                  </div>
                 </div>
               </Card>
-            ))}
-            <Card className="p-6 lg:col-span-2">
-              <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
-                <div>
-                  <h3 className="text-lg font-bold text-navy">Dashboard and report preview</h3>
-                  <p className="mt-2 text-sm text-muted">Students see readiness, subject bars, weak topics and a recommended next step after admin releases the report.</p>
-                </div>
-                <div className="grid gap-3 sm:grid-cols-3">
-                  <div className="rounded-2xl bg-cream p-4"><p className="text-3xl font-black text-navy">78%</p><p className="text-sm text-muted">Readiness score</p></div>
-                  <div className="rounded-2xl bg-cream p-4"><p className="text-sm font-bold text-navy">Subject bars</p><div className="mt-3 space-y-2"><span className="block h-2 rounded-full bg-gold" /><span className="block h-2 w-2/3 rounded-full bg-navy" /></div></div>
-                  <div className="rounded-2xl bg-cream p-4"><p className="text-sm font-bold text-navy">Next step</p><p className="mt-2 text-xs text-muted">Ratio practice pack before the next timed mock.</p></div>
-                </div>
-              </div>
-            </Card>
-          </div>
+            </div>
+          </RevealOnScroll>
+        </Container>
+      </section>
+
+      {/* Family features */}
+      <section className="bg-cream-dark/50 py-20">
+        <Container>
+          <RevealOnScroll>
+            <SectionHeading
+              eyebrow="Built For The Whole Family"
+              title="Every account comes with more than just mocks"
+              description="Once you're in, students and parents each get their own dedicated space."
+            />
+            <div className="mt-10">
+              <FeatureGrid items={FAMILY_FEATURES} columns={3} />
+            </div>
+            <div className="mt-8">
+              <Button href="/register" size="lg">
+                Create Your Free Account <ArrowRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </RevealOnScroll>
         </Container>
       </section>
 
       {/* Trust */}
       <section className="py-20">
         <Container>
-          <SectionHeading eyebrow="Why Parents Choose Us" title="Built to be honest, not just reassuring" />
-          <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-3">
-            {TRUST_STATEMENTS.map((t) => (
-              <TestimonialCard key={t.context} statement={t.statement} context={t.context} />
-            ))}
-          </div>
-          <div className="mt-6 flex items-start gap-2 text-sm text-muted">
-            <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-gold-dark" />
-            <p>
-              Results vary by child, and admissions rules and test formats vary by school and local
-              authority — we won&apos;t promise a guaranteed grammar school place, and we&apos;d be
-              cautious of anyone who does.
-            </p>
-          </div>
+          <RevealOnScroll>
+            <SectionHeading eyebrow="Why Parents Choose Us" title="Built to be honest, not just reassuring" />
+            <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-3">
+              {TRUST_STATEMENTS.map((t) => (
+                <TiltCard key={t.context} className="h-full">
+                  <TestimonialCard statement={t.statement} context={t.context} className="h-full" />
+                </TiltCard>
+              ))}
+            </div>
+            <div className="mt-6 flex items-start gap-2 text-sm text-muted">
+              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-gold-dark" />
+              <p>
+                Results vary by child, and admissions rules and test formats vary by school and local
+                authority — we won&apos;t promise a guaranteed grammar school place, and we&apos;d be
+                cautious of anyone who does.
+              </p>
+            </div>
+          </RevealOnScroll>
         </Container>
       </section>
 
@@ -417,12 +498,16 @@ export default function HomePage() {
         description="Book a free 15-minute call and we'll help you choose the right starting point."
         actions={
           <>
-            <Button href="/book-a-call" size="lg">
-              Book a Free Parent Call
-            </Button>
-            <Button href="/diagnostic-assessment" variant="light" size="lg">
-              Book Diagnostic Assessment
-            </Button>
+            <Magnetic>
+              <Button href="/book-a-call" size="lg">
+                Book a Free Parent Call
+              </Button>
+            </Magnetic>
+            <Magnetic>
+              <Button href="/diagnostic-assessment" variant="light" size="lg">
+                Book Diagnostic Assessment
+              </Button>
+            </Magnetic>
           </>
         }
       />

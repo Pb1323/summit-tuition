@@ -4,8 +4,10 @@ import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { FeatureGrid } from "@/components/ui/feature-grid";
+import { DropCap } from "@/components/ui/drop-cap";
 import { HeroSection } from "@/components/sections/hero-section";
 import { CTASection } from "@/components/sections/cta-section";
+import { RevealOnScroll } from "@/components/platform/ui";
 import { SITE } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -36,30 +38,34 @@ export default function AboutPage() {
 
       <section className="py-20">
         <Container className="max-w-3xl">
-          <SectionHeading eyebrow="Our Approach" title="Diagnose first, teach second" />
-          <div className="mt-6 space-y-4 text-base leading-relaxed text-muted">
-            <p>
-              Every child we work with starts from a clear, honest picture of where they stand —
-              whether that&apos;s a free parent call or a full diagnostic assessment. From there,
-              we build a plan around their specific gaps rather than a one-size-fits-all syllabus.
-            </p>
-            <p>
-              We don&apos;t promise a guaranteed grammar school place, and we&apos;d be cautious of
-              any provider who does — admissions criteria, competition levels and test formats vary
-              by school and local authority, and are ultimately outside any tutor&apos;s control.
-              What we can promise is structured preparation, honest reporting, and a tutor team
-              that takes safeguarding seriously.
-            </p>
-          </div>
+          <RevealOnScroll>
+            <SectionHeading eyebrow="Our Approach" title="Diagnose first, teach second" />
+            <div className="mt-6 space-y-4 text-base leading-relaxed text-muted">
+              <DropCap>
+                Every child we work with starts from a clear, honest picture of where they stand —
+                whether that&apos;s a free parent call or a full diagnostic assessment. From there,
+                we build a plan around their specific gaps rather than a one-size-fits-all syllabus.
+              </DropCap>
+              <p>
+                We don&apos;t promise a guaranteed grammar school place, and we&apos;d be cautious of
+                any provider who does — admissions criteria, competition levels and test formats vary
+                by school and local authority, and are ultimately outside any tutor&apos;s control.
+                What we can promise is structured preparation, honest reporting, and a tutor team
+                that takes safeguarding seriously.
+              </p>
+            </div>
+          </RevealOnScroll>
         </Container>
       </section>
 
       <section className="bg-cream-dark/50 py-20">
         <Container>
-          <SectionHeading eyebrow="What We Stand For" title="The principles behind every product" />
-          <div className="mt-10">
-            <FeatureGrid items={VALUES} columns={4} />
-          </div>
+          <RevealOnScroll>
+            <SectionHeading eyebrow="What We Stand For" title="The principles behind every product" />
+            <div className="mt-10">
+              <FeatureGrid items={VALUES} columns={4} />
+            </div>
+          </RevealOnScroll>
         </Container>
       </section>
 

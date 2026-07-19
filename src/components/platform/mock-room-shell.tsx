@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AlertTriangle, ArrowLeft, CheckCircle2, Eye, Flag, ShieldAlert } from "lucide-react";
+import { AlertTriangle, ArrowLeft, CheckCircle2, Eye, EyeOff, Flag, ShieldAlert } from "lucide-react";
 import { usePlatform } from "@/context/platform-context";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/container";
@@ -33,6 +33,18 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
   // Elapsed time already banked in the resumed draft, captured once at start.
   // Reading the live draft here would compound: every save writes the new total back into the draft.
   const [baseElapsed, setBaseElapsed] = useState(0);
+  const [showTimer, setShowTimer] = useState(() => {
+    if (typeof window === "undefined") return true;
+    const stored = window.localStorage.getItem("summit-mock-show-timer");
+    return stored !== "false";
+  });
+  const toggleTimer = useCallback(() => {
+    setShowTimer((value) => {
+      const next = !value;
+      window.localStorage.setItem("summit-mock-show-timer", String(next));
+      return next;
+    });
+  }, []);
   const active = questions[index];
   const activePassage = active?.passageId ? passages.find((passage) => passage.id === active.passageId) : undefined;
   const unansweredCount = questions.filter((question) => !answers[question.id]).length;
@@ -46,15 +58,13 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
 
   const toggleFlag = useCallback(() => {
     if (!mock || !active) return;
-    setFlagged((items) => {
-      const next = items.includes(active.id) ? items.filter((id) => id !== active.id) : [...items, active.id];
-      if (!isAdminPreview) {
-        saveAttemptDraft(mock.id, answers, next, elapsedSeconds());
-        setLastSavedAt(new Date());
-      }
-      return next;
-    });
-  }, [active, answers, elapsedSeconds, isAdminPreview, mock, saveAttemptDraft]);
+    const next = flagged.includes(active.id) ? flagged.filter((id) => id !== active.id) : [...flagged, active.id];
+    setFlagged(next);
+    if (!isAdminPreview) {
+      saveAttemptDraft(mock.id, answers, next, elapsedSeconds());
+      setLastSavedAt(new Date());
+    }
+  }, [active, answers, elapsedSeconds, flagged, isAdminPreview, mock, saveAttemptDraft]);
 
   function startMock() {
     if (draft && !isAdminPreview) {
@@ -175,7 +185,7 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
           </GlowCard>
         ) : (
           <div className="mock-room-protection space-y-6">
-            <div className="sticky top-20 z-20 rounded-2xl border border-line bg-white/90 p-4 shadow-sm backdrop-blur">
+            <div className="rounded-2xl border border-line bg-white/90 p-4 shadow-sm backdrop-blur">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div><p className="text-sm font-bold text-gold-dark">{mock.subject}</p><h1 className="text-xl font-black text-navy">{mock.title}</h1></div>
                 <div className="flex flex-wrap items-center gap-3">
@@ -189,7 +199,17 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
                       Review &amp; submit
                     </button>
                   )}
-                  {isAdminPreview ? <span className="rounded-full bg-navy px-3 py-1 text-sm font-bold text-white">Preview timer</span> : <MockTimer durationMinutes={mock.durationMinutes} initialElapsedSeconds={baseElapsed} onExpire={submit} />}
+                  {!isAdminPreview && (
+                    <button
+                      onClick={toggleTimer}
+                      aria-label={showTimer ? "Hide timer" : "Show timer"}
+                      title={showTimer ? "Hide timer" : "Show timer"}
+                      className="rounded-full border border-line bg-white p-1.5 text-navy transition hover:bg-cream"
+                    >
+                      {showTimer ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                    </button>
+                  )}
+                  {isAdminPreview ? <span className="rounded-full bg-navy px-3 py-1 text-sm font-bold text-white">Preview timer</span> : <MockTimer durationMinutes={mock.durationMinutes} initialElapsedSeconds={baseElapsed} onExpire={submit} visible={showTimer} />}
                 </div>
               </div>
               <div className="mt-4"><QuestionNavigator questions={questions} activeIndex={index} answers={answers} flagged={flagged} onSelect={setIndex} /></div>

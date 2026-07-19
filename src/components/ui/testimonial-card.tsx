@@ -17,7 +17,7 @@ export function TestimonialCard({
   className?: string;
 }) {
   return (
-    <div className={cn("rounded-2xl border border-line bg-white p-6", className)}>
+    <div className={cn("premium-card-hover rounded-2xl border border-line bg-white p-6", className)}>
       <Quote className="h-5 w-5 text-gold" />
       <p className="mt-3 text-base leading-relaxed text-navy">{statement}</p>
       <p className="mt-3 text-xs font-medium uppercase tracking-wide text-muted">{context}</p>

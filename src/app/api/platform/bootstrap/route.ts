@@ -5,7 +5,12 @@ import { getPlatformBootstrap } from "@/lib/server/platform-store";
 export const runtime = "nodejs";
 
 export async function GET() {
-  const currentUser = await getCurrentUser();
-  const state = await getPlatformBootstrap(currentUser);
-  return NextResponse.json(state);
+  try {
+    const currentUser = await getCurrentUser();
+    const state = await getPlatformBootstrap(currentUser);
+    return NextResponse.json(state);
+  } catch (error) {
+    console.error("Platform bootstrap failed:", error);
+    return NextResponse.json({ ok: false, message: "Unable to load platform state." }, { status: 500 });
+  }
 }

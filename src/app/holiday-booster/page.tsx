@@ -71,14 +71,14 @@ export default function HolidayBoosterPage() {
 
       <section id="pricing" className="py-20">
         <Container className="flex flex-col items-center">
-          <SectionHeading align="center" eyebrow="Pricing" title="One-off course fee, per holiday" />
+          <SectionHeading align="center" eyebrow="Pricing" title="One simple weekly rate" />
           <div className="mt-10 w-full max-w-sm">
             {HOLIDAY_PRICING.map((tier) => (
               <PricingCard key={tier.id} tier={tier} />
             ))}
           </div>
           <p className="mt-4 text-sm text-muted">
-            Mock Club Premium and Complete Programme members receive a discount automatically.
+            Complete Programme members receive a discount automatically.
           </p>
         </Container>
       </section>

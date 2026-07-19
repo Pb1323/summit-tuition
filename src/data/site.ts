@@ -6,8 +6,7 @@ export const SITE = {
   description:
     "Premium online 11+ mock exams, English and maths practice, diagnostic assessments, tuition and progress reports for selective entrance preparation.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.summittuition.co.uk",
-  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "hello@summittuition.co.uk",
-  phone: "020 3870 1142",
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "pranav.bgri@gmail.com",
   address: "London & online, serving families across the UK",
   copyrightYear: "2026",
   socials: {

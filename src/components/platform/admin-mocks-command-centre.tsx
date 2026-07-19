@@ -1,15 +1,17 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Archive, BookOpenCheck, CheckCircle2, ClipboardList, Copy, Eye, FileSearch, FlaskConical, ListChecks, PencilLine } from "lucide-react";
+import Link from "next/link";
+import { Archive, BookOpenCheck, CheckCircle2, ChevronDown, ClipboardList, Copy, Eye, FileSearch, FlaskConical, ListChecks, PencilLine, Search, XCircle } from "lucide-react";
 import { usePlatform } from "@/context/platform-context";
-import { evaluateMockQuality, qualityTone } from "@/lib/mock-quality";
+import { evaluateMockQuality, qualityTone, type MockQualityResult } from "@/lib/mock-quality";
+import { autoGenerateReport } from "@/lib/assessment";
 import { AnimatedButton, GlowCard, PremiumBadge, QuestionRenderer, RevealOnScroll, StaggerReveal } from "@/components/platform/ui";
 import { AdminMockWorkspace } from "@/components/platform/admin-mock-workspace";
-import type { MockExam, Passage, Question } from "@/types/platform";
+import type { Attempt, MockExam, Passage, Question, Subject } from "@/types/platform";
 
 export function AdminMocksCommandCentre() {
-  const { mocks, questions, passages, attempts, references, setMockPublished, cloneMock, archiveMock, addFeedback, releaseReport } = usePlatform();
+  const { mocks, questions, passages, attempts, users, references, setMockPublished, cloneMock, archiveMock, addFeedback, releaseReport } = usePlatform();
   const [selectedVisualId, setSelectedVisualId] = useState("show-table");
   const [actionMessage, setActionMessage] = useState("");
   const [feedback, setFeedback] = useState<Record<string, string>>({});
@@ -52,80 +54,74 @@ export function AdminMocksCommandCentre() {
         {actionMessage && <p className="mt-3 rounded-xl bg-cream px-4 py-2 text-sm font-bold text-navy" role="status">{actionMessage}</p>}
       </GlowCard>
 
-      <section id="overview" className="space-y-5 scroll-mt-28">
-        <SectionTitle title="Mock Overview" text="Every mock shows publish readiness, attempts, and safe admin preview controls." />
-        <div className="grid gap-5 xl:grid-cols-2">
-          {visibleMocks.map((mock) => (
-            <MockAdminCard
-              key={mock.id}
-              mock={mock}
-              questions={questions}
-              attempts={attempts}
-              quality={quality.get(mock.id)!}
-              onTogglePublish={() => setMockPublished(mock.id, !mock.published)}
-              onClone={() => {
-                const result = cloneMock(mock.id);
-                setActionMessage(result.ok ? `Cloned "${mock.title}" as an unpublished draft.` : result.message);
-              }}
-              onArchive={() => {
-                archiveMock(mock.id);
-                setActionMessage(`Archived "${mock.title}" and unpublished it.`);
-              }}
-            />
-          ))}
-          {visibleMocks.length === 0 && <EmptyPanel title="No mocks yet" text="Generate your first GL-style mock to begin reviewing question quality." />}
-        </div>
-      </section>
+      <MockListPanel
+        sectionId="overview"
+        title="Mock Overview"
+        text="Search or filter to find a mock instantly, even with a large library. Click any row to expand full detail and admin controls."
+        mocks={visibleMocks}
+        questions={questions}
+        attempts={attempts}
+        quality={quality}
+        emptyTitle="No mocks yet"
+        emptyText="Generate your first GL-style mock to begin reviewing question quality."
+        actionsFor={(mock) => ({
+          onTogglePublish: () => setMockPublished(mock.id, !mock.published),
+          onClone: () => {
+            const result = cloneMock(mock.id);
+            setActionMessage(result.ok ? `Cloned "${mock.title}" as an unpublished draft.` : result.message);
+          },
+          onArchive: () => {
+            archiveMock(mock.id);
+            setActionMessage(`Archived "${mock.title}" and unpublished it.`);
+          },
+        })}
+      />
 
-      <section id="drafts" className="scroll-mt-28">
-        <SectionTitle title="Drafts" text="Unpublished mocks stay admin-only until you review and publish them." />
-        <div className="mt-5 grid gap-5 xl:grid-cols-2">
-          {draftMocks.map((mock) => (
-            <MockAdminCard
-              key={mock.id}
-              mock={mock}
-              questions={questions}
-              attempts={attempts}
-              quality={quality.get(mock.id)!}
-              onTogglePublish={() => setMockPublished(mock.id, true)}
-              onClone={() => {
-                const result = cloneMock(mock.id);
-                setActionMessage(result.ok ? `Cloned "${mock.title}" as an unpublished draft.` : result.message);
-              }}
-              onArchive={() => {
-                archiveMock(mock.id);
-                setActionMessage(`Archived "${mock.title}" and unpublished it.`);
-              }}
-            />
-          ))}
-          {draftMocks.length === 0 && <EmptyPanel title="No draft mocks yet" text="Generate your first GL-style mock from the generator section." />}
-        </div>
-      </section>
+      <MockListPanel
+        sectionId="drafts"
+        title="Drafts"
+        text="Unpublished mocks stay admin-only until you review and publish them."
+        mocks={draftMocks}
+        questions={questions}
+        attempts={attempts}
+        quality={quality}
+        emptyTitle="No draft mocks yet"
+        emptyText="Generate your first GL-style mock from the generator section."
+        actionsFor={(mock) => ({
+          onTogglePublish: () => setMockPublished(mock.id, true),
+          onClone: () => {
+            const result = cloneMock(mock.id);
+            setActionMessage(result.ok ? `Cloned "${mock.title}" as an unpublished draft.` : result.message);
+          },
+          onArchive: () => {
+            archiveMock(mock.id);
+            setActionMessage(`Archived "${mock.title}" and unpublished it.`);
+          },
+        })}
+      />
 
-      <section id="published" className="scroll-mt-28">
-        <SectionTitle title="Published" text="Published mocks can be unlocked for approved students from the admin overview." />
-        <div className="mt-5 grid gap-5 xl:grid-cols-2">
-          {publishedMocks.map((mock) => (
-            <MockAdminCard
-              key={mock.id}
-              mock={mock}
-              questions={questions}
-              attempts={attempts}
-              quality={quality.get(mock.id)!}
-              onTogglePublish={() => setMockPublished(mock.id, false)}
-              onClone={() => {
-                const result = cloneMock(mock.id);
-                setActionMessage(result.ok ? `Cloned "${mock.title}" as an unpublished draft.` : result.message);
-              }}
-              onArchive={() => {
-                archiveMock(mock.id);
-                setActionMessage(`Archived "${mock.title}" and unpublished it.`);
-              }}
-            />
-          ))}
-          {publishedMocks.length === 0 && <EmptyPanel title="No published mocks" text="Reviewed mocks will appear here after publishing." />}
-        </div>
-      </section>
+      <MockListPanel
+        sectionId="published"
+        title="Published"
+        text="Published mocks can be unlocked for approved students from the admin overview."
+        mocks={publishedMocks}
+        questions={questions}
+        attempts={attempts}
+        quality={quality}
+        emptyTitle="No published mocks"
+        emptyText="Reviewed mocks will appear here after publishing."
+        actionsFor={(mock) => ({
+          onTogglePublish: () => setMockPublished(mock.id, false),
+          onClone: () => {
+            const result = cloneMock(mock.id);
+            setActionMessage(result.ok ? `Cloned "${mock.title}" as an unpublished draft.` : result.message);
+          },
+          onArchive: () => {
+            archiveMock(mock.id);
+            setActionMessage(`Archived "${mock.title}" and unpublished it.`);
+          },
+        })}
+      />
 
       <section id="generate" className="scroll-mt-28">
         <SectionTitle title="Generate Mock" text="Create original GL-style Maths or English drafts, then inspect and preview before publishing." />
@@ -158,19 +154,29 @@ export function AdminMocksCommandCentre() {
         <div className="mt-5 grid gap-4">
           {attempts.filter((attempt) => attempt.status !== "in_progress").map((attempt) => {
             const mock = mocks.find((item) => item.id === attempt.mockId);
+            const student = users.find((item) => item.id === attempt.studentId);
             return (
               <GlowCard key={attempt.id} className="p-5">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
                     <h3 className="font-black text-navy">{mock?.title ?? "Unknown mock"}</h3>
-                    <p className="text-sm text-muted">Generic demo account / {attempt.score}/{attempt.maxScore} / {attempt.status.replaceAll("_", " ")}</p>
+                    <p className="text-sm text-muted">{student?.name ?? "Unknown student"} / {attempt.score}/{attempt.maxScore} / {attempt.status.replaceAll("_", " ")}</p>
                   </div>
                   <PremiumBadge tone={attempt.status === "report_released" ? "green" : "navy"}>{attempt.status.replaceAll("_", " ")}</PremiumBadge>
                 </div>
                 {attempt.status === "submitted" && (
                   <div className="mt-4 space-y-3">
                     <textarea value={feedback[attempt.id] ?? attempt.adminFeedback} onChange={(event) => setFeedback((prev) => ({ ...prev, [attempt.id]: event.target.value }))} placeholder="Manual feedback notes" className="min-h-20 w-full rounded-xl border border-line p-3 text-sm outline-none focus:border-gold" />
-                    <div className="flex gap-3">
+                    <div className="flex flex-wrap gap-3">
+                      <Link href={`/admin/reports/${attempt.id}`} className="rounded-full border border-navy/40 bg-navy/5 px-3 py-1 text-sm font-bold text-navy">Preview report (PDF)</Link>
+                      {mock && (
+                        <button
+                          onClick={() => setFeedback((prev) => ({ ...prev, [attempt.id]: autoGenerateReport(mock, attempt, questions) }))}
+                          className="rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-sm font-bold text-navy"
+                        >
+                          Auto-fill statistics report
+                        </button>
+                      )}
                       <button onClick={() => addFeedback(attempt.id, feedback[attempt.id] ?? attempt.adminFeedback)} className="rounded-full border border-line px-3 py-1 text-sm font-bold text-navy">Save feedback</button>
                       <button onClick={() => releaseReport(attempt.id, feedback[attempt.id] ?? attempt.adminFeedback)} className="rounded-full bg-gold px-3 py-1 text-sm font-bold text-navy">Release report</button>
                     </div>
@@ -197,83 +203,190 @@ export function AdminMocksCommandCentre() {
         </div>
       </section>
 
-      <section id="quality" className="scroll-mt-28">
-        <SectionTitle title="Quality Checks" text="Publish readiness checklist for every mock." />
-        <div className="mt-5 grid gap-5 xl:grid-cols-2">
-          {mocks.map((mock) => {
-            const result = quality.get(mock.id)!;
-            return (
-              <GlowCard key={mock.id} className="p-5">
-                <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div>
-                    <h3 className="font-black text-navy">{mock.title}</h3>
-                    <p className="text-sm text-muted">{mock.subject} / {mock.questionIds.length} questions</p>
-                  </div>
-                  <PremiumBadge tone={qualityTone(result.status)}>{result.status}</PremiumBadge>
-                </div>
-                <div className="mt-4 grid gap-2 sm:grid-cols-2">
-                  {result.checks.map((check) => (
-                    <div key={check.label} className="flex items-center gap-2 rounded-xl bg-cream p-3 text-sm font-semibold text-navy">
-                      <CheckCircle2 className={`h-4 w-4 ${check.passed ? "text-emerald-600" : "text-red-600"}`} />
-                      {check.label}
-                    </div>
-                  ))}
-                </div>
-              </GlowCard>
-            );
-          })}
-        </div>
-      </section>
+      <QualityChecksPanel mocks={mocks} quality={quality} />
 
-      <section id="archive" className="scroll-mt-28">
-        <SectionTitle title="Archive" text="Archived mocks are unpublished and kept for admin reference." />
-        <div className="mt-5 grid gap-5 xl:grid-cols-2">
-          {archivedMocks.map((mock) => (
-            <MockAdminCard
-              key={mock.id}
-              mock={mock}
-              questions={questions}
-              attempts={attempts}
-              quality={quality.get(mock.id)!}
-              onTogglePublish={() => setMockPublished(mock.id, true)}
-              onClone={() => {
-                const result = cloneMock(mock.id);
-                setActionMessage(result.ok ? `Cloned archived mock "${mock.title}" as a fresh draft.` : result.message);
-              }}
-              onArchive={() => setActionMessage(`"${mock.title}" is already archived.`)}
-            />
-          ))}
-          {archivedMocks.length === 0 && <EmptyPanel title="No archived mocks" text="Archived mocks will appear here after admin moves them out of the active lists." />}
-        </div>
-      </section>
+      <MockListPanel
+        sectionId="archive"
+        title="Archive"
+        text="Archived mocks are unpublished and kept for admin reference."
+        mocks={archivedMocks}
+        questions={questions}
+        attempts={attempts}
+        quality={quality}
+        emptyTitle="No archived mocks"
+        emptyText="Archived mocks will appear here after admin moves them out of the active lists."
+        actionsFor={(mock) => ({
+          onTogglePublish: () => setMockPublished(mock.id, true),
+          onClone: () => {
+            const result = cloneMock(mock.id);
+            setActionMessage(result.ok ? `Cloned archived mock "${mock.title}" as a fresh draft.` : result.message);
+          },
+          onArchive: () => setActionMessage(`"${mock.title}" is already archived.`),
+        })}
+      />
     </div>
   );
 }
 
-function MockAdminCard({ mock, questions, attempts, quality, onTogglePublish, onClone, onArchive }: { mock: MockExam; questions: Question[]; attempts: { mockId: string; status: string }[]; quality: ReturnType<typeof evaluateMockQuality>; onTogglePublish: () => void; onClone: () => void; onArchive: () => void }) {
-  const mockQuestions = questions.filter((question) => mock.questionIds.includes(question.id));
-  const mockAttempts = attempts.filter((attempt) => attempt.mockId === mock.id);
-  const pendingReports = mockAttempts.filter((attempt) => attempt.status === "submitted").length;
+type MockActions = { onTogglePublish: () => void; onClone: () => void; onArchive: () => void };
+type AttemptLike = Pick<Attempt, "mockId" | "status">;
+
+const SUBJECT_ORDER: Subject[] = ["English", "Maths", "VR", "NVR"];
+
+function MockListPanel({
+  sectionId,
+  title,
+  text,
+  mocks,
+  questions,
+  attempts,
+  quality,
+  emptyTitle,
+  emptyText,
+  actionsFor,
+}: {
+  sectionId: string;
+  title: string;
+  text: string;
+  mocks: MockExam[];
+  questions: Question[];
+  attempts: AttemptLike[];
+  quality: Map<string, MockQualityResult>;
+  emptyTitle: string;
+  emptyText: string;
+  actionsFor: (mock: MockExam) => MockActions;
+}) {
+  const [query, setQuery] = useState("");
+  const [subjectFilter, setSubjectFilter] = useState<"All" | Subject>("All");
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const subjectsPresent = useMemo(() => SUBJECT_ORDER.filter((subject) => mocks.some((mock) => mock.subject === subject)), [mocks]);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return mocks.filter((mock) => {
+      if (subjectFilter !== "All" && mock.subject !== subjectFilter) return false;
+      if (!q) return true;
+      return mock.title.toLowerCase().includes(q) || mock.description.toLowerCase().includes(q) || mock.subject.toLowerCase().includes(q) || (mock.difficultyLabel ?? "").toLowerCase().includes(q);
+    });
+  }, [mocks, query, subjectFilter]);
+
+  const groups = useMemo(() => {
+    const map = new Map<Subject, MockExam[]>();
+    filtered.forEach((mock) => map.set(mock.subject, [...(map.get(mock.subject) ?? []), mock]));
+    return SUBJECT_ORDER.filter((subject) => map.has(subject)).map((subject) => [subject, map.get(subject)!] as const);
+  }, [filtered]);
+
   return (
-    <GlowCard className="p-6">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <div className="flex flex-wrap gap-2">
-            <PremiumBadge tone={mock.published ? "green" : "navy"}>{mock.published ? "Published" : "Draft"}</PremiumBadge>
-            <PremiumBadge tone={mock.style === "GL-style" ? "gold" : "navy"}>{mock.style}</PremiumBadge>
-            <PremiumBadge tone={qualityTone(quality.status)}>{quality.status}</PremiumBadge>
+    <section id={sectionId} className="scroll-mt-28">
+      <SectionTitle title={`${title} (${mocks.length})`} text={text} />
+      {mocks.length > 0 && (
+        <div className="mt-5 flex flex-wrap items-center gap-3">
+          <div className="relative min-w-64 flex-1">
+            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder={`Search ${mocks.length} mock${mocks.length === 1 ? "" : "s"} by title, topic, or difficulty...`}
+              className="h-10 w-full rounded-full border border-line bg-white pl-10 pr-4 text-sm outline-none focus:border-gold"
+            />
           </div>
-          <h3 className="mt-3 text-2xl font-black text-navy">{mock.title}</h3>
-          <p className="mt-2 text-sm text-muted">{mock.description}</p>
+          {subjectsPresent.length > 1 && (
+            <div className="flex flex-wrap gap-2">
+              {(["All", ...subjectsPresent] as const).map((subject) => (
+                <button key={subject} onClick={() => setSubjectFilter(subject)} className={`h-10 rounded-full border px-4 text-sm font-bold transition ${subjectFilter === subject ? "border-gold bg-gold/10 text-navy" : "border-line bg-white text-muted hover:border-gold"}`}>
+                  {subject}
+                </button>
+              ))}
+            </div>
+          )}
+          <span className="text-xs font-bold uppercase tracking-[0.08em] text-muted">{filtered.length} shown</span>
         </div>
+      )}
+      <div className="mt-5 space-y-7">
+        {groups.map(([subject, groupMocks]) => (
+          <div key={subject}>
+            {groups.length > 1 && <h3 className="mb-2 text-xs font-black uppercase tracking-[0.14em] text-muted">{subject} · {groupMocks.length}</h3>}
+            <div className="space-y-2">
+              {groupMocks.map((mock) => (
+                <MockRow
+                  key={mock.id}
+                  mock={mock}
+                  questions={questions}
+                  attempts={attempts}
+                  quality={quality.get(mock.id)!}
+                  isOpen={expandedId === mock.id}
+                  onToggle={() => setExpandedId((current) => (current === mock.id ? null : mock.id))}
+                  actions={actionsFor(mock)}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
+        {filtered.length === 0 && mocks.length > 0 && <EmptyPanel title="No matches" text="No mocks match your search or filter." />}
+        {mocks.length === 0 && <EmptyPanel title={emptyTitle} text={emptyText} />}
       </div>
+    </section>
+  );
+}
+
+function MockRow({
+  mock,
+  questions,
+  attempts,
+  quality,
+  isOpen,
+  onToggle,
+  actions,
+}: {
+  mock: MockExam;
+  questions: Question[];
+  attempts: AttemptLike[];
+  quality: MockQualityResult;
+  isOpen: boolean;
+  onToggle: () => void;
+  actions: MockActions;
+}) {
+  const mockAttempts = attempts.filter((attempt) => attempt.mockId === mock.id);
+  return (
+    <GlowCard className="overflow-hidden p-0">
+      <button onClick={onToggle} aria-expanded={isOpen} className="flex w-full flex-wrap items-center justify-between gap-3 px-5 py-4 text-left">
+        <div className="flex min-w-0 flex-wrap items-center gap-3">
+          <PremiumBadge tone={mock.published ? "green" : "navy"}>{mock.published ? "Published" : "Draft"}</PremiumBadge>
+          <PremiumBadge tone={qualityTone(quality.status)}>{quality.status}</PremiumBadge>
+          <span className="truncate font-black text-navy">{mock.title}</span>
+          <span className="hidden text-xs font-semibold text-muted sm:inline">{mock.difficultyLabel ?? "Standard"}</span>
+        </div>
+        <div className="flex shrink-0 items-center gap-4 text-xs font-bold text-muted">
+          <span>{mock.questionIds.length} Qs</span>
+          <span>{mockAttempts.length} attempts</span>
+          <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180 text-gold-dark" : ""}`} />
+        </div>
+      </button>
+      {isOpen && (
+        <div className="border-t border-line px-5 pb-5 pt-4">
+          <MockAdminCardBody mock={mock} questions={questions} attempts={mockAttempts} quality={quality} {...actions} />
+        </div>
+      )}
+    </GlowCard>
+  );
+}
+
+function MockAdminCardBody({ mock, questions, attempts, quality, onTogglePublish, onClone, onArchive }: { mock: MockExam; questions: Question[]; attempts: AttemptLike[]; quality: MockQualityResult } & MockActions) {
+  const mockQuestions = questions.filter((question) => mock.questionIds.includes(question.id));
+  const pendingReports = attempts.filter((attempt) => attempt.status === "submitted").length;
+  return (
+    <div>
+      <div className="flex flex-wrap gap-2">
+        <PremiumBadge tone={mock.style === "GL-style" ? "gold" : "navy"}>{mock.style}</PremiumBadge>
+      </div>
+      <p className="mt-3 text-sm text-muted">{mock.description}</p>
       <div className="mt-5 grid gap-3 text-sm sm:grid-cols-3">
         <MiniMetric label="Subject" value={mock.subject} />
         <MiniMetric label="Difficulty" value={mock.difficultyLabel ?? "Standard"} />
         <MiniMetric label="Questions" value={mockQuestions.length} />
         <MiniMetric label="Time" value={`${mock.durationMinutes} min`} />
         <MiniMetric label="Marks" value={mock.totalMarks} />
-        <MiniMetric label="Attempts" value={mockAttempts.length} />
+        <MiniMetric label="Attempts" value={attempts.length} />
       </div>
       {quality.warnings.length > 0 && (
         <div className="mt-4 rounded-2xl border border-gold/25 bg-cream p-4 text-sm text-muted">
@@ -288,7 +401,68 @@ function MockAdminCard({ mock, questions, attempts, quality, onTogglePublish, on
         <button onClick={onClone} className="inline-flex h-10 items-center gap-2 rounded-full border border-line px-4 text-sm font-bold text-navy hover:border-gold"><Copy className="h-4 w-4" /> Clone</button>
         <button onClick={onArchive} className="inline-flex h-10 items-center gap-2 rounded-full border border-line px-4 text-sm font-bold text-navy hover:border-gold"><Archive className="h-4 w-4" /> Archive</button>
       </div>
-    </GlowCard>
+    </div>
+  );
+}
+
+function QualityChecksPanel({ mocks, quality }: { mocks: MockExam[]; quality: Map<string, MockQualityResult> }) {
+  const [query, setQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"All" | MockQualityResult["status"]>("All");
+  const q = query.trim().toLowerCase();
+  const filtered = mocks.filter((mock) => {
+    const result = quality.get(mock.id)!;
+    if (statusFilter !== "All" && result.status !== statusFilter) return false;
+    if (!q) return true;
+    return mock.title.toLowerCase().includes(q) || mock.subject.toLowerCase().includes(q);
+  });
+  return (
+    <section id="quality" className="scroll-mt-28">
+      <SectionTitle title={`Quality Checks (${mocks.length})`} text="Publish readiness checklist for every mock." />
+      {mocks.length > 0 && (
+        <div className="mt-5 flex flex-wrap items-center gap-3">
+          <div className="relative min-w-64 flex-1">
+            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search by title or subject..." className="h-10 w-full rounded-full border border-line bg-white pl-10 pr-4 text-sm outline-none focus:border-gold" />
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {(["All", "Ready", "Needs Review", "Broken Draft"] as const).map((status) => (
+              <button key={status} onClick={() => setStatusFilter(status)} className={`h-10 rounded-full border px-4 text-sm font-bold transition ${statusFilter === status ? "border-gold bg-gold/10 text-navy" : "border-line bg-white text-muted hover:border-gold"}`}>
+                {status}
+              </button>
+            ))}
+          </div>
+          <span className="text-xs font-bold uppercase tracking-[0.08em] text-muted">{filtered.length} shown</span>
+        </div>
+      )}
+      <div className="mt-5 space-y-2">
+        {filtered.map((mock) => {
+          const result = quality.get(mock.id)!;
+          const failing = result.checks.filter((check) => !check.passed);
+          return (
+            <GlowCard key={mock.id} className="p-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="truncate font-black text-navy">{mock.title}</p>
+                  <p className="text-xs font-semibold text-muted">{mock.subject} · {mock.questionIds.length} questions</p>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  {failing.length === 0 ? (
+                    <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700"><CheckCircle2 className="h-4 w-4" /> All checks pass</span>
+                  ) : (
+                    failing.map((check) => (
+                      <span key={check.label} className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-bold text-red-700"><XCircle className="h-3.5 w-3.5" /> {check.label}</span>
+                    ))
+                  )}
+                  <PremiumBadge tone={qualityTone(result.status)}>{result.status}</PremiumBadge>
+                </div>
+              </div>
+            </GlowCard>
+          );
+        })}
+        {filtered.length === 0 && mocks.length > 0 && <EmptyPanel title="No matches" text="No mocks match your search or filter." />}
+        {mocks.length === 0 && <EmptyPanel title="No mocks yet" text="Generate a mock to see its quality checklist here." />}
+      </div>
+    </section>
   );
 }
 

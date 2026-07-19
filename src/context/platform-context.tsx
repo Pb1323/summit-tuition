@@ -1,10 +1,10 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useSyncExternalStore } from "react";
-import { ATTEMPTS, EMAIL_TEMPLATES, MASTER_ADMIN_EMAIL, MOCKS, PASSAGES, PRODUCT_PLANS, QUESTIONS, REFERENCES, SEEDED_USERS } from "@/data/platform";
+import { ATTEMPTS, EMAIL_TEMPLATES, MASTER_ADMIN_EMAIL, MOCKS, NOTE_PAGES, PASSAGES, PRODUCT_PLANS, QUESTIONS, REFERENCES, SEEDED_USERS } from "@/data/platform";
 import { analyseAttempt, scoreAnswers, weakTopicsForAttempt } from "@/lib/assessment";
 import { generateMockFromReferenceProfile, type GenerateMockInput } from "@/lib/mock-generation";
-import type { Attempt, EmailTemplate, MockExam, Passage, ProductPlan, Question, ReferenceSource, ReferenceStyle, StudentAccount, Subject } from "@/types/platform";
+import type { Attempt, EmailTemplate, MockExam, NotePage, Passage, ProductPlan, Question, ReferenceSource, ReferenceStyle, StudentAccount, Subject } from "@/types/platform";
 
 type PlatformState = {
   users: StudentAccount[];
@@ -15,13 +15,13 @@ type PlatformState = {
   references: ReferenceSource[];
   products: ProductPlan[];
   emailTemplates: EmailTemplate[];
+  notes: NotePage[];
 };
 
 type RegisterInput = {
   name: string;
   email: string;
   password: string;
-  plan: string;
 };
 
 type PlatformContextValue = PlatformState & {
@@ -30,13 +30,19 @@ type PlatformContextValue = PlatformState & {
   login: (email: string, password: string) => Promise<{ ok: true; user: StudentAccount } | { ok: false; message: string }>;
   register: (input: RegisterInput) => Promise<{ ok: true } | { ok: false; message: string }>;
   logout: () => Promise<void>;
+  updateAccount: (patch: { name?: string; currentPassword?: string; newPassword?: string }) => Promise<{ ok: true } | { ok: false; message: string }>;
   approveUser: (studentId: string, approved: boolean) => Promise<void>;
   rejectUser: (studentId: string) => Promise<void>;
   approveAndUnlockFirstMock: (studentId: string) => Promise<void>;
   createTestStudent: () => Promise<void>;
   assignPlan: (studentId: string, plan: string) => Promise<void>;
+  setPlanContent: (planId: string, mockIds: string[], noteIds: string[]) => Promise<void>;
   unlockMock: (studentId: string, mockId: string, unlocked: boolean) => Promise<void>;
+  setStudentLessons: (studentId: string, lessonsRemaining: number, upcomingLessons: { date: string; time: string; note?: string }[]) => Promise<void>;
+  unlockNote: (studentId: string, noteId: string, unlocked: boolean) => Promise<void>;
   setMockPublished: (mockId: string, published: boolean) => Promise<void>;
+  setMockFree: (mockId: string, isFree: boolean) => Promise<void>;
+  setNoteFree: (noteId: string, isFree: boolean) => Promise<void>;
   createOriginalMockFromReference: (referenceId: string, subject: Subject) => void;
   generateMockDraft: (input: Omit<GenerateMockInput, "reference"> & { referenceId: string }) => { ok: true; mockId: string; questionCount: number; totalMarks: number } | { ok: false; message: string };
   updateMockDraft: (mockId: string, patch: Partial<MockExam>) => void;
@@ -63,6 +69,7 @@ const initialState: PlatformState = {
   references: REFERENCES,
   products: PRODUCT_PLANS,
   emailTemplates: EMAIL_TEMPLATES,
+  notes: NOTE_PAGES,
 };
 
 const PlatformContext = createContext<PlatformContextValue | null>(null);
@@ -89,12 +96,32 @@ function hashPassword(password: string, salt: string) {
   return window.btoa(`${salt}:${password}`);
 }
 
+/** Keeps any cached (possibly locally edited) items by id, and appends items newly shipped in code that the cache predates. */
+function mergeCatalogById<T extends { id: string }>(cached: T[] | undefined, fresh: T[]): T[] {
+  if (!cached) return fresh;
+  const cachedIds = new Set(cached.map((item) => item.id));
+  const missing = fresh.filter((item) => !cachedIds.has(item.id));
+  return missing.length ? [...cached, ...missing] : cached;
+}
+
 function loadState() {
   if (typeof window === "undefined") return initialState;
   const raw = window.localStorage.getItem(STORAGE_KEY);
   if (!raw) return initialState;
   try {
-    return { ...initialState, ...JSON.parse(raw) } as PlatformState;
+    const parsed = { ...initialState, ...JSON.parse(raw) } as PlatformState;
+    // The browser cache predates newly shipped mocks/questions/etc: merge those in by id
+    // instead of letting the stale cached array silently hide new catalog content forever.
+    return {
+      ...parsed,
+      mocks: mergeCatalogById(parsed.mocks, initialState.mocks),
+      questions: mergeCatalogById(parsed.questions, initialState.questions),
+      passages: mergeCatalogById(parsed.passages, initialState.passages),
+      references: mergeCatalogById(parsed.references, initialState.references),
+      products: mergeCatalogById(parsed.products, initialState.products),
+      emailTemplates: mergeCatalogById(parsed.emailTemplates, initialState.emailTemplates),
+      notes: mergeCatalogById(parsed.notes, initialState.notes),
+    };
   } catch {
     return initialState;
   }
@@ -118,13 +145,13 @@ function emitChange() {
   listeners.forEach((listener) => listener());
 }
 
-async function refreshFromServer() {
-  if (typeof window === "undefined") return;
+async function refreshFromServer(): Promise<boolean> {
+  if (typeof window === "undefined") return false;
   try {
     const response = await fetch("/api/platform/bootstrap", { credentials: "include", cache: "no-store" });
-    if (!response.ok) return;
+    if (!response.ok) return false;
     const data = (await response.json()) as PlatformState & { currentUser: StudentAccount | null; mode?: "demo" };
-    if (data.mode === "demo") return; // No database configured: the server has no authoritative state beyond the static seed, so keep local demo mutations intact instead of clobbering them.
+    if (data.mode === "demo") return true; // No database configured: the server has no authoritative state beyond the static seed, so keep local demo mutations intact instead of clobbering them.
     memoryState = {
       users: data.users,
       mocks: data.mocks,
@@ -134,14 +161,17 @@ async function refreshFromServer() {
       references: data.references,
       products: data.products,
       emailTemplates: data.emailTemplates,
+      notes: data.notes ?? NOTE_PAGES,
     };
     memoryCurrentUserId = data.currentUser?.id ?? null;
     if (memoryCurrentUserId) window.localStorage.setItem(SESSION_KEY, memoryCurrentUserId);
     else window.localStorage.removeItem(SESSION_KEY);
     persistState();
     emitChange();
+    return true;
   } catch {
     // Keep local demo state if the server/database is unavailable.
+    return false;
   }
 }
 
@@ -219,8 +249,9 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
           body: JSON.stringify({ email, password }),
         });
         const data = await response.json().catch(() => null);
-        if (response.ok && data?.ok && data.user) {
-          await refreshFromServer();
+        if (response.ok && data?.ok && data.user && data.mode !== "demo") {
+          const refreshed = await refreshFromServer();
+          if (!refreshed) return { ok: false, message: "Signed in, but couldn't load your account. Please try again." };
           return { ok: true, user: data.user as StudentAccount };
         }
         if (response.status !== 404 && data?.mode !== "demo") return { ok: false, message: data?.message ?? "Unable to sign in." };
@@ -272,10 +303,11 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
         email,
         passwordHash: hashPassword(input.password, id),
         role: email === MASTER_ADMIN_EMAIL ? "admin" : "student",
-        approved: email === MASTER_ADMIN_EMAIL,
-        plan: input.plan,
+        approved: true,
+        plan: "Diagnostic Assessment",
         paymentStatus: "pending",
-        unlockedMockIds: [],
+        unlockedMockIds: state.mocks.filter((mock) => mock.isFree && mock.published).map((mock) => mock.id),
+        unlockedNoteIds: state.notes.filter((note) => note.isFree).map((note) => note.id),
         createdAt: new Date().toISOString(),
       };
       updateStore((prev) => ({ ...prev, users: [...prev.users, user] }));
@@ -286,6 +318,25 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
       memoryCurrentUserId = null;
       window.localStorage.removeItem(SESSION_KEY);
       emitChange();
+    },
+    async updateAccount(patch) {
+      if (!currentUser) return { ok: false, message: "You need to be signed in." };
+      if (patch.newPassword) {
+        if (patch.newPassword.length < 8) return { ok: false, message: "Use at least 8 characters for the new password." };
+        const expectedCurrent = hashPassword(patch.currentPassword ?? "", currentUser.id);
+        if (currentUser.passwordHash && currentUser.passwordHash !== expectedCurrent) {
+          return { ok: false, message: "Current password did not match." };
+        }
+      }
+      const nextPasswordHash = patch.newPassword ? hashPassword(patch.newPassword, currentUser.id) : currentUser.passwordHash;
+      await fetch("/api/account/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ name: patch.name, newPassword: patch.newPassword, currentPassword: patch.currentPassword }),
+      }).catch(() => undefined);
+      updateUsers((users) => users.map((user) => (user.id === currentUser.id ? { ...user, name: patch.name ?? user.name, passwordHash: nextPasswordHash } : user)));
+      return { ok: true };
     },
     async approveUser(studentId, approved) {
       if (currentUser?.role !== "admin") return;
@@ -323,10 +374,11 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
             name: "Test Student",
             email: `test-student-${Date.now()}@example.com`,
             role: "student",
-            approved: false,
+            approved: true,
             plan: "Weekly Mock Club Plus",
             paymentStatus: "pending",
-            unlockedMockIds: [],
+            unlockedMockIds: prev.mocks.filter((mock) => mock.isFree && mock.published).map((mock) => mock.id),
+            unlockedNoteIds: prev.notes.filter((note) => note.isFree).map((note) => note.id),
             createdAt: new Date().toISOString(),
           },
         ],
@@ -335,7 +387,33 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
     async assignPlan(studentId, plan) {
       if (currentUser?.role !== "admin") return;
       if (await postAndRefresh(`/api/admin/students/${studentId}/assign-plan`, { plan })) return;
-      updateUsers((users) => users.map((user) => (user.id === studentId ? { ...user, plan, paymentStatus: plan ? "paid" : user.paymentStatus } : user)));
+      const productPlan = state.products.find((product) => product.name === plan);
+      updateUsers((users) =>
+        users.map((user) => {
+          if (user.id !== studentId) return user;
+          const mockIds = new Set(user.unlockedMockIds);
+          const noteIds = new Set(user.unlockedNoteIds);
+          (productPlan?.includedMockIds ?? []).forEach((id) => mockIds.add(id));
+          (productPlan?.includedNoteIds ?? []).forEach((id) => noteIds.add(id));
+          return {
+            ...user,
+            plan,
+            paymentStatus: plan ? "paid" : user.paymentStatus,
+            unlockedMockIds: Array.from(mockIds),
+            unlockedNoteIds: Array.from(noteIds),
+          };
+        })
+      );
+    },
+    async setPlanContent(planId, mockIds, noteIds) {
+      if (currentUser?.role !== "admin") return;
+      if (await postAndRefresh(`/api/admin/plans/${planId}/set-content`, { mockIds, noteIds })) return;
+      updateStore((prev) => ({
+        ...prev,
+        products: prev.products.map((product) =>
+          product.id === planId ? { ...product, includedMockIds: mockIds, includedNoteIds: noteIds } : product
+        ),
+      }));
     },
     async unlockMock(studentId, mockId, unlocked) {
       if (currentUser?.role !== "admin") return;
@@ -350,10 +428,38 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
         })
       );
     },
+    async setStudentLessons(studentId, lessonsRemaining, upcomingLessons) {
+      if (currentUser?.role !== "admin") return;
+      if (await postAndRefresh(`/api/admin/students/${studentId}/set-lessons`, { lessonsRemaining, upcomingLessons })) return;
+      updateUsers((users) => users.map((user) => (user.id === studentId ? { ...user, lessonsRemaining, upcomingLessons } : user)));
+    },
+    async unlockNote(studentId, noteId, unlocked) {
+      if (currentUser?.role !== "admin") return;
+      if (await postAndRefresh(`/api/admin/students/${studentId}/unlock-note`, { noteId, unlocked })) return;
+      updateUsers((users) =>
+        users.map((user) => {
+          if (user.id !== studentId) return user;
+          const ids = new Set(user.unlockedNoteIds);
+          if (unlocked) ids.add(noteId);
+          else ids.delete(noteId);
+          return { ...user, unlockedNoteIds: Array.from(ids) };
+        })
+      );
+    },
     async setMockPublished(mockId, published) {
       if (currentUser?.role !== "admin") return;
       if (await postAndRefresh(`/api/admin/mocks/${mockId}/publish`, { published })) return;
       updateStore((prev) => ({ ...prev, mocks: prev.mocks.map((mock) => (mock.id === mockId ? { ...mock, published } : mock)) }));
+    },
+    async setMockFree(mockId, isFree) {
+      if (currentUser?.role !== "admin") return;
+      if (await postAndRefresh(`/api/admin/mocks/${mockId}/set-free`, { isFree })) return;
+      updateStore((prev) => ({ ...prev, mocks: prev.mocks.map((mock) => (mock.id === mockId ? { ...mock, isFree } : mock)) }));
+    },
+    async setNoteFree(noteId, isFree) {
+      if (currentUser?.role !== "admin") return;
+      if (await postAndRefresh(`/api/admin/notes/${noteId}/set-free`, { isFree })) return;
+      updateStore((prev) => ({ ...prev, notes: prev.notes.map((note) => (note.id === noteId ? { ...note, isFree } : note)) }));
     },
     createOriginalMockFromReference(referenceId, subject) {
       if (currentUser?.role !== "admin") return;

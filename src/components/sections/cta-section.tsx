@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Container } from "@/components/ui/container";
+import { RevealOnScroll } from "@/components/platform/ui";
 import { cn } from "@/lib/utils";
 
 export function CTASection({
@@ -8,28 +9,33 @@ export function CTASection({
   description,
   actions,
   className,
+  decoration,
 }: {
   eyebrow?: string;
   title: string;
   description?: string;
   actions: React.ReactNode;
   className?: string;
+  decoration?: React.ReactNode;
 }) {
   return (
-    <section className={cn("bg-navy py-20", className)}>
+    <section className={cn("relative bg-navy py-20", className)}>
+      {decoration}
       <Container className="flex flex-col items-center text-center">
-        {eyebrow && (
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-gold-light">
-            {eyebrow}
-          </p>
-        )}
-        <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-          {title}
-        </h2>
-        {description && (
-          <p className="mt-4 max-w-xl text-lg leading-relaxed text-cream/70">{description}</p>
-        )}
-        <div className="mt-9 flex flex-wrap justify-center gap-4">{actions}</div>
+        <RevealOnScroll className="flex flex-col items-center">
+          {eyebrow && (
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-gold-light">
+              {eyebrow}
+            </p>
+          )}
+          <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            {title}
+          </h2>
+          {description && (
+            <p className="mt-4 max-w-xl text-lg leading-relaxed text-cream/70">{description}</p>
+          )}
+          <div className="mt-9 flex flex-wrap justify-center gap-4">{actions}</div>
+        </RevealOnScroll>
       </Container>
     </section>
   );

@@ -1,8 +1,13 @@
+"use client";
+
+import Script from "next/script";
 import { CalendarClock } from "lucide-react";
 
 /**
  * Calendar embed slot. Set NEXT_PUBLIC_CALENDLY_URL (or swap in another
  * booking provider's embed) to replace the placeholder with a live calendar.
+ * Uses Calendly's official inline widget script rather than a bare iframe so
+ * resizing/loading behaves the same as Calendly's own embed snippet.
  */
 export function BookingPlaceholder() {
   const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL;
@@ -10,7 +15,8 @@ export function BookingPlaceholder() {
   if (calendlyUrl) {
     return (
       <div className="overflow-hidden rounded-3xl border border-line bg-white">
-        <iframe src={calendlyUrl} title="Book a call" className="h-[700px] w-full" />
+        <div className="calendly-inline-widget" data-url={calendlyUrl} style={{ minWidth: "320px", height: "700px" }} />
+        <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="lazyOnload" />
       </div>
     );
   }

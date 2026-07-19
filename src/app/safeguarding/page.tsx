@@ -28,7 +28,7 @@ const SECTIONS = [
   },
   {
     title: "Reporting a concern",
-    body: `If you have a safeguarding concern about any session, tutor or interaction, please contact us immediately at ${SITE.email} or by phone at ${SITE.phone}. All concerns are treated seriously and investigated promptly.`,
+    body: `If you have a safeguarding concern about any session, tutor or interaction, please contact us immediately at ${SITE.email}. All concerns are treated seriously and investigated promptly.`,
   },
   {
     title: "Data and privacy",

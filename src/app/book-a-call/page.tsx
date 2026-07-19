@@ -33,17 +33,22 @@ const WHAT_TO_EXPECT = [
 export default async function BookACallPage({
   searchParams,
 }: {
-  searchParams: Promise<{ product?: string }>;
+  searchParams: Promise<{ product?: string; trial?: string }>;
 }) {
   const params = await searchParams;
   const defaultProduct = params.product ? PRODUCT_MAP[params.product] : undefined;
+  const isTrial = params.trial === "1";
 
   return (
     <>
       <HeroSection
-        eyebrow="Book a Call"
-        title="Book a Free Parent Call"
-        description="A free 15-minute call helps you choose the right preparation route for your child — no pressure, no hard sell."
+        eyebrow={isTrial ? "Book a Trial Session" : "Book a Call"}
+        title={isTrial ? "Book a Trial Session" : "Book a Free Parent Call"}
+        description={
+          isTrial
+            ? "Tell us a little about your child and we'll get a trial session booked in — no ongoing commitment required."
+            : "A free 15-minute call helps you choose the right preparation route for your child — no pressure, no hard sell."
+        }
       />
 
       <section className="pb-20">
@@ -65,7 +70,10 @@ export default async function BookACallPage({
           <RevealOnScroll delay={0.08}>
             <SectionHeading eyebrow="Prefer to send details first?" title="Tell us about your child" />
             <div className="mt-6">
-              <EnquiryForm defaultProduct={defaultProduct} />
+              <EnquiryForm
+                defaultProduct={defaultProduct}
+                defaultMessage={isTrial ? "I'd like to book a trial session." : undefined}
+              />
             </div>
           </RevealOnScroll>
         </Container>

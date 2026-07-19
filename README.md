@@ -80,22 +80,21 @@ To test admin locally:
 ## Student And Mock Access Test
 
 1. Visit `/register`.
-2. Create a student account and choose a plan.
+2. Create a student account and choose a plan — the account has instant access, no approval gate.
 3. Sign in at `/login`.
-4. The account is pending until admin approves it.
-5. Sign in as admin and open `/admin`.
-6. Approve the student, assign a plan and unlock `Maths Diagnostic Sample` or `English Diagnostic Sample`.
-7. Return to `/dashboard` as the student.
-8. Start the mock, answer questions and submit.
-9. Sign in as admin, add feedback and release the report.
-10. Return as the student and open review mode from `/dashboard`.
+4. Sign in as admin and open `/admin`.
+5. Assign a plan and unlock `Maths Diagnostic Sample` or `English Diagnostic Sample` (admin still unlocks each mock manually — this is the real access gate, not account approval).
+6. Return to `/dashboard` as the student.
+7. Start the mock, answer questions and submit.
+8. Sign in as admin, add feedback and release the report.
+9. Return as the student and open review mode from `/dashboard`.
 
 ## Seed Data
 
 Seeded data lives in `src/data/platform.ts`:
 
 - master admin account shell
-- sample approved and pending students
+- sample students (registration grants instant access; the admin panel can still pause an account)
 - sample Maths and English GL-style mocks
 - original questions, mark schemes and explanations
 - original English passage
@@ -130,14 +129,14 @@ Checkout structure exists:
 
 Until `STRIPE_SECRET_KEY` is configured, checkout returns a safe "Checkout coming soon" state.
 
-Payment must not automatically unlock content. In production, Stripe payment success should create or update a pending access request. Admin then manually approves the student and unlocks specific mocks.
+Payment must not automatically unlock content. In production, Stripe payment success should create or update a pending access request. Admin then manually unlocks specific mocks for the student (account registration itself is instant/unapproved-gate-free — the manual step is mock unlocking, not account approval).
 
 ## Database And Storage
 
 With `DATABASE_URL` configured, the important testing flows are server/database-backed:
 
-- student registration and pending approval
-- admin approval/rejection
+- student registration (instant access, no approval gate)
+- admin pause/reject and re-approve (for suspending an account, not for new signups)
 - plan assignment
 - mock unlocks
 - submitted attempts
@@ -168,8 +167,11 @@ npm run prisma:push
 ```bash
 curl -X PUT "$NEXT_PUBLIC_SITE_URL/api/auth/login" \
   -H "Content-Type: application/json" \
+  -H "x-admin-bootstrap-secret: $ADMIN_BOOTSTRAP_SECRET" \
   -d "{\"email\":\"$ADMIN_EMAIL\",\"password\":\"$ADMIN_PASSWORD\"}"
 ```
+
+This endpoint is gated by `ADMIN_BOOTSTRAP_SECRET` — set it in Vercel before deploying, and pass it via the `x-admin-bootstrap-secret` header. Without a matching secret the endpoint refuses the request, so an attacker who merely knows/guesses `ADMIN_EMAIL` cannot take over the admin account. Consider unsetting `ADMIN_BOOTSTRAP_SECRET` in Vercel again once the admin account is created, and only restoring it temporarily if you need to rotate the admin password this way in future.
 
 8. Sign in as admin, visit `/admin/students`, and approve/unlock registered students.
 9. Register a student in another browser/profile and confirm that the pending student appears in admin.
@@ -211,6 +213,10 @@ Admin can view submitted attempts, add manual feedback and release the report. O
 ## Add Future VR/NVR
 
 Types already support `VR` and `NVR`, including future question types. Add questions to `QUESTIONS`, add question IDs to a draft mock in `MOCKS`, and publish when ready. NVR diagrams should use generated SVG/canvas/code data, not copied paper assets.
+
+## Study Notes
+
+Interactive study notes live at `/notes` (subject index) and `/notes/maths/[topic]`, separate from the mock/exam system. Content and diagrams are defined in `src/components/notes/notes-content/*.ts` and `src/components/notes/notes-diagrams/*.tsx`; see `CLAUDE.md` for the full file map.
 
 ## Content Rules
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -11,6 +11,24 @@ import { VisualRenderer } from "@/components/platform/question-visuals";
 import type { Attempt, MockExam, Passage, Question, Role } from "@/types/platform";
 
 const COMPACT_QUESTION_NAV_THRESHOLD = 15;
+
+// Deterministic per-question shuffle so multiple-choice answers aren't left in a
+// predictable sequential order (e.g. always option A) while staying stable across
+// renders/sessions for the same question.
+function seededShuffle<T>(items: T[], seed: string): T[] {
+  const arr = [...items];
+  let state = 0;
+  for (let i = 0; i < seed.length; i++) state = (state * 31 + seed.charCodeAt(i)) >>> 0;
+  const next = () => {
+    state = (state * 1664525 + 1013904223) >>> 0;
+    return state / 4294967296;
+  };
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(next() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 
 export function AnimatedButton({
   href,
@@ -43,7 +61,7 @@ export function AnimatedButton({
 
 export function GlowCard({ className, children }: { className?: string; children: React.ReactNode }) {
   return (
-    <div className={cn("group relative overflow-hidden rounded-2xl border border-line bg-white shadow-[0_18px_60px_-42px_rgba(17,24,39,0.45)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_70px_-38px_rgba(180,83,9,0.45)]", className)}>
+    <div className={cn("premium-card group relative overflow-hidden rounded-2xl transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_70px_-38px_rgba(180,83,9,0.45)]", className)}>
       <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-gold/20 blur-3xl transition group-hover:bg-gold/35" />
       <div className="relative">{children}</div>
     </div>
@@ -136,7 +154,24 @@ export function RequireAuth({ role, children }: { role?: Role; children: React.R
   return <>{children}</>;
 }
 
-export function MockTimer({ durationMinutes, initialElapsedSeconds = 0, onExpire }: { durationMinutes: number; initialElapsedSeconds?: number; onExpire: () => void }) {
+export function RequireNoteAccess({ noteId, children }: { noteId: string; children: React.ReactNode }) {
+  const { currentUser, notes } = usePlatform();
+  const note = notes.find((item) => item.id === noteId);
+  const unlocked = note?.isFree || currentUser?.role === "admin" || currentUser?.unlockedNoteIds.includes(noteId);
+  if (unlocked) return <>{children}</>;
+  return (
+    <div className="mx-auto max-w-3xl px-6 py-24 text-center">
+      <Lock className="mx-auto h-10 w-10 text-gold-dark" />
+      <h1 className="mt-4 text-3xl font-bold text-navy">This notes page is locked</h1>
+      <p className="mt-2 text-muted">{note?.title ?? "This strand"} is not part of your free access yet. Contact Summit Tuition to unlock it.</p>
+      <Link href="/contact" className="mt-6 inline-flex items-center gap-2 rounded-full bg-gold px-5 py-2.5 text-sm font-bold text-navy">
+        Contact Summit Tuition <ArrowRight className="h-4 w-4" />
+      </Link>
+    </div>
+  );
+}
+
+export function MockTimer({ durationMinutes, initialElapsedSeconds = 0, onExpire, visible = true }: { durationMinutes: number; initialElapsedSeconds?: number; onExpire: () => void; visible?: boolean }) {
   const [seconds, setSeconds] = useState(() => Math.max(0, durationMinutes * 60 - initialElapsedSeconds));
   useEffect(() => {
     if (seconds <= 0) {
@@ -146,6 +181,10 @@ export function MockTimer({ durationMinutes, initialElapsedSeconds = 0, onExpire
     const timer = window.setTimeout(() => setSeconds((value) => value - 1), 1000);
     return () => window.clearTimeout(timer);
   }, [seconds, onExpire]);
+  // The countdown keeps running and still auto-submits on expiry even while hidden — only the visible readout is suppressed.
+  if (!visible) {
+    return <span className="rounded-full border border-line bg-cream px-3 py-1 text-sm font-bold text-muted">Timer hidden</span>;
+  }
   const mins = Math.floor(seconds / 60).toString().padStart(2, "0");
   const secs = (seconds % 60).toString().padStart(2, "0");
   return (
@@ -162,97 +201,105 @@ export function EnglishPassageRenderer({ passage, paragraphRefs }: { passage?: P
   if (!passage) return null;
   const paragraphs = passage.paragraphs?.length ? passage.paragraphs : passage.text.split(/\n{2,}/).filter(Boolean);
   return (
-    <aside className="rounded-2xl border border-gold/25 bg-white shadow-[0_16px_44px_-38px_rgba(17,24,39,0.55)]">
-      <div className="border-b border-gold/15 bg-cream px-5 py-4">
+    <aside className="overflow-hidden rounded-2xl border border-gold/25 bg-white shadow-[0_16px_44px_-38px_rgba(17,24,39,0.55)]">
+      <div className="border-b border-gold/15 bg-cream px-6 py-4">
         <p className="text-xs font-black uppercase tracking-[0.18em] text-gold-dark">Original comprehension passage</p>
-        <h3 className="mt-1 text-xl font-black text-navy">{passage.title}</h3>
+        <h3 className="mt-1 font-serif text-xl font-black text-navy">{passage.title}</h3>
       </div>
-      <div className="max-h-[32rem] space-y-4 overflow-y-auto p-5 text-[15px] leading-8 text-ink">
-        {paragraphs.map((paragraph, index) => {
-          const number = index + 1;
-          const active = paragraphRefs?.includes(number);
-          return (
-            <p key={number} className={cn("rounded-xl border p-3", active ? "border-gold/35 bg-gold/10" : "border-transparent bg-white")}>
-              <span className="mr-3 inline-flex h-6 w-6 items-center justify-center rounded-full bg-cream text-xs font-black text-gold-dark">{number}</span>
-              {paragraph}
-            </p>
-          );
-        })}
+      <div className="max-h-[34rem] overflow-y-auto px-6 py-6 sm:px-8">
+        <div className="mx-auto max-w-2xl font-serif text-[16.5px] leading-[1.85] text-ink [text-wrap:pretty]">
+          {paragraphs.map((paragraph, index) => {
+            const active = paragraphRefs?.includes(index + 1);
+            return (
+              <p key={index} className={cn("mb-5 last:mb-0 first:first-letter:float-left first:first-letter:mr-2 first:first-letter:font-black first:first-letter:leading-[0.8] first:first-letter:text-4xl first:first-letter:text-gold-dark", active && "-mx-3 rounded-lg bg-gold/10 px-3 py-1 ring-1 ring-gold/25")}>
+                {paragraph}
+              </p>
+            );
+          })}
+        </div>
       </div>
     </aside>
   );
 }
 
-function isNoMistakeOption(option: string) {
-  return /^(no mistake|n)\b/i.test(option.trim());
+/** GL spelling/punctuation "find the lettered group with the mistake" format: the question text is an
+ * instruction line plus a quoted sentence, and options are the sentence split into segments plus a
+ * trailing "No mistake" choice. Parsed here so the sentence can be rendered once with inline lettered
+ * segments instead of repeating the full sentence in every answer row. */
+function parseSegmentQuestion(question: Question) {
+  const lines = question.text.split("\n");
+  const instruction = lines[0]?.trim() ?? "";
+  const sentence = lines.slice(1).join(" ").trim().replace(/^"|"$/g, "");
+  const options = Array.isArray(question.options) ? question.options : [];
+  const noMistakeIndex = options.findIndex((option) => /no mistake|^n$/i.test(option.trim()));
+  const segments = noMistakeIndex >= 0 ? options.slice(0, noMistakeIndex) : options;
+  const noMistakeOption = noMistakeIndex >= 0 ? options[noMistakeIndex] : undefined;
+  return { instruction, sentence, segments, noMistakeOption };
 }
 
 /**
- * Renders GL Assessment's "spot the error" format: a sentence split into 4
- * lettered groups of words, plus a separate N (no mistake) choice — not a
- * plain radio list. Reconstructs the segmented sentence purely from
- * `question.options` (segments 0-3, "No mistake" last) so it works for both
- * generator output and the hand-authored static mock, which share the same
- * option shape via different code paths.
+ * Renders GL Assessment's "spot the error" format: a sentence split into
+ * lettered groups of words, plus a separate "no mistake" choice — not a
+ * plain radio list. The clauses stay in reading order (they must, to make
+ * grammatical sense) but which letter labels which clause is reshuffled per
+ * question via `seededShuffle`, so the correct letter isn't predictably
+ * clustered across a mock (the original bug this branch exists to fix).
  */
-export function SpotTheErrorRenderer({
+export function SegmentMistakeAnswer({
   question,
   value,
   onChange,
   review,
+  isCorrectOption,
 }: {
   question: Question;
   value?: string;
   onChange: (value: string) => void;
   review?: boolean;
+  isCorrectOption: (option: string) => boolean;
 }) {
-  const options = Array.isArray(question.options) ? question.options : [];
-  const segments = options.filter((option) => !isNoMistakeOption(option));
-  const noMistakeOption = options.find((option) => isNoMistakeOption(option)) ?? "No mistake";
-  const expected = (Array.isArray(question.correctAnswer) ? question.correctAnswer[0] : question.correctAnswer) ?? "";
-  const noMistakeSelected = value !== undefined && isNoMistakeOption(value);
-  const noMistakeCorrect = isNoMistakeOption(expected);
-  return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap gap-x-1.5 gap-y-3 rounded-2xl border border-line bg-cream/60 p-5 text-lg leading-9 text-ink" aria-label="Sentence split into four lettered groups of words; choose the group with the mistake">
-        {segments.map((segment, index) => {
-          const letter = String.fromCharCode(65 + index);
-          const selected = value === segment;
-          const showCorrect = review && expected.trim().toLowerCase() === segment.trim().toLowerCase();
-          const showWrong = review && selected && !showCorrect;
-          return (
-            <button
-              key={segment}
-              type="button"
-              disabled={review}
-              onClick={() => onChange(segment)}
-              className={cn(
-                "inline-flex items-baseline gap-1.5 rounded-lg border-b-[3px] px-1.5 py-1 font-semibold transition disabled:cursor-default",
-                selected ? "border-gold bg-gold/10 text-navy" : "border-line/70 text-ink hover:border-gold/60",
-                showCorrect && "border-emerald-500 bg-emerald-50 text-emerald-800",
-                showWrong && "border-red-500 bg-red-50 text-red-700"
-              )}
-            >
-              <span className="rounded bg-navy px-1.5 py-0.5 text-[11px] font-black text-white">{letter}</span>
-              {segment}
-            </button>
-          );
-        })}
-      </div>
+  const { instruction, segments, noMistakeOption } = parseSegmentQuestion(question);
+  // The clauses must stay in reading order to make grammatical sense, but which
+  // letter labels which clause doesn't have to — shuffle the label assignment per
+  // question so the correct letter isn't predictably clustered (e.g. always "B").
+  const letters = useMemo(() => {
+    const pool = Array.from({ length: segments.length + (noMistakeOption ? 1 : 0) }, (_, i) => String.fromCharCode(65 + i));
+    return seededShuffle(pool, question.id + "-letters");
+  }, [segments.length, noMistakeOption, question.id]);
+  const segmentButton = (option: string, letter: string) => {
+    const selected = value === option;
+    const showCorrect = review && isCorrectOption(option);
+    const showWrong = review && selected && !showCorrect;
+    return (
       <button
+        key={option}
         type="button"
         disabled={review}
-        onClick={() => onChange(noMistakeOption)}
+        onClick={() => onChange(option)}
         className={cn(
-          "flex w-full items-center gap-3 rounded-2xl border p-4 text-left text-sm font-bold transition disabled:cursor-default",
-          noMistakeSelected ? "border-gold bg-gold/10 text-navy" : "border-line bg-white text-navy hover:border-gold",
-          review && noMistakeCorrect && "border-emerald-400 bg-emerald-50 text-emerald-800",
-          review && noMistakeSelected && !noMistakeCorrect && "border-red-400 bg-red-50 text-red-700"
+          "mx-0.5 my-0.5 inline-flex items-baseline gap-1 rounded-md border-b-2 border-dashed px-1.5 py-0.5 font-semibold transition disabled:cursor-default",
+          selected ? "border-solid border-gold bg-gold/15 text-navy" : "border-line/70 text-ink hover:border-gold hover:bg-gold/5",
+          showCorrect && "border-solid border-emerald-500 bg-emerald-50 text-emerald-800",
+          showWrong && "border-solid border-red-500 bg-red-50 text-red-800"
         )}
       >
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-line bg-cream text-sm font-black text-navy">N</span>
-        There is no mistake in this sentence
+        {option}
+        <sup className="text-[10px] font-black text-gold-dark">{letter}</sup>
       </button>
+    );
+  };
+  return (
+    <div className="rounded-2xl border border-gold/20 bg-cream/60 p-5">
+      {instruction && <p className="text-xs font-black uppercase tracking-[0.14em] text-gold-dark">{instruction}</p>}
+      <p className="mt-3 font-serif text-lg leading-[2.1] text-navy">
+        {segments.map((segment, index) => segmentButton(segment, letters[index]))}
+      </p>
+      {noMistakeOption && (
+        <div className="mt-4 border-t border-gold/15 pt-4">
+          {segmentButton(noMistakeOption, letters[segments.length])}
+          <span className="ml-2 text-sm font-semibold text-muted">if you think there is no mistake</span>
+        </div>
+      )}
     </div>
   );
 }
@@ -334,10 +381,13 @@ export function QuestionRenderer({
 }) {
   const correct = value ? String(question.correctAnswer).toLowerCase() === value.toLowerCase() : false;
   const hasText = typeof question.text === "string" && question.text.trim().length > 0;
-  const options = Array.isArray(question.options) ? question.options : [];
+  const rawOptions = useMemo(() => (Array.isArray(question.options) ? question.options : []), [question.options]);
+  const isSegmentFormat = question.tags?.includes("segment-format") && rawOptions.length > 0;
+  // Segment-format options map to fixed lettered sentence positions and must stay in order;
+  // everything else gets a per-question shuffle so the correct answer isn't always in the same slot.
+  const options = useMemo(() => (isSegmentFormat ? rawOptions : seededShuffle(rawOptions, question.id)), [isSegmentFormat, question.id, rawOptions]);
   const hasOptions = options.length > 0;
   const isChoiceQuestion = question.questionType === "multiple_choice" || question.questionType === "cloze";
-  const isSpotTheError = (question.tags ?? []).map((tag) => tag.toLowerCase()).includes("segment-format");
   const isCloze = question.questionType === "cloze";
   const expected = Array.isArray(question.correctAnswer) ? question.correctAnswer : [question.correctAnswer];
   const isCorrectOption = (option: string) => expected.some((item) => item.trim().toLowerCase() === option.trim().toLowerCase());
@@ -350,11 +400,11 @@ export function QuestionRenderer({
     !question.markScheme && "Missing mark scheme",
     !question.explanation && "Missing explanation",
     isChoiceQuestion && !hasOptions && "Missing answer options",
-    isSpotTheError && options.length < 2 && "Spot-the-error question needs segment options",
+    isSegmentFormat && options.length < 2 && "Spot-the-error question needs segment options",
     question.subject === "English" && question.passageId && !passage && "Linked passage not found",
     question.subject === "Maths" && question.questionType === "table_graph" && !question.visual && "Maths visual missing",
   ].filter(Boolean) as string[];
-  const headingText = isSpotTheError ? question.text.split("\n")[0] : isCloze ? "Choose the word or phrase that best completes the passage." : question.text;
+  const headingText = isSegmentFormat ? question.text.split("\n")[0] : isCloze ? "Choose the word or phrase that best completes the passage." : question.text;
   return (
     <div className="space-y-6">
       {passage && <EnglishPassageRenderer passage={passage} paragraphRefs={question.paragraphRefs} />}
@@ -366,7 +416,9 @@ export function QuestionRenderer({
           <span className="rounded-full border border-line bg-cream px-3 py-1 text-xs font-bold text-navy">{question.marks || 1} mark{question.marks === 1 ? "" : "s"}</span>
           {question.paragraphRefs?.length ? <span className="rounded-full border border-line bg-white px-3 py-1 text-xs font-bold text-muted">Paragraph {question.paragraphRefs.join(", ")}</span> : null}
         </div>
-        <h2 className="mt-4 text-2xl font-bold leading-snug text-navy">{hasText ? headingText : "Question text missing"}</h2>
+        {!isSegmentFormat && (
+          <h2 className="mt-4 text-2xl font-bold leading-snug text-navy">{hasText ? headingText : "Question text missing"}</h2>
+        )}
         {!hasText && (
           <p className="mt-2 rounded-xl border border-line bg-cream p-3 text-sm text-muted">
             {adminPreview ? "This generated question needs question text before publishing." : "This question is not ready yet."}
@@ -382,8 +434,8 @@ export function QuestionRenderer({
         )}
       </div>
       {question.visual && <VisualRenderer visual={question.visual} adminPreview={adminPreview} />}
-      {isSpotTheError ? (
-        <SpotTheErrorRenderer question={question} value={value} onChange={onChange} review={review} />
+      {isSegmentFormat ? (
+        <SegmentMistakeAnswer question={question} value={value} onChange={onChange} review={review} isCorrectOption={isCorrectOption} />
       ) : isCloze ? (
         <ClozeGapRenderer question={question} value={value} onChange={onChange} review={review} />
       ) : hasOptions ? (
@@ -534,13 +586,23 @@ export function MockCard({ mock, attempt, locked }: { mock: MockExam; attempt?: 
           <div className="rounded-2xl border border-line bg-cream p-3 text-sm text-muted">
             <strong className="text-navy">Locked.</strong> Admin approval and a manual mock unlock are required before this online paper opens.
           </div>
+        ) : mock.printOnly ? (
+          <div className="space-y-3">
+            <div className="rounded-2xl border border-gold/30 bg-gold/10 p-3 text-sm text-navy">
+              <strong>Printable practice.</strong> No online marking or report for this paper — print it and complete it on paper.
+            </div>
+            <AnimatedButton href={`/mocks/${mock.id}/print`}>Open printable paper</AnimatedButton>
+          </div>
         ) : attempt?.status === "in_progress" ? (
           <div className="flex flex-wrap items-center gap-3">
             <AnimatedButton href={`/mocks/${mock.id}`}>Resume mock</AnimatedButton>
             <span className="text-sm font-semibold text-muted">{answeredCount}/{mock.questionIds.length} answered locally</span>
           </div>
         ) : attempt?.status === "report_released" ? (
-          <AnimatedButton href={`/mocks/${mock.id}/review`}>Open review</AnimatedButton>
+          <div className="flex flex-wrap items-center gap-3">
+            <AnimatedButton href={`/mocks/${mock.id}/review`}>Open review</AnimatedButton>
+            <Link href={`/mocks/${mock.id}/report`} className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-sm font-bold text-navy hover:border-gold">View report (PDF)</Link>
+          </div>
         ) : attempt?.status === "submitted" ? (
           <div className="rounded-2xl border border-line bg-cream p-3 text-sm text-muted">
             <PremiumBadge tone="navy">Report pending</PremiumBadge>
@@ -592,6 +654,10 @@ export function ReportPreview({ attempt, mock }: { attempt: Attempt; mock: MockE
       </div>
       <div className="mt-5"><ProgressBar value={percentage} label="Overall score" /></div>
       <p className="mt-4 rounded-xl bg-cream p-4 text-sm text-muted">{attempt.adminFeedback || "Tutor feedback will appear here after marking."}</p>
+      <div className="mt-4 flex flex-wrap gap-3">
+        <Link href={`/mocks/${mock.id}/review`} className="inline-flex items-center gap-2 rounded-full bg-gold px-4 py-2 text-sm font-bold text-navy hover:brightness-95">Open review</Link>
+        <Link href={`/mocks/${mock.id}/report`} className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-sm font-bold text-navy hover:border-gold">View report (PDF)</Link>
+      </div>
     </GlowCard>
   );
 }

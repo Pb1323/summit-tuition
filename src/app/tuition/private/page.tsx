@@ -59,9 +59,14 @@ export default function PrivateTuitionPage() {
       <CTASection
         title="Ready to give your child focused 1:1 support?"
         actions={
-          <Button href="/book-a-call?product=private-tuition" size="lg">
-            Enquire About Private Tuition <ArrowRight className="h-4 w-4" />
-          </Button>
+          <>
+            <Button href="/book-a-call?product=private-tuition" size="lg">
+              Enquire About Private Tuition <ArrowRight className="h-4 w-4" />
+            </Button>
+            <Button href="/book-a-call?product=private-tuition&trial=1" variant="light" size="lg">
+              Book a Trial Session
+            </Button>
+          </>
         }
       />
     </>

@@ -56,11 +56,11 @@ export default function WeeklyMockClubPage() {
         <Container>
           <SectionHeading
             align="center"
-            eyebrow="Plans"
-            title="Choose the level of support your family needs"
+            eyebrow="Plan"
+            title="One simple monthly plan"
             className="mx-auto [&_h2]:text-white [&_p]:text-cream/70"
           />
-          <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <div className="mt-12 mx-auto w-full max-w-sm">
             {MOCK_CLUB_PRICING.map((tier) => (
               <PricingCard key={tier.id} tier={tier} />
             ))}

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { createSession, hashPasswordServer, isSeedAdmin, verifyPassword } from "@/lib/server/auth";
+import { createSession, hashPasswordServer, isProductionWithoutDatabase, isSeedAdmin, publicUser, verifyPassword } from "@/lib/server/auth";
 import { isDatabaseConfigured, prisma } from "@/lib/server/db";
+import { clientIp, isRateLimited } from "@/lib/server/rate-limit";
 import { SEEDED_USERS } from "@/data/platform";
 
 export const runtime = "nodejs";
@@ -13,6 +14,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, message: "Email and an 8+ character password are required." }, { status: 400 });
   }
 
+  if (isRateLimited(`login:ip:${clientIp(request)}`, 20, 10 * 60 * 1000) || isRateLimited(`login:email:${email}`, 8, 10 * 60 * 1000)) {
+    return NextResponse.json({ ok: false, message: "Too many attempts. Try again in a few minutes." }, { status: 429 });
+  }
+
+  if (isProductionWithoutDatabase()) {
+    console.error("Login blocked: DATABASE_URL is missing in production.");
+    return NextResponse.json({ ok: false, message: "Server is not configured correctly. Please contact support." }, { status: 500 });
+  }
+
   if (!isDatabaseConfigured()) {
     const seeded = SEEDED_USERS.find((user) => user.email.toLowerCase() === email);
     if (!seeded) return NextResponse.json({ ok: false, mode: "demo" }, { status: 200 });
@@ -20,29 +30,25 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, mode: "demo", user: seeded });
   }
 
-  const user = await prisma.user.findUnique({ where: { email }, include: { unlocks: true } });
+  const user = await prisma.user.findUnique({ where: { email }, include: { unlocks: true, noteUnlocks: true } });
   if (!user || !verifyPassword(password, user.passwordHash)) {
     return NextResponse.json({ ok: false, message: "Email or password is incorrect." }, { status: 401 });
   }
 
   await createSession(user.id);
-  return NextResponse.json({
-    ok: true,
-    user: {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      approved: user.approved,
-      plan: user.plan,
-      paymentStatus: user.paymentStatus,
-      unlockedMockIds: user.unlocks.map((unlock) => unlock.mockId),
-      createdAt: user.createdAt.toISOString(),
-    },
-  });
+  return NextResponse.json({ ok: true, user: publicUser(user) });
 }
 
 export async function PUT(request: Request) {
+  if (isRateLimited(`admin-bootstrap:ip:${clientIp(request)}`, 5, 10 * 60 * 1000)) {
+    return NextResponse.json({ ok: false, message: "Too many attempts. Try again in a few minutes." }, { status: 429 });
+  }
+
+  const bootstrapSecret = process.env.ADMIN_BOOTSTRAP_SECRET;
+  if (!bootstrapSecret || request.headers.get("x-admin-bootstrap-secret") !== bootstrapSecret) {
+    return NextResponse.json({ ok: false, message: "Admin bootstrap requires a valid bootstrap secret." }, { status: 403 });
+  }
+
   const body = await request.json().catch(() => null);
   const email = String(body?.email ?? "").trim().toLowerCase();
   const password = String(body?.password ?? "");

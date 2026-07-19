@@ -54,13 +54,16 @@ model User {
   email         String        @unique
   passwordHash  String
   role          Role          @default(student)
-  approved      Boolean       @default(false)
+  approved      Boolean       @default(true)
   plan          String
   paymentStatus PaymentStatus @default(pending)
   createdAt     DateTime      @default(now())
+  lessonsRemaining Int?
+  upcomingLessons  Json?
   sessions      Session[]
   attempts      Attempt[]
   unlocks       MockUnlock[]
+  noteUnlocks   NoteUnlock[]
 }
 
 model Session {
@@ -88,6 +91,7 @@ model MockExam {
   releaseDate              DateTime
   tier                     String
   description              String
+  isFree                   Boolean     @default(false)
   attempts                 Attempt[]
   unlocks                  MockUnlock[]
 }
@@ -152,6 +156,24 @@ model MockUnlock {
   @@id([userId, mockId])
 }
 
+model Note {
+  id      String       @id
+  subject Subject
+  slug    String
+  title   String
+  isFree  Boolean      @default(false)
+  unlocks NoteUnlock[]
+}
+
+model NoteUnlock {
+  userId String
+  noteId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  note   Note @relation(fields: [noteId], references: [id], onDelete: Cascade)
+
+  @@id([userId, noteId])
+}
+
 model ReferenceSource {
   id                String         @id
   title             String
@@ -164,12 +186,14 @@ model ReferenceSource {
 }
 
 model ProductPlan {
-  id          String  @id
-  name        String
-  price       String
-  cadence     String
-  badge       String?
-  description String
+  id              String  @id
+  name            String
+  price           String
+  cadence         String
+  badge           String?
+  description     String
+  includedMockIds Json    @default("[]")
+  includedNoteIds Json    @default("[]")
 }
 
 model EmailTemplate {

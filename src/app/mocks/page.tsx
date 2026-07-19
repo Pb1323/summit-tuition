@@ -10,6 +10,7 @@ import { CTASection } from "@/components/sections/cta-section";
 import { MockRouteConfigurator } from "@/components/sections/mock-route-configurator";
 import { ScrollStoryRail } from "@/components/motion/scroll-story-rail";
 import { DashboardPreview, GlowCard, PremiumBadge, ProgressBar, RevealOnScroll } from "@/components/platform/ui";
+import { SignedInMocksNotice } from "@/components/platform/signed-in-mocks-notice";
 import { MOCK_CLUB_PRICING } from "@/data/pricing";
 
 export const metadata: Metadata = {
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 const FEATURES = [
-  { icon: <FileLock2 className="h-5 w-5" />, title: "Online-only papers", description: "Mocks are completed inside the platform with no PDF downloads or printable papers." },
+  { icon: <FileLock2 className="h-5 w-5" />, title: "Online-only scored mocks", description: "Marked mocks are completed inside the platform — no PDFs. A separate printable practice section is available for offline paper practice, with no score or report." },
   { icon: <BookOpenCheck className="h-5 w-5" />, title: "GL-style structure", description: "Maths and English mocks follow GL-style topic coverage and question rhythm, with original Summit content." },
   { icon: <Sparkles className="h-5 w-5" />, title: "Summit Stretch", description: "Slightly harder wording, richer inference and more multi-step reasoning without becoming unfair." },
   { icon: <LineChart className="h-5 w-5" />, title: "Released reports", description: "Students submit, wait for marking, then unlock the full review when the report is released." },
@@ -34,6 +35,7 @@ const CYCLE = [
 export default function MocksPage() {
   return (
     <>
+      <SignedInMocksNotice />
       <HeroSection
         eyebrow="Online 11+ Mocks"
         title="GL-style online mocks that show students exactly what to improve next"
@@ -110,8 +112,8 @@ export default function MocksPage() {
 
       <section className="bg-cream-dark/50 py-20">
         <Container>
-          <SectionHeading align="center" eyebrow="Plans" title="Choose a mock route" description="All mock routes keep papers online-only and release full review after marking." />
-          <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <SectionHeading align="center" eyebrow="Plan" title="One simple monthly plan" description="Papers stay online-only, with full review released after marking." />
+          <div className="mt-12 mx-auto w-full max-w-sm">
             {MOCK_CLUB_PRICING.map((tier) => <PricingCard key={tier.id} tier={tier} />)}
           </div>
         </Container>

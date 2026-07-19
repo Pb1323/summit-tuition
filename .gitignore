@@ -53,3 +53,9 @@ src/generated/prisma/
 # sibling projects with their own separate git repos
 /india-study-platform/
 /summit-gcse-tuition/
+
+# Downloaded copyrighted GL Assessment papers - local reference only, never publish
+research/gl-papers/*.pdf
+
+.vercel
+.env*

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { hashPasswordServer } from "@/lib/server/auth";
+import { hashPasswordServer, isProductionWithoutDatabase } from "@/lib/server/auth";
 import { isDatabaseConfigured, prisma } from "@/lib/server/db";
+import { clientIp, isRateLimited } from "@/lib/server/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -9,10 +10,18 @@ export async function POST(request: Request) {
   const name = String(body?.name ?? "").trim();
   const email = String(body?.email ?? "").trim().toLowerCase();
   const password = String(body?.password ?? "");
-  const plan = String(body?.plan ?? "Diagnostic Assessment");
 
   if (!name || !email || password.length < 8) {
     return NextResponse.json({ ok: false, message: "Name, email and an 8+ character password are required." }, { status: 400 });
+  }
+
+  if (isRateLimited(`register:ip:${clientIp(request)}`, 10, 60 * 60 * 1000)) {
+    return NextResponse.json({ ok: false, message: "Too many accounts created recently. Try again later." }, { status: 429 });
+  }
+
+  if (isProductionWithoutDatabase()) {
+    console.error("Registration blocked: DATABASE_URL is missing in production.");
+    return NextResponse.json({ ok: false, message: "Server is not configured correctly. Please contact support." }, { status: 500 });
   }
 
   if (!isDatabaseConfigured()) {
@@ -24,17 +33,30 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, message: "An account already exists for that email." }, { status: 409 });
   }
 
-  await prisma.user.create({
+  const user = await prisma.user.create({
     data: {
       name,
       email,
       passwordHash: hashPasswordServer(password),
       role: "student",
-      approved: false,
-      plan,
+      approved: true,
+      plan: "Diagnostic Assessment",
       paymentStatus: "pending",
     },
   });
+
+  const [freeMocks, freeNotes] = await Promise.all([
+    prisma.mockExam.findMany({ where: { isFree: true, published: true } }),
+    prisma.note.findMany({ where: { isFree: true } }),
+  ]);
+  await Promise.all([
+    ...freeMocks.map((mock) =>
+      prisma.mockUnlock.upsert({ where: { userId_mockId: { userId: user.id, mockId: mock.id } }, update: {}, create: { userId: user.id, mockId: mock.id } })
+    ),
+    ...freeNotes.map((note) =>
+      prisma.noteUnlock.upsert({ where: { userId_noteId: { userId: user.id, noteId: note.id } }, update: {}, create: { userId: user.id, noteId: note.id } })
+    ),
+  ]);
 
   return NextResponse.json({ ok: true });
 }

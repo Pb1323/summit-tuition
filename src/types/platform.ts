@@ -37,7 +37,10 @@ export interface StudentAccount {
   plan: string;
   paymentStatus: PaymentStatus;
   unlockedMockIds: string[];
+  unlockedNoteIds: string[];
   createdAt: string;
+  lessonsRemaining?: number;
+  upcomingLessons?: { date: string; time: string; note?: string }[];
 }
 
 export interface QuestionVisual {
@@ -57,9 +60,32 @@ export interface QuestionVisual {
     | "ratioBlocks"
     | "venn"
     | "clock"
-    | "sequence";
+    | "sequence"
+    | "nvr_matrix"
+    | "nvrMatrix"
+    | "nvr_sequence"
+    | "nvrSequence"
+    | "nvr_oddoneout"
+    | "nvrOddOneOut"
+    | "nvr_pairanalogy"
+    | "nvrPairAnalogy"
+    | "nvr_similarity"
+    | "nvrSimilarity"
+    | "nvr_codekey"
+    | "nvrCodeKey"
+    | "nvr_rotation"
+    | "nvrRotation"
+    | "nvr_net"
+    | "nvrNet"
+    | "nvr_combine3d"
+    | "nvrCombine3d"
+    | "nvr_holepunch"
+    | "nvrHolePunch"
+    | "vr_code"
+    | "vrCode";
   title: string;
-  data: Record<string, string | number | boolean | string[] | number[] | string[][] | number[][] | Record<string, string | number>[]>;
+  /** Payload shape depends on `type` — validated at render time in question-visuals.tsx, not by this type. */
+  data: Record<string, unknown>;
 }
 
 export interface Question {
@@ -108,6 +134,16 @@ export interface MockExam {
   releaseDate: string;
   tier: string;
   description: string;
+  isFree?: boolean;
+  printOnly?: boolean;
+}
+
+export interface NotePage {
+  id: string;
+  subject: Subject;
+  slug: string;
+  title: string;
+  isFree: boolean;
 }
 
 export interface Attempt {
@@ -150,6 +186,10 @@ export interface ProductPlan {
   cadence: string;
   badge?: string;
   description: string;
+  /** Mock ids automatically unlocked for a student when this plan is assigned. */
+  includedMockIds: string[];
+  /** Note ids automatically unlocked for a student when this plan is assigned. */
+  includedNoteIds: string[];
 }
 
 export interface EmailTemplate {

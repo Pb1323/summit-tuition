@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { HeroSection } from "@/components/sections/hero-section";
 import { EnquiryForm } from "@/components/sections/enquiry-form";
@@ -46,13 +46,6 @@ export default async function ContactPage({
               <p className="mt-2 text-sm font-semibold text-navy">Email</p>
               <a href={`mailto:${SITE.email}`} className="text-sm text-muted hover:text-navy">
                 {SITE.email}
-              </a>
-            </div>
-            <div className="rounded-2xl border border-line bg-white p-5">
-              <Phone className="h-5 w-5 text-gold-dark" />
-              <p className="mt-2 text-sm font-semibold text-navy">Phone</p>
-              <a href={`tel:${SITE.phone.replace(/\s/g, "")}`} className="text-sm text-muted hover:text-navy">
-                {SITE.phone}
               </a>
             </div>
             <div className="rounded-2xl border border-line bg-white p-5">

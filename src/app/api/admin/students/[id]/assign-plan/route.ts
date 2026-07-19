@@ -15,5 +15,19 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   if (!plan) return NextResponse.json({ error: "PLAN_REQUIRED" }, { status: 400 });
 
   await prisma.user.update({ where: { id }, data: { plan, paymentStatus: "paid" } });
+
+  const productPlan = await prisma.productPlan.findFirst({ where: { name: plan } });
+  const mockIds = (productPlan?.includedMockIds as string[] | null) ?? [];
+  const noteIds = (productPlan?.includedNoteIds as string[] | null) ?? [];
+
+  await Promise.all([
+    ...mockIds.map((mockId) =>
+      prisma.mockUnlock.upsert({ where: { userId_mockId: { userId: id, mockId } }, update: {}, create: { userId: id, mockId } })
+    ),
+    ...noteIds.map((noteId) =>
+      prisma.noteUnlock.upsert({ where: { userId_noteId: { userId: id, noteId } }, update: {}, create: { userId: id, noteId } })
+    ),
+  ]);
+
   return NextResponse.json({ ok: true });
 }

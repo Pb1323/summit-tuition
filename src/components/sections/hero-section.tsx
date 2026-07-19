@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/container";
 import { DepthField } from "@/components/motion/depth-field";
 import { KineticHeadline } from "@/components/motion/kinetic-headline";
+import { Hero3DBackground } from "@/components/motion/hero-3d-background";
 
 interface HeroSectionProps {
   eyebrow?: string;
@@ -56,7 +57,41 @@ export function HeroSection({
             ))}
           </div>
         </div>
-        {visual && <div className="relative hero-dashboard-tilt">{visual}</div>}
+        {visual && (
+          <div className="flex flex-col gap-6">
+            <div className="hero-dashboard-tilt">{visual}</div>
+            <div className="relative flex flex-col items-center gap-2 sm:flex-row sm:items-center sm:gap-6">
+              <div className="h-72 w-full shrink-0 sm:h-[26rem] sm:w-[68%]">
+                <Hero3DBackground />
+              </div>
+              <p className="relative z-10 text-center font-serif text-xl italic leading-snug text-navy sm:w-[32%] sm:text-left">
+                We help your child get to the <span className="text-gold-dark">top</span>.
+              </p>
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 100 60"
+                preserveAspectRatio="none"
+                className="pointer-events-none absolute inset-0 hidden h-full w-full sm:block"
+              >
+                <defs>
+                  <marker id="hero-arrow-head" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                    <path d="M0,0 L6,3 L0,6 Z" fill="#b45309" />
+                  </marker>
+                </defs>
+                <path
+                  d="M 72 46 Q 60 20 46 10"
+                  fill="none"
+                  stroke="#b45309"
+                  strokeWidth="0.6"
+                  strokeDasharray="2.4 2"
+                  strokeLinecap="round"
+                  markerEnd="url(#hero-arrow-head)"
+                  opacity="0.75"
+                />
+              </svg>
+            </div>
+          </div>
+        )}
       </Container>
     </section>
   );

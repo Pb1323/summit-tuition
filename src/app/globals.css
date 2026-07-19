@@ -21,6 +21,28 @@
   --shadow-soft: 0 16px 52px -36px rgba(17, 24, 39, 0.34);
 }
 
+@media print {
+  header, footer {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+  }
+}
+
+[data-dashboard-theme="dark"] {
+  --color-white: #1a2236;
+  --color-ivory: #1a2236;
+  --color-cream: #1e2a44;
+  --color-cream-dark: #172033;
+  --color-navy: #f5f7fb;
+  --color-navy-light: #dbe1ee;
+  --color-navy-dark: #ffffff;
+  --color-ink: #f5f7fb;
+  --color-muted: #9aa5bd;
+  --color-line: rgba(245, 158, 11, 0.32);
+}
+
 @theme inline {
   --color-cream: var(--color-cream);
   --color-cream-dark: var(--color-cream-dark);
@@ -35,6 +57,24 @@
   --color-line: var(--color-line);
   --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  /* GL Assessment uses a serif (Caslon) only for English reading passages, sans everywhere else - see research/gl-layout-spec.md */
+  --font-serif: Georgia, "Times New Roman", serif;
+}
+
+/**
+ * GL-accurate print metrics, measured from real GL Assessment papers via pdfplumber
+ * (see research/gl-layout-spec.md - do not hand-tune these without re-measuring).
+ * Side/bottom margins are constant across every subject; top margin is content-dependent
+ * (diagram-heavy pages sit closer to the GL "diagram page" number, text-heavy pages closer
+ * to the "text page" number) so it's exposed as two variables rather than one average.
+ */
+:root {
+  --gl-print-margin-side: 20mm;
+  --gl-print-margin-top-text: 29mm;
+  --gl-print-margin-top-diagram: 13mm;
+  --gl-print-margin-bottom: 13mm;
+  --gl-print-body-size: 12pt;
+  --gl-print-line-height: 1.3;
 }
 
 html {
@@ -142,6 +182,121 @@ body {
 .premium-page-shell {
   position: relative;
   isolation: isolate;
+}
+
+/* Editorial typography + interaction polish, shared across marketing pages. Namespaced
+   "editorial-"/"reveal-"/"cursor-" to stay clear of the notes section's "nt-"/"notes-" block below. */
+.editorial-drop-cap::first-letter {
+  float: left;
+  font-family: var(--font-serif);
+  font-size: 3.4em;
+  line-height: 0.82;
+  padding-right: 0.09em;
+  padding-top: 0.04em;
+  font-weight: 700;
+  color: var(--color-gold-dark);
+}
+
+.editorial-pull-quote {
+  position: relative;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.35rem;
+  line-height: 1.5;
+  color: var(--color-navy);
+  padding-left: 1.5rem;
+  border-left: 3px solid var(--color-gold);
+}
+
+.cursor-pencil {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg transform='rotate(45 12 12)' fill='none' stroke='%23b45309' stroke-width='1.4' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M9 3h6v14l-3 4-3-4z' fill='%23fde68a'/%3E%3Cpath d='M9 15h6' /%3E%3C/g%3E%3C/svg%3E") 4 20, pointer;
+}
+
+/* Notes section (src/components/notes) — letterhead-style interactive study pages */
+@keyframes ntfadein {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes ntshimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+@keyframes ntshake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-7px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+}
+@keyframes ntpopcheck {
+  0% {
+    transform: scale(0.3) rotate(-10deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15) rotate(3deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+@keyframes ntsnap {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.4;
+  }
+  70% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.notes-scrollwrap::-webkit-scrollbar {
+  width: 10px;
+}
+.notes-scrollwrap::-webkit-scrollbar-track {
+  background: transparent;
+}
+.notes-scrollwrap::-webkit-scrollbar-thumb {
+  background: rgba(201, 162, 75, 0.4);
+  border-radius: 5px;
+}
+
+@keyframes ntdriftsym {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(-14px, -22px) rotate(6deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
 }
 
 .premium-page-shell::before {
@@ -267,7 +422,8 @@ body {
 }
 
 /* Question-visual animations: clarify process only (line drawn in reading order,
-   highlighted point pulses twice, sequence steps appear one by one). Motion-safe only. */
+   highlighted point pulses twice, sequence steps appear one by one, bars rise from
+   the baseline, shapes/points/blocks pop in). Motion-safe only. */
 @media (prefers-reduced-motion: no-preference) {
   .qv-draw {
     stroke-dasharray: 1;
@@ -284,6 +440,20 @@ body {
   .qv-step {
     opacity: 0;
     animation: qv-step-in 0.4s ease-out forwards;
+  }
+
+  .qv-rise {
+    transform-box: fill-box;
+    transform-origin: bottom;
+    animation: qv-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .qv-pop {
+    transform-box: fill-box;
+    transform-origin: center;
+    opacity: 0;
+    transform: scale(0.85);
+    animation: qv-pop 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
 }
 
@@ -309,8 +479,180 @@ body {
   }
 }
 
+@keyframes qv-rise {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes qv-pop {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Question-visual interactivity: hover/keyboard-focus/tap reveal an exact-value tooltip and a
+   subtle highlight without cluttering the diagram by default. Pure CSS (no JS state) so it works
+   the same for mouse hover, keyboard focus and touch tap (tapping a focusable SVG node focuses it). */
+.qv-hit {
+  cursor: pointer;
+  outline: none;
+}
+
+.qv-hit .qv-mark {
+  transition: filter 160ms ease, stroke 160ms ease, stroke-width 160ms ease;
+}
+
+.qv-hit:hover .qv-mark,
+.qv-hit:focus-visible .qv-mark,
+.qv-hit:focus .qv-mark {
+  filter: drop-shadow(0 6px 10px rgba(180, 83, 9, 0.35));
+  stroke: #1d4ed8;
+}
+
+.qv-hit .qv-mark-scale {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: filter 160ms ease, stroke 160ms ease, transform 160ms ease;
+}
+
+.qv-hit:hover .qv-mark-scale,
+.qv-hit:focus-visible .qv-mark-scale,
+.qv-hit:focus .qv-mark-scale {
+  filter: drop-shadow(0 6px 10px rgba(180, 83, 9, 0.35));
+  stroke: #1d4ed8;
+  transform: scale(1.18);
+}
+
+.qv-hit .qv-tooltip,
+.qv-hit .qv-guide {
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 150ms ease, transform 150ms ease;
+  pointer-events: none;
+}
+
+.qv-hit .qv-guide {
+  transform: none;
+}
+
+.qv-hit:hover .qv-tooltip,
+.qv-hit:focus-visible .qv-tooltip,
+.qv-hit:focus .qv-tooltip,
+.qv-hit:hover .qv-guide,
+.qv-hit:focus-visible .qv-guide,
+.qv-hit:focus .qv-guide {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qv-hit .qv-tooltip,
+  .qv-hit .qv-guide,
+  .qv-hit .qv-mark,
+  .qv-hit .qv-mark-scale {
+    transition: opacity 1ms linear;
+    transform: none;
+  }
+  .qv-hit:hover .qv-mark-scale,
+  .qv-hit:focus-visible .qv-mark-scale,
+  .qv-hit:focus .qv-mark-scale {
+    transform: none;
+  }
+}
+
+/*
+ * .gl-print base styles apply on-screen too (not just @media print) so the route reads as a
+ * formatted page when viewed in a normal browser tab, not flat unstyled text - the @media print
+ * block below only adds/removes what's specifically different when actually printing/exporting
+ * (no grey background, no page shadow/gap, header/footer hidden, real page breaks).
+ */
+.gl-print {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 24px 12px;
+  background: #e7e9ee;
+  font-family: var(--font-sans);
+  font-size: var(--gl-print-body-size);
+  line-height: var(--gl-print-line-height);
+  color: var(--color-ink);
+}
+
+/* English reading passages get the GL serif treatment; everything else stays sans. */
+.gl-print .gl-print-passage {
+  font-family: var(--font-serif);
+}
+
+/* Any element the app doesn't want on the printed/exported page. */
+.gl-print .gl-print-hide {
+  display: none;
+}
+
+.gl-print-page {
+  width: 210mm;
+  min-height: 297mm;
+  max-width: 100%;
+  box-sizing: border-box;
+  background: #fff;
+  box-shadow: var(--shadow-soft);
+  padding-top: var(--gl-print-margin-top-text);
+  padding-bottom: var(--gl-print-margin-bottom);
+  padding-inline: var(--gl-print-margin-side);
+}
+
+.gl-print-page.gl-print-page-diagram {
+  padding-top: var(--gl-print-margin-top-diagram);
+}
+
 @media print {
   body {
     display: none;
   }
+
+  /* Opt-in: any page wrapping its printable content in .gl-print renders instead of blanking -
+     but the site's own header/footer (siblings of <main> in the root layout) must stay hidden,
+     or they leak onto the printed/exported page as a trailing extra sheet. */
+  body:has(.gl-print) {
+    display: block;
+  }
+
+  body:has(.gl-print) header,
+  body:has(.gl-print) footer {
+    display: none;
+  }
+
+  /* Strip the on-screen "page preview" chrome - printing supplies its own page boundaries. */
+  .gl-print {
+    display: block;
+    gap: 0;
+    padding: 0;
+    background: #fff;
+  }
+
+  .gl-print .gl-print-hide {
+    display: none !important;
+  }
+
+  .gl-print-page {
+    width: auto;
+    min-height: 0;
+    box-shadow: none;
+  }
+
+  .gl-print-page:not(:last-child) {
+    break-after: page;
+  }
+
+}
+
+@page {
+  size: A4;
+  margin: 0; /* margins are handled per-page via .gl-print-page padding above, since GL's own top margin varies by content type */
 }

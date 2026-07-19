@@ -7,6 +7,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { HeroSection } from "@/components/sections/hero-section";
 import { CTASection } from "@/components/sections/cta-section";
 import { ComparisonTable } from "@/components/sections/comparison-table";
+import { RevealOnScroll, StaggerReveal } from "@/components/platform/ui";
 
 export const metadata: Metadata = {
   title: "11+ Tuition — Group, Private & Complete Programme",
@@ -60,11 +61,11 @@ export default function TuitionPage() {
 
       <section className="py-20">
         <Container>
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <StaggerReveal className="grid grid-cols-1 gap-6 lg:grid-cols-3">
             {OPTIONS.map((opt) => (
               <div
                 key={opt.name}
-                className={`flex flex-col rounded-3xl border bg-white p-7 ${
+                className={`premium-card-hover flex flex-col rounded-3xl border bg-white p-7 ${
                   opt.featured ? "border-gold shadow-[0_24px_56px_-20px_rgba(15,43,61,0.3)] lg:-translate-y-2" : "border-line"
                 }`}
               >
@@ -84,16 +85,18 @@ export default function TuitionPage() {
                 </Button>
               </div>
             ))}
-          </div>
+          </StaggerReveal>
         </Container>
       </section>
 
       <section className="bg-cream-dark/50 py-20">
         <Container>
-          <SectionHeading eyebrow="Compare" title="See exactly what's included in each option" />
-          <div className="mt-10">
-            <ComparisonTable />
-          </div>
+          <RevealOnScroll>
+            <SectionHeading eyebrow="Compare" title="See exactly what's included in each option" />
+            <div className="mt-10">
+              <ComparisonTable />
+            </div>
+          </RevealOnScroll>
         </Container>
       </section>
 

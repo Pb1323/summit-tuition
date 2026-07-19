@@ -63,7 +63,7 @@ export default function CompleteProgrammePage() {
       <section className="py-20">
         <Container className="flex flex-col items-center">
           <Badge variant="gold" className="mb-3">Best Value</Badge>
-          <SectionHeading align="center" eyebrow="Pricing" title="One monthly investment, fully managed" />
+          <SectionHeading align="center" eyebrow="Pricing" title="One weekly investment, fully managed" />
           <div className="mt-10 w-full max-w-sm">
             {PROGRAMME_PRICING.map((tier) => (
               <PricingCard key={tier.id} tier={tier} />

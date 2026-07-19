@@ -7,16 +7,17 @@ import {
   FileSearch,
   ListChecks,
   ArrowRight,
-  Compass,
 } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { FeatureGrid } from "@/components/ui/feature-grid";
 import { PricingCard } from "@/components/ui/pricing-card";
+import { PullQuote } from "@/components/ui/pull-quote";
 import { HeroSection } from "@/components/sections/hero-section";
 import { CTASection } from "@/components/sections/cta-section";
 import { MockReportPreview } from "@/components/sections/mock-report-preview";
+import { RevealOnScroll, StaggerReveal } from "@/components/platform/ui";
 import { DIAGNOSTIC_PRICING } from "@/data/pricing";
 
 export const metadata: Metadata = {
@@ -62,36 +63,42 @@ export default function DiagnosticAssessmentPage() {
 
       <section className="py-20">
         <Container>
-          <SectionHeading
-            eyebrow="What's Included"
-            title="Every report covers the same seven things"
-            description="No vague feedback — every parent gets the same structured, comparable report."
-          />
-          <div className="mt-10">
-            <FeatureGrid items={REPORT_FEATURES} columns={3} />
-          </div>
+          <RevealOnScroll>
+            <SectionHeading
+              eyebrow="What's Included"
+              title="Every report covers the same seven things"
+              description="No vague feedback — every parent gets the same structured, comparable report."
+            />
+            <div className="mt-10">
+              <FeatureGrid items={REPORT_FEATURES} columns={3} />
+            </div>
+          </RevealOnScroll>
         </Container>
       </section>
 
       <section id="sample-report" className="bg-cream-dark/50 py-20">
         <Container>
-          <SectionHeading
-            align="center"
-            eyebrow="Sample Report"
-            title="What you'll receive after the assessment"
-          />
-          <div className="mt-10">
-            <MockReportPreview />
-          </div>
+          <RevealOnScroll>
+            <SectionHeading
+              align="center"
+              eyebrow="Sample Report"
+              title="What you'll receive after the assessment"
+            />
+            <div className="mt-10">
+              <MockReportPreview />
+            </div>
+          </RevealOnScroll>
         </Container>
       </section>
 
       <section className="py-20">
         <Container>
-          <SectionHeading eyebrow="How It Works" title="From booking to report in under a week" />
-          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <RevealOnScroll>
+            <SectionHeading eyebrow="How It Works" title="From booking to report in under a week" />
+          </RevealOnScroll>
+          <StaggerReveal className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {STEPS.map((step, i) => (
-              <div key={step.title} className="rounded-2xl border border-line bg-white p-6">
+              <div key={step.title} className="premium-card-hover rounded-2xl border border-line bg-white p-6">
                 <span className="flex h-9 w-9 items-center justify-center rounded-full bg-navy text-sm font-bold text-gold-light">
                   {i + 1}
                 </span>
@@ -99,31 +106,28 @@ export default function DiagnosticAssessmentPage() {
                 <p className="mt-1.5 text-sm leading-relaxed text-muted">{step.description}</p>
               </div>
             ))}
-          </div>
+          </StaggerReveal>
         </Container>
       </section>
 
       <section className="bg-cream-dark/50 py-20">
         <Container className="grid grid-cols-1 gap-10 lg:grid-cols-2">
-          <div className="max-w-md">
+          <RevealOnScroll className="max-w-md">
             <SectionHeading
               eyebrow="Pricing"
               title="One assessment, a complete picture"
               description="A single one-off fee — no subscription required to find out where your child stands."
             />
-            <div className="mt-6 flex items-start gap-2 text-sm text-muted">
-              <Compass className="mt-0.5 h-4 w-4 shrink-0 text-gold-dark" />
-              <p>
-                Most families follow the diagnostic with Weekly Mock Club or the Complete 11+
-                Programme — we&apos;ll recommend the right next step based on your results.
-              </p>
-            </div>
-          </div>
-          <div className="mx-auto w-full max-w-sm">
+            <PullQuote className="mt-6">
+              Most families follow the diagnostic with Weekly Mock Club or the Complete 11+
+              Programme — we&apos;ll recommend the right next step based on your results.
+            </PullQuote>
+          </RevealOnScroll>
+          <RevealOnScroll delay={0.1} className="mx-auto w-full max-w-sm">
             {DIAGNOSTIC_PRICING.map((tier) => (
               <PricingCard key={tier.id} tier={tier} />
             ))}
-          </div>
+          </RevealOnScroll>
         </Container>
       </section>
 
