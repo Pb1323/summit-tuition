@@ -238,7 +238,10 @@ export function AdminDashboard() {
             <h2 className="mt-4 text-3xl font-black text-navy">Mock Command Centre</h2>
             <p className="mt-2 max-w-3xl text-muted">Generate mocks, inspect the question visual showcase, run quality checks, preview drafts, publish papers and review attempts in a spacious admin area.</p>
           </div>
-          <AnimatedButton href="/admin/mocks">Go to Mock Command Centre</AnimatedButton>
+          <div className="flex flex-wrap items-center gap-3">
+            <Link href="/admin/homework" className="rounded-full border border-line bg-white px-5 py-2.5 text-sm font-bold text-navy hover:border-gold">Homework generator</Link>
+            <AnimatedButton href="/admin/mocks">Go to Mock Command Centre</AnimatedButton>
+          </div>
         </div>
       </GlowCard>
 
