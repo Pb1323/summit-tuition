@@ -12498,6 +12498,26 @@ export const REFERENCES: ReferenceSource[] = [
     lastAnalysedAt: "2026-07-01",
   },
   {
+    id: "ref-maths-pmc",
+    title: "Primary Maths Challenge (PMC) papers index",
+    url: "https://www.mymathscloud.com/modules/11-plus/primary-maths-challenge-pmc",
+    subject: "Maths",
+    style: "non-GL",
+    notes:
+      "Copyrighted UK maths competition papers (PMC). Metadata only, per policy — do not copy, extract, or reproduce actual questions/answers from this source into the question bank. Use only as a difficulty/style reference when hand-writing original competition-style puzzle questions (see the competition-style tag on maths-elite-2/3).",
+    lastAnalysedAt: "2026-07-19",
+  },
+  {
+    id: "ref-maths-jmc",
+    title: "UKMT Junior Mathematical Challenge (JMC) free past papers",
+    url: "https://ukmt.org.uk/competition-papers/jsf/jet-engine:free-past-papers/tax/challenge-type:70/",
+    subject: "Maths",
+    style: "non-GL",
+    notes:
+      "Copyrighted UKMT competition papers (JMC). Metadata only, per policy — do not copy, extract, or reproduce actual questions/answers from this source into the question bank. Use only as a difficulty/style reference when hand-writing original competition-style puzzle questions (see the competition-style tag on maths-elite-2/3).",
+    lastAnalysedAt: "2026-07-19",
+  },
+  {
     id: "ref-csse-non-gl",
     title: "CSSE example references",
     url: "https://example.com/non-gl-reference",
