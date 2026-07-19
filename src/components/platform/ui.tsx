@@ -197,7 +197,19 @@ export function MockTimer({ durationMinutes, initialElapsedSeconds = 0, onExpire
   );
 }
 
-export function EnglishPassageRenderer({ passage, paragraphRefs }: { passage?: Passage; paragraphRefs?: number[] }) {
+export function EnglishPassageRenderer({
+  passage,
+  paragraphRefs,
+  scrollClassName,
+}: {
+  passage?: Passage;
+  paragraphRefs?: number[];
+  /** Overrides the scroll container's height/overflow classes. Defaults to a fixed max-height
+   * suited for the passage repeating above every question (the historical stacked layout).
+   * The side-by-side comprehension layout in mock-room-shell.tsx passes a taller,
+   * viewport-relative height instead so the passage fills its sticky column. */
+  scrollClassName?: string;
+}) {
   if (!passage) return null;
   const paragraphs = passage.paragraphs?.length ? passage.paragraphs : passage.text.split(/\n{2,}/).filter(Boolean);
   return (
@@ -206,7 +218,7 @@ export function EnglishPassageRenderer({ passage, paragraphRefs }: { passage?: P
         <p className="text-xs font-black uppercase tracking-[0.18em] text-gold-dark">Original comprehension passage</p>
         <h3 className="mt-1 font-serif text-xl font-black text-navy">{passage.title}</h3>
       </div>
-      <div className="max-h-[34rem] overflow-y-auto px-6 py-6 sm:px-8">
+      <div className={cn("overflow-y-auto px-6 py-6 sm:px-8", scrollClassName ?? "max-h-[34rem]")}>
         <div className="mx-auto max-w-2xl font-serif text-[16.5px] leading-[1.85] text-ink [text-wrap:pretty]">
           {paragraphs.map((paragraph, index) => {
             const active = paragraphRefs?.includes(index + 1);
