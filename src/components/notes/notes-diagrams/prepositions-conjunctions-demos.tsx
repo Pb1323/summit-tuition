@@ -51,3 +51,63 @@ export function CorrelativeConjunctionsDemo() {
     />
   );
 }
+
+export function WhatArePrepositionsDemo() {
+  return (
+    <ClickErrorSentence
+      instruction={INSTRUCTION}
+      words={["There", "were", "three", "books", "at", "the", "shelf."]}
+      errorIdx={4}
+      correction={'"at" doesn\'t fit a flat surface — a shelf needs "on", which shows position on top of something: three books on the shelf.'}
+      wrongHint="this preposition should describe resting on top of a flat surface, not a general point."
+    />
+  );
+}
+
+export function WhatAreConjunctionsDemo() {
+  return (
+    <ClickErrorSentence
+      instruction={INSTRUCTION}
+      words={["We", "could", "walk", "nor", "cycle", "to", "the", "park."]}
+      errorIdx={3}
+      correction={'"nor" only pairs with a negative word like "neither" earlier in the sentence — a simple choice between two options needs "or": walk or cycle.'}
+      wrongHint="this word only belongs after a negative word like “neither” — check if one appears earlier in the sentence."
+    />
+  );
+}
+
+export function PrepositionsTimePlaceMovementDemo() {
+  return (
+    <ClickErrorSentence
+      instruction={INSTRUCTION}
+      words={["The", "meeting", "begins", "on", "half", "past", "nine."]}
+      errorIdx={3}
+      correction={'"on" is used for days and dates — a precise clock time needs "at", the smallest unit in the time pattern: begins at half past nine.'}
+      wrongHint="check the size of the time period this preposition is describing — a precise clock time needs the smallest one."
+    />
+  );
+}
+
+export function PrepositionOrPhrasalVerbParticleDemo() {
+  return (
+    <ClickErrorSentence
+      instruction={INSTRUCTION}
+      words={["We", "ran", "a", "problem", "into", "during", "the", "trip."]}
+      errorIdx={4}
+      correction={'"run into" (meaning to unexpectedly encounter) is an inseparable phrasal verb — its particle "into" can\'t be pulled away from the verb by the object: we ran into a problem during the trip.'}
+      wrongHint="this phrasal verb meaning “to unexpectedly encounter” doesn't allow its particle to be pulled away from the verb by the object."
+    />
+  );
+}
+
+export function ConjunctiveAdverbsDemo() {
+  return (
+    <ClickErrorSentence
+      instruction={INSTRUCTION}
+      words={["The", "shop", "was", "closing,", "moreover", "the", "queue", "was", "still", "long."]}
+      errorIdx={3}
+      correction={'"moreover" is a conjunctive adverb joining two independent clauses — a single comma isn\'t strong enough before it; it needs a semicolon: "The shop was closing; moreover, the queue was still long."'}
+      wrongHint="check whether the punctuation right before “moreover” is strong enough to separate two complete sentences."
+    />
+  );
+}

@@ -51,3 +51,63 @@ export function SilentDifferenceHomophonesDemo() {
     />
   );
 }
+
+export function HomophonesVsNearHomophonesDemo() {
+  return (
+    <ClickErrorSentence
+      instruction={INSTRUCTION}
+      words={["The", "storm", "will", "badly", "effect", "the", "farmers'", "crops", "this", "season."]}
+      errorIdx={4}
+      correction={'"effect" is usually a noun — the verb needed here, meaning "to influence", is "affect": will badly affect the farmers\' crops.'}
+      wrongHint="check whether this word should be a verb describing an action, or the noun for a result."
+    />
+  );
+}
+
+export function ContractionPossessiveHomophonesDemo() {
+  return (
+    <ClickErrorSentence
+      instruction={INSTRUCTION}
+      words={["The", "players", "grabbed", "they're", "kit", "bags", "and", "ran", "onto", "the", "pitch."]}
+      errorIdx={3}
+      correction={'"they\'re" expands to "they are kit bags", which makes no sense — the possessive "their" is needed: grabbed their kit bags.'}
+      wrongHint="expand the apostrophe word into two words and check whether it still makes sense before “kit bags”."
+    />
+  );
+}
+
+export function CommonlyMisspelledExamHomophonesDemo() {
+  return (
+    <ClickErrorSentence
+      instruction={INSTRUCTION}
+      words={["The", "whole", "class", "had", "extra", "spelling", "practise", "before", "the", "big", "test."]}
+      errorIdx={6}
+      correction={'"practise" is the verb spelling — the noun needed here for a scheduled activity is "practice": extra spelling practice.'}
+      wrongHint="check whether this word should be the noun (a thing) or the verb (an action)."
+    />
+  );
+}
+
+export function FormalHomophoneTrapsDemo() {
+  return (
+    <ClickErrorSentence
+      instruction={INSTRUCTION}
+      words={["Her", "grandmother", "always", "gave", "wise", "advise", "about", "money."]}
+      errorIdx={5}
+      correction={'"advise" is the verb spelling — the noun needed here for a suggestion is "advice": always gave wise advice.'}
+      wrongHint="check whether this word should be the noun (a thing) or the verb (an action)."
+    />
+  );
+}
+
+export function HomophonesMultiMeaningWordsDemo() {
+  return (
+    <ClickErrorSentence
+      instruction={INSTRUCTION}
+      words={["The", "carpenter", "cut", "a", "long", "wooden", "bored", "for", "the", "new", "shelf."]}
+      errorIdx={6}
+      correction={'"bored" means feeling uninterested — the word needed here for a flat piece of wood is "board": a long wooden board.'}
+      wrongHint="check whether this word should name a flat piece of wood or describe feeling uninterested."
+    />
+  );
+}

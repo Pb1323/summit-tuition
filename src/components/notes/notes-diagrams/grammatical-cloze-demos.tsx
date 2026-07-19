@@ -59,3 +59,73 @@ export function CombinedGrammarMeaningCluesDemo() {
     />
   );
 }
+
+export function ArticleDeterminerCluesDemo() {
+  return (
+    <ClickFillGap
+      instruction={INSTRUCTION}
+      before="She had never seen"
+      options={["a", "an", "the", "that"]}
+      correctIdx={1}
+      after="honest answer like it before."
+      correction="“honest” starts with a vowel sound (the h is silent), so the gap needs “an”, not “a” — and “the”/“that” would wrongly suggest an answer already mentioned, rather than one being introduced for the first time."
+      wrongHint="check the very next word after the gap — what sound does it actually start with, and has it been mentioned before?"
+    />
+  );
+}
+
+export function PrepositionCluesDemo() {
+  return (
+    <ClickFillGap
+      instruction={INSTRUCTION}
+      before="The twins have always been very"
+      options={["proud", "pleased", "glad", "happy"]}
+      correctIdx={0}
+      after="of each other's achievements."
+      correction="the preposition “of” is already fixed in the sentence, and only “proud” pairs fixedly with “of” in this sense — “pleased with”, “glad about” and “happy for” all take different prepositions."
+      wrongHint="look at the preposition already sitting after the gap — which option is the one word always paired with that exact preposition?"
+    />
+  );
+}
+
+export function ConnectiveLinkingCluesDemo() {
+  return (
+    <ClickFillGap
+      instruction={INSTRUCTION}
+      before="The forecast promised sunshine all week; however, the campers"
+      options={["stayed", "remained", "got", "arrived"]}
+      correctIdx={2}
+      after="soaked within an hour."
+      correction="“however” signals a contrast with the sunny forecast, so the gap needs the word that completes the wet, opposing outcome — “got” soaked — not a neutral word like “stayed” or “remained”."
+      wrongHint="what relationship does the connective “however” promise between the sunny forecast and what actually happened?"
+    />
+  );
+}
+
+export function PronounReferenceCluesDemo() {
+  return (
+    <ClickFillGap
+      instruction={INSTRUCTION}
+      before="Grandma Rose had packed a small gift for Amir before he left. When the taxi finally arrived,"
+      options={["he", "she", "it", "they"]}
+      correctIdx={1}
+      after="waved until it disappeared around the corner."
+      correction="Amir is the one who “left” in the taxi, so Grandma Rose is the one left behind on the pavement to wave — the gap needs the singular female pronoun “she”, referring back to her, not Amir."
+      wrongHint="track back through both sentences — who is actually still standing there to wave as the taxi drives off?"
+    />
+  );
+}
+
+export function AmbiguousGapsDemo() {
+  return (
+    <ClickFillGap
+      instruction={INSTRUCTION}
+      before="Instead of complaining, the volunteers decided to"
+      options={["make", "do", "take", "have"]}
+      correctIdx={0}
+      after="a real difference in the community."
+      correction="all four are grammatically possible verbs before “a difference”, but “make a difference” is the one fixed, natural collocation in English — “do”, “take” and “have” simply aren't how this phrase is normally said."
+      wrongHint="all four options are grammatically fine here — which one is the word English speakers naturally pair with “a difference”?"
+    />
+  );
+}
