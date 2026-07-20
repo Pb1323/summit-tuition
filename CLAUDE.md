@@ -2,7 +2,7 @@
 
 # Summit Tuition Project Context
 
-Last updated: 2026-07-20 (English GL mock rebuild branch finished — see `status.md`). Plain-English project status and forward-looking roadmap live in `status.md` and `TODO.md` — read those first for current state/next steps; this file is the technical companion, and it's what's auto-loaded into every session (unlike `status.md`/`TODO.md`, which must be read explicitly).
+Last updated: 2026-07-20 (Free/Pro/Max pricing tier rebuild, first pass — see `status.md`). Plain-English project status and forward-looking roadmap live in `status.md` and `TODO.md` — read those first for current state/next steps; this file is the technical companion, and it's what's auto-loaded into every session (unlike `status.md`/`TODO.md`, which must be read explicitly).
 
 ## Sibling Projects In This Repo
 
@@ -82,7 +82,7 @@ Prisma schema lives in `prisma/schema.prisma`.
 
 Models: `User`, `Session`, `MockExam`, `Question`, `Passage`, `Attempt`, `MockUnlock`, `ReferenceSource`, `ProductPlan`, `EmailTemplate`, `PaymentRequest`. Enums: `Role`, `Subject`, `ReferenceStyle`, `AttemptStatus`, `PaymentStatus`, `PaymentRequestStatus`.
 
-`ProductPlan` has `includedMockIds`/`includedNoteIds` (2026-07-17): assigning a plan to a student additively grants that bundle's mocks/notes via `set-content`/`assign-plan` admin routes — see Recent Feature State.
+`ProductPlan` has `includedMockIds`/`includedNoteIds` (2026-07-17): assigning a plan to a student additively grants that bundle's mocks/notes via `set-content`/`assign-plan` admin routes — see Recent Feature State. The demo/seed catalog (`src/data/platform.ts`) plans are now Free/Pro/Max (2026-07-20, see Recent Feature State) plus Diagnostic/Group/Private/Holiday as separate non-gating entries; Free/Pro/Max's included-id lists are computed dynamically from `MOCKS`/`NOTE_PAGES` at module load, not hand-maintained.
 
 Schema CLI commands (`migrate`/`push`) must use `DIRECT_URL` (port 5432), not the pooled `DATABASE_URL` — the pgbouncer transaction pooler on 6543 hangs indefinitely on schema commands. `prisma.config.ts` is already wired for this.
 
@@ -134,6 +134,7 @@ Full narrative history of what was built/changed and when now lives in `status.m
 - **2026-07-17 session**: fixed a critical demo-mode auth bypass — demo sessions (no `DATABASE_URL`) previously encoded the raw user id directly in the `summit_session` cookie, so setting `summit_session=admin-1` forged admin access with no login. Demo sessions now use an unguessable random token backed by an in-memory map, matching the DB-backed model; production also now hard-refuses to fall into demo auth if `DATABASE_URL` is missing, instead of silently degrading. Pricing page also fixed: layout was branching on `tiers.length === 3` but every group now has exactly one tier post-consolidation, so every section rendered as a single cramped card — replaced with one unified responsive grid.
 - **2026-07-17 session**: student dashboard applies goal-gradient/reciprocity UX patterns — onboarding never shows 0% (registration + free mock unlock always count as complete steps), and raw scores surface immediately on submission instead of being withheld until report release (`src/components/platform/dashboards.tsx`).
 - **2026-07-17 session**: `ProductPlan` bundles — `includedMockIds`/`includedNoteIds` fields let admins define what each plan grants via a new bundle editor on the admin students page; assigning a plan to a student now additively unlocks its bundle (`src/app/api/admin/plans/[id]/set-content/route.ts`, `assign-plan/route.ts`).
+- **2026-07-20 session (first pass, time-boxed)**: Pricing rebranded from named products to a **Free/Pro/Max** tier ladder for the digital platform (mocks + Study Notes) — Free (£0): 1 diagnostic-style mock/subject + first Study Notes topic per strand; Pro (£29/mo): full mock library except `tier: "Elite"` mocks, all Study Notes; Max (£60/mo): everything Pro has plus Elite-difficulty mocks. Group/Private Tuition, Holiday Booster, and Diagnostic Assessment remain separate, non-tiered products, unchanged. `PRODUCT_PLANS` in `src/data/platform.ts` now computes Free/Pro/Max's included mock/note ids dynamically from existing `mock.isFree`/`mock.tier`/`note.isFree` fields (see Data Model) instead of hand-typed lists. `src/data/pricing.ts`'s old `MOCK_CLUB_PRICING`/`PRACTICE_SIMULATOR_PRICING`/`PROGRAMME_PRICING` exports are now backward-compat aliases onto the new `PLATFORM_TIER_PRICING` (Pro/Pro/Max respectively) so the not-yet-migrated dedicated pages keep compiling. **Not yet done**: the dedicated `/weekly-mock-club`, `/practice-paper-simulator`, `/complete-programme` marketing pages and `nav.ts`'s footer still show old product names/copy; no Stripe Price IDs wired to the new tiers yet (Stripe integration setup was in progress separately this session, blocked on interactive OAuth). Max's £60 price uses `/month` billing (not `/week` like the old Complete Programme it's priced off of) since Max no longer bundles tuition — a founder judgment call worth double-checking before launch.
 
 ## Design Notes
 
