@@ -1,8 +1,20 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-20 (added 4th Elite English mock — see below)
+Last updated: 2026-07-20 (Free/Pro/Max rebrand applied site-wide + new homepage free-sample-mock widget — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+---
+
+## Done (same day, third follow-up — pricing rebrand goes everywhere, plus a new free-sample-mock widget)
+
+Founder asked for the Free/Pro/Max rebrand to be consistent across the whole site (not just the pricing page), and for a new interactive feature on the homepage: a "try before you sign up" sample mock.
+
+- Went through every remaining page that still mentioned the old product names — the homepage, the tuition comparison page, the site footer, the contact/booking forms, the FAQ, the terms page, and the safeguarding page — and updated them all to Pro/Max/Free language.
+- The homepage used to have three separate, cluttered sections repeating the old products; these are now one clean Pro/Max section.
+- The three old dedicated pages for the retired products now automatically send visitors to the pricing page instead of showing outdated content.
+- Added a new feature: right under the homepage's main banner, visitors can now try 5 real sample questions (4 maths, 1 comprehension) with no account needed. After the 5th question, it stops and shows their score with a "Register Free" or "See Pro & Max" button — the goal is to let people feel the product before committing to anything.
+- Rechecked in a real running copy of the site that the new questions work, scoring correctly, and that the old pages properly redirect.
 
 ---
 
