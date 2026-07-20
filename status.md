@@ -1,8 +1,28 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-20 (Free/Pro/Max rebrand applied site-wide + new homepage free-sample-mock widget — see below)
+Last updated: 2026-07-20 (Stripe test-mode checkout wired for Pro/Max — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+---
+
+## Done (session — 2026-07-20, Stripe test-mode checkout wired for Pro/Max)
+
+Founder connected the Stripe MCP plugin in test mode and asked to finish the previously-scaffolded checkout flow. Founder does not yet have a custom domain (buying one in a few days) or updated bank details (new card arriving, business bank details to follow) — real/live payments are explicitly on hold until then, so this pass built a working **skeleton**: real test-mode Stripe objects and a fully wired checkout flow, deliberately left off in production until live-mode activation.
+
+- Created 4 test-mode Stripe Products+Prices via the Stripe MCP tools: Pro (£39/month, `price_1TvOO7R2MwXT1VWa3fsFVPnM`), Max (£69/month, `price_1TvOO9R2MwXT1VWaP1MjSCX7`), Diagnostic Assessment (£145 one-off, `price_1TvOMpR2MwXT1VWakmwXiDNx`), Holiday Booster (£50 one-off, `price_1TvOMsR2MwXT1VWajl26bitS`) — all test mode only, account `acct_1TvFZBR2MwXT1VWa`. (Note: Pro/Max were first created at £29/£60 matching the founder's initial message, then archived and recreated at £39/£69 once a concurrent session's pricing-page edit — already merged before this pass — turned out to be the current real price. Diagnostic/Holiday Prices exist for future self-serve use but aren't wired to a checkout button yet — those two stay on their existing "enquire" links by design.)
+- Wired the actual `stripePriceId`s into `src/data/pricing.ts`'s Pro/Max tiers, and updated `src/components/ui/pricing-card.tsx` so a tier with a `stripePriceId` now renders the existing `CheckoutButton` (real `/api/checkout` → Stripe Checkout Session → redirect) instead of a plain link; tiers without one (Diagnostic/Group/Private/Holiday) keep their original enquiry-link `Button`. No changes were needed to `src/lib/stripe.ts`, `/api/checkout`, or the webhook route — that scaffolding was already correct.
+- Fixed a real bug found while testing locally: Stripe Checkout's `success_url`/`cancel_url` always redirected to the hardcoded production fallback (`https://www.summittuition.co.uk`) even in local dev, because `src/data/site.ts`'s `SITE.url` reads `NEXT_PUBLIC_SITE_URL` but that var was never set anywhere (not in local `.env`, not confirmed in Vercel). No code change was needed — just set `NEXT_PUBLIC_SITE_URL="http://localhost:3000"` in local `.env`. **Still outstanding**: this same var needs setting in the Vercel dashboard for production (see Known Limitations / next steps below) — it isn't set there yet, so production Checkout redirects would currently hit the wrong domain too.
+- Verified end-to-end locally: `stripe listen --forward-to localhost:3000/api/stripe/webhook` + `npm run dev`, clicked "Start Pro" on `/pricing`, real Stripe-hosted Checkout page loaded, paid with `4242 4242 4242 4242`, redirected back to `localhost:3000/pricing?checkout=success`, webhook fired.
+- `npm run typecheck` and `npm run lint` both pass clean (0 errors) after these changes.
+
+### Explicitly deferred / next steps (in order, don't skip ahead)
+
+1. **Today, no blockers**: set `NEXT_PUBLIC_SITE_URL` in the Vercel dashboard to `https://summit-tuition.vercel.app` (the real current prod URL — there is no custom domain live yet, despite marketing copy referencing summittuition.co.uk). Deliberately do **not** add `STRIPE_SECRET_KEY`/`STRIPE_WEBHOOK_SECRET` to Vercel yet — leaving Stripe unconfigured in prod is what makes `/api/checkout` and `CheckoutButton` gracefully show "Checkout coming soon → get in touch" instead of a real-looking checkout button real customers can't actually complete (no live mode yet).
+2. **When the domain is bought (~days away)**: point it at Vercel, then update `NEXT_PUBLIC_SITE_URL` again to the new domain.
+3. **When the new card/bank details land (~tomorrow)**: complete Stripe's business activation (Dashboard → "Activate your account" — business details + bank account for payouts). This is the actual gate on Live mode, nothing code-side blocks on it.
+4. **Once Live mode is active**: recreate the same 4 Products/Prices in live mode (test-mode objects/IDs don't carry over), swap the live price IDs into `src/data/pricing.ts`, register a live webhook endpoint in the Stripe Dashboard (`https://<domain>/api/stripe/webhook` — a Dashboard step, not `stripe listen`) and get its webhook secret, then add the live `STRIPE_SECRET_KEY`/`STRIPE_WEBHOOK_SECRET` to Vercel and do one real end-to-end test.
+5. **Also worth deciding before real customers pay** (not blocking): the webhook only handles `checkout.session.completed` (marks `paymentStatus: "paid"`, no auto plan-assignment/mock-unlock — that's still a manual admin step by design). There's no handling yet for `invoice.payment_failed` or `customer.subscription.deleted`, so a Pro/Max subscriber whose card fails or who cancels won't be automatically downgraded/locked out.
 
 ---
 
