@@ -22,45 +22,58 @@ export const DIAGNOSTIC_PRICING: PricingTier[] = [
   },
 ];
 
-export const MOCK_CLUB_PRICING: PricingTier[] = [
+export const PLATFORM_TIER_PRICING: PricingTier[] = [
   {
-    id: "mock-club",
-    name: "Weekly Mock Club",
-    description: "6 full mock exams and around 600 questions a month, marked with a parent report every week.",
+    id: "free",
+    name: "Free",
+    description: "A taste of the platform — one mock per subject and the first Study Notes topic in every strand.",
+    price: "£0",
+    period: "forever",
+    features: [
+      "1 diagnostic-style mock per subject",
+      "First Study Notes topic in every strand",
+      "Instant scoring on every attempt",
+      "No card required",
+    ],
+    cta: "Register Free",
+    ctaHref: "/register",
+    billingMode: "subscription",
+  },
+  {
+    id: "pro",
+    name: "Pro",
+    description: "Full weekly mock access and complete Study Notes across every subject.",
     price: "£29",
     period: "/month",
     features: [
-      "6 full mock exams a month",
-      "~600 questions a month",
+      "Full mock library (excl. Elite papers)",
+      "Complete Study Notes, every subject",
       "Marked with a report after every mock",
       "Subject and topic-level breakdown",
       "Weekly parent email summary",
     ],
-    cta: "Join Mock Club",
-    ctaHref: "/book-a-call?product=weekly-mock-club",
+    cta: "Start Pro",
+    ctaHref: "/book-a-call?product=pro",
     badge: "Most Popular",
     highlighted: true,
     billingMode: "subscription",
   },
-];
-
-export const PRACTICE_SIMULATOR_PRICING: PricingTier[] = [
   {
-    id: "simulator",
-    name: "Practice Paper Simulator",
-    description: "4 practice papers and around 150 questions a month, plus practice by individual topic.",
-    price: "£19",
+    id: "max",
+    name: "Max",
+    description: "Everything in Pro, plus Elite-difficulty mocks and priority reporting.",
+    price: "£60",
     period: "/month",
     features: [
-      "4 full practice papers a month",
-      "~150 questions a month",
-      "Practice by individual topic",
-      "Instant scoring after every attempt",
-      "Topic-level breakdown",
-      "Full attempt history",
+      "Everything in Pro",
+      "Elite-difficulty mock papers",
+      "Unlimited mock attempts",
+      "Priority report turnaround",
+      "Discount on holiday booster courses",
     ],
-    cta: "Try Practice Paper Simulator",
-    ctaHref: "/book-a-call?product=practice-paper-simulator",
+    cta: "Start Max",
+    ctaHref: "/book-a-call?product=max",
+    badge: "Best Value",
     billingMode: "subscription",
   },
 ];
@@ -127,37 +140,17 @@ export const HOLIDAY_PRICING: PricingTier[] = [
   },
 ];
 
-export const PROGRAMME_PRICING: PricingTier[] = [
-  {
-    id: "programme",
-    name: "Complete 11+ Programme",
-    description: "Everything — diagnostics, practice papers, weekly mocks and tuition, combined into one managed plan.",
-    price: "£60",
-    period: "/week",
-    features: [
-      "Everything: diagnostics, practice papers, mocks and tuition",
-      "Initial diagnostic assessment",
-      "Weekly group tuition",
-      "Weekly mock exams",
-      "Full Practice Paper Simulator access",
-      "Monthly progress reports",
-      "Termly parent check-in call",
-      "Discount on holiday booster courses",
-    ],
-    cta: "Apply for Complete Programme",
-    ctaHref: "/book-a-call?product=complete-programme",
-    badge: "Best Value",
-    highlighted: true,
-    billingMode: "subscription",
-  },
-];
+/** Back-compat aliases: dedicated pages (weekly-mock-club, practice-paper-simulator,
+ * complete-programme) still import these names pending a full content rewrite onto
+ * the Free/Pro/Max ladder — see status.md. */
+export const MOCK_CLUB_PRICING = PLATFORM_TIER_PRICING.filter((tier) => tier.id === "pro");
+export const PRACTICE_SIMULATOR_PRICING = PLATFORM_TIER_PRICING.filter((tier) => tier.id === "pro");
+export const PROGRAMME_PRICING = PLATFORM_TIER_PRICING.filter((tier) => tier.id === "max");
 
 export const ALL_PRICING_GROUPS: { id: string; title: string; tiers: PricingTier[] }[] = [
+  { id: "platform", title: "Free / Pro / Max", tiers: PLATFORM_TIER_PRICING },
   { id: "group", title: "Group Tuition", tiers: GROUP_TUITION_PRICING },
-  { id: "simulator", title: "Practice Paper Simulator", tiers: PRACTICE_SIMULATOR_PRICING },
-  { id: "mocks", title: "Weekly Mock Club", tiers: MOCK_CLUB_PRICING },
   { id: "private", title: "Private Tuition", tiers: PRIVATE_TUITION_PRICING },
   { id: "holiday", title: "Holiday Booster", tiers: HOLIDAY_PRICING },
-  { id: "programme", title: "Complete 11+ Programme", tiers: PROGRAMME_PRICING },
   { id: "diagnostic", title: "Diagnostic Assessment", tiers: DIAGNOSTIC_PRICING },
 ];

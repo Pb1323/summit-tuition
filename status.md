@@ -1,14 +1,33 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-20 (English GL mock rebuild branch finished, not yet merged — see below)
+Last updated: 2026-07-20 (Free/Pro/Max pricing tier rebuild, first pass — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
 
-## Done (branch `worktree-english-gl-mock-rebuild`, 2026-07-20 — finishing pass, NOT yet merged to main)
+## Done (session — 2026-07-20, Free/Pro/Max pricing rebrand, first pass — time-boxed to ~30 min)
 
-This branch was already mid-flight from a prior session (see the 2026-07-19 entry below for why it was deliberately left alone). This session merged latest `main` in (already done, verified), then finished and verified the rest. **Still local-only on this branch — a human needs to review and merge/push.**
+Founder decided to move from named products (Weekly Mock Club/Practice Paper Simulator/Complete 11+ Programme) to a Free/Pro/Max tier ladder for the digital platform (mocks + Study Notes), while Group/Private Tuition, Holiday Booster, and Diagnostic Assessment stay separate, non-tiered products as before (confirmed with founder before building). Stripe checkout wiring is explicitly deferred — this pass is data model + pricing page only, admin still assigns plans manually.
+
+- **`src/data/platform.ts`**: `PRODUCT_PLANS` rebuilt as Free (£0)/Pro (£29/mo)/Max (£60/mo), plus Diagnostic/Group/Private/Holiday kept as non-gating entries with real prices (previously all placeholder `£X`). Free/Pro/Max's `includedMockIds`/`includedNoteIds` are **computed dynamically** from `MOCKS`/`NOTE_PAGES` at module load (`FREE_MOCK_IDS`/`PRO_MOCK_IDS`/`MAX_MOCK_IDS` filtering on existing `mock.isFree`/`mock.tier === "Elite"` fields) rather than hand-typed id lists — deliberate choice so newly added mocks are automatically covered by the right tier without ever having to remember to update this file again. Pro = everything except `tier: "Elite"` mocks; Max = everything including Elite. Moved this block to after the `MOCKS` array (was previously before it, with empty placeholder arrays) since the computation needs `MOCKS` to exist first.
+- **`src/data/pricing.ts`**: `MOCK_CLUB_PRICING`/`PRACTICE_SIMULATOR_PRICING`/`PROGRAMME_PRICING` replaced by one `PLATFORM_TIER_PRICING` array (Free/Pro/Max cards); old names kept as **backward-compat aliases** (`MOCK_CLUB_PRICING`/`PRACTICE_SIMULATOR_PRICING` → Pro card, `PROGRAMME_PRICING` → Max card) purely so the still-unmigrated dedicated pages below don't break — not a real second pricing system.
+- **`src/data/products.ts`**: `PRODUCT_LADDER` entries for group-tuition/practice-paper-simulator/weekly-mock-club/complete-programme replaced with free/pro/max entries (linking to `/pricing#platform` and `/register`); tuition/holiday entries untouched.
+- **`src/app/pricing/page.tsx`**: updated the "not sure where to start" card copy and meta description off the old product names.
+- Verified `npm run typecheck` (0 errors) and `npm run lint` (0 errors, same pre-existing warnings as baseline) after the change.
+
+### Explicitly deferred (not done this pass, due to the 30-minute time box)
+
+- **Dedicated marketing pages still show old branding**: `/weekly-mock-club`, `/practice-paper-simulator`, `/complete-programme` still exist as routes with their original copy/headings (they still work — via the backward-compat pricing aliases above — but they weren't rewritten to Free/Pro/Max language, and nothing yet redirects them to `/pricing`). Same for `nav.ts`'s footer "Products" column, which still links to/labels these by their old names.
+- **No Stripe Price IDs wired to the new tiers yet** — founder is separately setting up the Stripe MCP/plugin integration; once that's authorized and Price objects exist for Free/Pro/Max, `/api/checkout` needs real `priceId`s plumbed through from the pricing cards.
+- **£60/month for Max is a judgment call, not confirmed with the founder**: they picked "£60" matching the old Complete 11+ Programme price, which was `/week` (because it bundled tuition). Since Max is now digital-only, billing it `/week` at the same £60 would make it far pricier than intended relative to Pro's £29/month — changed the cadence to `/month` to keep the ladder coherent, but the founder should sanity-check this actual number before launch.
+- **No re-check of `ProductCategory` type / other consumers of `PRODUCT_LADDER` categories** (`"programme"`, `"practice"` categories are now unused) — harmless (not a type error) but worth a cleanup pass later.
+
+---
+
+## Done (branch `worktree-english-gl-mock-rebuild`, 2026-07-20 — finishing pass, merged to main)
+
+This branch was already mid-flight from a prior session (see the 2026-07-19 entry below for why it was deliberately left alone). This session merged latest `main` in (already done, verified), then finished and verified the rest. **Merged into `main` — no longer local-only.**
 
 - **Confirmed section structure works across the whole English mock roster, not just the one regenerated mock**: `english-sections.ts`'s tag-based `getEnglishSectionId()` classifies all 13 published English mocks (the new generator-built one, the 3 hand-authored Elite mocks, the 6 older `-stretch` papers, the 2 `-100` mocks, and the tiny diagnostic sample) cleanly into all 4 GL sections with zero "undefined" — verified with a standalone script, not just by inspection. Section grouping/ordering is derived at render time from tags, so existing mocks didn't need physical regeneration to get correct section behaviour.
 - **Found and fixed a real, severe version of the exact bug this branch exists to solve**: `ClozeGapRenderer` (`src/components/platform/ui.tsx`) was recomputing its own options list straight from `question.options` (raw source order), completely ignoring `QuestionRenderer`'s per-question `seededShuffle`. Every cloze template in `mock-generation.ts` hardcodes the correct answer as `options[0]`, so every cloze question in every mock was rendering its correct letter as "A" with zero variation — not just "predictable," literally constant. Fixed by adding an `options` prop to `ClozeGapRenderer` and having `QuestionRenderer` pass its already-shuffled list through. Verified two ways: a standalone script mirroring the shuffle logic (correct letters now spread A-E per mock), and live in a running dev server (screenshotted a real cloze question with the correct answer sitting under letter C, not A).

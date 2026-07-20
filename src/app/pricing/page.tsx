@@ -15,7 +15,7 @@ import { SITE } from "@/data/site";
 export const metadata: Metadata = {
   title: "Pricing — 11+ Tuition, Mocks & Diagnostic Assessments",
   description:
-    `Transparent pricing for every ${SITE.name} product: diagnostic assessment, practice paper simulator, weekly mock club, tuition and the Complete 11+ Programme.`,
+    `Transparent pricing for every ${SITE.name} product: Free, Pro and Max platform tiers, diagnostic assessment, tuition and holiday booster courses.`,
 };
 
 const NOT_SURE_CARDS = [
@@ -29,9 +29,9 @@ const NOT_SURE_CARDS = [
   {
     icon: <Repeat className="h-6 w-6" />,
     title: "I want weekly exam practice",
-    description: "Most families start with Weekly Mock Club — £29/month.",
-    cta: "See Weekly Mock Club",
-    href: "/weekly-mock-club",
+    description: "Most families start with Pro — £29/month for full mock and notes access.",
+    cta: "See Pro",
+    href: "/pricing#platform",
     highlight: true,
   },
   {
