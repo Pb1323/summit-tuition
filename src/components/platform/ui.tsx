@@ -197,7 +197,19 @@ export function MockTimer({ durationMinutes, initialElapsedSeconds = 0, onExpire
   );
 }
 
-export function EnglishPassageRenderer({ passage, paragraphRefs }: { passage?: Passage; paragraphRefs?: number[] }) {
+export function EnglishPassageRenderer({
+  passage,
+  paragraphRefs,
+  scrollClassName,
+}: {
+  passage?: Passage;
+  paragraphRefs?: number[];
+  /** Overrides the scroll container's height/overflow classes. Defaults to a fixed max-height
+   * suited for the passage repeating above every question (the historical stacked layout).
+   * The side-by-side comprehension layout in mock-room-shell.tsx passes a taller,
+   * viewport-relative height instead so the passage fills its sticky column. */
+  scrollClassName?: string;
+}) {
   if (!passage) return null;
   const paragraphs = passage.paragraphs?.length ? passage.paragraphs : passage.text.split(/\n{2,}/).filter(Boolean);
   return (
@@ -206,7 +218,7 @@ export function EnglishPassageRenderer({ passage, paragraphRefs }: { passage?: P
         <p className="text-xs font-black uppercase tracking-[0.18em] text-gold-dark">Original comprehension passage</p>
         <h3 className="mt-1 font-serif text-xl font-black text-navy">{passage.title}</h3>
       </div>
-      <div className="max-h-[34rem] overflow-y-auto px-6 py-6 sm:px-8">
+      <div className={cn("overflow-y-auto px-6 py-6 sm:px-8", scrollClassName ?? "max-h-[34rem]")}>
         <div className="mx-auto max-w-2xl font-serif text-[16.5px] leading-[1.85] text-ink [text-wrap:pretty]">
           {paragraphs.map((paragraph, index) => {
             const active = paragraphRefs?.includes(index + 1);
@@ -237,7 +249,15 @@ function parseSegmentQuestion(question: Question) {
   return { instruction, sentence, segments, noMistakeOption };
 }
 
-function SegmentMistakeAnswer({
+/**
+ * Renders GL Assessment's "spot the error" format: a sentence split into
+ * lettered groups of words, plus a separate "no mistake" choice — not a
+ * plain radio list. The clauses stay in reading order (they must, to make
+ * grammatical sense) but which letter labels which clause is reshuffled per
+ * question via `seededShuffle`, so the correct letter isn't predictably
+ * clustered across a mock (the original bug this branch exists to fix).
+ */
+export function SegmentMistakeAnswer({
   question,
   value,
   onChange,
@@ -296,6 +316,71 @@ function SegmentMistakeAnswer({
   );
 }
 
+/**
+ * Renders GL Assessment's "best word" cloze format: the gap sits inline in
+ * the sentence (not a detached list below it), and options are chip buttons
+ * rather than a vertical radio list — each option is grammatically valid in
+ * isolation, so seeing them beside the live-filled gap matters more than in
+ * a normal multiple-choice question.
+ */
+export function ClozeGapRenderer({
+  question,
+  value,
+  onChange,
+  review,
+  options: optionsProp,
+}: {
+  question: Question;
+  value?: string;
+  onChange: (value: string) => void;
+  review?: boolean;
+  /** Pre-shuffled options from the caller (QuestionRenderer's per-question seededShuffle).
+   * Falls back to raw question.options order if omitted, but callers should always pass the
+   * shuffled list: every cloze template's source data (clozeTemplates in mock-generation.ts)
+   * hardcodes the correct answer as options[0], so skipping the shuffle here would make every
+   * cloze question's correct letter predictably "A" - the exact bug this branch exists to fix. */
+  options?: string[];
+}) {
+  const options = optionsProp ?? (Array.isArray(question.options) ? question.options : []);
+  const expected = (Array.isArray(question.correctAnswer) ? question.correctAnswer[0] : question.correctAnswer) ?? "";
+  const [before, after = ""] = question.text.split(/_{3,}/);
+  return (
+    <div className="space-y-4">
+      <p className="rounded-2xl border border-gold/25 bg-cream/60 p-5 text-lg leading-9 text-ink">
+        {before}
+        <span className={cn("mx-1 inline-flex min-w-28 items-center justify-center rounded-lg border-b-[3px] px-3 py-1 align-middle text-base font-black", value ? "border-gold bg-gold/10 text-navy" : "border-dashed border-line/70 text-muted")}>
+          {value || "choose ↓"}
+        </span>
+        {after}
+      </p>
+      <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Choose the best word or phrase to complete the gap">
+        {options.map((option, index) => {
+          const selected = value === option;
+          const showCorrect = review && expected.trim().toLowerCase() === option.trim().toLowerCase();
+          const showWrong = review && selected && !showCorrect;
+          return (
+            <button
+              key={option}
+              type="button"
+              disabled={review}
+              onClick={() => onChange(option)}
+              className={cn(
+                "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-bold transition disabled:cursor-default",
+                selected ? "border-gold bg-gold text-navy" : "border-line bg-white text-navy hover:border-gold",
+                showCorrect && "border-emerald-400 bg-emerald-50 text-emerald-800",
+                showWrong && "border-red-400 bg-red-50 text-red-700"
+              )}
+            >
+              <span className="text-xs font-black opacity-60">{String.fromCharCode(65 + index)}</span>
+              {option}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export function QuestionRenderer({
   question,
   value,
@@ -304,6 +389,7 @@ export function QuestionRenderer({
   adminPreview,
   passage,
   questionNumber,
+  hidePassage,
 }: {
   question: Question;
   value?: string;
@@ -312,6 +398,12 @@ export function QuestionRenderer({
   adminPreview?: boolean;
   passage?: Passage;
   questionNumber?: number;
+  /** Still pass `passage` for the quality-warning check even when the caller already renders
+   * the passage itself elsewhere (mock-room-shell.tsx's side-by-side comprehension layout puts
+   * it in a sticky left column) — this just suppresses QuestionRenderer's own inline copy so it
+   * does not render twice. Omitting `passage` entirely in that case previously made the
+   * "Linked passage not found" draft warning fire spuriously for every comprehension question. */
+  hidePassage?: boolean;
 }) {
   const correct = value ? String(question.correctAnswer).toLowerCase() === value.toLowerCase() : false;
   const hasText = typeof question.text === "string" && question.text.trim().length > 0;
@@ -322,6 +414,7 @@ export function QuestionRenderer({
   const options = useMemo(() => (isSegmentFormat ? rawOptions : seededShuffle(rawOptions, question.id)), [isSegmentFormat, question.id, rawOptions]);
   const hasOptions = options.length > 0;
   const isChoiceQuestion = question.questionType === "multiple_choice" || question.questionType === "cloze";
+  const isCloze = question.questionType === "cloze";
   const expected = Array.isArray(question.correctAnswer) ? question.correctAnswer : [question.correctAnswer];
   const isCorrectOption = (option: string) => expected.some((item) => item.trim().toLowerCase() === option.trim().toLowerCase());
   const qualityWarnings = [
@@ -333,12 +426,14 @@ export function QuestionRenderer({
     !question.markScheme && "Missing mark scheme",
     !question.explanation && "Missing explanation",
     isChoiceQuestion && !hasOptions && "Missing answer options",
+    isSegmentFormat && options.length < 2 && "Spot-the-error question needs segment options",
     question.subject === "English" && question.passageId && !passage && "Linked passage not found",
     question.subject === "Maths" && question.questionType === "table_graph" && !question.visual && "Maths visual missing",
   ].filter(Boolean) as string[];
+  const headingText = isSegmentFormat ? question.text.split("\n")[0] : isCloze ? "Choose the word or phrase that best completes the passage." : question.text;
   return (
     <div className="space-y-6">
-      {passage && <EnglishPassageRenderer passage={passage} paragraphRefs={question.paragraphRefs} />}
+      {passage && !hidePassage && <EnglishPassageRenderer passage={passage} paragraphRefs={question.paragraphRefs} />}
       <div className="rounded-2xl border border-line bg-white p-5">
         <div className="flex flex-wrap items-center gap-2">
           {typeof questionNumber === "number" && <PremiumBadge>Question {questionNumber}</PremiumBadge>}
@@ -347,11 +442,8 @@ export function QuestionRenderer({
           <span className="rounded-full border border-line bg-cream px-3 py-1 text-xs font-bold text-navy">{question.marks || 1} mark{question.marks === 1 ? "" : "s"}</span>
           {question.paragraphRefs?.length ? <span className="rounded-full border border-line bg-white px-3 py-1 text-xs font-bold text-muted">Paragraph {question.paragraphRefs.join(", ")}</span> : null}
         </div>
-        {!isSegmentFormat && <h2 className="mt-4 text-2xl font-bold leading-snug text-navy">{hasText ? question.text : "Question text missing"}</h2>}
-        {question.questionType === "cloze" && hasText && (
-          <div className="mt-3 rounded-xl border border-gold/20 bg-cream p-3 text-sm font-semibold text-navy">
-            Cloze blank: <span className="inline-flex min-w-20 rounded-full border border-gold/40 bg-white px-4 py-1 align-middle">&nbsp;</span>
-          </div>
+        {!isSegmentFormat && (
+          <h2 className="mt-4 text-2xl font-bold leading-snug text-navy">{hasText ? headingText : "Question text missing"}</h2>
         )}
         {!hasText && (
           <p className="mt-2 rounded-xl border border-line bg-cream p-3 text-sm text-muted">
@@ -370,6 +462,8 @@ export function QuestionRenderer({
       {question.visual && <VisualRenderer visual={question.visual} adminPreview={adminPreview} />}
       {isSegmentFormat ? (
         <SegmentMistakeAnswer question={question} value={value} onChange={onChange} review={review} isCorrectOption={isCorrectOption} />
+      ) : isCloze ? (
+        <ClozeGapRenderer question={question} value={value} onChange={onChange} review={review} options={options} />
       ) : hasOptions ? (
         <fieldset className="grid gap-3">
           <legend className="sr-only">Answer options for {hasText ? question.text : "this question"}</legend>

@@ -2,7 +2,7 @@
 
 # Summit Tuition Project Context
 
-Last updated: 2026-07-19. Plain-English project status and forward-looking roadmap live in `status.md` and `TODO.md` — read those first for current state/next steps; this file is the technical companion, and it's what's auto-loaded into every session (unlike `status.md`/`TODO.md`, which must be read explicitly).
+Last updated: 2026-07-20 (English GL mock rebuild branch finished — see `status.md`). Plain-English project status and forward-looking roadmap live in `status.md` and `TODO.md` — read those first for current state/next steps; this file is the technical companion, and it's what's auto-loaded into every session (unlike `status.md`/`TODO.md`, which must be read explicitly).
 
 ## Sibling Projects In This Repo
 
@@ -35,8 +35,9 @@ Important: this repo has `AGENTS.md` warning that this is a newer Next.js with b
 ## Current Health
 
 - `npm.cmd run typecheck` passes.
-- `npm.cmd run lint` passes.
+- `npm.cmd run lint` passes (1 pre-existing unrelated warning in `tests/student-mock-flow.spec.ts`, 0 errors).
 - `npm.cmd run build` passes.
+- `npm.cmd run test:e2e` passes 7/8; the 1 remaining failure (`new-features.spec.ts` lessons-remaining test) is a pre-existing, self-documented flaky race condition in the admin lessons-editor save flow, unrelated to English mocks — confirmed flaky (fails then passes identically on retry), not a regression.
 - PowerShell blocks `npm.ps1`, so use `npm.cmd` on Windows.
 - Current working tree had pre-existing edits excluding `legacy/` from lint/typecheck and fixing the README root directory note.
 - `legacy/` is an older site snapshot and is intentionally ignored by git/lint/typecheck.
@@ -117,7 +118,10 @@ Full narrative history of what was built/changed and when now lives in `status.m
 - Admin mock command centre: overview, drafts, published, generator, visual showcase, attempts, references, quality checks, archive. Clone duplicates a mock as unpublished `Admin draft`; Archive unpublishes + sets `tier: "Archived"`.
 - VR/NVR practice mocks (`vr-placeholder`, `nvr-placeholder`) each have a first batch of 20 real questions and are switched on for students; full-length content still pending (`published: false`, `tier: "Future"`) — see `TODO.md`. Flagged in `COMPETITOR_GAP_ANALYSIS.md` as the biggest content gap vs. competitors.
 - Admin note-progress/unlock API routes: `src/app/api/admin/notes/`, `src/app/api/admin/students/[id]/unlock-note/`, `src/app/api/admin/mocks/[id]/set-free/`.
-- `QuestionRenderer` (`src/components/platform/ui.tsx`) applies a deterministic per-question `seededShuffle` to multiple-choice/cloze options app-wide (stable across renders) — don't reintroduce a fixed/predictable option order. Segment-format "find the mistake" questions keep fixed lettered order since letters map to sentence positions, not shuffleable content.
+- `QuestionRenderer` (`src/components/platform/ui.tsx`) applies a deterministic per-question `seededShuffle` to multiple-choice/cloze options app-wide (stable across renders) — don'+chr(39)+'t reintroduce a fixed/predictable option order. Segment-format "find the mistake" questions (`SegmentMistakeAnswer`) keep the sentence clauses in fixed reading order (they have to, to stay grammatically sensible) but shuffle which *letter* labels which clause per question via a second `seededShuffle(pool, question.id + "-letters")` — this is what actually fixes the correct-letter-clustering bug, not the option shuffle. `ClozeGapRenderer` must receive the already-shuffled `options` from `QuestionRenderer` (a dedicated `options` prop) rather than reading `question.options` itself — every cloze template in `mock-generation.ts` hardcodes the correct answer at `options[0]`, so a caller that forgets to pass the shuffled list will silently make every cloze question'+chr(39)+'s correct letter "A" (this exact regression existed and was fixed 2026-07-20).
+- **English mock section structure** (`src/lib/english-sections.ts`): every English mock'+chr(39)+'s questions are grouped into GL'+chr(39)+'s real fixed section order at render time — comprehension → spelling → punctuation → cloze — via `getEnglishSectionId()`, which reads tags/questionType rather than a stored field, so it works for both generator output and hand-authored fixtures. `ENGLISH_SECTIONS` holds the researched GL weights (52/17/17/15%, see `research/gl-english-question-bank.md`) used both for section-size allocation in `mock-generation.ts`'+chr(39)+'s `generateEnglishGLStyleMock()` and for `mock-quality.ts`'+chr(39)+'s balance check. All 13 published English mocks (including the pre-existing Elite/stretch/100-question ones, not just the new generator output) classify cleanly into all 4 sections with zero "undefined" — reclassification via tags, not physical mock regeneration, is what makes this work across the whole roster.
+- **Comprehension side-by-side mock-room layout** (`mock-room-shell.tsx`): comprehension questions render in a two-column grid — the linked passage in a sticky, independently-scrollable left column (`lg:sticky lg:top-24`, via `EnglishPassageRenderer`'+chr(39)+'s `scrollClassName` prop) and the question/answers in the right column, collapsing to one stacked column below `lg`. `QuestionRenderer` still needs the real `passage` prop passed through in this layout (for its own quality-warning check) but with the new `hidePassage` flag set, so it doesn'+chr(39)+'t also render its own inline copy of the passage underneath.
+- A once-per-section `SectionInterstitial` ("Section N of 4" + GL-style instructions + "Begin this section") shows the first time a student'+chr(39)+'s active question enters a new section, plus a persistent section-progress strip in the mock-room toolbar.
 - Elite mock descriptions intentionally omit expected score bands (tutor-facing calibration info, not for students).
 - Student dashboard has no "locked mocks" section by design — students should only see mocks they can access.
 - `src/lib/assessment.ts` has `autoGenerateReport()`/`patternDescription()` (built on `analyseAttempt()`) powering the admin "Auto-fill statistics report" button and the student review page's missed-marks-per-topic + pattern label.
@@ -188,5 +192,5 @@ If Playwright needs the local server, the config uses `scripts/playwright-dev-se
 - Study Notes: `src/components/notes/*`, `src/app/notes/**`.
 - Marketing sections: `src/components/sections/*`.
 - Layout/UI primitives: `src/components/layout/*`, `src/components/ui/*`, `src/components/motion/*`.
-- Tests: `tests/admin-nav-and-mock-room.spec.ts`.
+- Tests: `tests/admin-nav-and-mock-room.spec.ts`, `admin-approve-and-unlock-flow.spec.ts`, `student-mock-flow.spec.ts`, `new-features.spec.ts`, shared login helper in `tests/helpers.ts` (demo mode needs both the `summit_session` cookie and the `summit-platform-session-v1` localStorage key set — see its doc comment; a spec file that only sets the cookie will silently redirect to /login and hang every subsequent locator).
 - Research notes: `research/*.md`.

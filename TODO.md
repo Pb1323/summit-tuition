@@ -1,6 +1,6 @@
 # Summit Tuition — To-Do / Roadmap
 
-Last updated: 2026-07-19 (founder punch-list session — see `status.md` for full detail). Companion to `status.md` (current state) — this file is the forward-looking list: what's next now, and what's parked for later. Plain English, not a spec.
+Last updated: 2026-07-20 (English GL mock rebuild branch finished — see `status.md` for full detail). Companion to `status.md` (current state) — this file is the forward-looking list: what's next now, and what's parked for later. Plain English, not a spec.
 
 I could only find two backlog docs matching "meters/badges/certificates" from an earlier brainstorm — see the note at the bottom if there's a third one I'm missing (couldn't find a distinct "worksheets" item anywhere — note a printable **Homework Generator** now exists, `/admin/homework`, added 2026-07-19, so this may now be resolved).
 
@@ -39,7 +39,7 @@ since nothing could course-correct it mid-run.
 
 ## Carried over / still open from this session
 
-- [ ] **English mock letter-labelling predictability, comprehension side-by-side layout, question-block section ordering** — a separate background agent (`worktree-english-gl-mock-rebuild`) was mid-rebuild of exactly this when the 2026-07-19 session ran; deliberately left alone to avoid clashing. Check that branch's status next session — it may be ready to review/merge, or may need finishing.
+- [x] **English mock letter-labelling predictability, comprehension side-by-side layout, question-block section ordering** — finished 2026-07-20 on `worktree-english-gl-mock-rebuild` (not yet merged to main, pending human review). Section grouping (comprehension→spelling→punctuation→cloze, GL ratios) and the side-by-side comprehension layout were already wired up when this finishing pass started; found and fixed two real bugs on top: (1) `ClozeGapRenderer` was silently ignoring the per-question letter shuffle entirely (every cloze question's correct answer rendered as "A"), (2) the side-by-side layout's omission of the `passage` prop caused a false "Linked passage not found" admin-preview warning on every comprehension question. Also fixed 2 pre-existing broken e2e tests unrelated to this work (stale login helper in `admin-nav-and-mock-room.spec.ts`). All verified visually against a real dev server, not just compiled. See `status.md` for the full writeup.
 - [ ] **Real PMC/JMC question bank** — founder asked for one; not attempted, no source past papers available and copying real competition content would be a copyright problem. Original competition-style questions were written instead (5 per new Elite Maths mock, tagged `competition-style`). If a real bank is still wanted, it needs the founder to supply/license actual source material.
 - [ ] **3D/immersive diagram overhaul for Notes** (Spline/React-Three-Fiber/GSAP-style) — founder asked for more visually impressive interactive diagrams generally; the existing Notes system is deliberately SVG-based and a second, heavier 3D stack is an architectural decision that needs scoping, not a quick add.
 

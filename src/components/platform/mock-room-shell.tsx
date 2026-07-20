@@ -7,7 +7,8 @@ import { AlertTriangle, ArrowLeft, CheckCircle2, Eye, EyeOff, Flag, ShieldAlert 
 import { usePlatform } from "@/context/platform-context";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/container";
-import { AnimatedButton, GlowCard, MockTimer, PremiumBadge, ProgressBar, QuestionNavigator, QuestionRenderer, RequireAuth } from "@/components/platform/ui";
+import { AnimatedButton, EnglishPassageRenderer, GlowCard, MockTimer, PremiumBadge, ProgressBar, QuestionNavigator, QuestionRenderer, RequireAuth } from "@/components/platform/ui";
+import { ENGLISH_SECTIONS, getEnglishSectionId, type EnglishSectionId, type EnglishSectionMeta } from "@/lib/english-sections";
 
 type MockRoomShellProps = {
   mockId: string;
@@ -20,13 +21,41 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
   const mock = mocks.find((item) => item.id === mockId);
   const existing = attempts.find((attempt) => attempt.studentId === currentUser?.id && attempt.mockId === mockId && attempt.status !== "in_progress");
   const draft = attempts.find((attempt) => attempt.studentId === currentUser?.id && attempt.mockId === mockId && attempt.status === "in_progress");
-  const questions = useMemo(() => questionBank.filter((question) => mock?.questionIds.includes(question.id)), [mock, questionBank]);
+  const rawQuestions = useMemo(() => questionBank.filter((question) => mock?.questionIds.includes(question.id)), [mock, questionBank]);
+  // English mocks are re-ordered into GL's real fixed section order (comprehension, spelling,
+  // punctuation, cloze) regardless of the order questions happen to sit in questionIds/the bank —
+  // this is what makes the section grouping/interstitials below meaningful. Non-English mocks and
+  // any question that can't be classified into a section (getEnglishSectionId returns undefined)
+  // pass through in their original order, appended after the sectioned questions.
+  const questions = useMemo(() => {
+    if (mock?.subject !== "English") return rawQuestions;
+    const bucketed = new Map<EnglishSectionId, typeof rawQuestions>();
+    const unsectioned: typeof rawQuestions = [];
+    for (const question of rawQuestions) {
+      const sectionId = getEnglishSectionId(question);
+      if (!sectionId) { unsectioned.push(question); continue; }
+      const bucket = bucketed.get(sectionId) ?? [];
+      bucket.push(question);
+      bucketed.set(sectionId, bucket);
+    }
+    const ordered = ENGLISH_SECTIONS.flatMap((section) => bucketed.get(section.id) ?? []);
+    return [...ordered, ...unsectioned];
+  }, [rawQuestions, mock?.subject]);
+  // Which sections this mock actually contains at least one question for, in fixed GL order —
+  // used to number interstitials ("Section 2 of 4") and to know when a new section has started.
+  const presentSections = useMemo(
+    () => ENGLISH_SECTIONS.filter((section) => questions.some((question) => getEnglishSectionId(question) === section.id)),
+    [questions]
+  );
   const isAdminPreview = mode === "admin-preview";
   const [started, setStarted] = useState(isAdminPreview);
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [flagged, setFlagged] = useState<string[]>([]);
   const [showSubmitConfirm, setShowSubmitConfirm] = useState(false);
+  // Section ids the student has already clicked "Begin this section" for — the interstitial only
+  // interrupts once per section per attempt, not on every question within it.
+  const [beganSections, setBeganSections] = useState<EnglishSectionId[]>([]);
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
   // Elapsed time already banked in the resumed draft, captured once at start.
@@ -46,6 +75,13 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
   }, []);
   const active = questions[index];
   const activePassage = active?.passageId ? passages.find((passage) => passage.id === active.passageId) : undefined;
+  const activeSectionId = active ? getEnglishSectionId(active) : undefined;
+  const activeSection = activeSectionId ? ENGLISH_SECTIONS.find((section) => section.id === activeSectionId) : undefined;
+  const activeSectionIndex = activeSection ? presentSections.findIndex((section) => section.id === activeSection.id) : -1;
+  const showSectionInterstitial = Boolean(activeSectionId && !beganSections.includes(activeSectionId));
+  const beginSection = useCallback(() => {
+    if (activeSectionId) setBeganSections((current) => (current.includes(activeSectionId) ? current : [...current, activeSectionId]));
+  }, [activeSectionId]);
   const unansweredCount = questions.filter((question) => !answers[question.id]).length;
   const elapsedSeconds = useCallback(() => Math.max(0, Math.floor((Date.now() - (startedAt ?? Date.now())) / 1000) + baseElapsed), [baseElapsed, startedAt]);
 
@@ -70,6 +106,13 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
       setAnswers(draft.answers);
       setFlagged(draft.flaggedQuestionIds);
       setBaseElapsed(draft.timeSpentSeconds);
+      // Resuming a draft shouldn't re-show interstitials for sections already answered into —
+      // treat every section with at least one saved answer as already begun.
+      const answeredSectionIds = questions
+        .filter((question) => draft.answers[question.id])
+        .map((question) => getEnglishSectionId(question))
+        .filter((id): id is EnglishSectionId => Boolean(id));
+      if (answeredSectionIds.length > 0) setBeganSections((current) => Array.from(new Set([...current, ...answeredSectionIds])));
     }
     setStartedAt(Date.now());
     setStarted(true);
@@ -221,26 +264,82 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
                 </div>
                 <div className="w-full max-w-45 sm:w-45"><ProgressBar value={questions.length ? ((questions.length - unansweredCount) / questions.length) * 100 : 0} /></div>
               </div>
+              {presentSections.length > 1 && (
+                <div className="mt-3 flex flex-wrap items-center gap-1.5 border-t border-line pt-3 text-xs font-bold">
+                  {presentSections.map((section, sectionIndex) => (
+                    <span
+                      key={section.id}
+                      className={cn(
+                        "rounded-full px-2.5 py-1",
+                        section.id === activeSectionId ? "bg-navy text-white" : "bg-cream text-muted"
+                      )}
+                    >
+                      {sectionIndex + 1}. {section.shortLabel}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
             <GlowCard className="p-6 sm:p-8">
               {questions.length === 0 ? (
                 <p className="rounded-2xl border border-line bg-cream p-4 text-sm font-semibold text-navy">{isAdminPreview ? "This draft has no questions yet. Add or generate questions before publishing." : "This mock is not ready yet."}</p>
-              ) : active ? (
-                <QuestionRenderer
-                  question={active}
-                  questionNumber={index + 1}
-                  passage={activePassage}
-                  value={answers[active.id]}
-                  adminPreview={isAdminPreview}
-                  onChange={(value) => {
-                    const next = { ...answers, [active.id]: value };
-                    setAnswers(next);
-                    if (!isAdminPreview) {
-                      saveAttemptDraft(mock.id, next, flagged, elapsedSeconds());
-                      setLastSavedAt(new Date());
-                    }
-                  }}
+              ) : active && activeSection && showSectionInterstitial ? (
+                <SectionInterstitial
+                  section={activeSection}
+                  sectionNumber={activeSectionIndex + 1}
+                  totalSections={presentSections.length}
+                  onBegin={beginSection}
                 />
+              ) : active ? (
+                activeSection?.id === "comprehension" && activePassage ? (
+                  // Side-by-side layout for comprehension: the passage stays visible and independently
+                  // scrollable in a sticky left column instead of repeating (and requiring re-scrolling
+                  // past) above every single question, which is the stacked default QuestionRenderer uses
+                  // for every other question type. Collapses to a single stacked column below `lg`.
+                  <div className="grid gap-6 lg:grid-cols-2 lg:items-start">
+                    <div className="lg:sticky lg:top-24">
+                      <EnglishPassageRenderer
+                        passage={activePassage}
+                        paragraphRefs={active.paragraphRefs}
+                        scrollClassName="max-h-[22rem] overflow-y-auto lg:max-h-[calc(100vh-9rem)]"
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <QuestionRenderer
+                        question={active}
+                        questionNumber={index + 1}
+                        passage={activePassage}
+                        hidePassage
+                        value={answers[active.id]}
+                        adminPreview={isAdminPreview}
+                        onChange={(value) => {
+                          const next = { ...answers, [active.id]: value };
+                          setAnswers(next);
+                          if (!isAdminPreview) {
+                            saveAttemptDraft(mock.id, next, flagged, elapsedSeconds());
+                            setLastSavedAt(new Date());
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <QuestionRenderer
+                    question={active}
+                    questionNumber={index + 1}
+                    passage={activePassage}
+                    value={answers[active.id]}
+                    adminPreview={isAdminPreview}
+                    onChange={(value) => {
+                      const next = { ...answers, [active.id]: value };
+                      setAnswers(next);
+                      if (!isAdminPreview) {
+                        saveAttemptDraft(mock.id, next, flagged, elapsedSeconds());
+                        setLastSavedAt(new Date());
+                      }
+                    }}
+                  />
+                )
               ) : (
                 <p className="text-muted">This mock has no questions yet.</p>
               )}
@@ -324,6 +423,33 @@ function StudentAuth({ children }: { children: React.ReactNode }) {
 
 function AdminPreviewAuth({ children }: { children: React.ReactNode }) {
   return <RequireAuth role="admin">{children}</RequireAuth>;
+}
+
+/**
+ * Full-width interstitial shown once per section per attempt (comprehension, spelling, punctuation,
+ * cloze, in that fixed GL order — see src/lib/english-sections.ts), so students get a clear "new
+ * section starting" moment with GL-style instructions instead of question types silently changing
+ * mid-flow. Dismissed by clicking through; not shown again for that section this attempt.
+ */
+function SectionInterstitial({
+  section,
+  sectionNumber,
+  totalSections,
+  onBegin,
+}: {
+  section: EnglishSectionMeta;
+  sectionNumber: number;
+  totalSections: number;
+  onBegin: () => void;
+}) {
+  return (
+    <div className="rounded-2xl border border-gold/30 bg-gold/5 p-8 text-center sm:p-12">
+      <PremiumBadge tone="gold">Section {sectionNumber} of {totalSections}</PremiumBadge>
+      <h2 className="mt-4 text-3xl font-black text-navy">{section.label}</h2>
+      <p className="mx-auto mt-3 max-w-xl text-muted">{section.instructions}</p>
+      <AnimatedButton onClick={onBegin} className="mt-8">Begin this section</AnimatedButton>
+    </div>
+  );
 }
 
 function Stat({ label, value }: { label: string; value: string | number }) {
