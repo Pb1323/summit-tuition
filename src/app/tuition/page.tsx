@@ -10,9 +10,9 @@ import { ComparisonTable } from "@/components/sections/comparison-table";
 import { RevealOnScroll, StaggerReveal } from "@/components/platform/ui";
 
 export const metadata: Metadata = {
-  title: "11+ Tuition — Group, Private & Complete Programme",
+  title: "11+ Tuition — Group & Private Tuition",
   description:
-    "Compare 11+ tuition options: small-group classes, private 1:1 tutoring, or the Complete 11+ Programme that combines tuition, mocks and reporting.",
+    "Compare 11+ tuition options: small-group classes or private 1:1 tutoring, and combine either with a Pro or Max mock/Study Notes subscription.",
 };
 
 const OPTIONS = [
@@ -34,11 +34,11 @@ const OPTIONS = [
   },
   {
     icon: <Layers className="h-6 w-6" />,
-    name: "Complete 11+ Programme",
-    description: "Tuition, weekly mocks, diagnostics and parent reports combined into one managed plan.",
-    bestFor: "Best for parents who want the full system, fully managed.",
-    href: "/complete-programme",
-    cta: "View Complete Programme",
+    name: "Pro or Max",
+    description: "A full mock library, Study Notes and timed practice papers, alongside whichever tuition option you choose.",
+    bestFor: "Best for parents who want tuition and mock practice working together.",
+    href: "/pricing#platform",
+    cta: "See Pro & Max",
     featured: true,
   },
 ];
@@ -49,7 +49,7 @@ export default function TuitionPage() {
       <HeroSection
         eyebrow="Tuition"
         title="Structured teaching support, matched to how your child learns"
-        description="Choose small-group classes, 1:1 private tutoring, or the Complete 11+ Programme that brings everything together."
+        description="Choose small-group classes or 1:1 private tutoring, and pair either with a Pro or Max mock subscription."
         actions={
           <>
             <Button href="/book-a-call" size="lg">

@@ -119,8 +119,8 @@ export default function DiagnosticAssessmentPage() {
               description="A single one-off fee — no subscription required to find out where your child stands."
             />
             <PullQuote className="mt-6">
-              Most families follow the diagnostic with Weekly Mock Club or the Complete 11+
-              Programme — we&apos;ll recommend the right next step based on your results.
+              Most families follow the diagnostic with a Pro or Max subscription —
+              we&apos;ll recommend the right next step based on your results.
             </PullQuote>
           </RevealOnScroll>
           <RevealOnScroll delay={0.1} className="mx-auto w-full max-w-sm">

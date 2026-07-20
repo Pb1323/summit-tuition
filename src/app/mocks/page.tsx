@@ -11,7 +11,7 @@ import { MockRouteConfigurator } from "@/components/sections/mock-route-configur
 import { ScrollStoryRail } from "@/components/motion/scroll-story-rail";
 import { DashboardPreview, GlowCard, PremiumBadge, ProgressBar, RevealOnScroll } from "@/components/platform/ui";
 import { SignedInMocksNotice } from "@/components/platform/signed-in-mocks-notice";
-import { MOCK_CLUB_PRICING } from "@/data/pricing";
+import { PLATFORM_TIER_PRICING_FOR_SALE } from "@/data/pricing";
 
 export const metadata: Metadata = {
   title: "Online 11+ Mocks",
@@ -26,7 +26,7 @@ const FEATURES = [
 ];
 
 const CYCLE = [
-  ["Register", "Create a student account and choose Mock Club or Diagnostic."],
+  ["Register", "Create a student account and choose Pro, Max or Diagnostic."],
   ["Admin unlocks", "Payment creates a pending request; admin approves and unlocks mocks manually."],
   ["Sit online", "Students complete timed English and Maths mocks inside the secure mock room."],
   ["Review report", "Scores, wrong answers, mark schemes and weak-topic practice unlock after release."],
@@ -43,7 +43,7 @@ export default function MocksPage() {
         visual={<MockHeroVisual />}
         actions={
           <>
-            <Button href="/pricing" size="lg">Join Weekly Mock Club <ArrowRight className="h-4 w-4" /></Button>
+            <Button href="/pricing#platform" size="lg">See Pro &amp; Max <ArrowRight className="h-4 w-4" /></Button>
             <Button href="/diagnostic-assessment" variant="outline" size="lg">Book Diagnostic Assessment</Button>
             <Button href="/login" variant="ghost" size="lg">Student Login</Button>
           </>
@@ -112,19 +112,19 @@ export default function MocksPage() {
 
       <section className="bg-cream-dark/50 py-20">
         <Container>
-          <SectionHeading align="center" eyebrow="Plan" title="One simple monthly plan" description="Papers stay online-only, with full review released after marking." />
-          <div className="mt-12 mx-auto w-full max-w-sm">
-            {MOCK_CLUB_PRICING.map((tier) => <PricingCard key={tier.id} tier={tier} />)}
+          <SectionHeading align="center" eyebrow="Plan" title="Pro or Max — pick your level" description="Papers stay online-only, with full review released after marking." />
+          <div className="mt-12 mx-auto grid w-full max-w-2xl gap-6 sm:grid-cols-2">
+            {PLATFORM_TIER_PRICING_FOR_SALE.map((tier) => <PricingCard key={tier.id} tier={tier} />)}
           </div>
         </Container>
       </section>
 
       <CTASection
         title="Ready for a serious mock routine?"
-        description="Start with a diagnostic assessment or join Weekly Mock Club for online English and Maths practice with released reports."
+        description="Start with a diagnostic assessment or go Pro for online English and Maths practice with released reports."
         actions={
           <>
-            <Button href="/pricing" size="lg">Join Weekly Mock Club <ArrowRight className="h-4 w-4" /></Button>
+            <Button href="/pricing#platform" size="lg">See Pro &amp; Max <ArrowRight className="h-4 w-4" /></Button>
             <Button href="/book-a-call" variant="light" size="lg">Book a Free Parent Call</Button>
           </>
         }

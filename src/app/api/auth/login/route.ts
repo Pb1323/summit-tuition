@@ -75,7 +75,7 @@ export async function PUT(request: Request) {
     const user = await prisma.user.upsert({
       where: { email },
       update: { passwordHash, role: "admin", approved: true, paymentStatus: "paid" },
-      create: { name: "Master Admin", email, passwordHash, role: "admin", approved: true, plan: "Complete 11+ Programme", paymentStatus: "paid" },
+      create: { name: "Master Admin", email, passwordHash, role: "admin", approved: true, plan: "Max", paymentStatus: "paid" },
     });
     return NextResponse.json({ ok: true, userId: user.id });
   } catch (error) {

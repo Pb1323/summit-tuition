@@ -78,7 +78,7 @@ export default function HolidayBoosterPage() {
             ))}
           </div>
           <p className="mt-4 text-sm text-muted">
-            Complete Programme members receive a discount automatically.
+            Max subscribers receive a discount automatically.
           </p>
         </Container>
       </section>

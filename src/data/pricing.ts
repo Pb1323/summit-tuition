@@ -57,6 +57,7 @@ export const PLATFORM_TIER_PRICING: PricingTier[] = [
     badge: "Most Popular",
     highlighted: true,
     billingMode: "subscription",
+    stripePriceId: "price_1TvOO7R2MwXT1VWa3fsFVPnM",
   },
   {
     id: "max",
@@ -75,6 +76,7 @@ export const PLATFORM_TIER_PRICING: PricingTier[] = [
     ctaHref: "/book-a-call?product=max",
     badge: "Best Value",
     billingMode: "subscription",
+    stripePriceId: "price_1TvOO9R2MwXT1VWaP1MjSCX7",
   },
 ];
 

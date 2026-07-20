@@ -2,6 +2,7 @@ import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { CheckoutButton } from "@/components/ui/checkout-button";
 import type { PricingTier } from "@/types/pricing";
 
 export function PricingCard({ tier }: { tier: PricingTier }) {
@@ -37,14 +38,30 @@ export function PricingCard({ tier }: { tier: PricingTier }) {
         ))}
       </ul>
 
-      <Button
-        href={tier.ctaHref}
-        variant={tier.highlighted ? "primary" : "navy"}
-        size="lg"
-        className="mt-7 w-full"
-      >
-        {tier.cta}
-      </Button>
+      {tier.stripePriceId ? (
+        <CheckoutButton
+          variant={tier.highlighted ? "primary" : "navy"}
+          size="lg"
+          className="mt-7 w-full"
+          checkout={{
+            priceId: tier.stripePriceId,
+            mode: tier.billingMode === "subscription" ? "subscription" : "payment",
+            productName: `Summit Tuition — ${tier.name}`,
+            productId: tier.id,
+          }}
+        >
+          {tier.cta}
+        </CheckoutButton>
+      ) : (
+        <Button
+          href={tier.ctaHref}
+          variant={tier.highlighted ? "primary" : "navy"}
+          size="lg"
+          className="mt-7 w-full"
+        >
+          {tier.cta}
+        </Button>
+      )}
     </div>
   );
 }

@@ -11,22 +11,21 @@ import type { InterestedProduct } from "@/types/contact";
 export const metadata: Metadata = {
   title: "Book a Free Parent Call",
   description:
-    "Book a free 15-minute call to talk through your child's 11+ preparation and find the right starting point — diagnostic assessment, mocks, tuition or the Complete Programme.",
+    "Book a free 15-minute call to talk through your child's 11+ preparation and find the right starting point — diagnostic assessment, mocks, tuition or Pro/Max.",
 };
 
 const PRODUCT_MAP: Record<string, InterestedProduct> = {
   "diagnostic-assessment": "Diagnostic Assessment",
-  "weekly-mock-club": "Weekly Mock Club",
-  "practice-paper-simulator": "Practice Paper Simulator",
+  pro: "Pro",
+  max: "Max",
   "private-tuition": "Private Tuition",
   "group-tuition": "Group Tuition",
-  "complete-programme": "Complete 11+ Programme",
   "holiday-booster": "Holiday Booster",
 };
 
 const WHAT_TO_EXPECT = [
   "A quick chat about your child's year group, target schools and timeline",
-  "Honest guidance on whether a diagnostic, mocks, tuition or the full programme fits best",
+  "Honest guidance on whether a diagnostic, mocks, tuition or Pro/Max fits best",
   "No pressure, no hard sell — just a clear recommendation",
 ];
 

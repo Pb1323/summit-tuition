@@ -1,10 +1,9 @@
 export type InterestedProduct =
   | "Diagnostic Assessment"
-  | "Weekly Mock Club"
-  | "Practice Paper Simulator"
+  | "Pro"
+  | "Max"
   | "Private Tuition"
   | "Group Tuition"
-  | "Complete 11+ Programme"
   | "Holiday Booster"
   | "Not sure yet";
 

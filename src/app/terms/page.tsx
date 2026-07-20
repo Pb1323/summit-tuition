@@ -15,7 +15,7 @@ const SECTIONS = [
   },
   {
     title: "Our products",
-    body: "We provide diagnostic assessments, mock exams, a practice paper simulator, tuition (group and private), the Complete 11+ Programme, holiday booster courses, and downloadable practice packs. Specific inclusions for each product are described on the relevant product page.",
+    body: "We provide diagnostic assessments, a Free/Pro/Max online mock and practice paper platform, tuition (group and private), holiday booster courses, and downloadable practice packs. Specific inclusions for each product/tier are described on the relevant product page.",
   },
   {
     title: "No guaranteed outcomes",
@@ -23,7 +23,7 @@ const SECTIONS = [
   },
   {
     title: "Subscriptions and cancellation",
-    body: "Weekly Mock Club, Practice Paper Simulator and ongoing tuition subscriptions are billed monthly and can be cancelled at any time with no long-term tie-in. Cancellation takes effect at the end of the current billing period.",
+    body: "Pro, Max and ongoing tuition subscriptions are billed monthly and can be cancelled at any time with no long-term tie-in. Cancellation takes effect at the end of the current billing period.",
   },
   {
     title: "One-off products",

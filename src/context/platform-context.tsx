@@ -375,7 +375,7 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
             email: `test-student-${Date.now()}@example.com`,
             role: "student",
             approved: true,
-            plan: "Weekly Mock Club Plus",
+            plan: "Pro",
             paymentStatus: "pending",
             unlockedMockIds: prev.mocks.filter((mock) => mock.isFree && mock.published).map((mock) => mock.id),
             unlockedNoteIds: prev.notes.filter((note) => note.isFree).map((note) => note.id),

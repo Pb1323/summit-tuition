@@ -20,7 +20,7 @@ const SECTIONS = [
   },
   {
     title: "Online sessions",
-    body: "Online tuition, mocks and the Practice Paper Simulator are designed with appropriate safeguards: sessions are conducted through monitored platforms, a parent or guardian must be contactable during any live session, and all communication with children is kept professional and on-platform.",
+    body: "Online tuition, mocks and practice papers are designed with appropriate safeguards: sessions are conducted through monitored platforms, a parent or guardian must be contactable during any live session, and all communication with children is kept professional and on-platform.",
   },
   {
     title: "In-person sessions",

@@ -34,9 +34,10 @@ import { CTASection } from "@/components/sections/cta-section";
 import { ComparisonTable } from "@/components/sections/comparison-table";
 import { MockReportPreview } from "@/components/sections/mock-report-preview";
 import { TryAQuestion } from "@/components/sections/try-a-question";
+import { FreeSampleMock } from "@/components/sections/free-sample-mock";
 import { BeforeAfterSlider } from "@/components/sections/before-after-slider";
 import { YearGroupPicker } from "@/components/sections/year-group-picker";
-import { MOCK_CLUB_PRICING } from "@/data/pricing";
+import { PLATFORM_TIER_PRICING_FOR_SALE } from "@/data/pricing";
 import { UPSELL_PRODUCTS } from "@/data/products";
 import { Magnetic } from "@/components/motion/magnetic";
 import { AnimatedCounter } from "@/components/motion/animated-counter";
@@ -57,9 +58,9 @@ const START_HERE = [
   {
     icon: <Repeat className="h-6 w-6" />,
     title: "I want weekly exam practice",
-    description: "Join Weekly Mock Club for timed papers, scores and progress tracking.",
-    cta: "Join Mock Club",
-    href: "/weekly-mock-club",
+    description: "Go Pro for timed mocks, practice papers, scores and progress tracking.",
+    cta: "See Pro",
+    href: "/pricing#platform",
   },
   {
     icon: <Users className="h-6 w-6" />,
@@ -77,15 +78,6 @@ const DIAGNOSTIC_FEATURES = [
   { icon: <Timer className="h-5 w-5" />, title: "Timing analysis" },
   { icon: <FileSearch className="h-5 w-5" />, title: "Accuracy analysis" },
   { icon: <ListChecks className="h-5 w-5" />, title: "Recommended learning plan" },
-];
-
-const SIMULATOR_FEATURES = [
-  { icon: <Timer className="h-5 w-5" />, title: "Timed papers" },
-  { icon: <Gauge className="h-5 w-5" />, title: "Instant scoring" },
-  { icon: <BarChart3 className="h-5 w-5" />, title: "Topic breakdown" },
-  { icon: <Target className="h-5 w-5" />, title: "Accuracy tracking" },
-  { icon: <ListChecks className="h-5 w-5" />, title: "Attempt history" },
-  { icon: <Compass className="h-5 w-5" />, title: "Recommended next paper" },
 ];
 
 const HOW_IT_WORKS = [
@@ -120,7 +112,7 @@ const TRUST_STATEMENTS = [
 const PLATFORM_DIAGRAMS = [
   {
     title: "Product funnel",
-    items: ["Free Call", "Diagnostic", "Mock Club", "Tuition", "Complete Programme"],
+    items: ["Free Call", "Diagnostic", "Free Sample", "Pro", "Max"],
   },
   {
     title: "Improvement cycle",
@@ -165,6 +157,23 @@ export default function HomePage() {
         }
       />
 
+      {/* Free sample mock */}
+      <section className="bg-cream-dark/50 py-20">
+        <Container>
+          <RevealOnScroll>
+            <SectionHeading
+              align="center"
+              eyebrow="Try It Yourself"
+              title="Try 5 real questions right now"
+              description="No account needed. See exactly what a Summit Tuition mock feels like before you sign up for anything."
+            />
+            <div className="mt-10 mx-auto max-w-xl">
+              <FreeSampleMock />
+            </div>
+          </RevealOnScroll>
+        </Container>
+      </section>
+
       {/* Start Here */}
       <section className="py-20">
         <Container>
@@ -197,7 +206,7 @@ export default function HomePage() {
           <RevealOnScroll>
             <SectionHeading
               eyebrow="The Full Picture"
-              title="From a free call to a fully managed programme"
+              title="From a free call to full Elite-level preparation"
               description="Start wherever makes sense for your family, and build up as your child gets closer to exams."
             />
             <div className="mt-10">
@@ -232,60 +241,23 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* Weekly Mock Club */}
+      {/* Pro & Max */}
       <section id="mocks" className="bg-navy py-20">
         <Container>
           <RevealOnScroll>
             <SectionHeading
               align="center"
-              eyebrow="Weekly Mock Club"
-              title="Weekly 11+ mock exams with clear parent reports"
-              description="Students sit regular timed mocks and parents receive useful feedback, not just a score."
+              eyebrow="Pro & Max"
+              title="Full mock library, Study Notes and timed practice papers — one subscription"
+              description="Students sit regular timed mocks and practice papers across English, maths, verbal and non-verbal reasoning. Parents get a clear report after every one, not just a score."
               className="mx-auto text-cream [&_h2]:text-white [&_p]:text-cream/70"
             />
-            <div className="mt-12 mx-auto w-full max-w-sm">
-              {MOCK_CLUB_PRICING.map((tier) => (
+            <div className="mt-12 mx-auto grid w-full max-w-3xl gap-6 sm:grid-cols-2">
+              {PLATFORM_TIER_PRICING_FOR_SALE.map((tier) => (
                 <PricingCard key={tier.id} tier={tier} />
               ))}
             </div>
           </RevealOnScroll>
-        </Container>
-      </section>
-
-      {/* Practice Paper Simulator */}
-      <section className="py-20">
-        <Container className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
-          <Card className="order-2 lg:order-1">
-            <div className="p-7">
-              <div className="flex items-center justify-between">
-                <Badge variant="navy">Live simulator preview</Badge>
-                <span className="text-xs font-medium text-muted">12:48 remaining</span>
-              </div>
-              <div className="mt-5 space-y-3">
-                {["Comprehension — Section A", "Maths — Section B", "Verbal Reasoning — Section C"].map((s, i) => (
-                  <div key={s} className="flex items-center justify-between rounded-xl border border-line p-3.5">
-                    <span className="text-sm font-medium text-navy">{s}</span>
-                    <Badge variant={i === 0 ? "success" : "cream"}>{i === 0 ? "Complete" : "Pending"}</Badge>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Card>
-          <div className="order-1 lg:order-2">
-            <RevealOnScroll>
-              <SectionHeading
-                eyebrow="Practice Paper Simulator"
-                title="Practice papers that feel like real 11+ mocks"
-                description="Children complete timed online practice papers across English, maths, verbal reasoning and non-verbal reasoning. Parents can see results and improvement areas immediately."
-              />
-              <div className="mt-8">
-                <FeatureGrid items={SIMULATOR_FEATURES} columns={2} />
-              </div>
-              <Button href="/practice-paper-simulator" size="lg" className="mt-8">
-                Try Practice Paper Simulator <ArrowRight className="h-4 w-4" />
-              </Button>
-            </RevealOnScroll>
-          </div>
         </Container>
       </section>
 
@@ -295,8 +267,8 @@ export default function HomePage() {
           <RevealOnScroll>
             <SectionHeading
               eyebrow="Tuition"
-              title="Group, private, or the complete system"
-              description="Compare the three ways to get structured teaching support — and see why most families choose the Complete 11+ Programme."
+              title="Group or private teaching support"
+              description="Compare the two ways to get structured teaching support alongside your Pro or Max subscription."
             />
             <div className="mt-10">
               <ComparisonTable />
@@ -304,13 +276,12 @@ export default function HomePage() {
             <div className="mt-8 flex flex-wrap gap-4">
               <Button href="/tuition/group" variant="outline">Group Tuition</Button>
               <Button href="/tuition/private" variant="outline">Private Tuition</Button>
-              <Button href="/complete-programme">Apply for Complete Programme</Button>
             </div>
           </RevealOnScroll>
         </Container>
       </section>
 
-      {/* Complete Programme */}
+      {/* Max upsell */}
       <section className="py-20">
         <Container>
           <RevealOnScroll>
@@ -319,25 +290,24 @@ export default function HomePage() {
                 <div>
                   <Badge variant="gold">Best Value</Badge>
                   <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                    The complete 11+ preparation system
+                    Aiming for the top bands? Go Max.
                   </h2>
                   <p className="mt-4 text-lg leading-relaxed text-cream/70">
-                    Diagnostic assessment, weekly group tuition, weekly mocks, simulator access,
-                    monthly reports and parent check-ins — combined into one managed plan.
+                    Everything in Pro, plus Elite-difficulty mocks, unlimited attempts and
+                    priority report turnaround — for students who want the hardest papers we offer.
                   </p>
-                  <Button href="/complete-programme" size="lg" className="mt-8">
-                    Apply for Complete Programme <ArrowRight className="h-4 w-4" />
+                  <Button href="/pricing#platform" size="lg" className="mt-8">
+                    See Max <ArrowRight className="h-4 w-4" />
                   </Button>
                 </div>
                 <ul className="space-y-3 rounded-2xl bg-white/5 p-6">
                   {[
-                    "Initial diagnostic assessment",
-                    "Weekly group tuition",
-                    "Weekly mock exams",
-                    "Practice Paper Simulator access",
-                    "Monthly progress reports",
+                    "Full mock library, every subject",
+                    "Elite-difficulty mock papers",
+                    "Complete Study Notes",
+                    "Unlimited mock attempts",
+                    "Priority report turnaround",
                     "Weak-area tracking",
-                    "Termly parent check-ins",
                     "Holiday booster discount",
                   ].map((f) => (
                     <li key={f} className="flex items-center gap-3 text-sm font-medium text-cream/90">

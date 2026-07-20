@@ -29,17 +29,17 @@ export const FAQ_ITEMS: FAQItem[] = [
   {
     question: "What is the difference between mock exams and practice papers?",
     answer:
-      "Mock exams are scheduled, supervised, and marked by our team to mirror real exam conditions as closely as possible. Practice papers in the Simulator are self-paced and instantly auto-scored, ideal for additional repetition between mocks.",
+      "Mock exams are timed and marked to mirror real exam conditions as closely as possible. Practice papers included in Pro and Max are self-paced and instantly auto-scored, ideal for additional repetition between mocks.",
   },
   {
     question: "Is private tuition or group tuition better?",
     answer:
-      "It depends on your child. Group tuition works well for steady, structured progress alongside peers at a lower cost. Private tuition is better when a child has specific weak areas to close quickly, or needs a faster pace. Many families combine both within the Complete 11+ Programme.",
+      "It depends on your child. Group tuition works well for steady, structured progress alongside peers at a lower cost. Private tuition is better when a child has specific weak areas to close quickly, or needs a faster pace. Many families combine either with a Pro or Max subscription.",
   },
   {
     question: "Can I cancel a subscription?",
     answer:
-      "Yes. Weekly Mock Club, Practice Paper Simulator and tuition subscriptions are billed monthly with no long-term tie-in, and can be cancelled at any time from your account or by contacting us.",
+      "Yes. Pro, Max and tuition subscriptions are billed monthly with no long-term tie-in, and can be cancelled at any time from your account or by contacting us.",
   },
   {
     question: "Do you guarantee a grammar school place?",
@@ -54,7 +54,7 @@ export const FAQ_ITEMS: FAQItem[] = [
   {
     question: "Are sessions online or in person?",
     answer:
-      "Both. Tuition, mocks and diagnostic assessments are available online or in person depending on location. The Practice Paper Simulator and diagnostic report are fully online for every family.",
+      "Both. Tuition, mocks and diagnostic assessments are available online or in person depending on location. Pro/Max practice papers and the diagnostic report are fully online for every family.",
   },
   {
     question: "How do I know which product is right for my child?",

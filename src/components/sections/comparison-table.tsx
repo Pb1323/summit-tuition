@@ -2,15 +2,11 @@ import { Check, Minus } from "lucide-react";
 import type { ComparisonRow } from "@/types/pricing";
 
 const ROWS: ComparisonRow[] = [
-  { feature: "Weekly structured lessons", group: true, private: true, programme: true },
-  { feature: "Class size", group: "Up to 6 students", private: "1:1", programme: "Up to 6 + 1:1 support" },
-  { feature: "Personalised to weak areas", group: false, private: true, programme: true },
-  { feature: "Diagnostic assessment included", group: false, private: false, programme: true },
-  { feature: "Weekly mock exams included", group: false, private: false, programme: true },
-  { feature: "Practice Paper Simulator access", group: false, private: false, programme: true },
-  { feature: "Progress reports", group: "Termly", private: "Per session", programme: "Monthly" },
-  { feature: "Parent check-ins", group: false, private: false, programme: true },
-  { feature: "Holiday course discount", group: false, private: false, programme: true },
+  { feature: "Weekly structured lessons", group: true, private: true },
+  { feature: "Class size", group: "Up to 6 students", private: "1:1" },
+  { feature: "Personalised to weak areas", group: false, private: true },
+  { feature: "Progress reports", group: "Termly", private: "Per session" },
+  { feature: "First session available as a trial", group: true, private: true },
 ];
 
 function Cell({ value }: { value: boolean | string }) {
@@ -27,15 +23,12 @@ function Cell({ value }: { value: boolean | string }) {
 export function ComparisonTable() {
   return (
     <div className="overflow-x-auto rounded-2xl border border-line bg-white">
-      <table className="w-full min-w-[640px] border-collapse text-left text-sm">
+      <table className="w-full min-w-[480px] border-collapse text-left text-sm">
         <thead>
           <tr className="border-b border-line bg-cream-dark/60">
             <th className="px-5 py-4 font-semibold text-navy">Feature</th>
             <th className="px-5 py-4 text-center font-semibold text-navy">Group Tuition</th>
             <th className="px-5 py-4 text-center font-semibold text-navy">Private Tuition</th>
-            <th className="px-5 py-4 text-center font-semibold text-gold-dark">
-              Complete 11+ Programme
-            </th>
           </tr>
         </thead>
         <tbody>
@@ -47,9 +40,6 @@ export function ComparisonTable() {
               </td>
               <td className="px-5 py-3.5 text-center">
                 <Cell value={row.private} />
-              </td>
-              <td className="px-5 py-3.5 text-center bg-gold/5">
-                <Cell value={row.programme} />
               </td>
             </tr>
           ))}

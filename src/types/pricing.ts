@@ -17,5 +17,4 @@ export interface ComparisonRow {
   feature: string;
   group: boolean | string;
   private: boolean | string;
-  programme: boolean | string;
 }
