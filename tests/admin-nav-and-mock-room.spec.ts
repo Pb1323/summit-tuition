@@ -1,28 +1,13 @@
 import { expect, test } from "@playwright/test";
+import { loginAsDemoUser, SEEDED } from "./helpers";
 
-const adminEmail = "admin@summittuition.local";
-const adminPassword = "local-test-password";
-
+// Demo mode (no DATABASE_URL) reads the logged-in session from localStorage, not just
+// the summit_session cookie (see helpers.ts) -- this file used to set only the cookie,
+// which left RequireAuth without a currentUser and caused a silent client-side redirect
+// back to /login, hanging every getByRole(...).click() below on a nav that never
+// rendered. Route through the shared loginAsDemoUser helper instead, which sets both.
 async function loginAsDemoAdmin(page: import("@playwright/test").Page) {
-  const loginResponse = await page.request.post("/api/auth/login", {
-    data: { email: adminEmail, password: adminPassword },
-  });
-  const loginBody = await loginResponse.json().catch(() => null);
-  expect(loginResponse.ok(), `login API status ${loginResponse.status()}: ${JSON.stringify(loginBody)}`).toBeTruthy();
-  const cookies = await page.context().cookies();
-  if (!cookies.some((cookie) => cookie.name === "summit_session")) {
-    await page.context().addCookies([
-      {
-        name: "summit_session",
-        value: "admin-1",
-        domain: "127.0.0.1",
-        path: "/",
-        httpOnly: true,
-        sameSite: "Lax",
-        expires: Math.floor(Date.now() / 1000) + 60 * 60,
-      },
-    ]);
-  }
+  await loginAsDemoUser(page, SEEDED.admin.id, SEEDED.admin.email);
   await page.goto("/admin");
   await expect(page).toHaveURL(/\/admin$/);
 }
