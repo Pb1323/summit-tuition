@@ -1,8 +1,20 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-20 (Free/Pro/Max pricing tier rebuild + streamlining pass — see below)
+Last updated: 2026-07-20 (added 4th Elite English mock — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+---
+
+## Done (session — 2026-07-20, 4th Elite English mock)
+
+Added a 4th full-length Elite-difficulty English paper (`english-gl-11-elite`, "English GL-Style Full Paper IV — Elite"), matching the same structure and difficulty as the existing 3 Elite English papers (`english-gl-8/9/10-elite`) — same 54-question, 4-section GL layout (28 comprehension, 9 spelling, 9 grammar-mistake, 8 cloze), same "Summit Stretch" difficulty label.
+
+- New original passage, "The Lighthouse Keeper's Ledger" (`passage-lighthouse-keepers-ledger`), 6 paragraphs, same length/register as the other Elite passages. Not copied from any third-party source.
+- 54 new questions (`eh300–327`, `esp300–308`, `egr300–308`, `ecl300–307`) — all-new ids, no collisions with the existing bank.
+- Given the past history of bugs on English mocks (cloze options rendering with the wrong letter, comprehension section misclassification), specifically verified before calling this done: ran a standalone script resolving all 54 question ids against the live question bank, confirming zero duplicate/missing ids, every `correctAnswer` actually present in that question's `options`, every comprehension question's `passageId` resolves to a real passage, section classification via `getEnglishSectionId()` comes out exactly 28/9/9/8 (matching the GL 52/17/17/15% weighting) with zero "undefined", and ran the mock through the real `evaluateMockQuality()` checker used by the admin Quality Checks tab — status came back "Ready" with all 21 checks passing and no warnings.
+- Verified `npm run typecheck` and `npm run lint` both pass clean (0 errors, only the same pre-existing unrelated warnings as baseline).
+- `npm run build` wasn't re-verified this session — another build process was already running concurrently (this project runs parallel agent sessions) and this was a pure data addition with no new code paths, already covered by the typecheck above.
 
 ---
 
