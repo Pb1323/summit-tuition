@@ -15186,7 +15186,7 @@ export const PRODUCT_PLANS: ProductPlan[] = [
   {
     id: "pro",
     name: "Pro",
-    price: "£29",
+    price: "£39",
     cadence: "/month",
     badge: "Most Popular",
     description: "Full weekly mock access and complete Study Notes across every subject — everything except Elite-difficulty papers.",
@@ -15196,7 +15196,7 @@ export const PRODUCT_PLANS: ProductPlan[] = [
   {
     id: "max",
     name: "Max",
-    price: "£60",
+    price: "£69",
     cadence: "/month",
     badge: "Best Value",
     description: "Everything in Pro, plus Elite-difficulty mocks, unlimited attempts and priority report turnaround.",

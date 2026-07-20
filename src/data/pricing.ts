@@ -43,7 +43,7 @@ export const PLATFORM_TIER_PRICING: PricingTier[] = [
     id: "pro",
     name: "Pro",
     description: "Full weekly mock access and complete Study Notes across every subject.",
-    price: "£29",
+    price: "£39",
     period: "/month",
     features: [
       "Full mock library (excl. Elite papers)",
@@ -62,7 +62,7 @@ export const PLATFORM_TIER_PRICING: PricingTier[] = [
     id: "max",
     name: "Max",
     description: "Everything in Pro, plus Elite-difficulty mocks and priority reporting.",
-    price: "£60",
+    price: "£69",
     period: "/month",
     features: [
       "Everything in Pro",
@@ -147,8 +147,13 @@ export const MOCK_CLUB_PRICING = PLATFORM_TIER_PRICING.filter((tier) => tier.id 
 export const PRACTICE_SIMULATOR_PRICING = PLATFORM_TIER_PRICING.filter((tier) => tier.id === "pro");
 export const PROGRAMME_PRICING = PLATFORM_TIER_PRICING.filter((tier) => tier.id === "max");
 
+/** Free is intentionally left out of the main buying grid — it's the registration
+ * path (`/register`), not something to shop for alongside paid tiers. Streamlines
+ * the buying decision down to Pro vs. Max, with Pro pushed as the default choice. */
+export const PLATFORM_TIER_PRICING_FOR_SALE = PLATFORM_TIER_PRICING.filter((tier) => tier.id !== "free");
+
 export const ALL_PRICING_GROUPS: { id: string; title: string; tiers: PricingTier[] }[] = [
-  { id: "platform", title: "Free / Pro / Max", tiers: PLATFORM_TIER_PRICING },
+  { id: "platform", title: "Pro / Max", tiers: PLATFORM_TIER_PRICING_FOR_SALE },
   { id: "group", title: "Group Tuition", tiers: GROUP_TUITION_PRICING },
   { id: "private", title: "Private Tuition", tiers: PRIVATE_TUITION_PRICING },
   { id: "holiday", title: "Holiday Booster", tiers: HOLIDAY_PRICING },

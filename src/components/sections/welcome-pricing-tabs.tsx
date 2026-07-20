@@ -14,15 +14,15 @@ import {
 } from "@/data/pricing";
 
 const TABS = [
-  { id: "mocks", label: "Mock Club", tier: MOCK_CLUB_PRICING[0], learnMoreHref: "/weekly-mock-club" },
+  { id: "pro", label: "Pro", tier: MOCK_CLUB_PRICING[0], learnMoreHref: "/pricing#platform" },
+  { id: "max", label: "Max", tier: PROGRAMME_PRICING[0], learnMoreHref: "/pricing#platform" },
   { id: "group", label: "Group Tuition", tier: GROUP_TUITION_PRICING[0], learnMoreHref: "/tuition/group" },
   { id: "private", label: "Private Tuition", tier: PRIVATE_TUITION_PRICING[0], learnMoreHref: "/tuition/private" },
   { id: "holiday", label: "Holiday Booster", tier: HOLIDAY_PRICING[0], learnMoreHref: "/holiday-booster" },
-  { id: "programme", label: "Complete Programme", tier: PROGRAMME_PRICING[0], learnMoreHref: "/complete-programme" },
 ] as const;
 
 export function WelcomePricingTabs() {
-  const [activeId, setActiveId] = useState<(typeof TABS)[number]["id"]>("mocks");
+  const [activeId, setActiveId] = useState<(typeof TABS)[number]["id"]>("pro");
   const active = TABS.find((t) => t.id === activeId) ?? TABS[0];
   const tier = active.tier;
 

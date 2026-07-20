@@ -20,10 +20,7 @@ export function PricingCard({ tier }: { tier: PricingTier }) {
         </Badge>
       )}
       <h3 className="text-lg font-semibold text-navy">{tier.name}</h3>
-      <p className="mt-1 text-xs font-bold uppercase tracking-[0.16em] text-gold-dark">
-        {tier.highlighted ? "Most guided route" : tier.billingMode === "one-off" ? "Focused start" : "Flexible plan"}
-      </p>
-      <p className="mt-1.5 min-h-10 text-sm leading-relaxed text-muted">{tier.description}</p>
+      <p className="mt-2 min-h-10 text-sm leading-relaxed text-muted">{tier.description}</p>
       <div className="mt-5 flex items-baseline gap-1">
         <span className="text-4xl font-bold tracking-tight text-navy">{tier.price}</span>
         <span className="text-sm font-medium text-muted">{tier.period}</span>

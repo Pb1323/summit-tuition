@@ -29,7 +29,7 @@ const NOT_SURE_CARDS = [
   {
     icon: <Repeat className="h-6 w-6" />,
     title: "I want weekly exam practice",
-    description: "Most families start with Pro — £29/month for full mock and notes access.",
+    description: "Most families start with Pro — £39/month for full mock and notes access.",
     cta: "See Pro",
     href: "/pricing#platform",
     highlight: true,
@@ -81,7 +81,7 @@ export default function PricingPage() {
         </Container>
       </section>
 
-      <section className="bg-cream-dark/50 py-16">
+      <section id="platform" className="bg-cream-dark/50 py-16">
         <Container>
           <RevealOnScroll>
             <SectionHeading align="center" eyebrow="Every Product" title="Pick what fits, mix and match as you go" />
@@ -91,6 +91,9 @@ export default function PricingPage() {
               <PricingCard key={tier.id} tier={tier} />
             ))}
           </StaggerReveal>
+          <p className="mt-8 text-center text-sm text-muted">
+            Just want to try it first? <a href="/register" className="font-semibold text-gold-dark underline underline-offset-2">Register free</a> — one mock per subject, no card required.
+          </p>
         </Container>
       </section>
 
