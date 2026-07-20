@@ -389,6 +389,7 @@ export function QuestionRenderer({
   adminPreview,
   passage,
   questionNumber,
+  hidePassage,
 }: {
   question: Question;
   value?: string;
@@ -397,6 +398,12 @@ export function QuestionRenderer({
   adminPreview?: boolean;
   passage?: Passage;
   questionNumber?: number;
+  /** Still pass `passage` for the quality-warning check even when the caller already renders
+   * the passage itself elsewhere (mock-room-shell.tsx's side-by-side comprehension layout puts
+   * it in a sticky left column) — this just suppresses QuestionRenderer's own inline copy so it
+   * does not render twice. Omitting `passage` entirely in that case previously made the
+   * "Linked passage not found" draft warning fire spuriously for every comprehension question. */
+  hidePassage?: boolean;
 }) {
   const correct = value ? String(question.correctAnswer).toLowerCase() === value.toLowerCase() : false;
   const hasText = typeof question.text === "string" && question.text.trim().length > 0;
@@ -426,7 +433,7 @@ export function QuestionRenderer({
   const headingText = isSegmentFormat ? question.text.split("\n")[0] : isCloze ? "Choose the word or phrase that best completes the passage." : question.text;
   return (
     <div className="space-y-6">
-      {passage && <EnglishPassageRenderer passage={passage} paragraphRefs={question.paragraphRefs} />}
+      {passage && !hidePassage && <EnglishPassageRenderer passage={passage} paragraphRefs={question.paragraphRefs} />}
       <div className="rounded-2xl border border-line bg-white p-5">
         <div className="flex flex-wrap items-center gap-2">
           {typeof questionNumber === "number" && <PremiumBadge>Question {questionNumber}</PremiumBadge>}

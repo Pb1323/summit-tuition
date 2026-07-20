@@ -308,6 +308,8 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
                       <QuestionRenderer
                         question={active}
                         questionNumber={index + 1}
+                        passage={activePassage}
+                        hidePassage
                         value={answers[active.id]}
                         adminPreview={isAdminPreview}
                         onChange={(value) => {
