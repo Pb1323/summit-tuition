@@ -1,6 +1,6 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-20 (Free/Pro/Max pricing tier rebuild, first pass — see below)
+Last updated: 2026-07-20 (Free/Pro/Max pricing tier rebuild + streamlining pass — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
@@ -10,7 +10,7 @@ This is a plain-English summary of where the whole project stands — the produc
 
 Founder decided to move from named products (Weekly Mock Club/Practice Paper Simulator/Complete 11+ Programme) to a Free/Pro/Max tier ladder for the digital platform (mocks + Study Notes), while Group/Private Tuition, Holiday Booster, and Diagnostic Assessment stay separate, non-tiered products as before (confirmed with founder before building). Stripe checkout wiring is explicitly deferred — this pass is data model + pricing page only, admin still assigns plans manually.
 
-- **`src/data/platform.ts`**: `PRODUCT_PLANS` rebuilt as Free (£0)/Pro (£29/mo)/Max (£60/mo), plus Diagnostic/Group/Private/Holiday kept as non-gating entries with real prices (previously all placeholder `£X`). Free/Pro/Max's `includedMockIds`/`includedNoteIds` are **computed dynamically** from `MOCKS`/`NOTE_PAGES` at module load (`FREE_MOCK_IDS`/`PRO_MOCK_IDS`/`MAX_MOCK_IDS` filtering on existing `mock.isFree`/`mock.tier === "Elite"` fields) rather than hand-typed id lists — deliberate choice so newly added mocks are automatically covered by the right tier without ever having to remember to update this file again. Pro = everything except `tier: "Elite"` mocks; Max = everything including Elite. Moved this block to after the `MOCKS` array (was previously before it, with empty placeholder arrays) since the computation needs `MOCKS` to exist first.
+- **`src/data/platform.ts`**: `PRODUCT_PLANS` rebuilt as Free (£0)/Pro (originally £29/mo, now £39/mo — see streamlining pass below)/Max (originally £60/mo, now £69/mo), plus Diagnostic/Group/Private/Holiday kept as non-gating entries with real prices (previously all placeholder `£X`). Free/Pro/Max's `includedMockIds`/`includedNoteIds` are **computed dynamically** from `MOCKS`/`NOTE_PAGES` at module load (`FREE_MOCK_IDS`/`PRO_MOCK_IDS`/`MAX_MOCK_IDS` filtering on existing `mock.isFree`/`mock.tier === "Elite"` fields) rather than hand-typed id lists — deliberate choice so newly added mocks are automatically covered by the right tier without ever having to remember to update this file again. Pro = everything except `tier: "Elite"` mocks; Max = everything including Elite. Moved this block to after the `MOCKS` array (was previously before it, with empty placeholder arrays) since the computation needs `MOCKS` to exist first.
 - **`src/data/pricing.ts`**: `MOCK_CLUB_PRICING`/`PRACTICE_SIMULATOR_PRICING`/`PROGRAMME_PRICING` replaced by one `PLATFORM_TIER_PRICING` array (Free/Pro/Max cards); old names kept as **backward-compat aliases** (`MOCK_CLUB_PRICING`/`PRACTICE_SIMULATOR_PRICING` → Pro card, `PROGRAMME_PRICING` → Max card) purely so the still-unmigrated dedicated pages below don't break — not a real second pricing system.
 - **`src/data/products.ts`**: `PRODUCT_LADDER` entries for group-tuition/practice-paper-simulator/weekly-mock-club/complete-programme replaced with free/pro/max entries (linking to `/pricing#platform` and `/register`); tuition/holiday entries untouched.
 - **`src/app/pricing/page.tsx`**: updated the "not sure where to start" card copy and meta description off the old product names.
@@ -22,6 +22,16 @@ Founder decided to move from named products (Weekly Mock Club/Practice Paper Sim
 - **No Stripe Price IDs wired to the new tiers yet** — founder is separately setting up the Stripe MCP/plugin integration; once that's authorized and Price objects exist for Free/Pro/Max, `/api/checkout` needs real `priceId`s plumbed through from the pricing cards.
 - **£60/month for Max is a judgment call, not confirmed with the founder**: they picked "£60" matching the old Complete 11+ Programme price, which was `/week` (because it bundled tuition). Since Max is now digital-only, billing it `/week` at the same £60 would make it far pricier than intended relative to Pro's £29/month — changed the cadence to `/month` to keep the ladder coherent, but the founder should sanity-check this actual number before launch.
 - **No re-check of `ProductCategory` type / other consumers of `PRODUCT_LADDER` categories** (`"programme"`, `"practice"` categories are now unused) — harmless (not a type error) but worth a cleanup pass later.
+
+## Done (same day, immediate follow-up — pricing streamlining pass)
+
+Founder feedback right after the first pass: didn't like the small-caps "Most guided route" style label on each pricing card, wanted Pro repriced to £39/month and Max to £69/month, and wanted fewer options shown on the buying page so people are pushed toward Pro instead of being presented with a wall of choices.
+
+- Removed the uppercase eyebrow line ("Most guided route"/"Focused start"/"Flexible plan") from every pricing card.
+- Pro is now £39/month, Max is now £69/month everywhere (pricing page, product ladder, and the admin-facing plan list).
+- The main pricing page now only shows **Pro and Max** as sellable cards — Free isn't gone, it's just no longer presented as something to "buy" alongside the paid tiers; there's a small text link under the cards for people who want to register free first. Pro stays the visually featured option.
+- The `/welcome` mobile page's pricing tab strip was relabelled from the old Mock Club/Complete Programme names to Pro/Max, with Pro as the tab that opens by default.
+- Rechecked in a real running copy of the site (not just the code) that the new prices show up correctly and the old caps-style label is gone.
 
 ---
 
