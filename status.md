@@ -1,10 +1,18 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-21 (fixed a bug where the free-mock funnel looked broken on a repeat visit, added clear "Pro-only" locks to the Study Notes pages, and made the /welcome trust section quantitative — see below)
+Last updated: 2026-07-21 (tidied up /welcome for mobile, shortened the taster questions, fixed a real "Holiday Booster" button loop, and made the Pro/Max pricing buttons more prominent — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-07-21, /welcome mobile cleanup + Holiday Booster loop fix + pricing CTA prominence)
+
+- Removed the "SUMMIT / Full site" bar from the very top of `/welcome` — you said it looked weird on phone, so it's gone; the link back to the full site is still there at the bottom of the page.
+- Shortened the taster question wording — the diagrams already show the numbers you need, so the questions no longer repeat them or over-explain the maths rule in the question itself.
+- Found and fixed a real bug you spotted: the "View Holiday Dates" button, when shown ON the Holiday Booster page itself, just linked back to the same page — a dead loop that never actually showed you anything new. It now says "Enquire About Holiday Booster" and takes you to the booking/call page instead, everywhere it appears.
+- Made the Pro/Max (and Group/Private) "buy" buttons bigger and more obvious, and turned the small "Learn more" button into a plain link so it doesn't compete with the main button for attention.
+- Added a short "what you actually get" list under the Pro/Max pricing card (26 mocks, 140+ Study Notes lessons, a marked report every time) plus a new "Preview mock quality" button that takes parents straight to the free mock preview. Note: you'd asked for figures like "6 mocks a month" and "1000+ pages of notes" — I used the real, counted numbers instead (26 total mocks, ~149 Study Notes lessons) since those specific figures aren't accurate for what's actually built, and I didn't want the site making a claim we can't back up.
 
 ## Done (session — 2026-07-21, free-mock bugfix, Notes locking, taster-question polish)
 
