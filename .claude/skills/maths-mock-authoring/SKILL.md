@@ -145,3 +145,16 @@ every `correctAnswer` is present in that question's `options`, then runs
 "Ready"` with the visual-ratio, challenge, stretch-percentage, and
 topic-spread checks all passing. Delete the script after. Then run
 `npm.cmd run typecheck` and `npm.cmd run lint`.
+
+## Deploy: seed the database, don't just push the code
+
+Pushing `src/data/platform.ts` alone won't make the new mock visible live —
+production reads mocks/questions from Postgres (`platform-store.ts`) whenever
+`DATABASE_URL` is set, not the static file directly (that's only the
+demo/localStorage fallback). **After committing and pushing, always also run
+`npm run db:seed`** (`scripts/seed-catalog.mts`) — an idempotent, id-keyed
+upsert of the whole catalog into whatever `DATABASE_URL` your local `.env`
+currently points at (historically the same database production uses — see
+`status.md`). Do this as a routine last step, not something to ask permission
+for each time; it only touches catalog tables, never `User`/`Session`/
+`Attempt`, so it's safe to re-run.

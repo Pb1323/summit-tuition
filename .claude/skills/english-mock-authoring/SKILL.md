@@ -210,3 +210,24 @@ question's `options`, confirms every `passageId` resolves, checks
 `getEnglishSectionId()` classifies all 54 with the right ~28/9/9/8 split, and
 runs `evaluateMockQuality()` expecting `status: "Ready"`. Delete the script
 after. Then run `npm.cmd run typecheck` and `npm.cmd run lint`.
+
+## Deploy: seed the database, don't just push the code
+
+Pushing `src/data/platform.ts` to git is **not enough** for the new mock to
+show up on the live site. `platform-store.ts` reads mocks/questions/passages
+from Postgres (`prisma.mockExam.findMany(...)` etc.) whenever `DATABASE_URL`
+is configured — which production always has — not from the static file
+directly. The static file is only what demo/localStorage mode (no
+`DATABASE_URL`) falls back to.
+
+**After committing and pushing a new/edited mock, always also run
+`npm run db:seed`** (`scripts/seed-catalog.mts`) — an idempotent, id-keyed
+upsert of the whole catalog (products, email templates, passages, questions,
+mocks, references, notes pages) into whatever `DATABASE_URL` your local
+`.env` currently points at. This project's local `.env` has historically
+pointed at the **same Supabase database production uses** (see
+`project_shared_prod_db` in memory / `status.md`), so running it is normally
+exactly what makes a newly authored mock visible live — do this as a routine
+last step of authoring a mock, not something to ask permission for each time.
+It only touches catalog tables (never `User`/`Session`/`Attempt`), so it's
+safe to re-run.
