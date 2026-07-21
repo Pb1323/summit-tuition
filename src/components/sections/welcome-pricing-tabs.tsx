@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { Check, ArrowRight } from "lucide-react";
+import { ArrowRight, Calculator, BookOpenText, NotebookText, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -29,7 +28,7 @@ const TUITION_TABS: TabDef[] = [
 ];
 
 const PLATFORM_STATS = [
-  "26 full-length mocks across Maths, English, VR & NVR",
+  "6 new full-length mocks released every month — around 100 questions each",
   "140+ interactive Study Notes lessons, not PDFs",
   "A marked report after every mock, not just a score",
 ];
@@ -49,7 +48,14 @@ function PricingTabSwitcher({
 
   return (
     <div>
-      <div className="-mx-1 flex snap-x gap-2 overflow-x-auto px-1 pb-1" role="tablist" aria-label="Pricing plans">
+      <p className="mb-2 text-center text-[11px] font-bold uppercase tracking-wide text-muted">
+        Tap to compare {tabs.map((t) => t.label).join(" vs. ")}
+      </p>
+      <div
+        className="mx-auto flex max-w-xs rounded-full border border-navy/15 bg-white p-1 shadow-[0_6px_18px_-10px_rgba(15,23,42,0.35)]"
+        role="tablist"
+        aria-label="Pricing plans"
+      >
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -58,10 +64,10 @@ function PricingTabSwitcher({
             aria-selected={tab.id === activeId}
             onClick={() => setActiveId(tab.id)}
             className={cn(
-              "focus-gold shrink-0 snap-start rounded-full border px-3.5 py-2 text-xs font-bold whitespace-nowrap transition",
+              "focus-gold flex-1 rounded-full px-4 py-2.5 text-sm font-bold transition-all",
               tab.id === activeId
-                ? "border-gold bg-navy text-white shadow-[0_10px_24px_-14px_rgba(15,23,42,0.7)]"
-                : "border-line bg-white text-navy hover:border-gold/50"
+                ? "bg-navy text-white shadow-[0_10px_24px_-14px_rgba(15,23,42,0.7)]"
+                : "text-navy/55 hover:text-navy"
             )}
           >
             {tab.label}
@@ -130,18 +136,27 @@ function PricingTabSwitcher({
               {tier.cta} <ArrowRight className="h-4 w-4" />
             </Button>
           )}
-          {showPlatformStats && (
-            <Button href="/free-mock" variant="outline" size="md" className="w-full">
-              Preview mock quality
-            </Button>
-          )}
-          <Link
-            href={active.learnMoreHref}
-            className="block text-center text-xs font-bold text-gold-dark hover:underline"
-          >
-            Learn more about {active.label} →
-          </Link>
+          <Button href={active.learnMoreHref} variant="outline" size="md" className="w-full">
+            Learn more about {active.label}
+          </Button>
         </div>
+
+        {showPlatformStats && (
+          <div className="mt-4 border-t border-navy/10 pt-4">
+            <p className="text-[11px] font-bold uppercase tracking-wide text-gold-dark">See the quality yourself</p>
+            <div className="mt-2.5 grid grid-cols-2 gap-2">
+              <Button href="/free-mock?subject=maths" variant="light" size="sm" className="w-full">
+                <Calculator className="h-3.5 w-3.5" /> Maths Mock
+              </Button>
+              <Button href="/free-mock?subject=english" variant="light" size="sm" className="w-full">
+                <BookOpenText className="h-3.5 w-3.5" /> English Mock
+              </Button>
+            </div>
+            <Button href="/notes-preview" variant="ghost" size="sm" className="mt-2 w-full">
+              <NotebookText className="h-3.5 w-3.5" /> Preview a Study Notes lesson
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

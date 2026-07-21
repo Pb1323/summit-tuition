@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState, useSyncExternalStore } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { CheckCircle2, Lock, Sparkles, XCircle, GraduationCap, Calculator, BookOpenText } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -15,7 +16,8 @@ const SEGMENT_LETTERS = ["A", "B", "C", "D"];
 
 const ANON_KEY = "summit-freemock-anon-completed";
 const ANON_LIMIT = 1;
-const ACCOUNT_LIMIT = 3;
+/** There are only 2 official sample mocks (1 Maths, 1 English) — a free account gets both. */
+const ACCOUNT_LIMIT = SHOWCASE_MOCKS.length;
 
 function acctKey(userId: string) {
   return `summit-freemock-acct-${userId}-completed`;
@@ -217,6 +219,8 @@ function QuestionRunner({ mock, onFinish }: { mock: ShowcaseMock; onFinish: (cor
 
 export function FreeMockPreview() {
   const { currentUser } = usePlatform();
+  const searchParams = useSearchParams();
+  const subjectParam = searchParams.get("subject");
   const [view, setView] = useState<ViewState>({ mode: "picker" });
 
   const storageKey = currentUser ? acctKey(currentUser.id) : ANON_KEY;
@@ -226,6 +230,15 @@ export function FreeMockPreview() {
   const limit = currentUser ? ACCOUNT_LIMIT : ANON_LIMIT;
   const remaining = Math.max(0, limit - completedIds.length);
   const atLimit = !isPaid && remaining <= 0;
+
+  const deepLinkMock =
+    (subjectParam === "maths" || subjectParam === "english")
+      ? SHOWCASE_MOCKS.find((m) => m.subject === subjectParam)
+      : undefined;
+  const autoStartMock =
+    view.mode === "picker" && deepLinkMock && !atLimit && !completedIds.includes(deepLinkMock.id)
+      ? deepLinkMock
+      : undefined;
 
   function handleStart(mock: ShowcaseMock) {
     setView({ mode: "running", mock });
@@ -244,7 +257,7 @@ export function FreeMockPreview() {
         </div>
         <h3 className="mt-4 text-xl font-bold text-navy">You already have full mock access</h3>
         <p className="mt-2 text-sm leading-relaxed text-muted">
-          These showcase mocks are just for new visitors — your plan already unlocks the complete mock library.
+          This sample is just for new visitors — your plan already unlocks the complete mock library.
         </p>
         <Button href="/dashboard" size="md" className="mt-5">
           Go to my dashboard
@@ -255,6 +268,10 @@ export function FreeMockPreview() {
 
   if (view.mode === "running") {
     return <QuestionRunner mock={view.mock} onFinish={(correctCount) => handleFinish(view.mock, correctCount)} />;
+  }
+
+  if (autoStartMock) {
+    return <QuestionRunner mock={autoStartMock} onFinish={(correctCount) => handleFinish(autoStartMock, correctCount)} />;
   }
 
   if (view.mode === "finished") {
@@ -269,36 +286,35 @@ export function FreeMockPreview() {
         {!currentUser ? (
           <>
             <p className="mt-2 text-sm leading-relaxed text-muted">
-              That&apos;s your one free mock as a visitor. Create a free account to unlock a few more free mocks,
-              still 10 questions each.
+              That&apos;s your free mock as a visitor. Create a free account to unlock the other subject&apos;s
+              mock too.
             </p>
             <Button href="/account" size="md" className="mt-5">
-              Get a free account for more mocks
+              Get a free account for the other mock
             </Button>
           </>
         ) : atLimit ? (
           <>
             <p className="mt-2 text-sm leading-relaxed text-muted">
-              You&apos;ve used all {ACCOUNT_LIMIT} of your free showcase mocks. Upgrade to Pro for full access to
-              every mock in our library — no 10-question limit.
+              You&apos;ve tried both our official sample mocks. Unlock Pro for full access to our entire mock
+              library — every subject, every paper, no sample limits.
             </p>
             <div className="mt-5 flex flex-col gap-2.5 sm:flex-row sm:justify-center">
               <Button href="/pricing#platform" size="md">
-                Upgrade to Pro
+                Unlock Pro
               </Button>
               <Button onClick={() => setView({ mode: "picker" })} variant="outline" size="md">
-                Back to free mocks
+                Back to mocks
               </Button>
             </div>
           </>
         ) : (
           <>
             <p className="mt-2 text-sm leading-relaxed text-muted">
-              Nice work — you have {remaining} more free showcase {remaining === 1 ? "mock" : "mocks"} available
-              (10 questions each) before upgrading to Pro.
+              Nice work — try the other subject&apos;s mock too, or unlock Pro any time for the full library.
             </p>
             <Button onClick={() => setView({ mode: "picker" })} size="md" className="mt-5">
-              Try another free mock
+              Try the other mock
             </Button>
           </>
         )}
@@ -309,11 +325,11 @@ export function FreeMockPreview() {
   return (
     <div className="rounded-2xl border border-gold/25 bg-white/95 p-5 shadow-[0_28px_80px_-36px_rgba(180,83,9,0.42)] sm:p-6">
       <div className="flex items-center justify-between gap-3">
-        <h3 className="text-lg font-bold text-navy">Pick a free mock to try</h3>
+        <h3 className="text-lg font-bold text-navy">Try an official Summit mock</h3>
         <Badge variant="navy">{currentUser ? `${remaining}/${ACCOUNT_LIMIT} left` : `${remaining}/${ANON_LIMIT} left`}</Badge>
       </div>
       <p className="mt-1.5 text-sm text-muted">
-        10 real 11+-style questions, marked instantly as you go.
+        Real 11+-style questions, exactly like our live mocks — marked instantly as you go.
       </p>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -351,13 +367,13 @@ export function FreeMockPreview() {
         <div className="mt-5 rounded-xl border border-gold/25 bg-cream/60 p-4 text-center">
           <p className="text-sm font-semibold text-navy">
             {currentUser
-              ? "You've used all your free showcase mocks. Upgrade to Pro for full access to every mock."
-              : "That's your free preview. Create a free account for more free mock access."}
+              ? "You've tried both official sample mocks. Unlock Pro for full access to every mock."
+              : "That's your free sample. Create a free account for the other subject's mock."}
           </p>
           <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:justify-center">
             {currentUser ? (
               <Button href="/pricing#platform" size="sm">
-                Upgrade to Pro
+                Unlock Pro
               </Button>
             ) : (
               <Button href="/account" size="sm">

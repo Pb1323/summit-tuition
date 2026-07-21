@@ -51,7 +51,7 @@ const PATHS = [
 ];
 
 const TRUST_STATEMENTS = [
-  { statement: "26 full-length mocks across Maths, English, Verbal and Non-Verbal Reasoning — every one marked by a real tutor, not an algorithm.", context: "Exam coverage" },
+  { statement: "Building towards a bank of 100+ mocks — 26 full-length papers already live today across Maths, English, Verbal and Non-Verbal Reasoning, every one marked by a real tutor, not an algorithm.", context: "Exam coverage" },
   { statement: "140+ interactive Study Notes lessons, not static PDFs — worked examples and self-marking practice built into every topic.", context: "Study Notes" },
   { statement: "Pro is £39/month — less than a single private tutoring session, for a whole month of mocks and notes.", context: "Value" },
 ];
