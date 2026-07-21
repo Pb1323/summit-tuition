@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { CheckCircle2, Lock, Sparkles, XCircle, GraduationCap, Calculator, BookOpenText } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -21,7 +21,28 @@ function acctKey(userId: string) {
   return `summit-freemock-acct-${userId}-completed`;
 }
 
-function readCompleted(key: string): string[] {
+/**
+ * Module-level cache + useSyncExternalStore, mirroring platform-context.tsx's own store
+ * pattern. Plain useState+useEffect reads of localStorage cause a hydration mismatch (server
+ * always renders "0 completed", client immediately corrects it once mounted) — a returning
+ * visitor who'd already used their free mock would see the picker flash from "1/1 left" to
+ * "0/1 left", surfacing as a hydration error in dev. useSyncExternalStore's getServerSnapshot
+ * lets the first client render match SSR exactly, then resync silently post-hydration.
+ */
+const EMPTY_COMPLETED: string[] = [];
+const completedCache = new Map<string, string[]>();
+const listeners = new Set<() => void>();
+
+function emitChange() {
+  listeners.forEach((listener) => listener());
+}
+
+function subscribeCompleted(listener: () => void) {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
+}
+
+function readCompletedFromStorage(key: string): string[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = window.localStorage.getItem(key);
@@ -31,12 +52,34 @@ function readCompleted(key: string): string[] {
   }
 }
 
+function getCompletedSnapshot(key: string): string[] {
+  if (!completedCache.has(key)) {
+    completedCache.set(key, readCompletedFromStorage(key));
+  }
+  return completedCache.get(key)!;
+}
+
+function getServerCompletedSnapshot(): string[] {
+  return EMPTY_COMPLETED;
+}
+
 function markCompleted(key: string, mockId: string) {
-  const existing = readCompleted(key);
-  if (existing.includes(mockId)) return existing;
+  const existing = getCompletedSnapshot(key);
+  if (existing.includes(mockId)) return;
   const next = [...existing, mockId];
-  window.localStorage.setItem(key, JSON.stringify(next));
-  return next;
+  completedCache.set(key, next);
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem(key, JSON.stringify(next));
+  }
+  emitChange();
+}
+
+function useCompletedIds(key: string): string[] {
+  return useSyncExternalStore(
+    subscribeCompleted,
+    () => getCompletedSnapshot(key),
+    getServerCompletedSnapshot
+  );
 }
 
 type ViewState = { mode: "picker" } | { mode: "running"; mock: ShowcaseMock } | { mode: "finished"; mock: ShowcaseMock; correctCount: number };
@@ -175,12 +218,9 @@ function QuestionRunner({ mock, onFinish }: { mock: ShowcaseMock; onFinish: (cor
 export function FreeMockPreview() {
   const { currentUser } = usePlatform();
   const [view, setView] = useState<ViewState>({ mode: "picker" });
-  const [refreshTick, setRefreshTick] = useState(0);
 
-  const completedIds = useMemo(() => {
-    void refreshTick;
-    return currentUser ? readCompleted(acctKey(currentUser.id)) : readCompleted(ANON_KEY);
-  }, [currentUser, refreshTick]);
+  const storageKey = currentUser ? acctKey(currentUser.id) : ANON_KEY;
+  const completedIds = useCompletedIds(storageKey);
 
   const isPaid = currentUser?.paymentStatus === "paid";
   const limit = currentUser ? ACCOUNT_LIMIT : ANON_LIMIT;
@@ -192,12 +232,7 @@ export function FreeMockPreview() {
   }
 
   function handleFinish(mock: ShowcaseMock, correctCount: number) {
-    if (currentUser) {
-      markCompleted(acctKey(currentUser.id), mock.id);
-    } else {
-      markCompleted(ANON_KEY, mock.id);
-    }
-    setRefreshTick((t) => t + 1);
+    markCompleted(storageKey, mock.id);
     setView({ mode: "finished", mock, correctCount });
   }
 

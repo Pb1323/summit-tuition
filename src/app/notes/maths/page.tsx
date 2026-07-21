@@ -1,8 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { Lock } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { RequireAuth, GlowCard, PremiumBadge, RevealOnScroll } from "@/components/platform/ui";
+import { usePlatform } from "@/context/platform-context";
+import { cn } from "@/lib/utils";
 import { numbersTopic } from "@/components/notes/notes-content/numbers";
 import { fractionsDecimalsPercentagesTopic } from "@/components/notes/notes-content/fractions-decimals-percentages";
 import { ratioProportionTopic } from "@/components/notes/notes-content/ratio-proportion";
@@ -20,6 +23,47 @@ const TOPICS: TopicContent[] = [
   averagesStatisticsTopic,
 ];
 
+function MathsTopicsGrid() {
+  const { currentUser } = usePlatform();
+
+  return (
+    <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {TOPICS.map((topic) => {
+        const noteId = `maths-${topic.slug}`;
+        const locked = currentUser?.role !== "admin" && !currentUser?.unlockedNoteIds.includes(noteId);
+        const card = (
+          <GlowCard className={cn("h-full p-6", locked && "opacity-60")}>
+            <div className="flex items-center justify-between gap-2">
+              <PremiumBadge>{topic.subtopics.length} subtopics</PremiumBadge>
+              {locked && (
+                <span className="flex items-center gap-1 text-[11px] font-bold text-gold-dark">
+                  <Lock className="h-3 w-3" /> Unlock with Pro
+                </span>
+              )}
+            </div>
+            <h2 className="mt-3 text-xl font-bold text-navy">{topic.title}</h2>
+            <p className="mt-2 text-sm text-muted">{topic.description}</p>
+            <ul className="mt-4 space-y-1 text-xs font-semibold text-gold-dark">
+              {topic.subtopics.map((s) => (
+                <li key={s.id}>&middot; {s.title}</li>
+              ))}
+            </ul>
+          </GlowCard>
+        );
+        return locked ? (
+          <div key={topic.slug} className="cursor-not-allowed">
+            {card}
+          </div>
+        ) : (
+          <Link key={topic.slug} href={`/notes/maths/${topic.slug}`} className="block">
+            {card}
+          </Link>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function MathsNotesHubPage() {
   return (
     <RequireAuth role="student">
@@ -35,22 +79,7 @@ export default function MathsNotesHubPage() {
           </p>
         </RevealOnScroll>
 
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {TOPICS.map((topic) => (
-            <Link key={topic.slug} href={`/notes/maths/${topic.slug}`} className="block">
-              <GlowCard className="h-full p-6">
-                <PremiumBadge>{topic.subtopics.length} subtopics</PremiumBadge>
-                <h2 className="mt-3 text-xl font-bold text-navy">{topic.title}</h2>
-                <p className="mt-2 text-sm text-muted">{topic.description}</p>
-                <ul className="mt-4 space-y-1 text-xs font-semibold text-gold-dark">
-                  {topic.subtopics.map((s) => (
-                    <li key={s.id}>&middot; {s.title}</li>
-                  ))}
-                </ul>
-              </GlowCard>
-            </Link>
-          ))}
-        </div>
+        <MathsTopicsGrid />
       </Container>
     </RequireAuth>
   );

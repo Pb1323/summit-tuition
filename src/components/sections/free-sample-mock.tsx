@@ -33,13 +33,13 @@ type SampleQuestion = MathQuestion | GrammarQuestion;
 const MATH_QUESTIONS: MathQuestion[] = [
   {
     kind: "maths",
-    visual: "geometry-exterior-angle",
+    visual: "pie-chart",
     prompt:
-      "In this triangle, the exterior angle at the marked vertex is 136°, and one of the two remote interior angles is 58°. Using the exterior angle theorem (an exterior angle equals the sum of the two remote interior angles), what is the third interior angle?",
-    options: ["78°", "68°", "86°", "72°"],
-    correctAnswer: "78°",
+      "300 people were surveyed on their favourite sport, shown in the pie chart. What is the ratio of Football fans to Athletics fans, in simplest form?",
+    options: ["7:3", "5:3", "3:7", "2:1"],
+    correctAnswer: "7:3",
     explanation:
-      "The exterior angle theorem gives 58° + the missing angle = 136°, so the missing angle is 136 − 58 = 78°.",
+      "Football = 35% of 300 = 105. Athletics = 15% of 300 = 45. 105:45 simplifies (÷15) to 7:3.",
   },
   {
     kind: "maths",
@@ -53,13 +53,13 @@ const MATH_QUESTIONS: MathQuestion[] = [
   },
   {
     kind: "maths",
-    visual: "pie-chart",
+    visual: "geometry-exterior-angle",
     prompt:
-      "300 people were surveyed on their favourite sport, shown in the pie chart. What is the ratio of Football fans to Athletics fans, in simplest form?",
-    options: ["7:3", "5:3", "3:7", "2:1"],
-    correctAnswer: "7:3",
+      "In this triangle, the exterior angle at the marked vertex is 136°, and one of the two remote interior angles is 58°. Using the exterior angle theorem (an exterior angle equals the sum of the two remote interior angles), what is the third interior angle?",
+    options: ["78°", "68°", "86°", "72°"],
+    correctAnswer: "78°",
     explanation:
-      "Football = 35% of 300 = 105. Athletics = 15% of 300 = 45. 105:45 simplifies (÷15) to 7:3.",
+      "The exterior angle theorem gives 58° + the missing angle = 136°, so the missing angle is 136 − 58 = 78°.",
   },
   {
     kind: "maths",
@@ -276,12 +276,12 @@ function MathVisual({ kind }: { kind: MathVisualKind }) {
 
   if (kind === "geometry-exterior-angle") {
     return (
-      <svg viewBox="0 0 220 120" className="mx-auto h-28 w-52">
-        <motion.polygon points="30,100 100,25 170,100" fill="#f2c14e11" stroke="#0b2545" strokeWidth="3" {...draw} />
-        <line x1="170" y1="100" x2="210" y2="100" stroke="#0b2545" strokeWidth="3" strokeDasharray="4 3" />
-        <text x="40" y="92" fontSize="12" fontWeight="700" fill="#b4530b">58°</text>
-        <text x="92" y="45" fontSize="13" fontWeight="800" fill="#c9932c">?</text>
-        <text x="176" y="90" fontSize="12" fontWeight="700" fill="#b4530b">136°</text>
+      <svg viewBox="0 0 230 125" className="mx-auto h-28 w-52">
+        <motion.polygon points="35,105 108,18 178,105" fill="#f2c14e11" stroke="#0b2545" strokeWidth="3" {...draw} />
+        <line x1="178" y1="105" x2="220" y2="105" stroke="#0b2545" strokeWidth="3" strokeDasharray="4 3" />
+        <text x="58" y="97" fontSize="12" fontWeight="700" fill="#b4530b">58°</text>
+        <text x="98" y="42" fontSize="13" fontWeight="800" fill="#c9932c">?</text>
+        <text x="188" y="92" fontSize="12" fontWeight="700" fill="#b4530b">136°</text>
       </svg>
     );
   }

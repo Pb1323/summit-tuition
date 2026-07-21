@@ -1,9 +1,11 @@
 "use client";
 
-import { BookOpen, SpellCheck, PenSquare, Puzzle } from "lucide-react";
+import { BookOpen, SpellCheck, PenSquare, Puzzle, Lock } from "lucide-react";
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { RequireAuth, GlowCard, PremiumBadge, RevealOnScroll } from "@/components/platform/ui";
+import { usePlatform } from "@/context/platform-context";
+import { cn } from "@/lib/utils";
 
 const STRANDS = [
   {
@@ -36,6 +38,52 @@ const STRANDS = [
   },
 ];
 
+function EnglishStrandsGrid() {
+  const { currentUser } = usePlatform();
+
+  return (
+    <div className="mt-8 grid gap-6 sm:grid-cols-2">
+      {STRANDS.map((strand) => {
+        const Icon = strand.icon;
+        const noteId = `english-${strand.slug}`;
+        const locked =
+          strand.available && currentUser?.role !== "admin" && !currentUser?.unlockedNoteIds.includes(noteId);
+        const clickable = strand.available && !locked;
+        const card = (
+          <GlowCard className={cn("h-full p-6", (!strand.available || locked) && "opacity-60")}>
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gold/15 text-gold-dark">
+                <Icon className="h-5 w-5" />
+              </div>
+              <h2 className="text-xl font-bold text-navy">{strand.name}</h2>
+              {!strand.available && (
+                <span className="ml-auto">
+                  <PremiumBadge tone="navy">Coming soon</PremiumBadge>
+                </span>
+              )}
+              {locked && (
+                <span className="ml-auto flex items-center gap-1 text-[11px] font-bold text-gold-dark">
+                  <Lock className="h-3 w-3" /> Unlock with Pro
+                </span>
+              )}
+            </div>
+            <p className="mt-3 text-sm text-muted">{strand.description}</p>
+          </GlowCard>
+        );
+        return clickable ? (
+          <Link key={strand.slug} href={`/notes/english/${strand.slug}`} className="block">
+            {card}
+          </Link>
+        ) : (
+          <div key={strand.slug} className={locked ? "cursor-not-allowed" : ""}>
+            {card}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function EnglishNotesHubPage() {
   return (
     <RequireAuth role="student">
@@ -52,36 +100,7 @@ export default function EnglishNotesHubPage() {
           </p>
         </RevealOnScroll>
 
-        <div className="mt-8 grid gap-6 sm:grid-cols-2">
-          {STRANDS.map((strand) => {
-            const Icon = strand.icon;
-            const card = (
-              <GlowCard className="h-full p-6">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gold/15 text-gold-dark">
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <h2 className="text-xl font-bold text-navy">{strand.name}</h2>
-                  {!strand.available && (
-                    <span className="ml-auto">
-                      <PremiumBadge tone="navy">Coming soon</PremiumBadge>
-                    </span>
-                  )}
-                </div>
-                <p className="mt-3 text-sm text-muted">{strand.description}</p>
-              </GlowCard>
-            );
-            return strand.available ? (
-              <Link key={strand.slug} href={`/notes/english/${strand.slug}`} className="block">
-                {card}
-              </Link>
-            ) : (
-              <div key={strand.slug} className="opacity-60">
-                {card}
-              </div>
-            );
-          })}
-        </div>
+        <EnglishStrandsGrid />
       </Container>
     </RequireAuth>
   );
