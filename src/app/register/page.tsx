@@ -10,20 +10,28 @@ import { usePlatform } from "@/context/platform-context";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const { register } = usePlatform();
+  const { register, login } = usePlatform();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setIsSubmitting(true);
     const result = await register({ name, email, password });
     if (!result.ok) {
       setMessage(result.message);
+      setIsSubmitting(false);
       return;
     }
-    router.push("/login");
+    const signedIn = await login(email, password);
+    if (!signedIn.ok) {
+      router.push("/login");
+      return;
+    }
+    router.push("/dashboard");
   }
 
   return (
@@ -47,7 +55,9 @@ export default function RegisterPage() {
               <input id="password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} className="mt-2 h-12 w-full rounded-xl border border-line px-4 outline-none focus:border-gold" required minLength={8} />
             </div>
             {message && <p className="rounded-xl bg-cream p-3 text-sm text-muted">{message}</p>}
-            <AnimatedButton type="submit" className="w-full">Create my account</AnimatedButton>
+            <AnimatedButton type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? "Creating your account…" : "Create my account"}
+            </AnimatedButton>
           </form>
           <p className="mt-5 text-center text-sm text-muted">
             Already registered? <Link href="/login" className="font-bold text-navy underline">Sign in</Link>
