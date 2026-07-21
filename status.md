@@ -1,8 +1,20 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-21 (WhatsApp-based manual payment fallback + free-mock paywall — see below)
+Last updated: 2026-07-21 (share-readiness check: fixed the /welcome pricing tabs not offering WhatsApp payment — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+---
+
+## Done (session — 2026-07-21, share-readiness check before sending the site to other people)
+
+Founder asked for the site to be checked end-to-end before sharing it more widely: welcome page → book a free call/taster or message on WhatsApp → clear pricing pushing people to the free taster → paying goes to WhatsApp too. Tested the whole flow live (local dev server + the actual production site) rather than just reading code.
+
+- **Confirmed working**: `/welcome` → "Book Free Taster Session" opens a dedicated taster-mode booking page (separate from the generic parent-call page); the booking form really does email the founder in production (Resend email keys and a real Calendly calendar are already set in Vercel, so this isn't a dead end); Stripe isn't configured in production on purpose, so anyone trying to pay for Pro/Max on the main pricing page correctly gets a "Message Us on WhatsApp" button with the plan name pre-filled.
+- **Bug found and fixed**: the Pro/Max pricing tabs specifically on `/welcome` (the page shared over WhatsApp) were the one place on the site that skipped the WhatsApp step — tapping "Start Pro"/"Start Max" there just opened a plain enquiry form instead of trying to pay. Fixed so `/welcome` now behaves exactly like the rest of the site.
+- Also folded in an already-in-progress rewrite of the free-taster booking page (calendar shown first, enquiry form as a fallback, taster-specific copy) that was sitting unsaved locally.
+- Re-ran the full check (typecheck, lint, production build) after the fix — all clean.
+- **Not done this session**: `.claude/settings.json` and some Claude Code skill files also had unsaved changes from other work happening in parallel — left those alone since they're unrelated to the website itself.
 
 ---
 
