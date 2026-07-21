@@ -10,6 +10,11 @@ export const SITE = {
   // E.164 without the leading "+", ready to drop into a wa.me link. Temporary manual-payment
   // channel while Stripe live mode is still gated on domain purchase + bank activation.
   whatsappNumber: "447726951811",
+  // Stripe test-mode checkout is fully wired (see pricing-card.tsx/checkout-button.tsx) but
+  // deliberately switched off here — founder wants every Pro/Max CTA to push towards a phone
+  // call/WhatsApp for now rather than a checkout flow that isn't ready to hand to real customers.
+  // Flip this back to true once live-mode Stripe is ready; no other code changes needed.
+  stripeCheckoutEnabled: false,
   address: "London & online, serving families across the UK",
   copyrightYear: "2026",
   socials: {

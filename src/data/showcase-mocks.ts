@@ -1,0 +1,633 @@
+import type { ShowcaseVisualConfig } from "@/components/sections/showcase-visuals";
+
+export interface ShowcaseMathsQuestion {
+  kind: "maths";
+  visual: ShowcaseVisualConfig;
+  prompt: string;
+  options: string[];
+  correctAnswer: string;
+  explanation: string;
+}
+
+export interface ShowcaseGrammarQuestion {
+  kind: "grammar";
+  prompt: string;
+  segments: string[];
+  /** index into segments that contains the mistake, or null if the sentence is correct */
+  mistakeIndex: number | null;
+  explanation: string;
+}
+
+export type ShowcaseQuestion = ShowcaseMathsQuestion | ShowcaseGrammarQuestion;
+
+export interface ShowcaseMock {
+  id: string;
+  subject: "maths" | "english";
+  title: string;
+  tagline: string;
+  questions: ShowcaseQuestion[];
+}
+
+/** All original content, written for this on-site showcase — no third-party paper content reused. */
+export const SHOWCASE_MOCKS: ShowcaseMock[] = [
+  {
+    id: "showcase-maths-data",
+    subject: "maths",
+    title: "Data & Charts Challenge",
+    tagline: "Bar charts, pie charts, line graphs and Venn diagrams",
+    questions: [
+      {
+        kind: "maths",
+        visual: { kind: "bar-chart", max: 30, bars: [
+          { label: "Chess", value: 15 },
+          { label: "Art", value: 22 },
+          { label: "Drama", value: 9 },
+          { label: "Coding", value: 27 },
+          { label: "Choir", value: 12 },
+        ] },
+        prompt: "The bar chart shows the number of pupils in five after-school clubs. What is the mean number of pupils per club?",
+        options: ["17", "15", "19", "20"],
+        correctAnswer: "17",
+        explanation: "Total pupils = 15 + 22 + 9 + 27 + 12 = 85. Mean = 85 ÷ 5 = 17.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "pie-chart", sectors: [
+          { label: "Walk", pct: 40 },
+          { label: "Car", pct: 30 },
+          { label: "Bus", pct: 20 },
+          { label: "Bike", pct: 10 },
+        ] },
+        prompt: "A survey of 200 pupils shows how they travel to school. How many more pupils travel by car than by bike?",
+        options: ["40", "30", "50", "20"],
+        correctAnswer: "40",
+        explanation: "Car = 30% of 200 = 60. Bike = 10% of 200 = 20. 60 − 20 = 40.",
+      },
+      {
+        kind: "maths",
+        visual: {
+          kind: "line-graph",
+          points: [{ x: 0, y: 5 }, { x: 6, y: 5 }, { x: 14, y: 25 }, { x: 24, y: 9 }],
+          xMax: 24,
+          yMax: 25,
+          xUnitLabel: "h",
+          yUnitLabel: "°C",
+          segmentLabels: ["flat", "rising", "falling"],
+        },
+        prompt: "The graph shows the temperature in a greenhouse over 24 hours. Between which two times did the temperature rise fastest?",
+        options: ["6am–2pm", "2pm–midnight", "Midnight–6am", "Equally fast throughout"],
+        correctAnswer: "6am–2pm",
+        explanation: "From 6h to 14h the temperature rises 20°C in 8 hours (2.5°C/h) — steeper than the fall of 16°C over 10 hours afterwards.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "stacked-bar", title: "How 100 students get to school", segments: [
+          { label: "Walk", pct: 40 },
+          { label: "Bus", pct: 25 },
+          { label: "Car", pct: 20 },
+          { label: "Bike", pct: 15 },
+        ] },
+        prompt: "Using the bar above, what percentage of students travel by bus or car combined?",
+        options: ["45%", "40%", "55%", "35%"],
+        correctAnswer: "45%",
+        explanation: "Bus (25%) + Car (20%) = 45%.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "venn", setA: "Football", setB: "Basketball", onlyA: 12, onlyB: 6, both: 6 },
+        prompt: "In a class of 30, 18 play football, 12 play basketball, and 6 play both (shown in the diagram). How many students play neither sport?",
+        options: ["6", "4", "8", "10"],
+        correctAnswer: "6",
+        explanation: "Students playing at least one sport = 12 (football only) + 6 (both) + 6 (basketball only) = 24. Neither = 30 − 24 = 6.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "pie-chart", sectors: [
+          { label: "Rent", pct: 45 },
+          { label: "Food", pct: 20 },
+          { label: "Transport", pct: 15 },
+          { label: "Savings", pct: 20 },
+        ] },
+        prompt: "A family's monthly budget of £2,000 is split as shown. How much more is spent on Rent than on Savings?",
+        options: ["£500", "£400", "£300", "£600"],
+        correctAnswer: "£500",
+        explanation: "Rent = 45% of £2,000 = £900. Savings = 20% of £2,000 = £400. £900 − £400 = £500.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "bar-chart", max: 60, bars: [
+          { label: "Jan", value: 40 },
+          { label: "Feb", value: 35 },
+          { label: "Mar", value: 50 },
+          { label: "Apr", value: 45 },
+          { label: "May", value: 30 },
+        ] },
+        prompt: "The bar chart shows monthly rainfall (mm) recorded for a school project. What is the range of the data?",
+        options: ["20", "15", "25", "10"],
+        correctAnswer: "20",
+        explanation: "Range = highest − lowest = 50 − 30 = 20.",
+      },
+      {
+        kind: "maths",
+        visual: {
+          kind: "line-graph",
+          points: [{ x: 0, y: 0 }, { x: 20, y: 5 }, { x: 30, y: 5 }, { x: 50, y: 15 }],
+          xMax: 50,
+          yMax: 15,
+          xUnitLabel: "min",
+          yUnitLabel: "km",
+          segmentLabels: ["run 1", "rest", "run 2"],
+        },
+        prompt: "The graph shows a runner's distance over time during training. What was the runner's speed during the fastest section, in km/h?",
+        options: ["30 km/h", "15 km/h", "20 km/h", "25 km/h"],
+        correctAnswer: "30 km/h",
+        explanation: "The fastest section covers 10 km in 20 minutes (1/3 hour): 10 ÷ (1/3) = 30 km/h.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "stacked-bar", title: "200 museum visitors by age", segments: [
+          { label: "Under 12", pct: 25 },
+          { label: "12–17", pct: 20 },
+          { label: "18–59", pct: 40 },
+          { label: "60+", pct: 15 },
+        ] },
+        prompt: "Using the bar above, how many visitors were aged 18–59?",
+        options: ["80", "60", "70", "90"],
+        correctAnswer: "80",
+        explanation: "40% of 200 = 80 visitors.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "venn", setA: "Maths", setB: "Science", onlyA: 12, onlyB: 8, both: 10 },
+        prompt: "A survey of 40 pupils found 22 like Maths, 18 like Science, and 10 like both (shown in the diagram). How many pupils like Maths only?",
+        options: ["12", "22", "8", "10"],
+        correctAnswer: "12",
+        explanation: "Maths only = total who like Maths − those who like both = 22 − 10 = 12.",
+      },
+    ],
+  },
+  {
+    id: "showcase-maths-ratio",
+    subject: "maths",
+    title: "Ratio & Proportion Challenge",
+    tagline: "Scaling recipes, mixing quantities and simplifying ratios",
+    questions: [
+      {
+        kind: "maths",
+        visual: { kind: "ratio-table", colA: "Blue paint", colB: "Yellow paint", ratioLabel: "3 : 2", rows: [
+          { name: "Small", a: "300 ml", b: "200 ml" },
+          { name: "Medium", a: "450 ml", b: "", missing: "b" },
+          { name: "Large", a: "600 ml", b: "400 ml" },
+        ] },
+        prompt: "Blue and yellow paint are always mixed in the same ratio. What amount of yellow paint is needed for the Medium batch (450 ml blue)?",
+        options: ["300 ml", "250 ml", "350 ml", "275 ml"],
+        correctAnswer: "300 ml",
+        explanation: "The ratio is 3:2. 450 ÷ 3 = 150, then 150 x 2 = 300 ml.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "ratio-table", colA: "Cement", colB: "Sand", ratioLabel: "2 : 5", rows: [
+          { name: "Batch 1", a: "100 kg", b: "250 kg" },
+          { name: "Batch 2", a: "140 kg", b: "", missing: "b" },
+          { name: "Batch 3", a: "200 kg", b: "500 kg" },
+        ] },
+        prompt: "Cement and sand are always mixed in the same ratio. What mass of sand is needed for Batch 2 (140 kg cement)?",
+        options: ["350 kg", "300 kg", "325 kg", "375 kg"],
+        correctAnswer: "350 kg",
+        explanation: "The ratio is 2:5. 140 ÷ 2 = 70, then 70 x 5 = 350 kg.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "pie-chart", sectors: [
+          { label: "Blue", pct: 40 },
+          { label: "Red", pct: 25 },
+          { label: "Green", pct: 20 },
+          { label: "Yellow", pct: 15 },
+        ] },
+        prompt: "360 pupils voted for a school council colour, shown in the pie chart. What is the ratio of Blue votes to Yellow votes, in simplest form?",
+        options: ["8:3", "3:8", "4:1", "5:2"],
+        correctAnswer: "8:3",
+        explanation: "Blue = 40% of 360 = 144. Yellow = 15% of 360 = 54. 144:54 simplifies (÷18) to 8:3.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "stacked-bar", title: "Fruit basket of 20 pieces", segments: [
+          { label: "Apples", pct: 50 },
+          { label: "Oranges", pct: 30 },
+          { label: "Pears", pct: 20 },
+        ] },
+        prompt: "A fruit basket contains apples, oranges and pears in the ratio 5:3:2 (20 pieces in total, shown above). How many pears are there?",
+        options: ["4", "6", "3", "5"],
+        correctAnswer: "4",
+        explanation: "20% of 20 = 4 pears.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "bar-chart", max: 18, bars: [
+          { label: "Amara", value: 10 },
+          { label: "Ben", value: 15 },
+          { label: "Chloe", value: 6 },
+          { label: "Dev", value: 9 },
+        ] },
+        prompt: "The bar chart shows hours spent revising in a week. What is the ratio of Ben's revision time to Chloe's, in simplest form?",
+        options: ["5:2", "3:1", "2:5", "5:3"],
+        correctAnswer: "5:2",
+        explanation: "Ben:Chloe = 15:6, which simplifies (÷3) to 5:2.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "ratio-table", colA: "Distance", colB: "Fuel used", ratioLabel: "12 : 1", rows: [
+          { name: "Trip 1", a: "120 km", b: "10 L" },
+          { name: "Trip 2", a: "180 km", b: "", missing: "b" },
+          { name: "Trip 3", a: "300 km", b: "25 L" },
+        ] },
+        prompt: "A car uses fuel at a constant rate for distance travelled. How much fuel is needed for Trip 2 (180 km)?",
+        options: ["15 L", "12 L", "18 L", "20 L"],
+        correctAnswer: "15 L",
+        explanation: "The ratio is 12:1 (km per litre). 180 ÷ 12 = 15 L.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "pie-chart", sectors: [
+          { label: "Maths", pct: 45 },
+          { label: "English", pct: 30 },
+          { label: "Science", pct: 15 },
+          { label: "VR", pct: 10 },
+        ] },
+        prompt: "A 900-question homework bank is split by subject as shown. How many more Maths questions are there than Science questions?",
+        options: ["270", "300", "250", "225"],
+        correctAnswer: "270",
+        explanation: "Maths = 45% of 900 = 405. Science = 15% of 900 = 135. 405 − 135 = 270.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "stacked-bar", title: "80 pupils on a school trip", segments: [
+          { label: "Year 7", pct: 20 },
+          { label: "Year 8", pct: 30 },
+          { label: "Year 9", pct: 50 },
+        ] },
+        prompt: "80 pupils go on a trip, split by year group in the ratio 2:3:5, shown above. How many more Year 9 pupils are there than Year 7 pupils?",
+        options: ["24", "20", "28", "16"],
+        correctAnswer: "24",
+        explanation: "Year 9 = 50% of 80 = 40. Year 7 = 20% of 80 = 16. 40 − 16 = 24.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "ratio-table", colA: "Rice", colB: "Peas", ratioLabel: "5 : 2", rows: [
+          { name: "Serves 4", a: "200 g", b: "80 g" },
+          { name: "Serves 6", a: "300 g", b: "", missing: "b" },
+          { name: "Serves 10", a: "500 g", b: "200 g" },
+        ] },
+        prompt: "A recipe always mixes rice and peas in the same ratio. What mass of peas is needed to serve 6 (300 g rice)?",
+        options: ["120 g", "100 g", "150 g", "110 g"],
+        correctAnswer: "120 g",
+        explanation: "The ratio is 5:2. 300 ÷ 5 = 60, then 60 x 2 = 120 g.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "bar-chart", max: 40, bars: [
+          { label: "Falcons", value: 28 },
+          { label: "Eagles", value: 21 },
+          { label: "Hawks", value: 35 },
+          { label: "Owls", value: 14 },
+        ] },
+        prompt: "The bar chart shows quiz points scored by four teams. Express the ratio of Hawks' score to Owls' score in simplest form.",
+        options: ["5:2", "7:3", "5:1", "3:1"],
+        correctAnswer: "5:2",
+        explanation: "Hawks:Owls = 35:14, which simplifies (÷7) to 5:2.",
+      },
+    ],
+  },
+  {
+    id: "showcase-maths-geometry",
+    subject: "maths",
+    title: "Geometry & Measures Challenge",
+    tagline: "Missing angles, shapes and measurement problems",
+    questions: [
+      {
+        kind: "maths",
+        visual: { kind: "geometry-quadrilateral", angles: [100, 75, 95, "?"] },
+        prompt: "The quadrilateral has three known interior angles: 100°, 75° and 95°. What is the size of the fourth angle?",
+        options: ["90°", "85°", "95°", "100°"],
+        correctAnswer: "90°",
+        explanation: "Interior angles of a quadrilateral sum to 360°. 100 + 75 + 95 = 270, so the missing angle is 360 − 270 = 90°.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "geometry-triangle", angles: ["?", 64, 64] },
+        prompt: "This isosceles triangle has two equal base angles of 64° each. What is the size of the third angle?",
+        options: ["52°", "64°", "56°", "48°"],
+        correctAnswer: "52°",
+        explanation: "Angles in a triangle sum to 180°. 64 + 64 = 128, so the remaining angle is 180 − 128 = 52°.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "geometry-triangle", angles: [90, 35, "?"] },
+        prompt: "This right-angled triangle has one angle of 90° and another of 35°. What is the third angle?",
+        options: ["55°", "45°", "50°", "60°"],
+        correctAnswer: "55°",
+        explanation: "Angles in a triangle sum to 180°. 90 + 35 = 125, so the remaining angle is 180 − 125 = 55°.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "geometry-quadrilateral", angles: ["?", 120, 85, 60] },
+        prompt: "The quadrilateral has three known angles: 120°, 85° and 60°. What is the size of the missing angle?",
+        options: ["95°", "90°", "100°", "85°"],
+        correctAnswer: "95°",
+        explanation: "120 + 85 + 60 = 265. The missing angle is 360 − 265 = 95°.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "bar-chart", max: 60, bars: [
+          { label: "Garden A", value: 36 },
+          { label: "Garden B", value: 48 },
+          { label: "Garden C", value: 30 },
+          { label: "Garden D", value: 54 },
+        ], highlight: 1 },
+        prompt: "The bar chart shows the perimeter (cm) of four rectangular gardens. Garden B has a length of 14 cm. What is its width?",
+        options: ["10 cm", "12 cm", "8 cm", "24 cm"],
+        correctAnswer: "10 cm",
+        explanation: "Perimeter = 2 x (length + width), so 48 = 2 x (14 + width). 14 + width = 24, so width = 10 cm.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "geometry-triangle", angles: [48, 110, "?"] },
+        prompt: "This triangle has angles of 48° and 110°. What is the third angle?",
+        options: ["22°", "32°", "28°", "18°"],
+        correctAnswer: "22°",
+        explanation: "48 + 110 = 158. The remaining angle is 180 − 158 = 22°.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "venn", setA: "Right angles", setB: "Equal sides", onlyA: 14, onlyB: 10, both: 8 },
+        prompt: "40 shapes were sorted by property, shown in the diagram (some have right angles, some have all sides equal, some have both). How many shapes have at least one of these properties?",
+        options: ["32", "40", "22", "18"],
+        correctAnswer: "32",
+        explanation: "At least one property = 14 (right angles only) + 8 (both) + 10 (equal sides only) = 32.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "geometry-quadrilateral", angles: [88, "?", 102, 95] },
+        prompt: "The quadrilateral has three known angles: 88°, 102° and 95°. What is the size of the missing angle?",
+        options: ["75°", "85°", "65°", "80°"],
+        correctAnswer: "75°",
+        explanation: "88 + 102 + 95 = 285. The missing angle is 360 − 285 = 75°.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "bar-chart", max: 60, bars: [
+          { label: "T1", value: 25 },
+          { label: "T2", value: 40 },
+          { label: "T3", value: 15 },
+          { label: "T4", value: 50 },
+        ], highlight: 1 },
+        prompt: "The bar chart shows the area (cm²) of four triangles that all share the same base of 10 cm. Using Area = 1/2 x base x height, what is the height of triangle T2?",
+        options: ["8 cm", "10 cm", "6 cm", "4 cm"],
+        correctAnswer: "8 cm",
+        explanation: "40 = 1/2 x 10 x height, so 40 = 5 x height, meaning height = 8 cm.",
+      },
+      {
+        kind: "maths",
+        visual: { kind: "geometry-triangle", angles: ["?", 57, 57] },
+        prompt: "This isosceles triangle has two equal base angles of 57° each. What is the size of the third angle?",
+        options: ["66°", "57°", "63°", "70°"],
+        correctAnswer: "66°",
+        explanation: "57 + 57 = 114. The remaining angle is 180 − 114 = 66°.",
+      },
+    ],
+  },
+  {
+    id: "showcase-english-1",
+    subject: "english",
+    title: "Grammar Detective I",
+    tagline: "Spot the mistake — agreement, pronouns and homophones",
+    questions: [
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["The herd of elephants", "were moving slowly", "across the dry plain", "in search of water."],
+        mistakeIndex: 1,
+        explanation: "\"herd\" is a singular collective noun, so it needs a singular verb: \"was moving slowly.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["Neither of the boys", "have finished", "their homework", "for tomorrow."],
+        mistakeIndex: 1,
+        explanation: "\"Neither\" is singular, so it takes a singular verb: \"has finished.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["She is taller", "than me", "and runs faster", "than anyone in the class."],
+        mistakeIndex: 1,
+        explanation: "This compares subjects, so it should be \"than I (am)\" — the subject pronoun, not the object pronoun \"me.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["The committee", "is meeting today", "to discuss they're", "proposed changes."],
+        mistakeIndex: 2,
+        explanation: "\"they're\" (a contraction of \"they are\") should be \"their\" — the possessive form needed before \"proposed changes.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["Its important", "to check your work", "carefully before", "handing it in."],
+        mistakeIndex: 0,
+        explanation: "\"Its\" (possessive) should be \"It's\" (a contraction of \"it is\").",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["Between you and I,", "this test", "was much harder", "than the last one."],
+        mistakeIndex: 0,
+        explanation: "\"Between\" is a preposition, so it takes the object pronoun \"me\": \"Between you and me.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["The news about the floods", "were very worrying", "for everyone", "in the village."],
+        mistakeIndex: 1,
+        explanation: "\"news\" is a singular noun despite ending in -s, so it needs \"was very worrying.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["Each of the students", "need to bring", "their own calculator", "to the exam."],
+        mistakeIndex: 1,
+        explanation: "\"Each\" is singular, so it takes a singular verb: \"needs to bring.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["The two girls", "shared her lunch", "with the new student", "on the first day."],
+        mistakeIndex: 1,
+        explanation: "\"The two girls\" is plural, so the possessive pronoun must be plural too: \"shared their lunch.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["The teacher explained", "the instructions clearly", "so every student understood", "what to do."],
+        mistakeIndex: null,
+        explanation: "No mistake — every part of this sentence is grammatically correct.",
+      },
+    ],
+  },
+  {
+    id: "showcase-english-2",
+    subject: "english",
+    title: "Grammar Detective II",
+    tagline: "Spot the mistake — apostrophes, tense and comparisons",
+    questions: [
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["The dog wagged", "it's tail happily", "when it saw", "its owner return."],
+        mistakeIndex: 1,
+        explanation: "\"it's\" (a contraction of \"it is\") should be \"its\" — the possessive form needed before \"tail.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["The childrens' toys", "were scattered", "across the playroom", "floor."],
+        mistakeIndex: 0,
+        explanation: "\"children\" is already plural, so its possessive form is \"children's,\" not \"childrens'.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["Yesterday, she walks", "to school", "and meets", "her best friend."],
+        mistakeIndex: 0,
+        explanation: "\"Yesterday\" signals the past tense, so it should be \"she walked,\" not \"walks.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["This cake tastes", "more sweeter", "than the one", "we made last week."],
+        mistakeIndex: 1,
+        explanation: "\"more sweeter\" is a double comparative — it should simply be \"sweeter.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["He is one of the fastest", "runner in the school,", "winning every race", "this term."],
+        mistakeIndex: 1,
+        explanation: "\"one of the fastest\" needs a plural noun: \"one of the fastest runners.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["My brother is", "bored of", "waiting for", "the bus."],
+        mistakeIndex: 1,
+        explanation: "The correct preposition pairing is \"bored with\" or \"bored by,\" not \"bored of.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["The two team's coaches", "met before the match", "to agree", "on the rules."],
+        mistakeIndex: 0,
+        explanation: "With two teams, the possessive apostrophe goes after the plural \"s\": \"the two teams' coaches.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["She sang beautiful", "during the concert,", "earning loud applause", "from the crowd."],
+        mistakeIndex: 0,
+        explanation: "\"beautiful\" is an adjective, but it describes how she sang, so it needs the adverb \"beautifully.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["By the time we arrived,", "the film had already", "started", "without us."],
+        mistakeIndex: null,
+        explanation: "No mistake — the past perfect \"had already started\" is correctly used for an action completed before another past action.",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["There going to", "announce the results", "of the competition", "this afternoon."],
+        mistakeIndex: 0,
+        explanation: "\"There\" should be \"They're\" (a contraction of \"they are\").",
+      },
+    ],
+  },
+  {
+    id: "showcase-english-3",
+    subject: "english",
+    title: "Grammar Detective III",
+    tagline: "Spot the mistake — advanced usage for stretch practice",
+    questions: [
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["Give the prize", "to whomever", "arrives", "first."],
+        mistakeIndex: 1,
+        explanation: "\"whoever\" is the subject of \"arrives first,\" so the subjective case is needed, even though the whole clause follows \"to.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["Running down the hill,", "the wind", "blew through Sam's hair", "as he laughed."],
+        mistakeIndex: 1,
+        explanation: "This is a dangling modifier — \"the wind\" cannot be running down the hill. It should read \"Running down the hill, Sam felt the wind blow through his hair.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["If I was you,", "I would apologise", "to her", "straight away."],
+        mistakeIndex: 0,
+        explanation: "This is a hypothetical (subjunctive) situation, so it needs \"were\": \"If I were you.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["There are less students", "in this class", "than there were", "last year."],
+        mistakeIndex: 0,
+        explanation: "\"students\" is a countable noun, so it needs \"fewer,\" not \"less.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["She likes swimming,", "reading,", "and to ride her bike", "every weekend."],
+        mistakeIndex: 2,
+        explanation: "For parallel structure, all items in the list should match: \"swimming, reading, and riding her bike.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["The dog needs", "to lay down", "and rest", "after its walk."],
+        mistakeIndex: 1,
+        explanation: "\"lay\" needs an object (you lay something down); for the dog resting itself, the correct verb is \"lie down.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["Whomever wins the match", "will go through", "to the final", "next week."],
+        mistakeIndex: 0,
+        explanation: "\"Whoever\" is the subject of \"wins the match,\" so the subjective case is needed: \"Whoever wins.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["My sister, along with her friends,", "are going", "to the cinema", "tonight."],
+        mistakeIndex: 1,
+        explanation: "\"along with her friends\" is a parenthetical phrase — the true subject \"sister\" is singular, so it needs \"is going.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["Each of the answers", "were checked twice", "by the examiner", "before the results were released."],
+        mistakeIndex: 1,
+        explanation: "\"Each\" is singular, so it needs \"was checked twice.\"",
+      },
+      {
+        kind: "grammar",
+        prompt: "Which part of this sentence contains a grammar mistake?",
+        segments: ["The manager, together with the two assistants,", "reviewed the accounts", "and confirmed", "the final total."],
+        mistakeIndex: null,
+        explanation: "No mistake — \"together with the two assistants\" is a parenthetical phrase, and the singular subject \"manager\" correctly takes the plural-looking but singular verb form here.",
+      },
+    ],
+  },
+];

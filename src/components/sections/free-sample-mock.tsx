@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-type MathVisualKind = "order-of-operations" | "fraction" | "ratio" | "perimeter" | "percentage";
+type MathVisualKind = "bar-chart" | "pie-chart" | "line-graph" | "geometry-exterior-angle" | "geometry-pentagon";
 
 interface MathQuestion {
   kind: "maths";
@@ -33,43 +33,53 @@ type SampleQuestion = MathQuestion | GrammarQuestion;
 const MATH_QUESTIONS: MathQuestion[] = [
   {
     kind: "maths",
-    visual: "order-of-operations",
-    prompt: "Calculate 24 + 5 x 6 - 10.",
-    options: ["44", "39", "84", "50"],
-    correctAnswer: "44",
-    explanation: "Multiply first: 5 x 6 = 30. Then 24 + 30 - 10 = 44.",
+    visual: "geometry-exterior-angle",
+    prompt:
+      "In this triangle, the exterior angle at the marked vertex is 136°, and one of the two remote interior angles is 58°. Using the exterior angle theorem (an exterior angle equals the sum of the two remote interior angles), what is the third interior angle?",
+    options: ["78°", "68°", "86°", "72°"],
+    correctAnswer: "78°",
+    explanation:
+      "The exterior angle theorem gives 58° + the missing angle = 136°, so the missing angle is 136 − 58 = 78°.",
   },
   {
     kind: "maths",
-    visual: "fraction",
-    prompt: "What is 2/5 of 60?",
-    options: ["24", "20", "30", "12"],
-    correctAnswer: "24",
-    explanation: "60 divided by 5 = 12, then 12 x 2 = 24.",
+    visual: "bar-chart",
+    prompt:
+      "The bar chart shows the number of books read last month by four classes. How many more books did Class D read than double what Class A read?",
+    options: ["13", "27", "9", "19"],
+    correctAnswer: "13",
+    explanation:
+      "Double Class A's total is 14 x 2 = 28. Class D read 41 books. 41 − 28 = 13.",
   },
   {
     kind: "maths",
-    visual: "ratio",
-    prompt: "Share £40 between two friends in the ratio 3:5. How much does the friend with the larger share receive?",
-    options: ["£25", "£15", "£20", "£30"],
-    correctAnswer: "£25",
-    explanation: "3 + 5 = 8 parts. £40 divided by 8 = £5 per part. The larger share is 5 parts, so 5 x £5 = £25.",
+    visual: "pie-chart",
+    prompt:
+      "300 people were surveyed on their favourite sport, shown in the pie chart. What is the ratio of Football fans to Athletics fans, in simplest form?",
+    options: ["7:3", "5:3", "3:7", "2:1"],
+    correctAnswer: "7:3",
+    explanation:
+      "Football = 35% of 300 = 105. Athletics = 15% of 300 = 45. 105:45 simplifies (÷15) to 7:3.",
   },
   {
     kind: "maths",
-    visual: "perimeter",
-    prompt: "A square has a perimeter of 32 cm. What is the length of one side?",
-    options: ["8 cm", "16 cm", "4 cm", "6 cm"],
-    correctAnswer: "8 cm",
-    explanation: "A square has 4 equal sides, so 32 divided by 4 = 8 cm.",
+    visual: "line-graph",
+    prompt:
+      "The graph shows a cyclist's journey: riding, then a rest stop, then riding again. What was the cyclist's AVERAGE speed for the whole 2.5-hour journey, including the rest stop?",
+    options: ["14 km/h", "15 km/h", "20 km/h", "17.5 km/h"],
+    correctAnswer: "14 km/h",
+    explanation:
+      "Total distance = 35 km over a total time of 2.5 hours (including the rest). Average speed = 35 ÷ 2.5 = 14 km/h.",
   },
   {
     kind: "maths",
-    visual: "percentage",
-    prompt: "A jacket costs £80 and is reduced by 25% in a sale. What is the sale price?",
-    options: ["£60", "£55", "£20", "£65"],
-    correctAnswer: "£60",
-    explanation: "25% of £80 is £20. £80 - £20 = £60.",
+    visual: "geometry-pentagon",
+    prompt:
+      "The diagram shows a pentagon with four of its interior angles given: 100°, 110°, 95° and 100°. The interior angles of a pentagon always sum to 540°. What is the size of the fifth angle?",
+    options: ["135°", "145°", "125°", "130°"],
+    correctAnswer: "135°",
+    explanation:
+      "100 + 110 + 95 + 100 = 405. The fifth angle is 540 − 405 = 135°.",
   },
 ];
 
@@ -127,88 +137,169 @@ const SAMPLE_QUESTIONS: SampleQuestion[] = [
 const NO_MISTAKE = "No mistake — the sentence is correct";
 const SEGMENT_LETTERS = ["A", "B", "C", "D"];
 
+const PIE_SECTORS = [
+  { label: "Football", pct: 35, color: "#0b2545" },
+  { label: "Swimming", pct: 25, color: "#c9932c" },
+  { label: "Tennis", pct: 20, color: "#b4530b" },
+  { label: "Athletics", pct: 15, color: "#7c9a92" },
+  { label: "Netball", pct: 5, color: "#8a5a8f" },
+];
+
+function polarPoint(cx: number, cy: number, r: number, angleDeg: number) {
+  const rad = ((angleDeg - 90) * Math.PI) / 180;
+  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+}
+
+function pieSlicePath(cx: number, cy: number, r: number, startAngle: number, endAngle: number) {
+  const start = polarPoint(cx, cy, r, endAngle);
+  const end = polarPoint(cx, cy, r, startAngle);
+  const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+  return `M ${cx} ${cy} L ${start.x} ${start.y} A ${r} ${r} 0 ${largeArcFlag} 0 ${end.x} ${end.y} Z`;
+}
+
 function MathVisual({ kind }: { kind: MathVisualKind }) {
   const reduceMotion = useReducedMotion();
   const draw = reduceMotion
     ? {}
     : { initial: { pathLength: 0, opacity: 0 }, animate: { pathLength: 1, opacity: 1 }, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] as const } };
-  const grow = (target: string | number) =>
-    reduceMotion
-      ? { style: { width: target } }
-      : { initial: { width: 0 }, animate: { width: target }, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const } };
 
-  if (kind === "order-of-operations") {
+  if (kind === "bar-chart") {
+    const bars = [
+      { label: "A", value: 14 },
+      { label: "B", value: 33 },
+      { label: "C", value: 19 },
+      { label: "D", value: 41 },
+    ];
+    const max = 45;
+    const barWidth = 44;
+    const gap = 20;
+    const chartHeight = 92;
     return (
-      <svg viewBox="0 0 260 90" className="h-24 w-full">
-        <motion.text x="10" y="50" fontSize="26" fontWeight="700" fill="#0b2545" {...draw}>
-          24 +
-        </motion.text>
-        <motion.rect x="70" y="20" width="70" height="40" rx="10" fill="#f2c14e22" stroke="#c9932c" strokeWidth="2" {...draw} />
-        <motion.text x="80" y="50" fontSize="24" fontWeight="700" fill="#b4530b" {...draw}>
-          5 x 6
-        </motion.text>
-        <motion.text x="150" y="50" fontSize="26" fontWeight="700" fill="#0b2545" {...draw}>
-          - 10
-        </motion.text>
+      <svg viewBox="0 0 260 130" className="h-32 w-full">
+        <line x1="8" y1={chartHeight + 10} x2="252" y2={chartHeight + 10} stroke="#0b2545" strokeWidth="2" />
+        {bars.map((bar, i) => {
+          const height = (bar.value / max) * chartHeight;
+          const x = 20 + i * (barWidth + gap);
+          const y = chartHeight + 10 - height;
+          return (
+            <g key={bar.label}>
+              <motion.rect
+                x={x}
+                width={barWidth}
+                rx="4"
+                fill={i === 3 ? "#c9932c" : "#0b2545"}
+                initial={reduceMotion ? undefined : { height: 0, y: chartHeight + 10 }}
+                animate={reduceMotion ? undefined : { height, y }}
+                {...(reduceMotion ? { height, y } : {})}
+                transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              />
+              <text x={x + barWidth / 2} y={y - 6} textAnchor="middle" fontSize="12" fontWeight="700" fill="#0b2545">
+                {bar.value}
+              </text>
+              <text x={x + barWidth / 2} y={chartHeight + 26} textAnchor="middle" fontSize="11" fontWeight="700" fill="#5c5c5c">
+                Class {bar.label}
+              </text>
+            </g>
+          );
+        })}
       </svg>
     );
   }
 
-  if (kind === "fraction") {
+  if (kind === "pie-chart") {
+    const arcs = PIE_SECTORS.reduce<{ label: string; color: string; startAngle: number; endAngle: number }[]>((acc, sector) => {
+      const prevEnd = acc.length ? acc[acc.length - 1].endAngle : 0;
+      acc.push({ ...sector, startAngle: prevEnd, endAngle: prevEnd + sector.pct * 3.6 });
+      return acc;
+    }, []);
     return (
-      <svg viewBox="0 0 100 100" className="mx-auto h-24 w-24">
-        <circle cx="50" cy="50" r="42" fill="none" stroke="#e6e1d6" strokeWidth="12" />
-        <motion.circle
-          cx="50"
-          cy="50"
-          r="42"
-          fill="none"
-          stroke="#c9932c"
-          strokeWidth="12"
-          strokeDasharray={`${2 * Math.PI * 42}`}
-          strokeDashoffset={reduceMotion ? 2 * Math.PI * 42 * 0.6 : undefined}
-          initial={reduceMotion ? undefined : { strokeDashoffset: 2 * Math.PI * 42 }}
-          animate={reduceMotion ? undefined : { strokeDashoffset: 2 * Math.PI * 42 * 0.6 }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          transform="rotate(-90 50 50)"
-          strokeLinecap="round"
-        />
-        <text x="50" y="56" textAnchor="middle" fontSize="18" fontWeight="700" fill="#0b2545">
-          2/5
+      <div className="flex items-center justify-center gap-4">
+        <svg viewBox="0 0 100 100" className="h-28 w-28 shrink-0">
+          {arcs.map(({ label, color, startAngle, endAngle }, i) => {
+            return (
+              <motion.path
+                key={label}
+                d={pieSlicePath(50, 50, 46, startAngle, endAngle)}
+                fill={color}
+                stroke="#fff"
+                strokeWidth="1.5"
+                initial={reduceMotion ? undefined : { opacity: 0, scale: 0.8 }}
+                animate={reduceMotion ? undefined : { opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                style={{ transformOrigin: "50px 50px" }}
+              />
+            );
+          })}
+        </svg>
+        <ul className="space-y-1 text-[11px] font-semibold text-navy">
+          {PIE_SECTORS.map((sector) => (
+            <li key={sector.label} className="flex items-center gap-1.5">
+              <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: sector.color }} />
+              {sector.label} — {sector.pct}%
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+
+  if (kind === "line-graph") {
+    const points = [
+      { x: 8, y: 92 },
+      { x: 96, y: 53.4 },
+      { x: 140, y: 53.4 },
+      { x: 228, y: 2 },
+    ];
+    const path = `M ${points.map((p) => `${p.x} ${p.y}`).join(" L ")}`;
+    return (
+      <svg viewBox="0 0 240 105" className="h-28 w-full">
+        <line x1="8" y1="2" x2="8" y2="92" stroke="#0b2545" strokeWidth="1.5" />
+        <line x1="8" y1="92" x2="232" y2="92" stroke="#0b2545" strokeWidth="1.5" />
+        <text x="4" y="8" fontSize="8" fill="#5c5c5c">35km</text>
+        <text x="230" y="102" fontSize="8" fill="#5c5c5c" textAnchor="end">2.5h</text>
+        <motion.path d={path} fill="none" stroke="#c9932c" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" {...draw} />
+        {points.map((p, i) => (
+          <circle key={i} cx={p.x} cy={p.y} r="3.5" fill="#0b2545" />
+        ))}
+        <text x="52" y="66" fontSize="9" fontWeight="700" fill="#0b2545">
+          ride 1
+        </text>
+        <text x="112" y="70" fontSize="9" fontWeight="700" fill="#5c5c5c">
+          rest
+        </text>
+        <text x="168" y="22" fontSize="9" fontWeight="700" fill="#b4530b">
+          ride 2
         </text>
       </svg>
     );
   }
 
-  if (kind === "ratio") {
+  if (kind === "geometry-exterior-angle") {
     return (
-      <svg viewBox="0 0 260 50" className="h-14 w-full">
-        <rect x="0" y="10" width="260" height="30" rx="8" fill="#f2ede1" />
-        <motion.rect x="0" y="10" height="30" rx="8" fill="#0b2545" {...grow("97.5")} />
-        <motion.rect x="102" y="10" height="30" rx="8" fill="#c9932c" {...grow("162.5")} />
-        <text x="45" y="30" textAnchor="middle" fontSize="13" fontWeight="700" fill="#fff">3</text>
-        <text x="185" y="30" textAnchor="middle" fontSize="13" fontWeight="700" fill="#fff">5</text>
-      </svg>
-    );
-  }
-
-  if (kind === "perimeter") {
-    return (
-      <svg viewBox="0 0 100 100" className="mx-auto h-24 w-24">
-        <motion.rect x="18" y="18" width="64" height="64" rx="4" fill="#f2c14e11" stroke="#0b2545" strokeWidth="4" {...draw} />
-        <text x="50" y="14" textAnchor="middle" fontSize="11" fontWeight="700" fill="#b4530b">? cm</text>
-        <text x="96" y="54" textAnchor="middle" fontSize="10" fill="#5c5c5c" transform="rotate(90 96 54)">32 cm perimeter</text>
+      <svg viewBox="0 0 220 120" className="mx-auto h-28 w-52">
+        <motion.polygon points="30,100 100,25 170,100" fill="#f2c14e11" stroke="#0b2545" strokeWidth="3" {...draw} />
+        <line x1="170" y1="100" x2="210" y2="100" stroke="#0b2545" strokeWidth="3" strokeDasharray="4 3" />
+        <text x="40" y="92" fontSize="12" fontWeight="700" fill="#b4530b">58°</text>
+        <text x="92" y="45" fontSize="13" fontWeight="800" fill="#c9932c">?</text>
+        <text x="176" y="90" fontSize="12" fontWeight="700" fill="#b4530b">136°</text>
       </svg>
     );
   }
 
   return (
-    <svg viewBox="0 0 260 50" className="h-14 w-full">
-      <rect x="0" y="10" width="260" height="30" rx="8" fill="#f2ede1" />
-      <motion.rect x="0" y="10" height="30" rx="8" fill="#0b2545" {...grow("195")} />
-      <motion.rect x="0" y="10" height="30" rx="8" fill="#c9932c22" style={{ marginLeft: 0 }} initial={reduceMotion ? undefined : { x: 195, width: 0 }} animate={reduceMotion ? undefined : { x: 195, width: 65 }} transition={{ duration: 0.6, delay: 0.5 }} />
-      <text x="97" y="30" textAnchor="middle" fontSize="12" fontWeight="700" fill="#fff">£60 kept</text>
-      <text x="227" y="30" textAnchor="middle" fontSize="10" fontWeight="700" fill="#b4530b">-25%</text>
+    <svg viewBox="0 0 200 130" className="mx-auto h-32 w-48">
+      <motion.polygon
+        points="100,10 180,55 150,120 50,120 20,55"
+        fill="#f2c14e11"
+        stroke="#0b2545"
+        strokeWidth="3"
+        {...draw}
+      />
+      <text x="100" y="28" textAnchor="middle" fontSize="11" fontWeight="700" fill="#b4530b">100°</text>
+      <text x="158" y="60" fontSize="11" fontWeight="700" fill="#b4530b">110°</text>
+      <text x="138" y="108" fontSize="11" fontWeight="700" fill="#b4530b">95°</text>
+      <text x="56" y="108" fontSize="11" fontWeight="700" fill="#b4530b">100°</text>
+      <text x="28" y="60" fontSize="13" fontWeight="800" fill="#c9932c">?</text>
     </svg>
   );
 }

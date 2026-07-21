@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckoutButton } from "@/components/ui/checkout-button";
+import { SITE } from "@/data/site";
 import type { PricingTier } from "@/types/pricing";
 
 export function PricingCard({ tier }: { tier: PricingTier }) {
@@ -38,7 +39,7 @@ export function PricingCard({ tier }: { tier: PricingTier }) {
         ))}
       </ul>
 
-      {tier.stripePriceId ? (
+      {SITE.stripeCheckoutEnabled && tier.stripePriceId ? (
         <CheckoutButton
           variant={tier.highlighted ? "primary" : "navy"}
           size="lg"

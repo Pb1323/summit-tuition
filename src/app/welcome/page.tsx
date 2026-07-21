@@ -11,7 +11,7 @@ import { SITE } from "@/data/site";
 import { RevealOnScroll } from "@/components/platform/ui";
 import { Button } from "@/components/ui/button";
 import { AnimatedCounter } from "@/components/motion/animated-counter";
-import { WelcomePricingTabs } from "@/components/sections/welcome-pricing-tabs";
+import { WelcomePricingTabs, WelcomeTuitionPricingTabs } from "@/components/sections/welcome-pricing-tabs";
 import { WelcomeStickyCta } from "@/components/sections/welcome-sticky-cta";
 import { FreeSampleMock } from "@/components/sections/free-sample-mock";
 
@@ -137,6 +137,18 @@ export default function WelcomePage() {
             </div>
             <Link href="/pricing" className="mt-4 block text-center text-sm font-bold text-gold-dark">
               See all plans →
+            </Link>
+          </RevealOnScroll>
+
+          {/* Tuition — Group / Private, pushed right under Pro/Max so parents see the human-taught option too */}
+          <RevealOnScroll>
+            <h2 className="text-lg font-black text-navy">Prefer live tuition?</h2>
+            <p className="mt-1 text-sm text-muted">Small-group or 1:1 sessions with a real tutor — Group or Private.</p>
+            <div className="mt-4">
+              <WelcomeTuitionPricingTabs />
+            </div>
+            <Link href="/tuition" className="mt-4 block text-center text-sm font-bold text-gold-dark">
+              See all tuition options →
             </Link>
           </RevealOnScroll>
 

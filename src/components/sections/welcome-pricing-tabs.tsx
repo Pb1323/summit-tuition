@@ -6,22 +6,36 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckoutButton } from "@/components/ui/checkout-button";
-import { MOCK_CLUB_PRICING, PROGRAMME_PRICING } from "@/data/pricing";
+import { SITE } from "@/data/site";
+import { MOCK_CLUB_PRICING, PROGRAMME_PRICING, GROUP_TUITION_PRICING, PRIVATE_TUITION_PRICING } from "@/data/pricing";
+import type { PricingTier } from "@/types/pricing";
 
-const TABS = [
+interface TabDef {
+  id: string;
+  label: string;
+  tier: PricingTier;
+  learnMoreHref: string;
+}
+
+const PLATFORM_TABS: TabDef[] = [
   { id: "pro", label: "Pro", tier: MOCK_CLUB_PRICING[0], learnMoreHref: "/pricing#platform" },
   { id: "max", label: "Max", tier: PROGRAMME_PRICING[0], learnMoreHref: "/pricing#platform" },
-] as const;
+];
 
-export function WelcomePricingTabs() {
-  const [activeId, setActiveId] = useState<(typeof TABS)[number]["id"]>("pro");
-  const active = TABS.find((t) => t.id === activeId) ?? TABS[0];
+const TUITION_TABS: TabDef[] = [
+  { id: "group", label: "Group", tier: GROUP_TUITION_PRICING[0], learnMoreHref: "/tuition/group" },
+  { id: "private", label: "Private", tier: PRIVATE_TUITION_PRICING[0], learnMoreHref: "/tuition/private" },
+];
+
+function PricingTabSwitcher({ tabs, initialId }: { tabs: TabDef[]; initialId: string }) {
+  const [activeId, setActiveId] = useState(initialId);
+  const active = tabs.find((t) => t.id === activeId) ?? tabs[0];
   const tier = active.tier;
 
   return (
     <div>
       <div className="-mx-1 flex snap-x gap-2 overflow-x-auto px-1 pb-1" role="tablist" aria-label="Pricing plans">
-        {TABS.map((tab) => (
+        {tabs.map((tab) => (
           <button
             key={tab.id}
             type="button"
@@ -70,7 +84,7 @@ export function WelcomePricingTabs() {
         </ul>
 
         <div className="mt-5 flex flex-col gap-2">
-          {tier.stripePriceId ? (
+          {SITE.stripeCheckoutEnabled && tier.stripePriceId ? (
             <CheckoutButton
               size="md"
               className="w-full"
@@ -95,4 +109,12 @@ export function WelcomePricingTabs() {
       </div>
     </div>
   );
+}
+
+export function WelcomePricingTabs() {
+  return <PricingTabSwitcher tabs={PLATFORM_TABS} initialId="pro" />;
+}
+
+export function WelcomeTuitionPricingTabs() {
+  return <PricingTabSwitcher tabs={TUITION_TABS} initialId="group" />;
 }
