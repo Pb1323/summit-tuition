@@ -1,7 +1,6 @@
 import Link from "next/link";
 import {
   ClipboardCheck,
-  Repeat,
   Users,
   ArrowRight,
   Gauge,
@@ -29,16 +28,12 @@ import { FeatureGrid } from "@/components/ui/feature-grid";
 import { PricingCard } from "@/components/ui/pricing-card";
 import { TestimonialCard } from "@/components/ui/testimonial-card";
 import { HeroSection } from "@/components/sections/hero-section";
-import { ProductLadder } from "@/components/sections/product-ladder";
-import { CTASection } from "@/components/sections/cta-section";
 import { ComparisonTable } from "@/components/sections/comparison-table";
 import { MockReportPreview } from "@/components/sections/mock-report-preview";
 import { TryAQuestion } from "@/components/sections/try-a-question";
 import { FreeSampleMock } from "@/components/sections/free-sample-mock";
 import { BeforeAfterSlider } from "@/components/sections/before-after-slider";
-import { YearGroupPicker } from "@/components/sections/year-group-picker";
 import { PLATFORM_TIER_PRICING_FOR_SALE } from "@/data/pricing";
-import { UPSELL_PRODUCTS } from "@/data/products";
 import { Magnetic } from "@/components/motion/magnetic";
 import { AnimatedCounter } from "@/components/motion/animated-counter";
 import { ScrollProgress } from "@/components/motion/scroll-progress";
@@ -46,30 +41,6 @@ import { ScrollStoryRail } from "@/components/motion/scroll-story-rail";
 import { TiltCard } from "@/components/motion/tilt-card";
 import { WarpGrid } from "@/components/motion/warp-grid";
 import { PullQuote } from "@/components/ui/pull-quote";
-
-const START_HERE = [
-  {
-    icon: <Gauge className="h-6 w-6" />,
-    title: "I want to know my child's level",
-    description: "Book a diagnostic assessment and receive a clear improvement plan.",
-    cta: "Book Diagnostic Assessment",
-    href: "/diagnostic-assessment",
-  },
-  {
-    icon: <Repeat className="h-6 w-6" />,
-    title: "I want weekly exam practice",
-    description: "Go Pro for timed mocks, practice papers, scores and progress tracking.",
-    cta: "See Pro",
-    href: "/pricing#platform",
-  },
-  {
-    icon: <Users className="h-6 w-6" />,
-    title: "I want teaching and support",
-    description: "Choose private or small group tuition for structured 11+ preparation.",
-    cta: "View Tuition Plans",
-    href: "/tuition",
-  },
-];
 
 const DIAGNOSTIC_FEATURES = [
   { icon: <Gauge className="h-5 w-5" />, title: "Overall readiness score" },
@@ -164,8 +135,8 @@ export default function HomePage() {
             <SectionHeading
               align="center"
               eyebrow="Try It Yourself"
-              title="Try 5 real questions right now"
-              description="No account needed. See exactly what a Summit Tuition mock feels like before you sign up for anything."
+              title="Try 10 real questions right now"
+              description="5 maths, 5 spot-the-grammar-mistake. No account needed — see exactly what a Summit Tuition mock feels like before you sign up for anything."
             />
             <div className="mt-10 mx-auto max-w-xl">
               <FreeSampleMock />
@@ -174,50 +145,126 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* Start Here */}
+      {/* Taster session / free call / create account */}
       <section className="py-20">
         <Container>
           <RevealOnScroll>
-            <SectionHeading eyebrow="Start Here" title="Tell us what you need — we'll point you to the right place" />
-            <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
-              {START_HERE.map((item) => (
-                <Card key={item.title} className="flex flex-col p-7">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-navy text-gold-light">
-                    {item.icon}
-                  </div>
-                  <h3 className="mt-5 text-xl font-semibold text-navy">{item.title}</h3>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{item.description}</p>
-                  <Button href={item.href} variant="outline" className="mt-6 w-fit">
-                    {item.cta} <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </Card>
-              ))}
+            <SectionHeading
+              align="center"
+              eyebrow="Next Step"
+              title="Book a free taster, or jump straight in"
+              description="No pressure, no obligation — try before you commit to anything."
+            />
+            <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
+              <Card className="flex flex-col items-center p-8 text-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-navy text-gold-light">
+                  <Users className="h-6 w-6" />
+                </div>
+                <h3 className="mt-5 text-xl font-semibold text-navy">Free taster session or parent call</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted">
+                  Sit a free taster tuition session with a real tutor, or book a 15-minute call to talk through
+                  what your child needs.
+                </p>
+                <div className="mt-6 flex flex-wrap justify-center gap-3">
+                  <Magnetic>
+                    <Button href="/book-a-call?product=free-taster" size="lg">
+                      Book Free Taster Session
+                    </Button>
+                  </Magnetic>
+                  <Magnetic>
+                    <Button href="/book-a-call" variant="outline" size="lg">
+                      Book a Free Call
+                    </Button>
+                  </Magnetic>
+                </div>
+              </Card>
+              <Card className="flex flex-col items-center p-8 text-center">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-navy text-gold-light">
+                  <Sparkles className="h-6 w-6" />
+                </div>
+                <h3 className="mt-5 text-xl font-semibold text-navy">Create your account</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted">
+                  Get instant access to a free mock in every subject and your first Study Notes topic — no
+                  card required.
+                </p>
+                <div className="mt-6">
+                  <Magnetic>
+                    <Button href="/account" size="lg">
+                      Create Account <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </Magnetic>
+                </div>
+              </Card>
             </div>
-          </RevealOnScroll>
-          <RevealOnScroll delay={0.12} className="mt-10">
-            <YearGroupPicker />
           </RevealOnScroll>
         </Container>
       </section>
 
-      {/* Product ladder */}
+      {/* Pro & Max — simple pricing */}
+      <section id="mocks" className="bg-navy py-20">
+        <Container>
+          <RevealOnScroll>
+            <SectionHeading
+              align="center"
+              eyebrow="Pricing"
+              title="Pro or Max — that's it"
+              description="Full mock library, Study Notes and timed practice papers. Parents get a clear report after every mock, not just a score."
+              className="mx-auto text-cream [&_h2]:text-white [&_p]:text-cream/70"
+            />
+            <div className="mt-12 mx-auto grid w-full max-w-3xl gap-6 sm:grid-cols-2">
+              {PLATFORM_TIER_PRICING_FOR_SALE.map((tier) => (
+                <PricingCard key={tier.id} tier={tier} />
+              ))}
+            </div>
+            <p className="mt-6 text-center text-sm text-cream/60">
+              Just want to try it first? <Link href="/account" className="font-bold text-gold-light underline">Create a free account</Link>
+            </p>
+          </RevealOnScroll>
+        </Container>
+      </section>
+
+      {/* Tuition comparison */}
       <section className="bg-cream-dark/50 py-20">
         <Container>
           <RevealOnScroll>
             <SectionHeading
-              eyebrow="The Full Picture"
-              title="From a free call to full Elite-level preparation"
-              description="Start wherever makes sense for your family, and build up as your child gets closer to exams."
+              eyebrow="Tuition"
+              title="Group or private teaching support"
+              description="A separate add-on — structured teaching support alongside your Pro or Max subscription."
             />
             <div className="mt-10">
-              <ProductLadder />
+              <ComparisonTable />
+            </div>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Button href="/tuition/group" variant="outline">Group Tuition</Button>
+              <Button href="/tuition/private" variant="outline">Private Tuition</Button>
             </div>
           </RevealOnScroll>
         </Container>
       </section>
 
-      {/* Diagnostic Assessment */}
-      <section id="diagnostic" className="py-20">
+      {/* Diagnostic pointer */}
+      <section className="py-10">
+        <Container>
+          <RevealOnScroll>
+            <div className="flex flex-col items-center justify-between gap-4 rounded-2xl border border-line bg-white px-6 py-5 text-center sm:flex-row sm:text-left">
+              <div className="flex items-center gap-3">
+                <Gauge className="h-5 w-5 shrink-0 text-gold-dark" />
+                <p className="text-sm text-muted">
+                  Not sure where your child stands? A <span className="font-bold text-navy">Diagnostic Assessment</span> gives
+                  you a full readiness report in one sitting.
+                </p>
+              </div>
+              <Button href="/diagnostic-assessment" variant="outline" className="shrink-0">
+                Learn More <ArrowRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </RevealOnScroll>
+        </Container>
+      </section>
+
+      {/* Diagnostic Assessment detail */}
+      <section id="diagnostic" className="py-16">
         <Container className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
           <RevealOnScroll>
             <SectionHeading
@@ -236,116 +283,6 @@ export default function HomePage() {
             <div className="space-y-6">
               <MockReportPreview />
               <BeforeAfterSlider />
-            </div>
-          </RevealOnScroll>
-        </Container>
-      </section>
-
-      {/* Pro & Max */}
-      <section id="mocks" className="bg-navy py-20">
-        <Container>
-          <RevealOnScroll>
-            <SectionHeading
-              align="center"
-              eyebrow="Pro & Max"
-              title="Full mock library, Study Notes and timed practice papers — one subscription"
-              description="Students sit regular timed mocks and practice papers across English, maths, verbal and non-verbal reasoning. Parents get a clear report after every one, not just a score."
-              className="mx-auto text-cream [&_h2]:text-white [&_p]:text-cream/70"
-            />
-            <div className="mt-12 mx-auto grid w-full max-w-3xl gap-6 sm:grid-cols-2">
-              {PLATFORM_TIER_PRICING_FOR_SALE.map((tier) => (
-                <PricingCard key={tier.id} tier={tier} />
-              ))}
-            </div>
-          </RevealOnScroll>
-        </Container>
-      </section>
-
-      {/* Tuition comparison */}
-      <section className="bg-cream-dark/50 py-20">
-        <Container>
-          <RevealOnScroll>
-            <SectionHeading
-              eyebrow="Tuition"
-              title="Group or private teaching support"
-              description="Compare the two ways to get structured teaching support alongside your Pro or Max subscription."
-            />
-            <div className="mt-10">
-              <ComparisonTable />
-            </div>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Button href="/tuition/group" variant="outline">Group Tuition</Button>
-              <Button href="/tuition/private" variant="outline">Private Tuition</Button>
-            </div>
-          </RevealOnScroll>
-        </Container>
-      </section>
-
-      {/* Max upsell */}
-      <section className="py-20">
-        <Container>
-          <RevealOnScroll>
-            <div className="overflow-hidden rounded-3xl border border-gold/40 bg-navy">
-              <div className="grid grid-cols-1 gap-10 p-8 sm:p-12 lg:grid-cols-2 lg:items-center">
-                <div>
-                  <Badge variant="gold">Best Value</Badge>
-                  <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                    Aiming for the top bands? Go Max.
-                  </h2>
-                  <p className="mt-4 text-lg leading-relaxed text-cream/70">
-                    Everything in Pro, plus Elite-difficulty mocks, unlimited attempts and
-                    priority report turnaround — for students who want the hardest papers we offer.
-                  </p>
-                  <Button href="/pricing#platform" size="lg" className="mt-8">
-                    See Max <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </div>
-                <ul className="space-y-3 rounded-2xl bg-white/5 p-6">
-                  {[
-                    "Full mock library, every subject",
-                    "Elite-difficulty mock papers",
-                    "Complete Study Notes",
-                    "Unlimited mock attempts",
-                    "Priority report turnaround",
-                    "Weak-area tracking",
-                    "Holiday booster discount",
-                  ].map((f) => (
-                    <li key={f} className="flex items-center gap-3 text-sm font-medium text-cream/90">
-                      <Sparkles className="h-4 w-4 shrink-0 text-gold-light" /> {f}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </RevealOnScroll>
-        </Container>
-      </section>
-
-      {/* Upsells */}
-      <section className="py-20">
-        <Container>
-          <RevealOnScroll>
-            <SectionHeading
-              eyebrow="Add-Ons"
-              title="Add extra support when your child needs it"
-              description="Flexible, one-off ways to close a specific gap without committing to a new subscription."
-            />
-            <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {UPSELL_PRODUCTS.map((u) => (
-                <TiltCard key={u.name} className="h-full">
-                  <Link
-                    href={u.href}
-                    className="premium-card-hover cursor-pencil flex h-full flex-col rounded-2xl border border-line bg-white p-6"
-                  >
-                    <h3 className="text-base font-semibold text-navy">{u.name}</h3>
-                    <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{u.description}</p>
-                    <div className="mt-4 flex items-center justify-between border-t border-line pt-4">
-                      <span className="text-sm font-bold text-navy">{u.price}</span>
-                      <ArrowRight className="h-4 w-4 text-gold-dark" />
-                    </div>
-                  </Link>
-                </TiltCard>
-              ))}
             </div>
           </RevealOnScroll>
         </Container>
@@ -430,7 +367,7 @@ export default function HomePage() {
               <FeatureGrid items={FAMILY_FEATURES} columns={3} />
             </div>
             <div className="mt-8">
-              <Button href="/register" size="lg">
+              <Button href="/account" size="lg">
                 Create Your Free Account <ArrowRight className="h-4 w-4" />
               </Button>
             </div>
@@ -462,25 +399,51 @@ export default function HomePage() {
         </Container>
       </section>
 
-      <CTASection
-        eyebrow="Next Step"
-        title="Ready to see exactly where your child stands?"
-        description="Book a free 15-minute call and we'll help you choose the right starting point."
-        actions={
-          <>
-            <Magnetic>
-              <Button href="/book-a-call" size="lg">
-                Book a Free Parent Call
-              </Button>
-            </Magnetic>
-            <Magnetic>
-              <Button href="/diagnostic-assessment" variant="light" size="lg">
-                Book Diagnostic Assessment
-              </Button>
-            </Magnetic>
-          </>
-        }
-      />
+      {/* Holiday Booster — own section, bottom of page */}
+      <section className="py-20">
+        <Container>
+          <RevealOnScroll>
+            <div className="overflow-hidden rounded-3xl border border-gold/40 bg-navy">
+              <div className="p-8 text-center sm:p-12">
+                <Badge variant="gold">Most Popular</Badge>
+                <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                  Holiday Booster Course — everything, all included
+                </h2>
+                <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-cream/70">
+                  Private tuition, timed mocks and daily feedback combined into one intensive week —
+                  the fastest way to close gaps before the next school holiday ends.
+                </p>
+                <ul className="mx-auto mt-8 grid max-w-2xl grid-cols-1 gap-3 text-left sm:grid-cols-2">
+                  {[
+                    "Private tuition + mocks + holiday help",
+                    "Small group sizes",
+                    "All four 11+ subject areas covered",
+                    "Daily mini-mock with feedback",
+                    "Take-home revision pack",
+                    "Everything included — no add-ons needed",
+                  ].map((f) => (
+                    <li key={f} className="flex items-center gap-3 text-sm font-medium text-cream/90">
+                      <Sparkles className="h-4 w-4 shrink-0 text-gold-light" /> {f}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-8 flex flex-wrap justify-center gap-4">
+                  <Magnetic>
+                    <Button href="/holiday-booster" size="lg">
+                      View Holiday Dates <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </Magnetic>
+                  <Magnetic>
+                    <Button href="/book-a-call?product=holiday-booster" variant="light" size="lg">
+                      Book a Free Call
+                    </Button>
+                  </Magnetic>
+                </div>
+              </div>
+            </div>
+          </RevealOnScroll>
+        </Container>
+      </section>
 
       <section className="py-12">
         <Container className="flex items-center gap-3 rounded-2xl border border-line bg-white px-6 py-4 text-sm text-muted">

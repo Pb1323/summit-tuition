@@ -1,8 +1,21 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-20 (Stripe test-mode checkout wired for Pro/Max — see below)
+Last updated: 2026-07-21 (homepage + `/welcome` rebuilt into a single WhatsApp-launch conversion funnel — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+---
+
+## Done (session — 2026-07-21, WhatsApp launch-day conversion funnel)
+
+Founder is marketing today via a WhatsApp group: parents click through to the site and need to be impressed fast, then convert. Rebuilt the two entry points parents will actually land on — `/` (full site) and `/welcome` (the mobile-first WhatsApp-share landing page) — into the same funnel order: **try it → book free taster/call or create account → simple Pro/Max pricing → tuition → diagnostic pointer → Holiday Booster "most popular" close**.
+
+- **`FreeSampleMock` rebuilt** (`src/components/sections/free-sample-mock.tsx`): now 10 questions (was 5) — 5 maths with small animated SVG diagrams (order-of-operations equation build, fraction pie fill, ratio bar split, perimeter square, percentage discount bar) and 5 English **"spot the grammar mistake"** questions (sentence split into lettered segments, tap the one with the error, or "No mistake") replacing the old plain comprehension-retrieval question. All original content, no third-party paper text.
+- **New `/account` gateway page** (`src/app/account/page.tsx`): exactly two buttons — "Create New Account" → `/register`, "Sign Into Existing Account" → `/login` — nothing else on the page. Every "Create Account" CTA site-wide (homepage, `/welcome` hero, `/welcome` sticky bar) now points here instead of straight to `/register`.
+- **Homepage (`src/app/page.tsx`) reordered**: sample mock → new "Book a free taster / free call / Create Account" two-card section → simplified Pro/Max-only pricing (unchanged tiers, just reordered and re-labelled "Pro or Max — that's it") → tuition comparison → a small diagnostic-assessment pointer banner → diagnostic detail section → (unchanged trust/how-it-works content) → **Holiday Booster now has its own "Most Popular" / "everything, all included" closing section at the very bottom of the page**, replacing the old small footer banner. Removed now-redundant sections (`Start Here` cards, `ProductLadder`, the duplicate Max upsell block, `Upsells`/`UPSELL_PRODUCTS` grid, `YearGroupPicker`) that were adding noise around the same funnel.
+- **`/welcome` (the actual WhatsApp-share page) got the same treatment**: added the `FreeSampleMock` teaser near the top (it previously didn't show any sample questions at all), added a taster/free-call card, simplified `WelcomePricingTabs` down to just Pro/Max tabs (dropped Group/Private/Holiday tabs — tuition and Holiday Booster now have their own sections instead), and added a matching Holiday Booster "Most Popular" closing card above the existing footer CTA.
+- Verified `npm.cmd run typecheck`, `npm.cmd run lint` (0 errors, same pre-existing warnings as before), and `npm.cmd run build` all pass; smoke-tested `/`, `/welcome`, `/account` on a local dev server and confirmed the new sections render.
+- **Not done this session** (flagged to founder, out of scope for a 30-minute pass): no WhatsApp-specific analytics/UTM tracking added, no A/B test, no changes to `/register` or `/login` forms themselves, no changes to Stripe/production env vars.
 
 ---
 

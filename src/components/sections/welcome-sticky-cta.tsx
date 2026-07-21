@@ -13,7 +13,7 @@ export function WelcomeStickyCta() {
           Book a Free Call
         </Link>
         <Link
-          href="/register"
+          href="/account"
           className="focus-gold gold-shimmer flex flex-1 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-gold-dark via-gold to-gold-light px-4 py-3 text-sm font-black text-navy-dark transition active:translate-y-px"
         >
           <UserPlus className="h-4 w-4" />

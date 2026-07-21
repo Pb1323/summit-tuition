@@ -3,8 +3,8 @@ import {
   ArrowRight,
   CheckCircle2,
   Gauge,
-  Repeat,
   ShieldCheck,
+  Sparkles,
   Users,
 } from "lucide-react";
 import { SITE } from "@/data/site";
@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { AnimatedCounter } from "@/components/motion/animated-counter";
 import { WelcomePricingTabs } from "@/components/sections/welcome-pricing-tabs";
 import { WelcomeStickyCta } from "@/components/sections/welcome-sticky-cta";
+import { FreeSampleMock } from "@/components/sections/free-sample-mock";
 
 export const metadata = {
   title: `${SITE.shortName} — Start here`,
@@ -39,13 +40,6 @@ const PATHS = [
     description: "Book a diagnostic assessment and get a clear improvement plan.",
     cta: "Book Diagnostic",
     href: "/diagnostic-assessment",
-  },
-  {
-    icon: <Repeat className="h-5 w-5" />,
-    title: "Weekly exam practice",
-    description: "Join Mock Club for timed papers, scores and progress tracking.",
-    cta: "Join Mock Club",
-    href: "/weekly-mock-club",
   },
   {
     icon: <Users className="h-5 w-5" />,
@@ -94,7 +88,7 @@ export default function WelcomePage() {
             </div>
 
             <div className="mt-7 flex flex-col gap-3">
-              <Button href="/register" size="lg" className="w-full">
+              <Button href="/account" size="lg" className="w-full">
                 Create a Free Account <ArrowRight className="h-4 w-4" />
               </Button>
               <Button href="/book-a-call" variant="navy" size="lg" className="w-full">
@@ -108,10 +102,36 @@ export default function WelcomePage() {
         </section>
 
         <div className="mx-auto max-w-md space-y-10 px-5">
-          {/* Pricing — shown early so parents see cost before scrolling */}
+          {/* Free sample mock — the "wow" moment, shown before any pitch */}
+          <RevealOnScroll>
+            <h2 className="text-lg font-black text-navy">Try 10 real questions</h2>
+            <p className="mt-1 text-sm text-muted">5 maths, 5 spot-the-grammar-mistake. No account needed.</p>
+            <div className="mt-4">
+              <FreeSampleMock />
+            </div>
+          </RevealOnScroll>
+
+          {/* Taster + free call */}
+          <RevealOnScroll>
+            <div className="premium-card rounded-2xl p-5 text-center">
+              <Sparkles className="mx-auto h-6 w-6 text-gold-dark" />
+              <h2 className="mt-2 text-lg font-black text-navy">Book a free taster</h2>
+              <p className="mt-1 text-sm text-muted">Sit a free taster tuition session, or a 15-minute parent call — no obligation.</p>
+              <div className="mt-4 flex flex-col gap-2.5">
+                <Button href="/book-a-call?product=free-taster" size="md" className="w-full">
+                  Book Free Taster Session
+                </Button>
+                <Button href="/book-a-call" variant="outline" size="md" className="w-full">
+                  Book a Free Call
+                </Button>
+              </div>
+            </div>
+          </RevealOnScroll>
+
+          {/* Pricing — simple, Pro / Max only, shown early so parents see cost before scrolling */}
           <RevealOnScroll>
             <h2 className="text-lg font-black text-navy">Plans and pricing</h2>
-            <p className="mt-1 text-sm text-muted">Tap a plan to compare — book straight from here.</p>
+            <p className="mt-1 text-sm text-muted">Just two plans — Pro or Max. Tap to compare.</p>
             <div className="mt-4">
               <WelcomePricingTabs />
             </div>
@@ -184,6 +204,28 @@ export default function WelcomePage() {
             <div className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-muted">
               <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-gold-dark" />
               <p>Results vary by child — we won&apos;t promise a guaranteed grammar school place.</p>
+            </div>
+          </RevealOnScroll>
+
+          {/* Holiday Booster — own section, bottom of page, most popular / all included */}
+          <RevealOnScroll>
+            <div className="overflow-hidden rounded-2xl border border-gold/40 bg-navy p-6 text-center">
+              <span className="inline-flex rounded-full border border-gold/40 bg-gold/15 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.14em] text-gold-light">
+                Most Popular
+              </span>
+              <h2 className="mt-3 text-xl font-black text-white">Holiday Booster — everything, all included</h2>
+              <p className="mt-2 text-sm text-cream/70">
+                Private tuition, timed mocks and daily feedback in one intensive week — the fastest way
+                to close gaps before the holidays end.
+              </p>
+              <div className="mt-5 flex flex-col gap-2.5">
+                <Button href="/holiday-booster" size="lg" className="w-full">
+                  View Holiday Dates <ArrowRight className="h-4 w-4" />
+                </Button>
+                <Button href="/book-a-call?product=holiday-booster" variant="light" size="md" className="w-full">
+                  Book a Free Call
+                </Button>
+              </div>
             </div>
           </RevealOnScroll>
 

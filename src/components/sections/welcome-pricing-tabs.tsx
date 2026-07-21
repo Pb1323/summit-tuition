@@ -5,20 +5,11 @@ import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  GROUP_TUITION_PRICING,
-  PRIVATE_TUITION_PRICING,
-  MOCK_CLUB_PRICING,
-  HOLIDAY_PRICING,
-  PROGRAMME_PRICING,
-} from "@/data/pricing";
+import { MOCK_CLUB_PRICING, PROGRAMME_PRICING } from "@/data/pricing";
 
 const TABS = [
   { id: "pro", label: "Pro", tier: MOCK_CLUB_PRICING[0], learnMoreHref: "/pricing#platform" },
   { id: "max", label: "Max", tier: PROGRAMME_PRICING[0], learnMoreHref: "/pricing#platform" },
-  { id: "group", label: "Group Tuition", tier: GROUP_TUITION_PRICING[0], learnMoreHref: "/tuition/group" },
-  { id: "private", label: "Private Tuition", tier: PRIVATE_TUITION_PRICING[0], learnMoreHref: "/tuition/private" },
-  { id: "holiday", label: "Holiday Booster", tier: HOLIDAY_PRICING[0], learnMoreHref: "/holiday-booster" },
 ] as const;
 
 export function WelcomePricingTabs() {
