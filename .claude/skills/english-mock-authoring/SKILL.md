@@ -62,10 +62,14 @@ flag "Topic spread is balanced" as failed.
   gesture from the mentor handing over the previously-withheld privilege.
   You don't have to reuse this exact arc, but match its **register and
   structural complexity** — real GL passages are literary, not simple.
-  Check `research/gl-english-question-bank.md` and the existing 4 Elite
+  Check `research/gl-english-question-bank.md` and the existing 5 Elite
   passages (`passage-cartographers-apprentice`, `passage-glassblowers-legacy`,
-  `passage-weavers-thread`, `passage-lighthouse-keepers-ledger`) before
-  starting, so a new passage doesn't reuse the same setting/objects.
+  `passage-weavers-thread`, `passage-lighthouse-keepers-ledger`,
+  `passage-clockmakers-apprentice`) before starting, so a new passage doesn't
+  reuse the same setting/objects/withheld-privilege ("climb the stair/tower
+  alone", "work the mechanism unsupervised") — vary what the privilege
+  actually is (a piece of equipment, a room, a decision, a signature) so five
+  papers in a row don't all read as the same story reskinned.
 
 ## Writing the 28 comprehension questions
 
@@ -135,6 +139,47 @@ every option is grammatically plausible in isolation but only one is
 correct given tense/connective logic (conditionals, connectives like
 although/unless/despite, verb-tense agreement, adverb vs. adjective form).
 Tag `["cloze", "grammar", "GL-style", "harder"]`.
+
+## Quality bar beyond the automated checks
+
+`evaluateMockQuality()` returning `status: "Ready"` proves the mock is
+*structurally* valid — right counts, every field present, correct answers
+resolve. It does **not** catch weak items. These do, and they're what
+actually separates a paper that stretches a strong 11+ candidate from one
+that's just GL-shaped busywork:
+
+- **Distractor plausibility is the whole game.** For retrieval and
+  vocabulary questions, at least 2 of the 4 wrong options must require the
+  student to have actually read the relevant paragraph to rule out — pull
+  distractors from *other true details in the same passage* (a different
+  character's action, a different paragraph's fact) rather than inventing
+  generic wrong answers. A question is too easy if a student who skipped the
+  passage entirely could eliminate 3 of 4 options on plausibility alone.
+- **Don't over-template against your own reference mock.** It's tempting
+  (and fast) to take a working Elite paper and swap nouns/setting per
+  question 1:1 — same sentence shape, same clause count, same connective
+  tested in the same slot. Doing this for all 54 questions produces a
+  paper that's structurally sound but reads as a reskin, not a fresh paper.
+  Vary sentence length, clause order, and which detail is being tested even
+  when the underlying grammar point repeats across mocks (repeating grammar
+  *points* like subject-verb agreement or third conditional across mocks is
+  fine and expected — GL papers do this too — but the sentences testing them
+  shouldn't be find-and-replace copies of a previous mock's sentences).
+- **Read the passage once start-to-finish after writing it**, purely for
+  register — 11+-level literary fiction should not be skimmable in one pass;
+  if every sentence resolves immediately with no held-back detail, the
+  inference/symbolism questions built on it won't have anything real to ask.
+- **Spot-check your own distractors against the passage text** by searching
+  for a couple of distractor phrases in the passage — if a "wrong" retrieval
+  option is actually a paraphrase of what the passage says (rather than a
+  paraphrase of something else true in the passage), you've written an item
+  with two correct answers without realising it.
+- **Run `npm.cmd run typecheck` after drafting, not only at the very end** —
+  a single stray/misspelled field on one question object (e.g. a leftover
+  `marksScheme:` typo next to the real `markScheme:`) won't fail
+  `evaluateMockQuality()` or the duplicate-id/correctAnswer checks, since
+  those only inspect the fields they know about — TypeScript's structural
+  check is what actually catches it.
 
 ## Wiring up the `MockExam` entry
 
