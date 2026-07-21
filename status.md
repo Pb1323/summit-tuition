@@ -1,10 +1,18 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-21 (checked the older "Summit Stretch" mocks against the newer quality bar, fixed 3 real bugs — see below)
+Last updated: 2026-07-21 (added a free-mock trial funnel, made the taster questions properly hard, and paused all Stripe checkout buttons in favour of phoning/WhatsApp for now — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-07-21, free-mock funnel, harder taster questions, and pausing Stripe checkout)
+
+- Built a proper "free trial mock" funnel: a new page (`/free-mock`) lets any visitor — no account needed — try a real 10-question mock straight away. After that one, they're asked to make a free account for a couple more (still 10 questions each), and after those, they're pushed towards upgrading to Pro. There's a "try a free mock while you wait" button on the taster-booking page too. Built 6 small sample mocks (3 maths, 3 English) just for this — separate from the real mock library.
+- Made the 10 sample questions shown on the homepage and `/welcome` genuinely harder: they were too easy before (plain arithmetic). Now every maths question is built around a graph, chart, or geometry diagram and needs two steps of thinking, not one — closer to what a strong Year 8/9 pupil would find challenging, while still being 11+ exam content.
+- Reworked the "book a call" page: when someone arrives from a Pro/Max/tuition "buy" button rather than the genuinely free taster session, the page now makes clear this call is the step before paying (not just another free chat), and it puts your WhatsApp number front and centre, above the calendar booking box.
+- At your request: switched off every "Pay Now" style button site-wide for now (Pro, Max, and the same buttons on `/welcome`) so they all point people towards phoning/WhatsApp-ing you instead of trying to check out with Stripe — you didn't want customers to hit a checkout flow that isn't fully ready. This is a single on/off switch, so turning real payments back on later is one change, not a rebuild.
+- Added Group and Private tuition pricing onto `/welcome` as well, right underneath the Pro/Max pricing, since you wanted those pushed more too.
 
 ## Done (session — 2026-07-21, Summit Stretch mock check-up + new Maths visuals skill)
 
