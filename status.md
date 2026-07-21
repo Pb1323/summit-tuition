@@ -1,8 +1,20 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-21 (homepage + `/welcome` rebuilt into a single WhatsApp-launch conversion funnel — see below)
+Last updated: 2026-07-21 (WhatsApp-based manual payment fallback + free-mock paywall — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+---
+
+## Done (session — 2026-07-21, WhatsApp manual-payment fallback + free-mock paywall)
+
+Founder is marketing today and doesn't want the site to look unfinished around payment, but real Stripe checkout is still blocked on buying a domain and finishing Stripe's business/bank activation (see the 2026-07-20 Stripe entry below). Rather than exposing bank details publicly, agreed on a temporary manual flow: WhatsApp the founder directly, quote your registered email, get manually upgraded once payment lands. Also added a freemium conversion mechanic requested by the founder: unpaid accounts now hit a paywall halfway through any mock they can access.
+
+- **WhatsApp fallback replaces the old "Checkout coming soon" dead-end** (`src/components/ui/checkout-button.tsx`): whenever Stripe isn't configured in the current environment (i.e. production right now, since live keys are deliberately not in Vercel yet), the Pro/Max buttons on `/pricing` (and the practice-pack buttons on `/practice-packs`) now show a "Message Us on WhatsApp" button that opens `wa.me` with a pre-filled message naming the product and asking for the visitor's registered email, instead of a disabled "coming soon" button. Number lives in `src/data/site.ts` (`SITE.whatsappNumber`, `"447726951811"` — E.164 without the leading `+`). This is a pure UI-layer change — local dev with real test-mode Stripe keys still goes through actual Checkout unaffected; only environments without Stripe configured (i.e. prod today) show the WhatsApp fallback.
+- **Free-mock halfway paywall** (`src/components/platform/mock-room-shell.tsx`): any student whose `paymentStatus !== "paid"` (i.e. hasn't completed a real payment — the same flag the Stripe webhook sets) now hits a "Free preview limit reached" screen once they reach the halfway point (`Math.ceil(questions.length / 2)`) of any mock they open, with a "See Pro & Max" button to `/pricing#platform` and the same WhatsApp CTA. Everything answered before the cutoff is still saved as normal; they can navigate back to review/edit earlier (unblocked) questions freely, they just can't progress past the halfway mark. Paid accounts and admin preview mode are never gated. This naturally only ever applies to the mocks free/unpaid accounts can open at all (the existing `unlockedMockIds` lock already restricts free accounts to free mocks), so no extra scoping was needed. The halfway cutoff is intentionally hardcoded, not admin-configurable, per founder's explicit "keep that manual for now" instruction.
+- Small supporting change: `src/components/ui/button.tsx`'s `Button` now forwards `target`/`rel` through to the underlying `next/link` when `href` is set (needed for the WhatsApp links to open in a new tab) — previously unsupported, now a general capability any future external link can use.
+- Verified `npm run typecheck`, `npm run lint` (0 errors, same pre-existing warnings), and `npm run build` all pass after these changes.
+- **Not done this session**: no admin UI to configure the paywall threshold or the WhatsApp number/message — both are hardcoded, per founder's request, until Stripe live mode replaces this whole flow.
 
 ---
 

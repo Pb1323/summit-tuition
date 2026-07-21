@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { Button, type ButtonProps } from "@/components/ui/button";
+import { SITE } from "@/data/site";
 import type { CheckoutRequest } from "@/lib/stripe";
 
 interface CheckoutButtonProps extends Omit<ButtonProps, "href" | "onClick"> {
@@ -36,17 +37,15 @@ export function CheckoutButton({ checkout, children, ...props }: CheckoutButtonP
   }
 
   if (status === "unavailable") {
+    const whatsappMessage = `Hi! I'd like to sign up for ${checkout.productName}. My registered email is: `;
+    const whatsappHref = `https://wa.me/${SITE.whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
     return (
       <div className="flex flex-col items-start gap-1.5">
-        <Button {...props} disabled>
-          Checkout coming soon
+        <Button {...props} href={whatsappHref} target="_blank" rel="noopener noreferrer">
+          Message Us on WhatsApp
         </Button>
         <p className="text-xs text-muted">
-          Online payment isn&apos;t live yet — please{" "}
-          <a href="/contact" className="underline hover:text-navy">
-            get in touch
-          </a>{" "}
-          to enrol.
+          Quote your registered email — we&apos;ll activate your plan shortly after payment.
         </p>
       </div>
     );

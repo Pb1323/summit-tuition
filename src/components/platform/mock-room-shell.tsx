@@ -3,10 +3,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AlertTriangle, ArrowLeft, CheckCircle2, Eye, EyeOff, Flag, ShieldAlert } from "lucide-react";
+import { AlertTriangle, ArrowLeft, CheckCircle2, Eye, EyeOff, Flag, Lock, ShieldAlert } from "lucide-react";
 import { usePlatform } from "@/context/platform-context";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/container";
+import { Button } from "@/components/ui/button";
+import { SITE } from "@/data/site";
 import { AnimatedButton, EnglishPassageRenderer, GlowCard, MockTimer, PremiumBadge, ProgressBar, QuestionNavigator, QuestionRenderer, RequireAuth } from "@/components/platform/ui";
 import { ENGLISH_SECTIONS, getEnglishSectionId, type EnglishSectionId, type EnglishSectionMeta } from "@/lib/english-sections";
 
@@ -82,6 +84,13 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
   const beginSection = useCallback(() => {
     if (activeSectionId) setBeganSections((current) => (current.includes(activeSectionId) ? current : [...current, activeSectionId]));
   }, [activeSectionId]);
+  // Free-preview paywall: unpaid accounts (the only ones who ever reach a free mock in the first
+  // place — see the `locked` check below) can start any unlocked mock but lose access halfway
+  // through the question list, pushed toward upgrading. Paid accounts (paymentStatus === "paid")
+  // and admin preview are never gated. Threshold is hardcoded for now, by design (manual for now).
+  const hasNotPaid = !isAdminPreview && currentUser?.paymentStatus !== "paid";
+  const halfwayIndex = Math.ceil(questions.length / 2);
+  const paywalled = hasNotPaid && questions.length > 0 && index >= halfwayIndex;
   const unansweredCount = questions.filter((question) => !answers[question.id]).length;
   const elapsedSeconds = useCallback(() => Math.max(0, Math.floor((Date.now() - (startedAt ?? Date.now())) / 1000) + baseElapsed), [baseElapsed, startedAt]);
 
@@ -283,6 +292,8 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
             <GlowCard className="p-6 sm:p-8">
               {questions.length === 0 ? (
                 <p className="rounded-2xl border border-line bg-cream p-4 text-sm font-semibold text-navy">{isAdminPreview ? "This draft has no questions yet. Add or generate questions before publishing." : "This mock is not ready yet."}</p>
+              ) : paywalled ? (
+                <FreePreviewPaywall />
               ) : active && activeSection && showSectionInterstitial ? (
                 <SectionInterstitial
                   section={activeSection}
@@ -448,6 +459,30 @@ function SectionInterstitial({
       <h2 className="mt-4 text-3xl font-black text-navy">{section.label}</h2>
       <p className="mx-auto mt-3 max-w-xl text-muted">{section.instructions}</p>
       <AnimatedButton onClick={onBegin} className="mt-8">Begin this section</AnimatedButton>
+    </div>
+  );
+}
+
+function FreePreviewPaywall() {
+  const whatsappMessage = "Hi! I've hit the free preview limit on a mock and I'd like to upgrade to Pro or Max. My registered email is: ";
+  const whatsappHref = `https://wa.me/${SITE.whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+  return (
+    <div className="rounded-2xl border border-gold/30 bg-gold/5 p-8 text-center sm:p-12">
+      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gold/15 text-gold-dark">
+        <Lock className="h-6 w-6" />
+      </div>
+      <div className="mt-4"><PremiumBadge tone="gold">Free preview limit reached</PremiumBadge></div>
+      <h2 className="mt-4 text-3xl font-black text-navy">You&apos;ve seen the free half of this mock</h2>
+      <p className="mx-auto mt-3 max-w-xl text-muted">
+        Upgrade to Pro or Max to unlock full mocks, marked reports and unlimited practice — everything you&apos;ve
+        answered so far is saved.
+      </p>
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <Button href="/pricing#platform" size="lg">See Pro &amp; Max</Button>
+        <Button href={whatsappHref} target="_blank" rel="noopener noreferrer" variant="outline" size="lg">
+          Message Us on WhatsApp
+        </Button>
+      </div>
     </div>
   );
 }

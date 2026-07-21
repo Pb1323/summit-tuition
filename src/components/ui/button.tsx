@@ -32,13 +32,15 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   href?: string;
+  target?: string;
+  rel?: string;
 }
 
-export function Button({ className, variant, size, href, children, ...props }: ButtonProps) {
+export function Button({ className, variant, size, href, target, rel, children, ...props }: ButtonProps) {
   const classes = cn(buttonVariants({ variant, size }), className);
   if (href) {
     return (
-      <Link href={href} className={classes}>
+      <Link href={href} target={target} rel={rel} className={classes}>
         {children}
       </Link>
     );
