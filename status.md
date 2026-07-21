@@ -1,10 +1,19 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-21 (tidied up /welcome for mobile, shortened the taster questions, fixed a real "Holiday Booster" button loop, and made the Pro/Max pricing buttons more prominent — see below)
+Last updated: 2026-07-21 (redesigned the Pro/Max tabs on /welcome, cut the mock-preview flow down to 2 real "official" sample mocks with proper subject links, added a new blurred Study Notes preview page, and updated the pricing/trust copy with your latest figures — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-07-21, same day follow-up — segmented tabs, 2-mock official sample, Study Notes preview)
+
+- Redesigned the Pro/Max (and Group/Private) tab buttons on `/welcome` into a proper segmented switch — the kind you tap left/right on — with a "tap to compare" hint above it, so it's obvious they're switchable without making the buttons bigger.
+- "Learn more about Pro" is now its own proper button again (not a tiny link).
+- The "what you actually get" box on the Pro/Max card now says "6 new full-length mocks released every month — around 100 questions each" (your figure), alongside the Study Notes and marked-report lines you were happy with.
+- The mock-preview flow used to offer 6 small "showcase" mocks. Cut down to exactly 2 — one Maths, one English — 5 questions each, and every one of the 5 questions uses a different chart/diagram so it doesn't feel like the same template repeated. There are now two proper buttons on the Pro/Max card, "Maths Mock" and "English Mock", that jump straight into the matching one — no picker screen, no "preview" wording, framed as trying a real Summit mock. The copy also now says "Unlock Pro" for more, exactly as you asked.
+- Brand new `/notes-preview` page: shows exactly one real Study Notes lesson (not a whole topic, not a whole comprehension block), fading out to a blur about 70% of the way down with an "Unlock with Pro/Max" button that takes you to the pricing page. Linked from the Pro/Max card as "Preview a Study Notes lesson".
+- On the "why parents choose us" section, the exam-coverage line now says "Building towards a bank of 100+ mocks — 26 full-length papers already live today...". Flagging this one directly: we genuinely only have 26 real mocks live right now, so I couldn't put "100+ mocks" as a flat present-tense claim without it being false advertising — I phrased it as an honest forward target sitting next to the real, current number instead. If you want a different way of framing that ambition, let me know.
 
 ## Done (session — 2026-07-21, /welcome mobile cleanup + Holiday Booster loop fix + pricing CTA prominence)
 
