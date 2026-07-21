@@ -14,7 +14,9 @@ Founder asked for the site to be checked end-to-end before sharing it more widel
 - **Bug found and fixed**: the Pro/Max pricing tabs specifically on `/welcome` (the page shared over WhatsApp) were the one place on the site that skipped the WhatsApp step — tapping "Start Pro"/"Start Max" there just opened a plain enquiry form instead of trying to pay. Fixed so `/welcome` now behaves exactly like the rest of the site.
 - Also folded in an already-in-progress rewrite of the free-taster booking page (calendar shown first, enquiry form as a fallback, taster-specific copy) that was sitting unsaved locally.
 - Re-ran the full check (typecheck, lint, production build) after the fix — all clean.
-- **Not done this session**: `.claude/settings.json` and some Claude Code skill files also had unsaved changes from other work happening in parallel — left those alone since they're unrelated to the website itself.
+- **Second bug found via an actual browser-driven test of sign-up** (not just reading code): the registration page's own text said "sign in straight away", but after creating an account it actually sent the new student to the login page and made them type their password again — a real drop-off risk on a mobile marketing funnel. Fixed so creating an account now signs the student straight into their dashboard. Verified with a real end-to-end browser test (fill form → submit → lands on `/dashboard` with the account's name and free mocks showing).
+- Confirmed separately (didn't need a fix): the "Book a Free Call/Taster" enquiry form really does reach the founder in production — real email keys and a real Calendly calendar are already configured live, not the dev placeholder.
+- **Not done this session**: `.claude/settings.json` and some Claude Code skill files, plus an in-progress new `/free-mock` page/component, had unsaved changes from other work happening in parallel in the same folder — left those alone since they're a different session's unfinished work, not part of the website checks asked for here.
 
 ---
 
