@@ -34,8 +34,7 @@ const MATH_QUESTIONS: MathQuestion[] = [
   {
     kind: "maths",
     visual: "pie-chart",
-    prompt:
-      "300 people were surveyed on their favourite sport, shown in the pie chart. What is the ratio of Football fans to Athletics fans, in simplest form?",
+    prompt: "300 people were surveyed on their favourite sport. What is the ratio of Football fans to Athletics fans, in simplest form?",
     options: ["7:3", "5:3", "3:7", "2:1"],
     correctAnswer: "7:3",
     explanation:
@@ -44,8 +43,7 @@ const MATH_QUESTIONS: MathQuestion[] = [
   {
     kind: "maths",
     visual: "bar-chart",
-    prompt:
-      "The bar chart shows the number of books read last month by four classes. How many more books did Class D read than double what Class A read?",
+    prompt: "The bar chart shows books read last month by four classes. How many more books did Class D read than double Class A's total?",
     options: ["13", "27", "9", "19"],
     correctAnswer: "13",
     explanation:
@@ -54,8 +52,7 @@ const MATH_QUESTIONS: MathQuestion[] = [
   {
     kind: "maths",
     visual: "geometry-exterior-angle",
-    prompt:
-      "In this triangle, the exterior angle at the marked vertex is 136°, and one of the two remote interior angles is 58°. Using the exterior angle theorem (an exterior angle equals the sum of the two remote interior angles), what is the third interior angle?",
+    prompt: "What is the size of the missing interior angle in this triangle?",
     options: ["78°", "68°", "86°", "72°"],
     correctAnswer: "78°",
     explanation:
@@ -64,8 +61,7 @@ const MATH_QUESTIONS: MathQuestion[] = [
   {
     kind: "maths",
     visual: "line-graph",
-    prompt:
-      "The graph shows a cyclist's journey: riding, then a rest stop, then riding again. What was the cyclist's AVERAGE speed for the whole 2.5-hour journey, including the rest stop?",
+    prompt: "The graph shows a cyclist's journey, including a rest stop. What was the average speed for the whole 2.5-hour journey?",
     options: ["14 km/h", "15 km/h", "20 km/h", "17.5 km/h"],
     correctAnswer: "14 km/h",
     explanation:
@@ -74,8 +70,7 @@ const MATH_QUESTIONS: MathQuestion[] = [
   {
     kind: "maths",
     visual: "geometry-pentagon",
-    prompt:
-      "The diagram shows a pentagon with four of its interior angles given: 100°, 110°, 95° and 100°. The interior angles of a pentagon always sum to 540°. What is the size of the fifth angle?",
+    prompt: "A pentagon's interior angles always sum to 540°. What is the size of the missing angle?",
     options: ["135°", "145°", "125°", "130°"],
     correctAnswer: "135°",
     explanation:

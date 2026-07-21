@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Check } from "lucide-react";
+import Link from "next/link";
+import { Check, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -27,7 +28,21 @@ const TUITION_TABS: TabDef[] = [
   { id: "private", label: "Private", tier: PRIVATE_TUITION_PRICING[0], learnMoreHref: "/tuition/private" },
 ];
 
-function PricingTabSwitcher({ tabs, initialId }: { tabs: TabDef[]; initialId: string }) {
+const PLATFORM_STATS = [
+  "26 full-length mocks across Maths, English, VR & NVR",
+  "140+ interactive Study Notes lessons, not PDFs",
+  "A marked report after every mock, not just a score",
+];
+
+function PricingTabSwitcher({
+  tabs,
+  initialId,
+  showPlatformStats,
+}: {
+  tabs: TabDef[];
+  initialId: string;
+  showPlatformStats?: boolean;
+}) {
   const [activeId, setActiveId] = useState(initialId);
   const active = tabs.find((t) => t.id === activeId) ?? tabs[0];
   const tier = active.tier;
@@ -83,11 +98,24 @@ function PricingTabSwitcher({ tabs, initialId }: { tabs: TabDef[]; initialId: st
           ))}
         </ul>
 
-        <div className="mt-5 flex flex-col gap-2">
+        {showPlatformStats && (
+          <div className="mt-4 rounded-xl bg-cream/60 p-3.5">
+            <p className="text-[11px] font-bold uppercase tracking-wide text-gold-dark">What you actually get</p>
+            <ul className="mt-1.5 space-y-1">
+              {PLATFORM_STATS.map((stat) => (
+                <li key={stat} className="text-xs leading-relaxed text-navy/80">
+                  &middot; {stat}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div className="mt-5 flex flex-col gap-2.5">
           {SITE.stripeCheckoutEnabled && tier.stripePriceId ? (
             <CheckoutButton
-              size="md"
-              className="w-full"
+              size="lg"
+              className="w-full text-base"
               checkout={{
                 priceId: tier.stripePriceId,
                 mode: tier.billingMode === "subscription" ? "subscription" : "payment",
@@ -95,16 +123,24 @@ function PricingTabSwitcher({ tabs, initialId }: { tabs: TabDef[]; initialId: st
                 productId: tier.id,
               }}
             >
-              {tier.cta}
+              {tier.cta} <ArrowRight className="h-4 w-4" />
             </CheckoutButton>
           ) : (
-            <Button href={tier.ctaHref} size="md" className="w-full">
-              {tier.cta}
+            <Button href={tier.ctaHref} size="lg" className="w-full text-base">
+              {tier.cta} <ArrowRight className="h-4 w-4" />
             </Button>
           )}
-          <Button href={active.learnMoreHref} variant="outline" size="sm" className="w-full">
-            Learn more about {active.label}
-          </Button>
+          {showPlatformStats && (
+            <Button href="/free-mock" variant="outline" size="md" className="w-full">
+              Preview mock quality
+            </Button>
+          )}
+          <Link
+            href={active.learnMoreHref}
+            className="block text-center text-xs font-bold text-gold-dark hover:underline"
+          >
+            Learn more about {active.label} →
+          </Link>
         </div>
       </div>
     </div>
@@ -112,7 +148,7 @@ function PricingTabSwitcher({ tabs, initialId }: { tabs: TabDef[]; initialId: st
 }
 
 export function WelcomePricingTabs() {
-  return <PricingTabSwitcher tabs={PLATFORM_TABS} initialId="pro" />;
+  return <PricingTabSwitcher tabs={PLATFORM_TABS} initialId="pro" showPlatformStats />;
 }
 
 export function WelcomeTuitionPricingTabs() {

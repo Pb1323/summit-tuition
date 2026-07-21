@@ -136,8 +136,8 @@ export const HOLIDAY_PRICING: PricingTier[] = [
       "Daily mini-mock with feedback",
       "Take-home revision pack",
     ],
-    cta: "View Holiday Dates",
-    ctaHref: "/holiday-booster",
+    cta: "Enquire About Holiday Booster",
+    ctaHref: "/book-a-call?product=holiday-booster",
     billingMode: "one-off",
   },
 ];

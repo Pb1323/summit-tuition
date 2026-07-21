@@ -60,14 +60,6 @@ export default function WelcomePage() {
   return (
     <>
       <main className="min-h-screen bg-cream pb-28">
-        {/* Top bar */}
-        <div className="flex items-center justify-between px-5 pt-5">
-          <p className="text-sm font-black uppercase tracking-[0.2em] text-navy">{SITE.shortName}</p>
-          <Link href="/" className="text-xs font-bold text-muted underline decoration-gold/50 underline-offset-4">
-            Full site →
-          </Link>
-        </div>
-
         {/* Hero */}
         <section className="hero-spotlight relative overflow-hidden px-5 pb-8 pt-6">
           <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-10 h-56 w-56 rounded-full bg-gold/20 blur-3xl" />
