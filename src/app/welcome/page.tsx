@@ -118,7 +118,7 @@ export default function WelcomePage() {
               <h2 className="mt-2 text-lg font-black text-navy">Book a free taster</h2>
               <p className="mt-1 text-sm text-muted">Sit a free taster tuition session, or a 15-minute parent call — no obligation.</p>
               <div className="mt-4 flex flex-col gap-2.5">
-                <Button href="/book-a-call?product=free-taster" size="md" className="w-full">
+                <Button href="/book-a-call?product=free-taster&trial=1" size="md" className="w-full">
                   Book Free Taster Session
                 </Button>
                 <Button href="/book-a-call" variant="outline" size="md" className="w-full">

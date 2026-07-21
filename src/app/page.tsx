@@ -167,7 +167,7 @@ export default function HomePage() {
                 </p>
                 <div className="mt-6 flex flex-wrap justify-center gap-3">
                   <Magnetic>
-                    <Button href="/book-a-call?product=free-taster" size="lg">
+                    <Button href="/book-a-call?product=free-taster&trial=1" size="lg">
                       Book Free Taster Session
                     </Button>
                   </Magnetic>

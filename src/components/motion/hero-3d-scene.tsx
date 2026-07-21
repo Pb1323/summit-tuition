@@ -76,7 +76,7 @@ function Flag() {
     }
   });
   return (
-    <group position={[0.1, 2.42, 0.1]}>
+    <group position={[0, 2.52, 0]}>
       <mesh position={[0, -0.62, 0]}>
         <cylinderGeometry args={[0.026, 0.026, 1.3, 8]} />
         <meshStandardMaterial color="#e7c874" metalness={0.75} roughness={0.25} />

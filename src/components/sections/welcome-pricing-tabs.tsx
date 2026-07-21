@@ -5,6 +5,7 @@ import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { CheckoutButton } from "@/components/ui/checkout-button";
 import { MOCK_CLUB_PRICING, PROGRAMME_PRICING } from "@/data/pricing";
 
 const TABS = [
@@ -69,9 +70,24 @@ export function WelcomePricingTabs() {
         </ul>
 
         <div className="mt-5 flex flex-col gap-2">
-          <Button href={tier.ctaHref} size="md" className="w-full">
-            {tier.cta}
-          </Button>
+          {tier.stripePriceId ? (
+            <CheckoutButton
+              size="md"
+              className="w-full"
+              checkout={{
+                priceId: tier.stripePriceId,
+                mode: tier.billingMode === "subscription" ? "subscription" : "payment",
+                productName: `Summit Tuition — ${tier.name}`,
+                productId: tier.id,
+              }}
+            >
+              {tier.cta}
+            </CheckoutButton>
+          ) : (
+            <Button href={tier.ctaHref} size="md" className="w-full">
+              {tier.cta}
+            </Button>
+          )}
           <Button href={active.learnMoreHref} variant="outline" size="sm" className="w-full">
             Learn more about {active.label}
           </Button>
