@@ -16,7 +16,10 @@ built.
 **Before writing anything**: if the mock needs diagrams (most full mocks
 do — see visual ratio requirement below), read the `question-visual-design`
 skill in full for the `QuestionVisual` data model, palette, and interactivity
-conventions. If you're picking up a mock partway through, also check
+conventions, **then** read `maths-mock-visual-craft` for how to make those
+diagrams genuinely impressive rather than just quality-gate-passing —
+variety across the paper, gradient/shadow/hover polish, and a duplicate-check
+step. If you're picking up a mock partway through, also check
 `research/mock-authoring-lessons.md` — it's mainly English-focused but the
 "how to verify a mock" pattern at the bottom applies here too.
 
