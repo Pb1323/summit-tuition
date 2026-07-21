@@ -49,19 +49,32 @@ only the small superscript letter tag next to each clause changes. See
 `SegmentMistakeAnswer` in `src/components/platform/ui.tsx` for the
 implementation and inline comments.
 
-**Open question raised 2026-07-21:** a founder session flagged that this
-letter-shuffle can look "messed up" to a student mid-question (e.g. seeing
-labels in the order B, C, A, D, N instead of A, B, C, D, N) and asked for it
-to be removed. As of this file's last edit, the shuffle is **still active in
-the code** (verified live in `ui.tsx`) — if you're picking this up and the
-founder still wants it gone, the fix is to delete the `letters` shuffle logic
-in `SegmentMistakeAnswer` and just render `String.fromCharCode(65 + index)`
-in clause order instead. Note the trade-off before doing that: reverting will
-bring back Bug 2 (clustering of the correct letter) unless the underlying
-question data is rebalanced so the mistake's clause position is itself evenly
-distributed across A/B/C/D per batch of questions — that would need auditing
-existing `esp*`/`egr*`/spelling/punctuation questions' mistake positions, not
-just a one-line code change.
+**Resolved 2026-07-21:** a founder session flagged that this letter-shuffle
+can look "messed up" mid-question (e.g. seeing labels in the order B, C, A,
+D, N instead of A, B, C, D, N) and asked whether it should be removed. Before
+deciding, checked the actual scale of Bug 2 directly — a script counted, across
+all 270 live `segment-format` questions in the bank, which natural clause
+position (A/B/C/D, ignoring the shuffle) the correct answer sits in if you
+strip the letter-shuffle back out:
+
+```
+A: 87 (32.2%)   B: 97 (35.9%)   C: 26 (9.6%)   D: 5 (1.9%)   N: 55 (20.4%)
+```
+
+That confirms Bug 2 is real and severe, not a theoretical worry — 68% of
+these questions have their mistake in clause A or B, and D is used in fewer
+than 2% of questions. Removing the letter-shuffle today would make the
+correct answer predictably A or B on two-thirds of segment questions across
+the whole platform. **Decision: keep the shuffle as-is.** A student
+occasionally seeing labels out of ascending order is a minor, one-time
+surprise; a student (or a sibling/friend swapping notes) learning "it's
+almost always A or B" defeats the point of the question entirely. This is not
+being left as an open question anymore — don't remove the shuffle without
+first re-running the same check after rewriting/rebalancing the underlying
+`esp*`/`egr*`/spelling/punctuation question data so the mistake's clause
+position is itself roughly even across A/B/C/D (that's the real fix, and a
+much bigger job — ~270 questions' sentences would need reworking, not a
+one-line code change).
 
 ## Bug 3 — question order jumbled instead of grouped into GL's real section blocks
 
