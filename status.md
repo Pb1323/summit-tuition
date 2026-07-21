@@ -1,10 +1,17 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-21 (added a free-mock trial funnel, made the taster questions properly hard, and paused all Stripe checkout buttons in favour of phoning/WhatsApp for now — see below)
+Last updated: 2026-07-21 (fixed a bug where the free-mock funnel looked broken on a repeat visit, added clear "Pro-only" locks to the Study Notes pages, and made the /welcome trust section quantitative — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-07-21, free-mock bugfix, Notes locking, taster-question polish)
+
+- You said you couldn't see the free-mock gating behaviour working. Found the real bug: if you'd already used your one free mock and came back to the page, it very briefly showed the wrong "mocks left" count before correcting itself — in the developer preview this shows up as a jarring on-screen error, which is almost certainly what you saw. Fixed properly so it never happens again.
+- Study Notes pages (Maths and English) now clearly show a lock icon and "Unlock with Pro" label on any topic a free account hasn't got access to yet — before, every topic looked identical and you'd only find out it was locked after clicking in. This matches the same locked/unlocked look used on the new free-mock picker.
+- Taster questions: swapped the order of two of the sample questions, and fixed one diagram where the angle labels were overlapping the triangle shape.
+- `/welcome`'s "why parents choose us" section now uses real numbers instead of vague claims: 26 full-length mocks, 140+ Study Notes lessons, and "Pro costs less than a single private tutoring session per month."
 
 ## Done (session — 2026-07-21, free-mock funnel, harder taster questions, and pausing Stripe checkout)
 
