@@ -15249,7 +15249,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     "id": "english-gl-stretch-r1",
-    "title": "English GL-Style Full Paper IV — Rebuilt 4-Section",
+    "title": "English GL-Style Full Diagnostic Paper — 4-Section",
     "subject": "English",
     "style": "GL-style",
     "difficultyLabel": "Standard",
