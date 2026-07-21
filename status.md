@@ -1,10 +1,18 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-21 (share-readiness check: fixed the /welcome pricing tabs not offering WhatsApp payment — see below)
+Last updated: 2026-07-21 (checked the older "Summit Stretch" mocks against the newer quality bar, fixed 3 real bugs — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-07-21, Summit Stretch mock check-up + new Maths visuals skill)
+
+You asked me to go back over the older "Summit Stretch" mocks (from before the newer, stricter Elite-quality rules) and check they still hold up, using the mock-writing skills as the checklist.
+
+- Found and fixed 3 real problems: two mocks that were labelled "Elite" in their title but not actually gated as Elite (so Pro-tier accounts were getting them for free), six questions across the older English "Stretch Paper" mocks that referenced a specific paragraph but weren't actually linked to it, and one story passage that had accidentally lost a sentence from a few of its paragraphs and was a bit too short. All fixed, verified, and pushed live (including re-running the database sync step so the fixes show up on the real site, not just in the code).
+- Also checked the shorter Maths "stretch" papers and the two extra-long 100-question English papers against the newer, bigger Elite format. These were already working fine and clearly labelled as their own distinct thing (a "Number Focus" paper, a "Geometry Focus" paper, etc.) rather than broken attempts at the full format — you decided to leave their content exactly as it is rather than rebuild them to match the Elite size.
+- Built a new skill specifically about making the Maths mock diagrams (the little charts/shapes/number lines) look genuinely impressive rather than just "there" — covering variety (no repeated identical diagrams in one paper), visual polish (gradients, shadows, hover effects already used elsewhere on the site), and a checklist to run before calling a new Maths mock's visuals finished.
 
 ## Done (session — 2026-07-21, share-readiness check before sending the site to other people)
 
