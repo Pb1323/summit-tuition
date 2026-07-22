@@ -1,10 +1,15 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-21 (redesigned the Pro/Max tabs on /welcome, cut the mock-preview flow down to 2 real "official" sample mocks with proper subject links, added a new blurred Study Notes preview page, and updated the pricing/trust copy with your latest figures — see below)
+Last updated: 2026-07-22 (temporary homepage redirect for a misfired WhatsApp link, plus a housekeeping pass — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-07-22, WhatsApp redirect + housekeeping)
+
+- A WhatsApp broadcast accidentally linked the main site homepage instead of `/welcome` and couldn't be corrected after sending, so the homepage (`/`) now temporarily redirects to `/welcome` (which already has a "Prefer the full site?" link at the bottom for everyone else). **This needs removing again in a day or two** once the WhatsApp traffic has passed — it's marked with a big comment in `next.config.ts` so it isn't forgotten, but flagging it here too.
+- Housekeeping: found and committed some real, finished work that had been sitting uncommitted locally (an auto-doc-update hook, and documentation updates to the mock-ops/question-visual-design skill files) — no functional site change, just catching up git. Also cleared out stray local tool-state folders (`.codex/`, `.impeccable/`, a duplicate `impeccable` skill copy) that aren't part of the actual site, and deleted 6 leftover local branches from old sessions whose work was already merged into `main` (verified before deleting, nothing lost). Committed a small Supabase security-advisor fix script (`scripts/enable-rls-note-tables.sql`) that was also sitting uncommitted.
 
 ## Done (session — 2026-07-21, same day follow-up — segmented tabs, 2-mock official sample, Study Notes preview)
 

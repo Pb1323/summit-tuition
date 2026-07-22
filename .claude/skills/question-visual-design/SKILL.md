@@ -5,6 +5,16 @@ description: Design and build new QuestionVisual renderers (NVR, VR, Maths, Engl
 
 # Question visual design (NVR / VR / Maths / English)
 
+Scope check: this skill is for **mock-room question diagrams**
+(`question-visuals.tsx`, `QuestionVisual` data type) specifically. The
+**Study Notes** diagrams (`src/components/notes/notes-diagrams/*.tsx`, themed
+via `notes-theme.ts`, CSS namespaced `nt-`/`notes-`) are a separate,
+bespoke-per-subtopic component system, not driven by the `QuestionVisual`
+union — don't reuse `VisualRenderer`/`frame()` patterns there or assume the
+palette constants below apply; check `notes-theme.ts` instead. Site-wide
+editorial polish (drop caps, pull quotes, `premium-card-hover`) is a third,
+unrelated system in `src/components/ui/` — also out of scope here.
+
 This project renders all question diagrams through one component,
 `src/components/platform/question-visuals.tsx` (`VisualRenderer`), driven by
 the `QuestionVisual` type in `src/types/platform.ts`. Every subject's diagram
@@ -26,6 +36,7 @@ question is data, not a bespoke component — a `Question.visual` object with a
 - SVG viewBoxes in this file are hand-tuned per type (e.g. `0 0 320 190` for shapes, `0 0 360 130` for sequences) — pick round numbers and keep consistent margins (~20-40px) so the frame doesn't crop labels.
 - `visual.type` is normalized via `visual.type.replace(/_/g, "").toLowerCase()` before matching — so both `snake_case` and `camelCase` variants of a type name are accepted. Add both to the `QuestionVisual["type"]` union when introducing a new type, matching the existing pairs (e.g. `"nvr_matrix" | "nvrMatrix"`).
 - Multiple visuals can render on one page (e.g. admin mock preview grid) — never hardcode an SVG element `id`; use `React.useId()` (see `patternId` in `VisualRenderer`) for anything referenced via `url(#id)`.
+- **Interactivity system (added in `bca2336`, applies across all Maths visual types today — bar/line charts, tables, number lines, coordinate grids, shapes, fractions, ratio blocks, Venn diagrams, clocks, sequences)**: hover/focus affordances are a shared CSS contract in `globals.css` — `.qv-hit` (the hoverable/focusable element, needs `tabIndex`/`focusable` so keyboard users get it via `:focus-visible`), `.qv-mark`/`.qv-mark-scale` (a highlight that appears on hover/focus, e.g. a value dot or a scaled bar), `.qv-tooltip` (a label that fades/slides in), `.qv-guide` (a dashed reference line). Wrap any new hoverable detail in `.qv-hit` rather than inventing a new hover pattern, and gate any animated draw-in with the existing `@media (prefers-reduced-motion: no-preference)` / `reduce` split (see `globals.css` lines ~71/106/405) — don't ship motion that ignores the reduced-motion query.
 
 ## NVR (non-verbal reasoning) content model
 

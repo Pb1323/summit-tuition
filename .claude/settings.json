@@ -10,6 +10,20 @@
           }
         ]
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "agent",
+            "if": "Bash(git commit *)",
+            "prompt": "A git commit was just made in this repo (Summit Tuition). Run `git show HEAD --stat` and `git log -1 -p` to see exactly what changed. Decide whether CLAUDE.md (project root, the auto-loaded technical context file) and/or status.md (project root, the plain-English session log) need updating to reflect it. Update them ONLY if the commit meaningfully changes something a future session/human would need to know: a new/changed route, a data model or schema change, a security/auth posture change, a new or changed main product flow, or a new significant feature. Skip trivial commits (typo fixes, test-only changes, formatting, dependency bumps) — do nothing and exit quietly for those. If an update is warranted: (1) edit the relevant CLAUDE.md section(s) (Recent Feature State, Important Routes, Data Model, Known Limitations, Main Product Flows, Sibling Projects, etc.) in its existing terse documentation style, and bump its 'Last updated' date; (2) add one short plain-English entry to status.md's most recent '## Done' section (or a new dated one) per the project's status-tracker skill conventions — no jargon, no file paths, write it like a note for a non-technical person. Do not rewrite unrelated sections of either file. Keep edits minimal and surgical.",
+            "timeout": 180,
+            "statusMessage": "Checking if CLAUDE.md/status.md need updating for this commit"
+          }
+        ]
+      }
     ]
   }
 }

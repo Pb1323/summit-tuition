@@ -59,3 +59,8 @@ research/gl-papers/*.pdf
 
 .vercel
 .env*
+
+# local-only AI tool state, not project content (Codex CLI, Impeccable design tool)
+/.codex/
+/.impeccable/
+/.claude/skills/impeccable/
