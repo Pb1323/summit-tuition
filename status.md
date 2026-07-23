@@ -1,10 +1,17 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-22 (temporary homepage redirect for a misfired WhatsApp link, plus a housekeeping pass — see below)
+Last updated: 2026-07-23 (drafted two new practice test papers matching Ripon Grammar School's exact exam format, for your review — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-07-23, Ripon Grammar School style test papers)
+
+- Built two new practice test papers that exactly match the format and question counts of Ripon Grammar School's (North Yorkshire) entrance exam, ahead of their exam changing format this September: one covering English + Verbal Reasoning (45 minutes, 58 questions), one covering Non-Verbal Reasoning + Maths (55 minutes, 65 questions).
+- Most of the questions were reused from the existing question bank where they already fit (all 25 Maths questions, and about half of the Verbal/Non-Verbal Reasoning questions). New content written from scratch: a brand-new short story for the reading comprehension section, new spelling/grammar questions, and enough new Verbal and Non-Verbal Reasoning questions to hit the exact counts needed.
+- **Both papers are drafts only — not visible to students yet.** They're sitting behind the same "not published" switch used for any mock still being reviewed, so nothing changes for current students until you look them over and decide to publish.
+- Double-checked the question counts, marks, and no duplicate/broken questions with an automated check, and confirmed the whole site still builds and passes all checks cleanly.
 
 ## Done (session — 2026-07-22, WhatsApp redirect + housekeeping)
 
