@@ -16268,7 +16268,7 @@ export const MOCKS: MockExam[] = [
   // Replicates the exact Sept-2026-sitting Ripon Grammar entrance exam structure (GL Assessment-produced).
   {
     id: "ripon-verbal-skills-test",
-    title: "Ripon Grammar Style — Verbal Skills (Test Paper)",
+    title: "Ripon Grammar Style — Verbal Skills",
     subject: "English",
     style: "GL-style",
     difficultyLabel: "Standard",
@@ -16284,14 +16284,14 @@ export const MOCKS: MockExam[] = [
       "vr1", "vr2", "vr3", "vr4", "vr5", "vr7", "vr8", "vr10", "vr11", "vr12", "vr13", "vr14", "vr15", "vr16", "vr17", "vr18", "vr19",
       "vr21", "vr22", "vr23", "vr24", "vr25", "vr26", "vr27", "vr28", "vr29", "vr30", "vr31", "vr32", "vr33", "vr34", "vr35",
     ],
-    published: false,
+    published: true,
     releaseDate: "2026-07-23",
     tier: "Diagnostic Assessment",
-    description: "A hand-authored test paper replicating the exact structure of Ripon Grammar School's (North Yorkshire, GL Assessment-produced) entrance exam ahead of its Sept 2026 format change: 45 minutes, 58 questions/58 marks, mixing English and Verbal Reasoning content in the order Q1-14 reading comprehension on an original passage ('The Allotment Key'), Q15-26 spelling and grammar in the authentic segment 'find the group of words with the mistake, or choose N' format, and Q27-58 verbal reasoning (letter/number sequences, word codes, analogies, missing letters, hidden words, compound words, odd one out, vocabulary and anagrams — reusing this platform's existing vr1-20 bank plus 15 newly authored questions for variety). Draft for founder review — not yet published. Not copied from any third-party paper; original Summit Tuition content in the researched Ripon/GL format only.",
+    description: "A hand-authored paper replicating the exact structure of Ripon Grammar School's (North Yorkshire, GL Assessment-produced) entrance exam ahead of its Sept 2026 format change: 45 minutes, 58 questions/58 marks, mixing English and Verbal Reasoning content in the order Q1-14 reading comprehension on an original passage ('The Allotment Key'), Q15-26 spelling and grammar in the authentic segment 'find the group of words with the mistake, or choose N' format, and Q27-58 verbal reasoning (letter/number sequences, word codes, analogies, missing letters, hidden words, compound words, odd one out, vocabulary and anagrams — reusing this platform's existing vr1-20 bank plus 15 newly authored questions for variety). Not copied from any third-party paper; original Summit Tuition content in the researched Ripon/GL format only.",
   },
   {
     id: "ripon-nvr-maths-test",
-    title: "Ripon Grammar Style — Non-Verbal Reasoning & Maths (Test Paper)",
+    title: "Ripon Grammar Style — Non-Verbal Reasoning & Maths",
     subject: "NVR",
     style: "GL-style",
     difficultyLabel: "Standard",
@@ -16309,10 +16309,10 @@ export const MOCKS: MockExam[] = [
       "mp31", "mp34", "mp41", "mp44", "mp48", "mr37", "mr40", "mq1", "mq2", "mq5",
       "mq9", "mr1", "mr2", "mr4", "mr19",
     ],
-    published: false,
+    published: true,
     releaseDate: "2026-07-23",
     tier: "Diagnostic Assessment",
-    description: "A hand-authored test paper replicating the exact structure of Ripon Grammar School's (North Yorkshire, GL Assessment-produced) entrance exam ahead of its Sept 2026 format change: 55 minutes, 65 questions/65 marks, mixing Non-Verbal Reasoning and Maths content in the order Q1-20 NVR Section A, Q21-40 NVR Section B (40 NVR questions total across matrices, sequences, odd-one-out, analogies, similarity, code keys, rotations, nets, combining solids and hole-punch — reusing 16 of this platform's existing nvr1-20 bank plus 24 newly authored questions), and Q41-65 Maths curated from the existing question bank at up to end-of-Year-5 difficulty (number, fractions/decimals/percentages, ratio, basic algebra, geometry, averages & statistics — deliberately below the platform's usual 11+ ceiling). Draft for founder review — not yet published. Not copied from any third-party paper; original Summit Tuition content in the researched Ripon/GL format only.",
+    description: "A hand-authored paper replicating the exact structure of Ripon Grammar School's (North Yorkshire, GL Assessment-produced) entrance exam ahead of its Sept 2026 format change: 55 minutes, 65 questions/65 marks, mixing Non-Verbal Reasoning and Maths content in the order Q1-20 NVR Section A, Q21-40 NVR Section B (40 NVR questions total across matrices, sequences, odd-one-out, analogies, similarity, code keys, rotations, nets, combining solids and hole-punch — reusing 16 of this platform's existing nvr1-20 bank plus 24 newly authored questions), and Q41-65 Maths curated from the existing question bank at up to end-of-Year-5 difficulty (number, fractions/decimals/percentages, ratio, basic algebra, geometry, averages & statistics — deliberately below the platform's usual 11+ ceiling). Not copied from any third-party paper; original Summit Tuition content in the researched Ripon/GL format only.",
   },
 ];
 
