@@ -8848,7 +8848,7 @@ export const QUESTIONS: Question[] = [
     correctAnswer: "63",
     markScheme: "Each term is doubled and then 1 is added: 3x2+1=7, 7x2+1=15, 15x2+1=31, so the next term is 31x2+1=63.",
     explanation: "Test whether the rule involves both multiplying and adding, not just one or the other.",
-    marks: 2, tags: ["number sequence", "original"], timeEstimateSeconds: 70, sourceStyle: "unknown", originalGenerated: true,
+    marks: 1, tags: ["number sequence", "original"], timeEstimateSeconds: 70, sourceStyle: "unknown", originalGenerated: true,
   },
   {
     id: "vr23", subject: "VR", topic: "Word Codes", subtopic: "Letter Substitution", difficulty: "stretch", questionType: "multiple_choice",
@@ -8857,7 +8857,7 @@ export const QUESTIONS: Question[] = [
     correctAnswer: "RKCPQ",
     markScheme: "Each letter moves forward two places in the alphabet (F->H, L->N, U->W, T->V, E->G). Applying this to PIANO: P->R, I->K, A->C, N->P, O->Q gives RKCPQ.",
     explanation: "Compare each letter of the code word to the original word to find the shift, then apply it consistently.",
-    marks: 2, tags: ["word codes", "letter substitution", "original"], timeEstimateSeconds: 75, sourceStyle: "unknown", originalGenerated: true,
+    marks: 1, tags: ["word codes", "letter substitution", "original"], timeEstimateSeconds: 75, sourceStyle: "unknown", originalGenerated: true,
   },
   {
     id: "vr24", subject: "VR", topic: "Word Codes", subtopic: "Position-Based Codes", difficulty: "stretch", questionType: "multiple_choice",
@@ -8866,7 +8866,7 @@ export const QUESTIONS: Question[] = [
     correctAnswer: "6-4-23",
     markScheme: "C is the 3rd letter (3+3=6), A is the 1st letter (1+3=4), T is the 20th letter (20+3=23), giving 6-4-23.",
     explanation: "Work out each letter's alphabet position first, then add 3 to every value.",
-    marks: 2, tags: ["word codes", "numeric code", "original"], timeEstimateSeconds: 80, sourceStyle: "unknown", originalGenerated: true,
+    marks: 1, tags: ["word codes", "numeric code", "original"], timeEstimateSeconds: 80, sourceStyle: "unknown", originalGenerated: true,
   },
   {
     id: "vr25", subject: "VR", topic: "Verbal Analogies", subtopic: "A is to B as C is to D", difficulty: "standard", questionType: "multiple_choice",
@@ -8902,7 +8902,7 @@ export const QUESTIONS: Question[] = [
     correctAnswer: "opera index",
     markScheme: "The last two letters of 'opera' (RA) combine with the first two letters of 'index' (IN) to spell RAIN.",
     explanation: "Read across the join between each pair of neighbouring words, looking for a real word hiding in the join.",
-    marks: 2, tags: ["hidden word", "word boundaries", "original"], timeEstimateSeconds: 75, sourceStyle: "unknown", originalGenerated: true,
+    marks: 1, tags: ["hidden word", "word boundaries", "original"], timeEstimateSeconds: 75, sourceStyle: "unknown", originalGenerated: true,
   },
   {
     id: "vr29", subject: "VR", topic: "Compound Words", subtopic: "Bridging Word", difficulty: "standard", questionType: "multiple_choice",
@@ -9047,7 +9047,7 @@ export const QUESTIONS: Question[] = [
     correctAnswer: "Square with 4 dots",
     markScheme: "The number of dots increases by one at each step (1, 2, 3, 4), always placed on a square, so the missing figure is a square with 4 dots.",
     explanation: "Ignore the square's outline and count only how many dots appear at each step.",
-    marks: 2,
+    marks: 1,
     visual: { type: "nvrSequence", title: "Complete the sequence", data: { figures: [
       { sides: 4, internalElements: [{ shape: "dot", position: "topLeft" }] },
       { sides: 4, internalElements: [{ shape: "dot", position: "topLeft" }, { shape: "dot", position: "topRight" }] },
@@ -9129,7 +9129,7 @@ export const QUESTIONS: Question[] = [
     correctAnswer: "Hexagon rotated 30°, outline fill",
     markScheme: "The figure rotates 30° and its fill changes from solid to outline, so the hexagon should also rotate 30° and change to outline fill.",
     explanation: "Two changes happen together here — check both the rotation and the fill before answering.",
-    marks: 2,
+    marks: 1,
     visual: { type: "nvrPairAnalogy", title: "Figure analogy", data: { a: { sides: 5, rotation: 0, fill: "solid" }, b: { sides: 5, rotation: 30, fill: "outline" }, c: { sides: 6, rotation: 0, fill: "solid" } } },
     tags: ["nvr", "analogy", "rotation", "fill", "original"], timeEstimateSeconds: 70, sourceStyle: "unknown", originalGenerated: true,
   },
@@ -9151,7 +9151,7 @@ export const QUESTIONS: Question[] = [
     correctAnswer: "A square rotated 45°",
     markScheme: "Both reference figures are rotated 45°, and the query figure is also rotated 45°, so the matching option must share the same 45° rotation.",
     explanation: "Ignore the number of sides here — the shared property is the exact rotation angle.",
-    marks: 2,
+    marks: 1,
     visual: { type: "nvrSimilarity", title: "Which is alike?", data: { reference: [{ sides: 3, rotation: 45 }, { sides: 5, rotation: 45 }], query: { sides: 4, rotation: 45 } } },
     tags: ["nvr", "similarity", "rotation", "original"], timeEstimateSeconds: 70, sourceStyle: "unknown", originalGenerated: true,
   },
@@ -9173,7 +9173,7 @@ export const QUESTIONS: Question[] = [
     correctAnswer: "FW",
     markScheme: "E means pentagon and F means hexagon; V means small size and W means large size. The test figure is a large hexagon, so its code is FW.",
     explanation: "Match each worked example to the two attributes it encodes before decoding the test figure.",
-    marks: 2,
+    marks: 1,
     visual: { type: "nvrCodeKey", title: "Crack the code", data: { examples: [{ figure: { sides: 5, size: 0.5 }, code: "EV" }, { figure: { sides: 5, size: 1 }, code: "EW" }, { figure: { sides: 6, size: 0.5 }, code: "FV" }], test: { sides: 6, size: 1 } } },
     tags: ["nvr", "code key", "size", "original"], timeEstimateSeconds: 65, sourceStyle: "unknown", originalGenerated: true,
   },
@@ -9206,7 +9206,7 @@ export const QUESTIONS: Question[] = [
     correctAnswer: "Pentagon with dot bottom-left",
     markScheme: "The dot moves one corner anticlockwise (topRight -> topLeft -> bottomLeft). Starting from topRight in the test figure, two steps anticlockwise gives bottomLeft.",
     explanation: "Work out the anticlockwise order of corners first, then move the test figure's dot the correct number of steps.",
-    marks: 2,
+    marks: 1,
     visual: { type: "nvrRotation", title: "Rotation", data: { before: { sides: 5, internalElements: [{ shape: "dot", position: "topRight" }] }, after: { sides: 5, internalElements: [{ shape: "dot", position: "bottomLeft" }] }, test: { sides: 5, internalElements: [{ shape: "dot", position: "topRight" }] } } },
     tags: ["nvr", "rotation", "marker", "original"], timeEstimateSeconds: 65, sourceStyle: "unknown", originalGenerated: true,
   },
@@ -9222,7 +9222,7 @@ export const QUESTIONS: Question[] = [
     correctAnswer: "Front: square (dots), Top: triangle (solid), Right: pentagon (outline)",
     markScheme: "In this cross layout, the front, top and right squares of the net fold directly into the cube's front, top and right faces without rotating: front stays square (dots), top stays triangle (solid), right stays pentagon (outline).",
     explanation: "Only the front, top and right faces of the net matter here — ignore the bottom, left and back faces.",
-    marks: 2,
+    marks: 1,
     visual: { type: "nvrNet", title: "Nets and cubes", data: { net: {
       top: { sides: 3, fill: "solid" },
       front: { sides: 4, fill: "dots" },
@@ -9245,7 +9245,7 @@ export const QUESTIONS: Question[] = [
     correctAnswer: "B is attached to the right side of A, flush against the edge",
     markScheme: "Shape B's height exactly matches shape A's height, so the only way to join them without a gap or overlap is for B to sit flush against A's right-hand face.",
     explanation: "Compare the height of both shapes to see which face of A shape B can sit against exactly.",
-    marks: 2,
+    marks: 1,
     visual: { type: "nvrCombine3d", title: "Combining 3D shapes", data: { a: { w: 60, h: 50, d: 40 }, b: { w: 30, h: 50, d: 40 } } },
     tags: ["nvr", "3d", "combining solids", "original"], timeEstimateSeconds: 75, sourceStyle: "unknown", originalGenerated: true,
   },
@@ -9261,7 +9261,7 @@ export const QUESTIONS: Question[] = [
     correctAnswer: "B sits on top of A, shifted to one edge, no gap",
     markScheme: "Shape B's base is smaller than shape A's top face, so it can sit flush without a gap only if it is shifted to align with one edge of A rather than centred.",
     explanation: "Compare the widths of both shapes carefully — a smaller top shape does not have to sit centred to join without a gap.",
-    marks: 2,
+    marks: 1,
     visual: { type: "nvrCombine3d", title: "Combining 3D shapes", data: { a: { w: 80, h: 40, d: 50 }, b: { w: 35, h: 30, d: 50 } } },
     tags: ["nvr", "3d", "combining solids", "original"], timeEstimateSeconds: 80, sourceStyle: "unknown", originalGenerated: true,
   },
@@ -16263,6 +16263,57 @@ export const MOCKS: MockExam[] = [
     "tier": "Diagnostic Assessment",
     "description": "Original 4-section English paper generated by the rebuilt GL-ratio generator: Section A reading comprehension (retrieval, inference, vocabulary-in-context, embedded grammar, literary device) on an original passage, 'The River Map', Section B spelling and Section C punctuation in the authentic segment 'find the lettered group with the mistake, or choose N' format, and Section D cloze on a second original passage, 'Performance Day' — sized to the real GL Assessment section ratio (52/17/17/15%, see research/gl-english-question-bank.md) and scaled up to a full ~80-question paper. Not copied from any third-party paper."
   } as MockExam,
+
+  // ===== Ripon Grammar School (North Yorkshire) style test papers — draft, unpublished =====
+  // Replicates the exact Sept-2026-sitting Ripon Grammar entrance exam structure (GL Assessment-produced).
+  {
+    id: "ripon-verbal-skills-test",
+    title: "Ripon Grammar Style — Verbal Skills (Test Paper)",
+    subject: "English",
+    style: "GL-style",
+    difficultyLabel: "Standard",
+    durationMinutes: 45,
+    totalMarks: 58,
+    questionIds: [
+      // Section 1: reading comprehension — 14 questions on one original passage, "The Allotment Key"
+      "rgh1", "rgh2", "rgh3", "rgh4", "rgh5", "rgh6", "rgh7", "rgh8", "rgh9", "rgh10", "rgh11", "rgh12", "rgh13", "rgh14",
+      // Section 2: spelling & grammar — 12 questions (6 spelling, 6 grammar-mistake), segment "find the mistake, or choose N" format
+      "rgsp1", "rgsp2", "rgsp3", "rgsp4", "rgsp5", "rgsp6",
+      "rggr1", "rggr2", "rggr3", "rggr4", "rggr5", "rggr6",
+      // Section 3: verbal reasoning — 32 questions (existing vr1-20 bank + 12 new vr21-32, all classic 11+ VR types)
+      "vr1", "vr2", "vr3", "vr4", "vr5", "vr7", "vr8", "vr10", "vr11", "vr12", "vr13", "vr14", "vr15", "vr16", "vr17", "vr18", "vr19",
+      "vr21", "vr22", "vr23", "vr24", "vr25", "vr26", "vr27", "vr28", "vr29", "vr30", "vr31", "vr32", "vr33", "vr34", "vr35",
+    ],
+    published: false,
+    releaseDate: "2026-07-23",
+    tier: "Diagnostic Assessment",
+    description: "A hand-authored test paper replicating the exact structure of Ripon Grammar School's (North Yorkshire, GL Assessment-produced) entrance exam ahead of its Sept 2026 format change: 45 minutes, 58 questions/58 marks, mixing English and Verbal Reasoning content in the order Q1-14 reading comprehension on an original passage ('The Allotment Key'), Q15-26 spelling and grammar in the authentic segment 'find the group of words with the mistake, or choose N' format, and Q27-58 verbal reasoning (letter/number sequences, word codes, analogies, missing letters, hidden words, compound words, odd one out, vocabulary and anagrams — reusing this platform's existing vr1-20 bank plus 15 newly authored questions for variety). Draft for founder review — not yet published. Not copied from any third-party paper; original Summit Tuition content in the researched Ripon/GL format only.",
+  },
+  {
+    id: "ripon-nvr-maths-test",
+    title: "Ripon Grammar Style — Non-Verbal Reasoning & Maths (Test Paper)",
+    subject: "NVR",
+    style: "GL-style",
+    difficultyLabel: "Standard",
+    durationMinutes: 55,
+    totalMarks: 65,
+    questionIds: [
+      // NVR Section A — 20 questions (existing nvr1-8/10-17 bank + new nvr21-24, varied archetypes)
+      "nvr1", "nvr2", "nvr3", "nvr4", "nvr5", "nvr6", "nvr7", "nvr8", "nvr10", "nvr11",
+      "nvr12", "nvr13", "nvr14", "nvr15", "nvr16", "nvr17", "nvr21", "nvr22", "nvr23", "nvr24",
+      // NVR Section B — 20 questions (all newly authored nvr25-44, varied archetypes)
+      "nvr25", "nvr26", "nvr27", "nvr28", "nvr29", "nvr30", "nvr31", "nvr32", "nvr33", "nvr34",
+      "nvr35", "nvr36", "nvr37", "nvr38", "nvr39", "nvr40", "nvr41", "nvr42", "nvr43", "nvr44",
+      // Maths (KS2, up to end of Year 5 curriculum) — 25 questions curated from the existing Maths bank
+      "mp2", "mp3", "mp6", "mp11", "mp13", "mp15", "mp18", "mp23", "mp28", "mp30",
+      "mp31", "mp34", "mp41", "mp44", "mp48", "mr37", "mr40", "mq1", "mq2", "mq5",
+      "mq9", "mr1", "mr2", "mr4", "mr19",
+    ],
+    published: false,
+    releaseDate: "2026-07-23",
+    tier: "Diagnostic Assessment",
+    description: "A hand-authored test paper replicating the exact structure of Ripon Grammar School's (North Yorkshire, GL Assessment-produced) entrance exam ahead of its Sept 2026 format change: 55 minutes, 65 questions/65 marks, mixing Non-Verbal Reasoning and Maths content in the order Q1-20 NVR Section A, Q21-40 NVR Section B (40 NVR questions total across matrices, sequences, odd-one-out, analogies, similarity, code keys, rotations, nets, combining solids and hole-punch — reusing 16 of this platform's existing nvr1-20 bank plus 24 newly authored questions), and Q41-65 Maths curated from the existing question bank at up to end-of-Year-5 difficulty (number, fractions/decimals/percentages, ratio, basic algebra, geometry, averages & statistics — deliberately below the platform's usual 11+ ceiling). Draft for founder review — not yet published. Not copied from any third-party paper; original Summit Tuition content in the researched Ripon/GL format only.",
+  },
 ];
 
 /** Free/Pro/Max access is derived from each mock's existing `tier`/`isFree` fields and each
