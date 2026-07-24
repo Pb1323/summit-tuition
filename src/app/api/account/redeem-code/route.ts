@@ -2,12 +2,18 @@ import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/server/auth";
 import { isDatabaseConfigured, prisma } from "@/lib/server/db";
 import { PROMO_CODES } from "@/data/promo-codes";
+import { clientIp, isRateLimited } from "@/lib/server/rate-limit";
 
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   const currentUser = await getCurrentUser();
   if (!currentUser) return NextResponse.json({ ok: false, message: "You need to be signed in." }, { status: 401 });
+
+  if (isRateLimited(`redeem-code:ip:${clientIp(request)}`, 20, 10 * 60 * 1000) || isRateLimited(`redeem-code:user:${currentUser.id}`, 10, 10 * 60 * 1000)) {
+    return NextResponse.json({ ok: false, message: "Too many attempts. Try again in a few minutes." }, { status: 429 });
+  }
+
   if (!isDatabaseConfigured()) return NextResponse.json({ ok: true, mode: "demo" });
 
   const body = await request.json().catch(() => null);

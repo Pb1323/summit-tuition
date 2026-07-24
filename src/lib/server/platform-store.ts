@@ -29,6 +29,45 @@ function redactQuestionsForStudent(questions: Question[], revealed: Set<string>)
   );
 }
 
+/**
+ * The question/passage text and options are the platform's paid content, separate
+ * from the correctAnswer/markScheme/explanation redaction above. A non-admin only
+ * ever needs question data for mocks they can actually open: free mocks, mocks
+ * they're unlocked for, or mocks they already have an attempt against (so review
+ * pages for a since-relocked mock still work). Returns null for admins to mean
+ * "no filtering" rather than an unbounded allow-set.
+ */
+function accessibleMockIds(mocks: MockExam[], currentUser: StudentAccount | null, attempts: { studentId: string; mockId: string }[]): Set<string> | null {
+  if (currentUser?.role === "admin") return null;
+  const allowed = new Set<string>();
+  for (const mock of mocks) {
+    if (mock.isFree) allowed.add(mock.id);
+  }
+  if (currentUser) {
+    for (const id of currentUser.unlockedMockIds) allowed.add(id);
+    for (const attempt of attempts) {
+      if (attempt.studentId === currentUser.id) allowed.add(attempt.mockId);
+    }
+  }
+  return allowed;
+}
+
+function filterQuestionsByAccess(questions: Question[], mocks: MockExam[], allowedMockIds: Set<string> | null): Question[] {
+  if (allowedMockIds === null) return questions;
+  const allowedQuestionIds = new Set<string>();
+  for (const mock of mocks) {
+    if (allowedMockIds.has(mock.id)) {
+      for (const questionId of mock.questionIds) allowedQuestionIds.add(questionId);
+    }
+  }
+  return questions.filter((question) => allowedQuestionIds.has(question.id));
+}
+
+function filterPassagesByQuestions(passages: Passage[], questions: Question[]): Passage[] {
+  const allowedPassageIds = new Set(questions.map((question) => question.passageId).filter((id): id is string => Boolean(id)));
+  return passages.filter((passage) => allowedPassageIds.has(passage.id));
+}
+
 export type PlatformBootstrap = {
   currentUser: StudentAccount | null;
   mode?: "demo";
@@ -55,17 +94,19 @@ function toDateOnly(value: Date | string) {
 
 export async function getPlatformBootstrap(currentUser: StudentAccount | null): Promise<PlatformBootstrap> {
   if (!isDatabaseConfigured()) {
+    const allowedMockIds = accessibleMockIds(MOCKS, currentUser, ATTEMPTS);
+    const accessibleQuestions = filterQuestionsByAccess(QUESTIONS, MOCKS, allowedMockIds);
     const questions =
       currentUser?.role === "admin"
         ? QUESTIONS
-        : redactQuestionsForStudent(QUESTIONS, currentUser ? revealedQuestionIds(MOCKS, ATTEMPTS, currentUser.id) : new Set());
+        : redactQuestionsForStudent(accessibleQuestions, currentUser ? revealedQuestionIds(MOCKS, ATTEMPTS, currentUser.id) : new Set());
     return {
       currentUser,
       mode: "demo",
       users: currentUser?.role === "admin" ? SEEDED_USERS : currentUser ? [currentUser] : [],
       mocks: MOCKS,
       questions,
-      passages: PASSAGES,
+      passages: currentUser?.role === "admin" ? PASSAGES : filterPassagesByQuestions(PASSAGES, accessibleQuestions),
       attempts: currentUser?.role === "admin" ? ATTEMPTS : currentUser ? ATTEMPTS.filter((attempt) => attempt.studentId === currentUser.id) : [],
       references: currentUser?.role === "admin" ? REFERENCES : REFERENCES.filter((reference) => reference.style === "GL-style"),
       products: PRODUCT_PLANS,
@@ -106,28 +147,41 @@ export async function getPlatformBootstrap(currentUser: StudentAccount | null): 
         })()
       : null;
 
+  const mappedMocks: MockExam[] = mocks.map((mock) => ({
+    id: mock.id,
+    title: mock.title,
+    subject: mock.subject as MockExam["subject"],
+    style: fromPrismaReferenceStyle(mock.style) as MockExam["style"],
+    difficultyLabel: mock.difficultyLabel as MockExam["difficultyLabel"],
+    sourceProfileId: mock.sourceProfileId ?? undefined,
+    generatedFromReferenceId: mock.generatedFromReferenceId ?? undefined,
+    topicMix: (mock.topicMix as Record<string, number> | null) ?? undefined,
+    durationMinutes: mock.durationMinutes,
+    totalMarks: mock.totalMarks,
+    questionIds: mock.questionIds as string[],
+    published: mock.published,
+    releaseDate: toDateOnly(mock.releaseDate),
+    tier: mock.tier,
+    description: mock.description,
+    isFree: mock.isFree,
+  }));
+
+  const allowedMockIds = accessibleMockIds(mappedMocks, currentUser, attempts);
+  const allowedQuestionIds =
+    allowedMockIds === null
+      ? null
+      : new Set(
+          mappedMocks.filter((mock) => allowedMockIds.has(mock.id)).flatMap((mock) => mock.questionIds)
+        );
+  const accessibleQuestionRows = allowedQuestionIds === null ? questions : questions.filter((question) => allowedQuestionIds.has(question.id));
+  const accessiblePassageIds = new Set(accessibleQuestionRows.map((question) => question.passageId).filter((id): id is string => Boolean(id)));
+  const accessiblePassageRows = allowedQuestionIds === null ? passages : passages.filter((passage) => accessiblePassageIds.has(passage.id));
+
   return {
     currentUser,
     users: currentUser?.role === "admin" ? users.map(publicUser) : currentUser ? [currentUser] : [],
-    mocks: mocks.map((mock) => ({
-      id: mock.id,
-      title: mock.title,
-      subject: mock.subject as MockExam["subject"],
-      style: fromPrismaReferenceStyle(mock.style) as MockExam["style"],
-      difficultyLabel: mock.difficultyLabel as MockExam["difficultyLabel"],
-      sourceProfileId: mock.sourceProfileId ?? undefined,
-      generatedFromReferenceId: mock.generatedFromReferenceId ?? undefined,
-      topicMix: (mock.topicMix as Record<string, number> | null) ?? undefined,
-      durationMinutes: mock.durationMinutes,
-      totalMarks: mock.totalMarks,
-      questionIds: mock.questionIds as string[],
-      published: mock.published,
-      releaseDate: toDateOnly(mock.releaseDate),
-      tier: mock.tier,
-      description: mock.description,
-      isFree: mock.isFree,
-    })),
-    questions: questions.map((question) => ({
+    mocks: mappedMocks,
+    questions: accessibleQuestionRows.map((question) => ({
       id: question.id,
       subject: question.subject as Question["subject"],
       topic: question.topic,
@@ -148,7 +202,7 @@ export async function getPlatformBootstrap(currentUser: StudentAccount | null): 
       sourceStyle: question.sourceStyle ? fromPrismaReferenceStyle(question.sourceStyle) as Question["sourceStyle"] : undefined,
       originalGenerated: question.originalGenerated,
     })),
-    passages: passages.map((passage) => ({
+    passages: accessiblePassageRows.map((passage) => ({
       id: passage.id,
       title: passage.title,
       source: "original",

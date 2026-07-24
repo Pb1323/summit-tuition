@@ -16528,6 +16528,185 @@ export const MOCKS: MockExam[] = [
     tier: "Diagnostic Assessment",
     description: "A hand-authored paper replicating the exact structure of Ripon Grammar School's (North Yorkshire, GL Assessment-produced) entrance exam ahead of its Sept 2026 format change: 55 minutes, 65 questions/65 marks, mixing Non-Verbal Reasoning and Maths content in the order Q1-20 NVR Section A, Q21-40 NVR Section B (40 NVR questions total across matrices, sequences, odd-one-out, analogies, similarity, code keys, rotations, nets, combining solids and hole-punch — reusing 16 of this platform's existing nvr1-20 bank plus 24 newly authored questions), and Q41-65 Maths curated from the existing question bank at up to end-of-Year-5 difficulty (number, fractions/decimals/percentages, ratio, basic algebra, geometry, averages & statistics — deliberately below the platform's usual 11+ ceiling). Not copied from any third-party paper; original Summit Tuition content in the researched Ripon/GL format only.",
   },
+
+  // ===== Real-school-style entrance test replicas (11 schools) — original content in researched structures, reusing this platform's existing question/passage banks (see mock-authoring skills' documented reuse convention) =====
+  
+  {
+    id: "st-olaves-set-style",
+    title: "St Olave's Grammar (SET) Style Entrance Test",
+    subject: "English",
+    style: "GL-style",
+    difficultyLabel: "Standard",
+    durationMinutes: 60,
+    totalMarks: 66,
+    questionIds: [
+      "eh61", "eh62", "eh63", "eh64", "eh65", "eh66", "eh67", "eh68", "eh69", "eh70", "eh71", "eh72", "eh73", "eh74", "eh75", "mh1", "mh2", "mh3", "mh4", "mh5", "mh6", "mp6", "mp7", "mp8", "mp9", "mp10", "mq16", "mq17", "mq18", "mq19", "vr1", "vr4", "vr7", "vr8", "vr10", "vr14", "vr16", "vr18", "vr20", "vr23", "vr25", "vr28", "vr29", "vr33", "vr35", "nvr1", "nvr4", "nvr7", "nvr10", "nvr13", "nvr16", "nvr18", "nvr19", "nvr20", "nvr25", "nvr28", "nvr31", "nvr34", "nvr41", "nvr44"
+    ],
+    published: true,
+    releaseDate: "2026-07-24",
+    tier: "Diagnostic Assessment",
+    description: "A hand-authored practice paper styled after St Olave's and St Saviour's Grammar School's SET entrance exam structure (official sample: 4 sections of 15 questions each, ~1 hour): Section A English Comprehension on an original passage, Section B Maths (arithmetic, data handling, time, measurement, geometry, probability, sequences, percentages, fractions, ratio, unit conversion and word problems), Section C Verbal Reasoning (word codes, analogies, missing letters, hidden words, compound words, anagrams and vocabulary), Section D Non-Verbal Reasoning (sequences, odd-one-out, figure codes, rotation, nets/cubes, combining solids and hole-punch). Simplified to 60 single-mark questions from the source's 57-question/60-mark two-part-question format for platform compatibility. This is an original Summit Tuition practice paper in the researched St Olave's SET structure — it is NOT the official St Olave's exam and is not affiliated with the school.",
+  } as MockExam,
+  {
+    id: "tiffin-boys-stage1-style",
+    title: "Tiffin School (Boys) Stage 1 Style Test",
+    subject: "Maths",
+    style: "GL-style",
+    difficultyLabel: "Standard",
+    durationMinutes: 50,
+    totalMarks: 68,
+    questionIds: [
+      "mh1", "mh2", "mh3", "mh4", "mh5", "mh6", "mh7", "mh8", "mh9", "mh10", "mh11", "mh12", "mh13", "mh14", "mh15", "mh16", "mh17", "mh18", "mh19", "mh20", "mh21", "mh22", "mh23", "mh24", "mh25", "mh26", "mh27", "mh28", "mh29", "mh30", "mh31", "mh32", "mh33", "mh34", "mh35", "mh36", "mh37", "mh38", "mh39", "mh40", "mh41", "mh42", "mh43", "mh44", "eh11", "eh12", "eh13", "eh14", "ecl1", "ecl2", "ecl3", "ecl4", "esp1", "esp2", "esp3", "esp4", "epu1", "epu2", "epu3", "epu4", "ey4", "ey11", "ey16", "ey22"
+    ],
+    published: true,
+    releaseDate: "2026-07-24",
+    tier: "Diagnostic Assessment",
+    description: "A hand-authored practice paper styled after Tiffin School's Stage 1 entrance test structure: heavily Maths-weighted multiple choice (44 questions, ~50 minutes) plus a shorter English section covering the illustrative question types reported for Tiffin's format — comprehension, cloze/gap-fill, spelling, punctuation-error spotting and vocabulary. Original Summit Tuition content only — NOT the official Tiffin School paper and not affiliated with the school.",
+  } as MockExam,
+  {
+    id: "qe-barnet-style",
+    title: "Queen Elizabeth's School Barnet Style Test",
+    subject: "Maths",
+    style: "GL-style",
+    difficultyLabel: "Standard",
+    durationMinutes: 100,
+    totalMarks: 73,
+    questionIds: [
+      "mh45", "mh46", "mh47", "mh48", "mh49", "mh50", "mh51", "mh52", "mh53", "mh54", "mh55", "mp1", "mp2", "mp3", "mp4", "mp5", "mp6", "mp7", "mp8", "mp9", "mp10", "mp11", "mp12", "mp13", "mp14", "mp15", "mp16", "mp17", "mp18", "mp19", "eh21", "eh22", "eh23", "eh24", "eh25", "eh26", "eh27", "eh28", "eh29", "eh30", "ecl5", "ecl6", "ecl7", "ecl8", "ecl9", "esp5", "esp6", "esp7", "esp8", "esp9", "vr2", "vr3", "vr4", "vr5", "vr6", "vr7", "vr8", "vr9", "vr10", "vr11"
+    ],
+    published: true,
+    releaseDate: "2026-07-24",
+    tier: "Diagnostic Assessment",
+    description: "A hand-authored practice paper styled after Queen Elizabeth's School Barnet's two same-day papers (English+VR, and Maths, ~50-60 questions/~50 minutes each) combined into one ~60-question mock, weighted towards Maths (number operations and data handling, the researched dominant content) with an English comprehension/cloze/spelling section and a Verbal Reasoning section. Original Summit Tuition content only — NOT the official QE Boys paper and not affiliated with the school.",
+  } as MockExam,
+  {
+    id: "latymer-school-style",
+    title: "The Latymer School Style Entrance Test",
+    subject: "Maths",
+    style: "GL-style",
+    difficultyLabel: "Standard",
+    durationMinutes: 120,
+    totalMarks: 73,
+    questionIds: [
+      "mp20", "mp21", "mp22", "mp23", "mp24", "mp25", "mp26", "mp27", "mp28", "mp29", "mp30", "mp31", "mp32", "mp33", "mp34", "mp35", "mp36", "mp37", "mp38", "mp39", "mp40", "mp41", "mp42", "mp43", "mp44", "vr1", "vr2", "vr3", "vr4", "vr5", "vr6", "vr7", "vr8", "vr9", "vr10", "vr11", "vr12", "vr13", "vr14", "vr15", "vr16", "vr17", "vr18", "vr19", "vr20", "vr21", "vr22", "vr23", "vr24", "vr25", "eh89", "eh90", "eh91", "eh92", "eh93", "eh94", "eh95", "eh96", "eh97", "eh98", "eh99", "eh100", "eh101", "eh102", "eh103"
+    ],
+    published: true,
+    releaseDate: "2026-07-24",
+    tier: "Diagnostic Assessment",
+    description: "A hand-authored practice paper styled after The Latymer School's two-paper structure (Paper 1: Maths 30 min + Verbal Reasoning 30 min; Paper 2: English comprehension 30 min + creative writing 30 min): ~25 Maths, ~25 Verbal Reasoning and ~15 English comprehension questions, an estimate since no exact published counts were found. The creative-writing component is intentionally omitted — this platform supports objective/short-answer question types only, not open essay grading. Original Summit Tuition content only — NOT the official Latymer paper and not affiliated with the school.",
+  } as MockExam,
+  {
+    id: "henrietta-barnett-style",
+    title: "Henrietta Barnett School Style Round 1 Test",
+    subject: "VR",
+    style: "GL-style",
+    difficultyLabel: "Standard",
+    durationMinutes: 90,
+    totalMarks: 81,
+    questionIds: [
+      "vr1", "vr2", "vr3", "vr4", "vr5", "vr6", "vr7", "vr8", "vr9", "vr10", "vr11", "vr12", "vr13", "vr14", "vr15", "vr16", "vr17", "vr18", "vr19", "vr20", "vr21", "vr22", "vr23", "vr24", "vr25", "vr26", "vr27", "vr28", "vr29", "vr30", "vr31", "vr32", "vr33", "vr34", "nvr1", "nvr2", "nvr3", "nvr4", "nvr5", "nvr6", "nvr7", "nvr8", "nvr9", "nvr10", "nvr11", "nvr12", "nvr13", "nvr14", "nvr15", "nvr16", "nvr17", "nvr18", "nvr19", "nvr20", "eh41", "eh42", "eh43", "eh44", "eh45", "eh46", "eh47", "eh48", "eh49", "eh50", "esp9", "esp10", "esp11", "esp12", "esp13", "egr1", "egr2", "egr3", "egr4", "egr5"
+    ],
+    published: true,
+    releaseDate: "2026-07-24",
+    tier: "Diagnostic Assessment",
+    description: "A hand-authored practice paper styled after Henrietta Barnett School's Round 1 GL-style multiple-choice test (English + Verbal Reasoning + Non-Verbal Reasoning): 34 Verbal Reasoning questions (the one confirmed real count from research), 20 Non-Verbal Reasoning and 20 English (comprehension, spelling, grammar) questions, scaled to a sensible single-mock size. Original Summit Tuition content only — NOT the official Henrietta Barnett paper and not affiliated with the school.",
+  } as MockExam,
+  {
+    id: "colyton-grammar-style",
+    title: "Colyton Grammar School Style Entrance Test",
+    subject: "English",
+    style: "GL-style",
+    difficultyLabel: "Standard",
+    durationMinutes: 100,
+    totalMarks: 84,
+    questionIds: [
+      "mh1", "mh2", "mh3", "mh4", "mh5", "mh6", "mh7", "mh8", "mh9", "mh10", "mh11", "mh12", "mh13", "mh14", "mh15", "mh16", "mh17", "mh18", "mh19", "mh20", "mh21", "mh22", "mh23", "mh24", "mh25", "mh26", "mh27", "mh28", "mh29", "mh30", "mh31", "mh32", "mh33", "mh34", "mh35", "mh36", "mh37", "mh38", "mh39", "mh40", "eh200", "eh201", "eh202", "eh203", "eh204", "eh205", "eh206", "eh207", "eh208", "eh209", "eh210", "eh211", "eh212", "eh213", "eh214", "eh215", "eh216", "eh217", "eh218", "eh219", "esp13", "esp14", "esp15", "esp16", "esp17", "egr6", "egr7", "egr8", "egr9", "egr10", "ecl9", "ecl10", "ecl11", "ecl12", "ecl13", "epu5", "epu6", "epu7", "epu8", "epu9"
+    ],
+    published: true,
+    releaseDate: "2026-07-24",
+    tier: "Diagnostic Assessment",
+    description: "A hand-authored practice paper styled after Colyton Grammar School's entrance test structure — a real structural difference from most other schools researched here: Maths and English only, explicitly no Verbal or Non-Verbal Reasoning. 40 Maths questions and 40 English questions (comprehension, spelling, grammar, cloze and punctuation). The creative-writing component is intentionally omitted — this platform supports objective/short-answer question types only. Original Summit Tuition content only — NOT the official Colyton paper and not affiliated with the school.",
+  } as MockExam,
+  {
+    id: "pates-grammar-style",
+    title: "Pate's Grammar School Style Entrance Test",
+    subject: "English",
+    style: "GL-style",
+    difficultyLabel: "Standard",
+    durationMinutes: 95,
+    totalMarks: 110,
+    questionIds: [
+      "eh300", "eh301", "eh302", "eh303", "eh304", "eh305", "eh306", "eh307", "eh308", "eh309", "eh310", "eh311", "eh312", "eh313", "eh314", "ecl17", "ecl18", "ecl19", "ecl20", "ecl21", "esp17", "esp18", "esp19", "esp20", "esp21", "vr6", "vr7", "vr8", "vr9", "vr10", "vr11", "vr12", "vr13", "vr14", "vr15", "vr16", "vr17", "vr18", "vr19", "vr20", "vr21", "vr22", "vr23", "vr24", "vr25", "vr26", "vr27", "vr28", "vr29", "vr30", "nvr1", "nvr2", "nvr3", "nvr4", "nvr5", "nvr6", "nvr7", "nvr8", "nvr9", "nvr10", "nvr11", "nvr12", "nvr13", "nvr14", "nvr15", "nvr16", "nvr17", "nvr18", "nvr19", "nvr20", "nvr21", "nvr22", "nvr23", "nvr24", "nvr25", "mh21", "mh22", "mh23", "mh24", "mh25", "mh26", "mh27", "mh28", "mh29", "mh30", "mh31", "mh32", "mh33", "mh34", "mh35", "mh36", "mh37", "mh38", "mh39", "mh40", "mh41", "mh42", "mh43", "mh44", "mh45"
+    ],
+    published: true,
+    releaseDate: "2026-07-24",
+    tier: "Diagnostic Assessment",
+    description: "A hand-authored practice paper styled after Pate's Grammar School's two-paper GL-style structure (Paper 1: English comprehension/vocab + Verbal Reasoning; Paper 2: Non-Verbal Reasoning + Maths, ~45-50 minutes each): 25 English, 25 Verbal Reasoning, 25 Non-Verbal Reasoning and 25 Maths questions — one weak/unverified source claimed a very different 25 Maths/60 VR split, treated with the appropriate skepticism per research, so a standard even split across all four areas was used instead. Original Summit Tuition content only — NOT the official Pate's paper and not affiliated with the school.",
+  } as MockExam,
+  {
+    id: "kendrick-school-style",
+    title: "Kendrick School Style Entrance Test",
+    subject: "English",
+    style: "GL-style",
+    difficultyLabel: "Standard",
+    durationMinutes: 120,
+    totalMarks: 84,
+    questionIds: [
+      "eh400", "eh401", "eh402", "eh403", "eh404", "eh405", "eh406", "eh407", "eh408", "eh409", "esp21", "esp22", "esp23", "esp24", "esp25", "egr11", "egr12", "egr13", "egr14", "egr15", "vr1", "vr2", "vr3", "vr4", "vr5", "vr6", "vr7", "vr8", "vr9", "vr10", "vr11", "vr12", "vr13", "vr14", "vr15", "vr16", "vr17", "vr18", "vr19", "vr20", "mh1", "mh2", "mh3", "mh4", "mh5", "mh6", "mh7", "mh8", "mh9", "mh10", "mh11", "mh12", "mh13", "mh14", "mh15", "mh16", "mh17", "mh18", "mh19", "mh20", "nvr21", "nvr22", "nvr23", "nvr24", "nvr25", "nvr26", "nvr27", "nvr28", "nvr29", "nvr30", "nvr31", "nvr32", "nvr33", "nvr34", "nvr35", "nvr36", "nvr37", "nvr38", "nvr39", "nvr40"
+    ],
+    published: true,
+    releaseDate: "2026-07-24",
+    tier: "Diagnostic Assessment",
+    description: "A hand-authored practice paper styled after Kendrick School's two GL papers (Paper 1: English 25% + Verbal Reasoning 25%; Paper 2: Maths 25% + Non-Verbal Reasoning 25%, ~1 hour each, all multiple choice) — the best-documented, most evenly weighted structure researched: 20 questions in each of English, Verbal Reasoning, Maths and Non-Verbal Reasoning (80 total). Original Summit Tuition content only — NOT the official Kendrick paper and not affiliated with the school.",
+  } as MockExam,
+  {
+    id: "wilsons-school-style",
+    title: "Wilson's School (Wallington) Style Stage 1 Test",
+    subject: "Maths",
+    style: "GL-style",
+    difficultyLabel: "Standard",
+    durationMinutes: 80,
+    totalMarks: 93,
+    questionIds: [
+      "mp46", "mp47", "mp48", "mp49", "mp50", "mq1", "mq2", "mq3", "mq4", "mq5", "mq6", "mq7", "mq8", "mq9", "mq10", "mq11", "mq12", "mq13", "mq14", "mq15", "mq16", "mq17", "mq18", "mq19", "mq20", "mq21", "mq22", "mq23", "mq24", "mq25", "mq26", "mq27", "mq28", "mq29", "mq30", "mq31", "mq32", "mq33", "mq34", "mq35", "mq36", "mq37", "mq38", "mq39", "mq40", "mq41", "mq42", "mr1", "mr2", "mr3", "eh500", "eh501", "eh502", "eh503", "eh504", "eh505", "eh506", "eh507", "eh508", "eh509", "eh510", "eh511", "eh512", "eh513", "eh514", "esp25", "esp26", "esp27", "esp28", "esp29", "ecl21", "ecl22", "ecl23", "ecl24", "ecl25", "egr16", "egr17", "egr18", "egr200", "egr201"
+    ],
+    published: true,
+    releaseDate: "2026-07-24",
+    tier: "Diagnostic Assessment",
+    description: "A hand-authored practice paper styled after Wilson's School's Sutton SET Stage 1 structure (Maths + English, multiple choice): 50 Maths questions (the one confirmed real count from research) and 30 English questions (comprehension, spelling, cloze, grammar). Original Summit Tuition content only — NOT the official Wilson's paper and not affiliated with the school.",
+  } as MockExam,
+  {
+    id: "tiffin-girls-stage1-style",
+    title: "Tiffin Girls' School Stage 1 Style Test",
+    subject: "Maths",
+    style: "GL-style",
+    difficultyLabel: "Standard",
+    durationMinutes: 50,
+    totalMarks: 91,
+    questionIds: [
+      "mr4", "mr5", "mr6", "mr7", "mr8", "mr9", "mr10", "mr11", "mr12", "mr13", "mr14", "mr15", "mr16", "mr17", "mr18", "mr19", "mr20", "mr21", "mr22", "mr23", "mr24", "mr25", "mr26", "mr27", "mr28", "mr29", "mr30", "mr31", "mr32", "mr33", "mr34", "mr35", "mr36", "mr37", "mr38", "mr39", "mr40", "mr41", "mr42", "mr43", "mr44", "mr45", "mr46", "mr47", "eh51", "eh52", "eh53", "eh54", "ecl25", "ecl26", "ecl27", "ecl28", "esp29", "esp30", "esp31", "esp32", "epu9", "epu10", "epu11", "epu12", "ey30", "ey35", "ey91", "ey92"
+    ],
+    published: true,
+    releaseDate: "2026-07-24",
+    tier: "Diagnostic Assessment",
+    description: "A hand-authored practice paper styled after Tiffin Girls' School's Stage 1 entrance test structure — the same Sutton-adjacent Stage 1 format as Tiffin School (Boys), built as a separate paper for the girls' cohort with different underlying questions: 44 Maths questions plus a shorter English section (comprehension, cloze, spelling, punctuation, vocabulary). Original Summit Tuition content only — NOT the official Tiffin Girls' paper and not affiliated with the school.",
+  } as MockExam,
+  {
+    id: "reading-school-style",
+    title: "Reading School Style Entrance Test",
+    subject: "English",
+    style: "GL-style",
+    difficultyLabel: "Standard",
+    durationMinutes: 90,
+    totalMarks: 61,
+    questionIds: [
+      "eh600", "eh601", "eh602", "eh603", "eh604", "eh605", "eh606", "eh607", "eh608", "eh609", "ecl29", "ecl30", "ecl31", "ecl32", "ecl33", "esp33", "esp34", "esp35", "esp36", "esp37", "mr25", "mr26", "mr27", "mr28", "mr29", "mr30", "mr31", "mr32", "mr45", "mr46", "mr47", "mr48", "mh41", "mh42", "mh43", "mh44", "mh45", "mh46", "mh47", "mh48", "vr26", "vr27", "vr28", "vr29", "vr30", "vr31", "vr32", "vr33", "vr34", "vr35"
+    ],
+    published: true,
+    releaseDate: "2026-07-24",
+    tier: "Diagnostic Assessment",
+    description: "A hand-authored practice paper styled after Reading School's newer FSCE-era entrance test approach — format and question counts are unusually unstable/undocumented for this school (a 4-paper Adventure/Beacon/Compass/Discovery system spanning broad KS2 subject range), so this is a deliberately simpler ~50-question original paper covering English (comprehension, cloze, spelling), Maths (including multi-step reasoning/challenge questions for the one confirmed differentiator — a critical-thinking/problem-solving flavour) and a small Verbal Reasoning section. Original Summit Tuition content only — NOT the official Reading School paper and not affiliated with the school.",
+  } as MockExam,
 ];
 
 /** Free/Pro/Max access is derived from each mock's existing `tier`/`isFree` fields and each
