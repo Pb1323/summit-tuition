@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useMemo, useSyncExternalStore } from "react";
 import { ATTEMPTS, EMAIL_TEMPLATES, MASTER_ADMIN_EMAIL, MOCKS, NOTE_PAGES, PASSAGES, PRODUCT_PLANS, QUESTIONS, REFERENCES, SEEDED_USERS } from "@/data/platform";
+import { PROMO_CODES } from "@/data/promo-codes";
 import { analyseAttempt, scoreAnswers, weakTopicsForAttempt } from "@/lib/assessment";
 import { generateMockFromReferenceProfile, type GenerateMockInput } from "@/lib/mock-generation";
 import type { Attempt, EmailTemplate, MockExam, NotePage, Passage, ProductPlan, Question, ReferenceSource, ReferenceStyle, StudentAccount, Subject } from "@/types/platform";
@@ -31,6 +32,7 @@ type PlatformContextValue = PlatformState & {
   register: (input: RegisterInput) => Promise<{ ok: true } | { ok: false; message: string }>;
   logout: () => Promise<void>;
   updateAccount: (patch: { name?: string; currentPassword?: string; newPassword?: string }) => Promise<{ ok: true } | { ok: false; message: string }>;
+  redeemPromoCode: (code: string) => Promise<{ ok: true; label: string; mockTitles: string[] } | { ok: false; message: string }>;
   approveUser: (studentId: string, approved: boolean) => Promise<void>;
   rejectUser: (studentId: string) => Promise<void>;
   approveAndUnlockFirstMock: (studentId: string) => Promise<void>;
@@ -337,6 +339,40 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
       }).catch(() => undefined);
       updateUsers((users) => users.map((user) => (user.id === currentUser.id ? { ...user, name: patch.name ?? user.name, passwordHash: nextPasswordHash } : user)));
       return { ok: true };
+    },
+    async redeemPromoCode(code) {
+      if (!currentUser) return { ok: false, message: "You need to be signed in." };
+      const normalized = code.trim().toUpperCase();
+      if (!normalized) return { ok: false, message: "Enter a code." };
+      try {
+        const response = await fetch("/api/account/redeem-code", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ code: normalized }),
+        });
+        const data = await response.json().catch(() => null);
+        if (response.ok && data?.ok && data.mode !== "demo") {
+          await refreshFromServer();
+          return { ok: true, label: data.label as string, mockTitles: (data.mockTitles as string[]) ?? [] };
+        }
+        if (!response.ok) return { ok: false, message: data?.message ?? "That code did not work." };
+      } catch {
+        // Fall back to local demo redemption below.
+      }
+      const promo = PROMO_CODES.find((entry) => entry.active && entry.code === normalized);
+      if (!promo) return { ok: false, message: "That code is not valid." };
+      const mocksToUnlock = state.mocks.filter((mock) => promo.mockIds.includes(mock.id) && mock.published);
+      if (mocksToUnlock.length === 0) return { ok: false, message: "That code is not valid right now." };
+      updateUsers((users) =>
+        users.map((user) => {
+          if (user.id !== currentUser.id) return user;
+          const ids = new Set(user.unlockedMockIds);
+          mocksToUnlock.forEach((mock) => ids.add(mock.id));
+          return { ...user, unlockedMockIds: Array.from(ids) };
+        })
+      );
+      return { ok: true, label: promo.label, mockTitles: mocksToUnlock.map((mock) => mock.title) };
     },
     async approveUser(studentId, approved) {
       if (currentUser?.role !== "admin") return;

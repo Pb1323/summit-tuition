@@ -9,6 +9,54 @@ import { AnimatedButton, GlowCard, MockCard, PremiumBadge, ProgressBar, ReportPr
 import { AdminStudentsWorkspace } from "@/components/platform/admin-students-workspace";
 import type { Subject } from "@/types/platform";
 
+function PromoCodeRedeem() {
+  const { redeemPromoCode } = usePlatform();
+  const [code, setCode] = useState("");
+  const [status, setStatus] = useState<{ ok: boolean; message: string } | null>(null);
+  const [pending, setPending] = useState(false);
+
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    if (!code.trim() || pending) return;
+    setPending(true);
+    setStatus(null);
+    const result = await redeemPromoCode(code);
+    setPending(false);
+    if (result.ok) {
+      setStatus({ ok: true, message: `${result.label}${result.mockTitles.length ? `: ${result.mockTitles.join(", ")}` : ""}` });
+      setCode("");
+    } else {
+      setStatus({ ok: false, message: result.message });
+    }
+  }
+
+  return (
+    <GlowCard className="p-6">
+      <PremiumBadge tone="gold">Promo</PremiumBadge>
+      <h2 className="mt-3 text-xl font-bold text-navy">Have a promo code?</h2>
+      <p className="mt-1 text-sm text-muted">Enter a code from a Summit Tuition promotion to unlock a free mock instantly.</p>
+      <form onSubmit={handleSubmit} className="mt-4 flex flex-wrap gap-3">
+        <input
+          value={code}
+          onChange={(event) => setCode(event.target.value)}
+          placeholder="Enter code"
+          className="min-w-0 flex-1 rounded-full border border-line bg-white px-4 py-2.5 text-sm font-semibold text-navy outline-none focus:border-gold"
+        />
+        <button
+          type="submit"
+          disabled={pending || !code.trim()}
+          className="rounded-full bg-navy px-5 py-2.5 text-sm font-bold text-white transition hover:bg-navy/90 disabled:opacity-50"
+        >
+          {pending ? "Checking..." : "Redeem"}
+        </button>
+      </form>
+      {status && (
+        <p className={`mt-3 text-sm font-semibold ${status.ok ? "text-green-700" : "text-red-600"}`}>{status.message}</p>
+      )}
+    </GlowCard>
+  );
+}
+
 export function StudentDashboard() {
   const { currentUser, mocks, attempts } = usePlatform();
   const studentAttempts = attempts.filter((attempt) => attempt.studentId === currentUser?.id);
@@ -94,6 +142,10 @@ export function StudentDashboard() {
           </div>
           <AnimatedButton href="/notes">Open Notes</AnimatedButton>
         </GlowCard>
+      </section>
+
+      <section>
+        <PromoCodeRedeem />
       </section>
 
       <section>
