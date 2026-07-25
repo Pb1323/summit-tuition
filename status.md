@@ -1,6 +1,6 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-24 (added 11 new practice papers, each matching a different real UK grammar/selective school's entrance-exam format — see below)
+Last updated: 2026-07-24 (added 11 new practice papers, each matching a different real UK grammar/selective school's entrance-exam format, and fixed a security bug that was leaking locked mock content — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
@@ -13,6 +13,7 @@ This is a plain-English summary of where the whole project stands — the produc
 - Two schools' real formats include a creative-writing component (Latymer, Colyton) — that's intentionally left out, since the platform can only auto-mark objective/short-answer questions, not free-written essays. Each paper's own description also says clearly it's an original "[school]-style" practice paper and is not affiliated with or the same as the real school's paper.
 - Where the research gave an exact structure (e.g. Kendrick's evenly-weighted 4-section paper, Wilson's confirmed 50-question Maths count), I matched it closely. Where research was thin or contradictory (Latymer, Pate's, Reading School), I used sensible, clearly-labelled estimates rather than guessing wildly.
 - Ran an automated check on all 11: right question/mark counts, no duplicate or broken questions, every paper passes the platform's own built-in quality check ("Ready"). Also reran the site's full type-check; lint is still running as of this note (will flag if anything turns up). Nothing was pushed to the live database — that's still your manual step once you've reviewed them (same as always).
+- Also fixed a real security bug found while working on the above: a signed-in student's app was quietly being sent the full question text/passages for *every* mock on the site, not just the ones they've actually unlocked or paid for — meaning a technical visitor could have read locked mock content without unlocking it. Now the app only ever sends question content for mocks a student can actually access. Also added a limit on how many times someone can try a promo code in a short window, to stop automated guessing.
 
 ## Done (session — 2026-07-23, Ripon Grammar School style test papers)
 
