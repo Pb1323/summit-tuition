@@ -111,14 +111,9 @@ export default function HomePage() {
         visual={<TryAQuestion />}
         actions={
           <>
-            <Magnetic>
-              <Button href="/diagnostic-assessment" variant="navy" size="lg">
-                Start with a Diagnostic Assessment
-              </Button>
-            </Magnetic>
-            <Magnetic>
-              <Button href="/book-a-call" size="lg">
-                Book a Free Parent Call
+            <Magnetic strength={0.18}>
+              <Button href="/account" variant="navy" size="lg">
+                Create Account <ArrowRight className="h-4 w-4" />
               </Button>
             </Magnetic>
             <Link href="/login" className="inline-flex h-12 items-center justify-center text-sm font-bold text-navy underline decoration-gold/60 underline-offset-4 hover:text-gold-dark">

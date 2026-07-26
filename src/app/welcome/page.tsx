@@ -1,10 +1,10 @@
 import Link from "next/link";
 import {
   ArrowRight,
+  CalendarCheck,
   CheckCircle2,
   Gauge,
   ShieldCheck,
-  Sparkles,
   Users,
 } from "lucide-react";
 import { SITE } from "@/data/site";
@@ -106,7 +106,7 @@ export default function WelcomePage() {
           {/* Taster + free call */}
           <RevealOnScroll>
             <div className="premium-card rounded-2xl p-5 text-center">
-              <Sparkles className="mx-auto h-6 w-6 text-gold-dark" />
+              <CalendarCheck className="mx-auto h-6 w-6 text-gold-dark" />
               <h2 className="mt-2 text-lg font-black text-navy">Book a free taster</h2>
               <p className="mt-1 text-sm text-muted">Sit a free taster tuition session, or a 15-minute parent call — no obligation.</p>
               <div className="mt-4 flex flex-col gap-2.5">
@@ -123,7 +123,7 @@ export default function WelcomePage() {
           {/* Pricing — simple, Pro / Max only, shown early so parents see cost before scrolling */}
           <RevealOnScroll>
             <h2 className="text-lg font-black text-navy">Plans and pricing</h2>
-            <p className="mt-1 text-sm text-muted">Just two plans — Pro or Max. Tap to compare.</p>
+            <p className="mt-1 text-sm text-muted">Just two plans — Pro or Max, side by side.</p>
             <div className="mt-4">
               <WelcomePricingTabs />
             </div>

@@ -94,7 +94,6 @@ function Flag() {
 
 function Peaks() {
   const groupRef = useRef<THREE.Group>(null);
-  const scrollRef = useRef(0);
   const pointerRef = useRef({ x: 0, y: 0 });
 
   const mainGeo = useMemo(() => makeJaggedPeak(1.35, 2.4, 18, 11, 3.1), []);
@@ -102,30 +101,25 @@ function Peaks() {
   const rightGeo = useMemo(() => makeJaggedPeak(0.7, 1.15, 12, 7, 11.8), []);
 
   useEffect(() => {
-    const onScroll = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      scrollRef.current = max > 0 ? window.scrollY / max : 0;
-    };
     const onPointer = (event: PointerEvent) => {
       pointerRef.current = {
         x: (event.clientX / window.innerWidth) * 2 - 1,
         y: (event.clientY / window.innerHeight) * 2 - 1,
       };
     };
-    window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("pointermove", onPointer);
-    onScroll();
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("pointermove", onPointer);
-    };
+    return () => window.removeEventListener("pointermove", onPointer);
   }, []);
 
-  useFrame(() => {
+  // Stays anchored on screen: a slow constant idle turn (so it's always alive, even before
+  // the visitor moves the mouse or scrolls) plus a gentle pointer-follow around that same
+  // resting position — never tied to scroll position, so it never drifts away as they read down the page.
+  useFrame((state) => {
     const group = groupRef.current;
     if (!group) return;
-    group.rotation.y = THREE.MathUtils.lerp(group.rotation.y, pointerRef.current.x * 0.28 - scrollRef.current * 0.5, 0.045);
-    group.rotation.x = THREE.MathUtils.lerp(group.rotation.x, pointerRef.current.y * 0.08, 0.045);
+    const idle = Math.sin(state.clock.elapsedTime * 0.15) * 0.12;
+    group.rotation.y = THREE.MathUtils.lerp(group.rotation.y, idle + pointerRef.current.x * 0.16, 0.045);
+    group.rotation.x = THREE.MathUtils.lerp(group.rotation.x, pointerRef.current.y * 0.06, 0.045);
   });
 
   const sparkles = Array.from({ length: 16 }, (_, i) => {
