@@ -145,6 +145,20 @@ export function StudentDashboard() {
       </section>
 
       <section>
+        <GlowCard className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <PremiumBadge tone="navy">New</PremiumBadge>
+            <h2 className="mt-3 text-xl font-bold text-navy">Spelling Tester</h2>
+            <p className="mt-1 max-w-xl text-sm text-muted">
+              A quick standalone practice tool — pick the correct spelling under pressure, or run a
+              Quizlet-style flashcard loop. Does not affect your mocks or reports.
+            </p>
+          </div>
+          <AnimatedButton href="/dashboard/spelling">Open Spelling Tester</AnimatedButton>
+        </GlowCard>
+      </section>
+
+      <section>
         <PromoCodeRedeem />
       </section>
 
