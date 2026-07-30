@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -167,14 +167,24 @@ export function RequireAuth({ role, children }: { role?: Role; children: React.R
 
 export function MockTimer({ durationMinutes, initialElapsedSeconds = 0, onExpire, visible = true }: { durationMinutes: number; initialElapsedSeconds?: number; onExpire: () => void; visible?: boolean }) {
   const [seconds, setSeconds] = useState(() => Math.max(0, durationMinutes * 60 - initialElapsedSeconds));
+  // onExpire (the parent's submit callback) gets a new identity whenever answers/flagged change.
+  // Route calls through a ref instead of putting onExpire in the effect's deps, so expiry only
+  // ever fires once — otherwise every subsequent identity change re-ran the effect and fired
+  // onExpire() again while seconds was still <= 0, submitting the same attempt multiple times.
+  const onExpireRef = useRef(onExpire);
+  onExpireRef.current = onExpire;
+  const hasExpiredRef = useRef(false);
   useEffect(() => {
     if (seconds <= 0) {
-      onExpire();
+      if (!hasExpiredRef.current) {
+        hasExpiredRef.current = true;
+        onExpireRef.current();
+      }
       return;
     }
     const timer = window.setTimeout(() => setSeconds((value) => value - 1), 1000);
     return () => window.clearTimeout(timer);
-  }, [seconds, onExpire]);
+  }, [seconds]);
   // The countdown keeps running and still auto-submits on expiry even while hidden — only the visible readout is suppressed.
   if (!visible) {
     return <span className="rounded-full border border-line bg-cream px-3 py-1 text-sm font-bold text-muted">Timer hidden</span>;

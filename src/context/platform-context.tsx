@@ -644,10 +644,17 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
         reportReady: false,
         errorPatterns: Object.fromEntries(analysis.weakTopics.flatMap((topic) => topic.questionIds.map((id) => [id, topic.pattern]))),
       };
-      updateStore((prev) => ({
-        ...prev,
-        attempts: [...prev.attempts.filter((item) => !(item.studentId === currentUser.id && item.mockId === mockId && item.status === "in_progress")), attempt],
-      }));
+      updateStore((prev) => {
+        // Defensive dedup: drop the in-progress draft AND any attempt already submitted for this
+        // mock (there should never be one at this point, but never stack a second submitted row).
+        if (prev.attempts.some((item) => item.studentId === currentUser.id && item.mockId === mockId && item.status !== "in_progress")) {
+          return prev;
+        }
+        return {
+          ...prev,
+          attempts: [...prev.attempts.filter((item) => !(item.studentId === currentUser.id && item.mockId === mockId && item.status === "in_progress")), attempt],
+        };
+      });
       return attempt;
     },
     saveAttemptDraft(mockId, answers, flaggedQuestionIds, timeSpentSeconds) {

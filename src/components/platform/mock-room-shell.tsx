@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AlertTriangle, ArrowLeft, CheckCircle2, Eye, EyeOff, Flag, Lock, ShieldAlert } from "lucide-react";
@@ -93,11 +93,24 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
   const paywalled = hasNotPaid && questions.length > 0 && index >= halfwayIndex;
   const unansweredCount = questions.filter((question) => !answers[question.id]).length;
   const elapsedSeconds = useCallback(() => Math.max(0, Math.floor((Date.now() - (startedAt ?? Date.now())) / 1000) + baseElapsed), [baseElapsed, startedAt]);
+  // Guards against duplicate submissions (double-clicking "Submit for marking", or the timer
+  // expiring around the same time as a manual click). `existing` only updates after the async
+  // submitAttempt call resolves and the store re-renders, so it can't catch a second call fired
+  // while the first is still in flight — this ref can, since it's set synchronously.
+  const submitInFlightRef = useRef(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const submit = useCallback(async () => {
-    if (!mock || existing || isAdminPreview) return;
-    await submitAttempt(mock.id, answers, flagged, elapsedSeconds());
-    router.push("/dashboard");
+    if (!mock || existing || isAdminPreview || submitInFlightRef.current) return;
+    submitInFlightRef.current = true;
+    setIsSubmitting(true);
+    try {
+      await submitAttempt(mock.id, answers, flagged, elapsedSeconds());
+      router.push("/dashboard");
+    } finally {
+      submitInFlightRef.current = false;
+      setIsSubmitting(false);
+    }
   }, [answers, elapsedSeconds, existing, flagged, isAdminPreview, mock, router, submitAttempt]);
 
   const toggleFlag = useCallback(() => {
@@ -416,7 +429,7 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
                   <p className="mt-4 text-sm text-muted">Your answers stay saved on this device. You will not see the full review until admin releases the report.</p>
                   <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
                     <button onClick={() => setShowSubmitConfirm(false)} className="rounded-full border border-line px-5 py-2 text-sm font-bold text-navy">Keep working</button>
-                    <button onClick={submit} className="rounded-full bg-gold px-5 py-2 text-sm font-bold text-navy">Submit for marking</button>
+                    <button onClick={submit} disabled={isSubmitting} className="rounded-full bg-gold px-5 py-2 text-sm font-bold text-navy disabled:cursor-not-allowed disabled:opacity-60">{isSubmitting ? "Submitting…" : "Submit for marking"}</button>
                   </div>
                 </div>
               </div>
