@@ -1,10 +1,17 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-29 (added a 9th Maths paper and a brand-new "Extreme" English paper, both one full step harder again than the papers added earlier the same day, calibrated so a 100%-on-Elite student lands around 50% on each — see below)
+Last updated: 2026-07-30 (fixed a real sign-in bug and tightened how locked Study Notes pages are gated, plus a new Creative Writing lesson and worksheet PDFs — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-07-30, sign-in bug fix + tighter Study Notes locking)
+
+- **Found and fixed a real sign-in bug**: in local/demo mode (no database connected), a student's login could sometimes not be recognised by other parts of the site in the same moment — caused by how the app's different internal pieces (the login screen vs. the pages that check "is this person signed in?") were each keeping their own separate, disconnected copy of who's logged in, instead of sharing one. Fixed so there's now a single shared record, the way it should be.
+- Rebuilt how locked Study Notes pages are checked — previously each notes page did its own "is this student allowed to see this?" check; now there's one shared, more reliable check used everywhere, with a cleaner "this lesson is locked" screen shown when it applies. No change to which lessons are free vs. paid, just a more solid way of enforcing it.
+- Added the last lesson to the new Creative Writing section of Study Notes, and generated a few PDF worksheets (a Creative Writing techniques handout, and two personalised study plans for a student named Anagha covering Maths and Non-Verbal Reasoning).
+- Everything type-checks and lints clean. Committed to the code (not yet pushed to the live database — same manual review step as always).
 
 ## Done (session — 2026-07-29, later same day — a genuinely brutal 9th Maths paper)
 
