@@ -1,10 +1,14 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-30 (added an even harder new English paper, `english-gl-19-ultra`, and seeded it live automatically — see below)
+Last updated: 2026-07-30 (relabeled the whole set of extra-hard papers as "(Difficult)" so they're easy to spot, and added an even harder new English paper, `english-gl-19-ultra`, seeded live automatically — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-07-30, later same day — labeled the hardest papers "(Difficult)")
+
+- You asked for a clear, consistent way to spot the extra-hard papers apart from the regular Elite ones, and to drop the word "Extreme" from any of their names. Renamed all 7 of them (nothing about the actual questions changed, just the name shown in admin/student lists): the three extra-hard Maths papers, the hard Non-Verbal Reasoning paper, and the three extra-hard English papers now all end in "(Difficult)" instead of "Extreme", "Elite+", "Ultra", etc. Seeded live straight away, same as everything else today.
 
 ## Done (session — 2026-07-30, another harder English paper + auto-seeded live)
 
