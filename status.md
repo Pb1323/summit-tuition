@@ -1,10 +1,17 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-30 (relabeled the whole set of extra-hard papers as "(Difficult)" so they're easy to spot, and added an even harder new English paper, `english-gl-19-ultra`, seeded live automatically — see below)
+Last updated: 2026-07-30 (tidied up the student dashboard and the admin mock-assign screen — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-07-30, dashboard/admin usability tidy-up)
+
+- You said the student dashboard felt cluttered because finished mocks just sat there taking up space. Fixed: once a student has submitted a mock (or its report is out), it disappears from the "Available mocks" list at the top and only shows in the "Completed reports" section below — no more scrolling past papers you've already done.
+- You also said assigning mocks to a student was clunky because each subject has around 30 mocks in one long list, hard to pick the right one out. The admin unlock screen now splits each subject's mocks into smaller groups by difficulty tier, and each group has its own quick "unlock all / lock all" buttons — much easier to scan and pick from than one giant list.
+- Also added: next to each mock in that admin screen, if the student has already completed it, you'll now see a green "Done" tag — so you know not to bother reassigning it.
+- Committed and pushed to the live site.
 
 ## Done (session — 2026-07-30, later same day — labeled the hardest papers "(Difficult)")
 
