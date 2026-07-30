@@ -1,10 +1,16 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-30 (tidied up the student dashboard and the admin mock-assign screen — see below)
+Last updated: 2026-07-30 (fixed a real bug causing some students' mock submissions to appear doubled/tripled on the dashboard — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-07-30, fixed doubled/tripled mock submissions)
+
+- You reported some students' attempts showing up doubled or even tripled in the dashboard/admin attempts view. Found two real causes and fixed both: (1) the exam countdown timer could call "submit" more than once right as time ran out, and (2) the "Submit for marking" button had no protection against being clicked twice quickly (or a slow connection causing the same click to be sent twice) — either could create two or three copies of the same submitted mock. The submit button now shows "Submitting…" and disables itself while a submission is in progress.
+- Not yet done: there's still a theoretical gap if a student had the same mock open in two separate browser tabs at once — closing that fully would need a change to how the database itself is structured, which I'm holding off on until you confirm you want it (it touches the live database, not just the app code). Also haven't checked whether any duplicate mock attempts already exist in the live database from before this fix — that would need your go-ahead too, since cleaning them up means deleting real production data.
+- Committed and pushed.
 
 ## Done (session — 2026-07-30, dashboard/admin usability tidy-up)
 
