@@ -268,11 +268,15 @@ export function SegmentMistakeAnswer({
   // The clauses must stay in reading order to make grammatical sense, but which
   // letter labels which clause doesn't have to — shuffle the label assignment per
   // question so the correct letter isn't predictably clustered (e.g. always "B").
-  const letters = useMemo(() => {
+  // Still computed (and shuffled) even though it's no longer rendered - founder feedback
+  // 2026-07-30: showing the shuffled letter (e.g. D,B,A,C,E order) read as "messed up"
+  // labelling. Kept here, unused, so the shuffle logic is easy to re-wire if this is ever
+  // re-enabled; only the visual <sup> label was removed.
+  useMemo(() => {
     const pool = Array.from({ length: segments.length + (noMistakeOption ? 1 : 0) }, (_, i) => String.fromCharCode(65 + i));
     return seededShuffle(pool, question.id + "-letters");
   }, [segments.length, noMistakeOption, question.id]);
-  const segmentButton = (option: string, letter: string) => {
+  const segmentButton = (option: string) => {
     const selected = value === option;
     const showCorrect = review && isCorrectOption(option);
     const showWrong = review && selected && !showCorrect;
@@ -290,7 +294,6 @@ export function SegmentMistakeAnswer({
         )}
       >
         {option}
-        <sup className="text-[10px] font-black text-gold-dark">{letter}</sup>
       </button>
     );
   };
@@ -298,11 +301,11 @@ export function SegmentMistakeAnswer({
     <div className="rounded-2xl border border-gold/20 bg-cream/60 p-5">
       {instruction && <p className="text-xs font-black uppercase tracking-[0.14em] text-gold-dark">{instruction}</p>}
       <p className="mt-3 font-serif text-lg leading-[2.1] text-navy">
-        {segments.map((segment, index) => segmentButton(segment, letters[index]))}
+        {segments.map((segment) => segmentButton(segment))}
       </p>
       {noMistakeOption && (
         <div className="mt-4 border-t border-gold/15 pt-4">
-          {segmentButton(noMistakeOption, letters[segments.length])}
+          {segmentButton(noMistakeOption)}
           <span className="ml-2 text-sm font-semibold text-muted">if you think there is no mistake</span>
         </div>
       )}

@@ -446,6 +446,13 @@ function comprehensionTemplates(suffix: string, passageId: string, difficulty: "
   };
 }
 
+// Note (2026-07-30): segment-mistake questions (spelling/punctuation "find the mistake, or
+// choose N") no longer show a lettered label (A/B/C/D/N) on each clause in the mock room -
+// SegmentMistakeAnswer (src/components/platform/ui.tsx) still shuffles a letter-to-clause
+// mapping internally (kept in case it's ever re-enabled) but deliberately doesn't render it,
+// per founder feedback that the shuffled order (e.g. D,B,A,C,E) looked like broken labelling.
+// Nothing here needs to change for new mocks - options/correctAnswer stay full segment text,
+// not letters - this note just explains why you won't see letters in the mock room.
 function spellingTemplates(suffix: string, difficulty: "standard" | "stretch"): Question[] {
   const base = (id: string, segments: string[], wrongSegment: number | null, correction: string): Question => {
     const sentence = segments.join(" ");
