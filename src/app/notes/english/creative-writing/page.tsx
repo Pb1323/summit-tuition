@@ -4,13 +4,13 @@ import { GlowCard, PremiumBadge, RevealOnScroll } from "@/components/platform/ui
 import { requireNoteAccess } from "@/lib/server/notes-access";
 import { NotesLocked } from "@/components/notes/notes-locked";
 
-const NOTE_ID = "vr-word-relationships";
+const NOTE_ID = "english-creative-writing";
 
 async function loadTopicSummaries() {
-  const [{ wordRelationshipsEssentialsTopic }] = await Promise.all([
-    import("@/components/notes/notes-content/word-relationships-essentials"),
+  const [{ coreWritingTechniquesTopic }] = await Promise.all([
+    import("@/components/notes/notes-content/core-writing-techniques"),
   ]);
-  return [wordRelationshipsEssentialsTopic].map((topic) => ({
+  return [coreWritingTechniquesTopic].map((topic) => ({
     slug: topic.slug,
     title: topic.title,
     description: topic.description,
@@ -18,7 +18,7 @@ async function loadTopicSummaries() {
   }));
 }
 
-export default async function WordRelationshipsNotesHubPage() {
+export default async function CreativeWritingNotesHubPage() {
   const user = await requireNoteAccess(NOTE_ID);
   if (!user) return <NotesLocked noteId={NOTE_ID} />;
   const topics = await loadTopicSummaries();
@@ -26,20 +26,20 @@ export default async function WordRelationshipsNotesHubPage() {
   return (
     <Container className="py-10">
       <RevealOnScroll>
-        <Link href="/notes/verbal-reasoning" className="text-sm font-semibold text-gold-dark hover:underline">
-          ← Verbal Reasoning strands
+        <Link href="/notes/english" className="text-sm font-semibold text-gold-dark hover:underline">
+          ← English strands
         </Link>
-        <h1 className="mt-4 text-3xl font-black tracking-tight text-navy">Word Relationships Notes</h1>
+        <h1 className="mt-4 text-3xl font-black tracking-tight text-navy">Creative Writing Notes</h1>
         <p className="mt-2 max-w-2xl text-muted">
-          Synonyms, antonyms, odd one out and analogies. Pick a topic below — each covers several
-          subtopics with concept explanations, an interactive click-the-word demo and self-marking
-          practice questions.
+          Transferable story-writing craft that pays off whatever the prompt is — a title, a picture, or a
+          &ldquo;continue this opening&rdquo; task. Pick a topic below — each covers several subtopics with concept
+          explanations, an interactive diagram and self-marking practice questions.
         </p>
       </RevealOnScroll>
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {topics.map((topic) => (
-          <Link key={topic.slug} href={`/notes/verbal-reasoning/word-relationships/${topic.slug}`} className="block">
+          <Link key={topic.slug} href={`/notes/english/creative-writing/${topic.slug}`} className="block">
             <GlowCard className="h-full p-6">
               <PremiumBadge>{topic.subtopicTitles.length} subtopics</PremiumBadge>
               <h2 className="mt-3 text-xl font-bold text-navy">{topic.title}</h2>

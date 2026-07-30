@@ -17,12 +17,23 @@ const COMPACT_QUESTION_NAV_THRESHOLD = 15;
 // renders/sessions for the same question.
 function seededShuffle<T>(items: T[], seed: string): T[] {
   const arr = [...items];
-  let state = 0;
-  for (let i = 0; i < seed.length; i++) state = (state * 31 + seed.charCodeAt(i)) >>> 0;
+  // FNV-1a gives short, near-identical seeds (e.g. "mp1" vs "mp2") a well-diffused
+  // initial state; a naive additive hash left short prefixed ids (mp/mh/ms/nvr/rgh...)
+  // with tiny, similar starting states that biased the very first LCG draw toward the
+  // same outcome, which meant the correct answer landed on the same option letter for
+  // almost every question in those batches — a real, exploitable pattern, not a fluke.
+  let state = 0x811c9dc5;
+  for (let i = 0; i < seed.length; i++) {
+    state ^= seed.charCodeAt(i);
+    state = Math.imul(state, 0x01000193) >>> 0;
+  }
   const next = () => {
     state = (state * 1664525 + 1013904223) >>> 0;
     return state / 4294967296;
   };
+  // Discard a few draws so the LCG has mixed before it's used — the raw hash output
+  // is still low-entropy in its own right for very short seeds.
+  for (let i = 0; i < 4; i++) next();
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(next() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
@@ -152,23 +163,6 @@ export function RequireAuth({ role, children }: { role?: Role; children: React.R
   }
   if (role && currentUser.role !== role) return null;
   return <>{children}</>;
-}
-
-export function RequireNoteAccess({ noteId, children }: { noteId: string; children: React.ReactNode }) {
-  const { currentUser, notes } = usePlatform();
-  const note = notes.find((item) => item.id === noteId);
-  const unlocked = note?.isFree || currentUser?.role === "admin" || currentUser?.unlockedNoteIds.includes(noteId);
-  if (unlocked) return <>{children}</>;
-  return (
-    <div className="mx-auto max-w-3xl px-6 py-24 text-center">
-      <Lock className="mx-auto h-10 w-10 text-gold-dark" />
-      <h1 className="mt-4 text-3xl font-bold text-navy">This notes page is locked</h1>
-      <p className="mt-2 text-muted">{note?.title ?? "This strand"} is not part of your free access yet. Contact Summit Tuition to unlock it.</p>
-      <Link href="/contact" className="mt-6 inline-flex items-center gap-2 rounded-full bg-gold px-5 py-2.5 text-sm font-bold text-navy">
-        Contact Summit Tuition <ArrowRight className="h-4 w-4" />
-      </Link>
-    </div>
-  );
 }
 
 export function MockTimer({ durationMinutes, initialElapsedSeconds = 0, onExpire, visible = true }: { durationMinutes: number; initialElapsedSeconds?: number; onExpire: () => void; visible?: boolean }) {

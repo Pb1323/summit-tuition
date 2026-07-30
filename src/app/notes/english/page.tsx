@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, SpellCheck, PenSquare, Puzzle, Lock } from "lucide-react";
+import { BookOpen, SpellCheck, PenSquare, Puzzle, Lock, Feather } from "lucide-react";
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { RequireAuth, GlowCard, PremiumBadge, RevealOnScroll } from "@/components/platform/ui";
@@ -34,6 +34,13 @@ const STRANDS = [
     name: "Cloze",
     icon: Puzzle,
     description: "Missing word and missing letter passages, with grammar and context clue strategy.",
+    available: true,
+  },
+  {
+    slug: "creative-writing",
+    name: "Creative Writing",
+    icon: Feather,
+    description: "Transferable story-writing craft — shape, hooks, showing not telling, dialogue and more — for any prompt type.",
     available: true,
   },
 ];

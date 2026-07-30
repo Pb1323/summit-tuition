@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Summit Tuition, Study Plan: Anagha, 4-Week Maths Plan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root {
+    --navy: #10233f;
+    --navy-light: #1c3a63;
+    --gold: #b4893b;
+    --gold-light: #e8d9b5;
+    --cream: #faf6ec;
+    --ink: #1a1a1a;
+    --muted: #5b5b5b;
+    --rule: #d8cfb8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: var(--ink);
+    background: var(--cream);
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 34px 30px 50px;
+    line-height: 1.55;
+  }
+  header.sheet-header {
+    background: var(--navy);
+    color: white;
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin-bottom: 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+  }
+  header.sheet-header .eyebrow {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin: 0 0 8px;
+  }
+  header.sheet-header h1 { font-size: 24px; margin: 0 0 6px; }
+  header.sheet-header p.meta {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    color: #d7ddea;
+    margin: 0;
+  }
+  .score-badge {
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(232,217,181,0.4);
+    border-radius: 8px;
+    padding: 10px 16px;
+    text-align: center;
+    min-width: 90px;
+  }
+  .score-badge .pct {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 26px;
+    font-weight: bold;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+  .score-badge .sub {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10.5px;
+    color: #c3cbdc;
+    margin-top: 4px;
+  }
+
+  h2.section-title {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--navy);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 6px;
+    margin: 26px 0 14px;
+  }
+
+  .target-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13.5px;
+    font-weight: bold;
+    color: var(--ink);
+    margin: 10px 0 4px;
+  }
+  .bar-track {
+    background: #e9e2d0;
+    border-radius: 6px;
+    height: 8px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold) 0%, #c99f4e 100%);
+    border-radius: 6px;
+  }
+  .note-line {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: var(--muted);
+    margin: -8px 0 16px;
+  }
+
+  .week-card {
+    background: white;
+    border: 1px solid #e4ded0;
+    border-radius: 8px;
+    padding: 16px 20px 18px;
+    margin: 0 0 16px;
+    page-break-inside: avoid;
+  }
+  .week-card .head-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .week-card .head-left { display: flex; align-items: center; gap: 12px; }
+  .week-card .num {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    color: white;
+    background: var(--navy);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .week-card h3 { font-size: 17px; margin: 0; color: var(--navy); }
+  .week-card .week-tag {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10.5px;
+    font-weight: bold;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .week-card ul {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    margin: 6px 0 10px;
+    padding-left: 20px;
+  }
+  .week-card ul li { margin-bottom: 5px; }
+  .week-card .plan-note {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px dashed var(--rule);
+    padding-top: 8px;
+    margin-top: 6px;
+  }
+  .week-card .plan-note b { color: var(--ink); }
+  code {
+    font-family: 'Courier New', monospace;
+    background: #f1ede1;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+  }
+
+  .alongside-box {
+    background: #fff;
+    border: 1px solid #e4ded0;
+    border-left: 4px solid var(--navy);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin: 4px 0 6px;
+  }
+  .alongside-box p {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12.5px;
+    margin: 0 0 8px;
+  }
+  .alongside-box p:last-child { margin-bottom: 0; }
+  .alongside-box b { color: var(--navy); }
+
+  footer.sheet-footer {
+    margin-top: 30px;
+    padding-top: 12px;
+    border-top: 1px solid var(--rule);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  @media print {
+    body { padding: 12mm 14mm; max-width: none; background: white; }
+    @page { size: A4; margin: 10mm; }
+  }
+</style>
+</head>
+<body>
+
+<header class="sheet-header">
+  <div>
+    <p class="eyebrow">Summit Tuition &middot; Study Plan</p>
+    <h1>4-Week Maths Plan</h1>
+    <p class="meta">Anagha &middot; based on Maths GL-Style Full Paper &mdash; Elite, 2026-07-28</p>
+  </div>
+  <div class="score-badge">
+    <div class="pct">76%</div>
+    <div class="sub">61/80 on the<br>last paper</div>
+  </div>
+</header>
+
+<h2 class="section-title">What We're Targeting</h2>
+<p class="note-line">One topic is pulling the score down &mdash; everything else is already strong</p>
+
+<div class="target-row"><span>Algebra</span><span>8/14 (57%)</span></div>
+<div class="bar-track"><div class="bar-fill" style="width: 57%"></div></div>
+
+<div class="target-row"><span>Coordinates</span><span>1/2 (50%)</span></div>
+<div class="bar-track"><div class="bar-fill" style="width: 50%"></div></div>
+
+<div class="target-row"><span>Probability</span><span>1/2 (50%)</span></div>
+<div class="bar-track"><div class="bar-fill" style="width: 50%"></div></div>
+
+<p class="note-line">Coordinates and Probability are single-question misses (1 mark each on a small sample) &mdash; worth a light touch, not a deep intervention. Algebra lost 6 marks, more than any other topic, and the report tags most of it <b>careless error, not a concept gap</b> (simplifying, substitution, inequalities, factorising, rearranging formulae) &mdash; this is a checking-and-practice problem, not a comprehension one.</p>
+
+<h2 class="section-title">Week By Week</h2>
+
+<div class="week-card">
+  <div class="head-row">
+    <div class="head-left"><span class="num">1</span><h3>Algebra Foundations + Checking Habit</h3></div>
+    <span class="week-tag">Week 1</span>
+  </div>
+  <ul>
+    <li>Notes: Algebra (<code>/notes/maths/algebra</code>)</li>
+    <li>Covers her exact misses: simplifying expressions (collecting like terms), substitution with negative values, solving inequalities</li>
+  </ul>
+  <p class="plan-note">Short worksheet on these three skills first (Admin &rarr; Homework Generator, topic: Algebra). Build in a <b>checking habit</b> from day one: after every answer, she re-substitutes her answer back into the original question to confirm it works, rather than moving straight to the next question. If she's getting them right without hesitating, she does a mixed algebra mock section this week. If she's still pausing or guessing, a second worksheet with fresh questions instead, and the mock waits until week 2.</p>
+</div>
+
+<div class="week-card">
+  <div class="head-row">
+    <div class="head-left"><span class="num">2</span><h3>Algebra: Factorising, Rearranging, Forming Equations</h3></div>
+    <span class="week-tag">Week 2</span>
+  </div>
+  <ul>
+    <li>Notes: Algebra (<code>/notes/maths/algebra</code>) &mdash; factorising and rearranging formulae subtopics specifically</li>
+    <li>Her other three misses this paper: factorising a common factor, rearranging a formula to make x the subject, forming an equation from a worded problem</li>
+  </ul>
+  <p class="plan-note">Same check-first approach: worksheet, then mock only once she's applying the checking habit from week 1 automatically, not just when reminded. By the end of this week the goal isn't just correct answers &mdash; it's consistently checking her own work before calling a question finished.</p>
+</div>
+
+<div class="week-card">
+  <div class="head-row">
+    <div class="head-left"><span class="num">3</span><h3>Coordinates &amp; Probability Quick-Hit Review</h3></div>
+    <span class="week-tag">Week 3</span>
+  </div>
+  <ul>
+    <li>Notes: Geometry (<code>/notes/maths/geometry</code>) for coordinate translation; Averages &amp; Statistics (<code>/notes/maths/averages-statistics</code>) for probability of combined events</li>
+    <li>This is a light-touch week, not remedial &mdash; only one question was missed in each area</li>
+  </ul>
+  <p class="plan-note">15 minutes on translating a point by a vector (her exact miss), 15 minutes on combined-event probability (e.g. two dice, two independent draws). Goal is making these automatic, not teaching new concepts. Rest of this session: light revision of Decimals and Number Theory (dividing decimals, lowest common multiple) &mdash; not weak overall, but both had a single slip worth tidying up.</p>
+</div>
+
+<div class="week-card">
+  <div class="head-row">
+    <div class="head-left"><span class="num">4</span><h3>Full Paper</h3></div>
+    <span class="week-tag">Week 4</span>
+  </div>
+  <ul>
+    <li>One full mock across all topics, not just the three weak ones</li>
+  </ul>
+  <p class="plan-note">Arithmetic, Ratio, Geometry, Percentages, Averages and Data Handling are all already 71-100% &mdash; this week checks the algebra/checking-habit fixes hold under full-paper conditions, not that anything new needs teaching there. <b>If Algebra is above 75% here, we move on to whatever the paper reveals as the next weak spot. If it's still below that, one more focused week on it before moving forward.</b></p>
+</div>
+
+<h2 class="section-title">Every Week, Alongside The Above</h2>
+<div class="alongside-box">
+  <p><b>The checking habit is the real target here, more than any single topic.</b> Nearly all of her lost algebra marks were tagged careless error, not concept gap &mdash; meaning she already knows how to do this, she just isn't confirming her own answers before moving on. Building that habit now will help every topic, not just algebra.</p>
+  <p><b>Arithmetic, Ratio, Averages, Data Handling and Percentages</b> are already strong (83-100%). No remedial work needed here &mdash; just enough light practice each week to keep them sharp while the focus stays on Algebra.</p>
+</div>
+
+<footer class="sheet-footer">
+  Summit Tuition &middot; internal planning document, not for redistribution.
+</footer>
+
+</body>
+</html>

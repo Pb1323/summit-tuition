@@ -1,15 +1,12 @@
-"use client";
-
-import { RequireAuth, RequireNoteAccess } from "@/components/platform/ui";
+import { requireNoteAccess } from "@/lib/server/notes-access";
+import { NotesLocked } from "@/components/notes/notes-locked";
 import { NotesTopicPage } from "@/components/notes/notes-shell";
-import { geometryTopic } from "@/components/notes/notes-content/geometry";
 
-export default function GeometryNotesPage() {
-  return (
-    <RequireAuth role="student">
-      <RequireNoteAccess noteId="maths-geometry">
-        <NotesTopicPage topic={geometryTopic} />
-      </RequireNoteAccess>
-    </RequireAuth>
-  );
+const NOTE_ID = "maths-geometry";
+
+export default async function GeometryNotesPage() {
+  const user = await requireNoteAccess(NOTE_ID);
+  if (!user) return <NotesLocked noteId={NOTE_ID} />;
+  const { geometryTopic } = await import("@/components/notes/notes-content/geometry");
+  return <NotesTopicPage topic={geometryTopic} />;
 }

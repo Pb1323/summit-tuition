@@ -12,7 +12,14 @@ const SESSION_DAYS = 30;
 // in-memory map of random token -> seeded userId for this server process. This means a
 // session cookie can never be forged just by knowing/guessing a seeded user id (e.g.
 // "admin-1") the way a raw-userId cookie could be.
-const demoSessions = new Map<string, string>();
+//
+// Stashed on globalThis (mirroring db.ts's Prisma singleton) rather than a plain module
+// const: Next's dev bundler compiles Route Handlers and Server Component pages as
+// separate module instances, so a plain `const` here would give each its own empty Map
+// and a session created via a login Route Handler would be invisible to any page calling
+// getCurrentUser() directly — globalThis is the one thing actually shared across layers.
+const globalForDemoSessions = globalThis as unknown as { demoSessions?: Map<string, string> };
+const demoSessions = globalForDemoSessions.demoSessions ?? (globalForDemoSessions.demoSessions = new Map<string, string>());
 
 // If DATABASE_URL is ever missing in a real production deployment (misconfigured env
 // var), refuse to fall back into demo mode for auth — that fallback exists purely for

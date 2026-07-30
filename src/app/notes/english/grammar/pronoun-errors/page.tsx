@@ -1,15 +1,12 @@
-"use client";
-
-import { RequireAuth, RequireNoteAccess } from "@/components/platform/ui";
+import { requireNoteAccess } from "@/lib/server/notes-access";
+import { NotesLocked } from "@/components/notes/notes-locked";
 import { NotesTopicPage } from "@/components/notes/notes-shell";
-import { pronounErrorsTopic } from "@/components/notes/notes-content/pronoun-errors";
 
-export default function PronounErrorsNotesPage() {
-  return (
-    <RequireAuth role="student">
-      <RequireNoteAccess noteId="english-grammar">
-        <NotesTopicPage topic={pronounErrorsTopic} />
-      </RequireNoteAccess>
-    </RequireAuth>
-  );
+const NOTE_ID = "english-grammar";
+
+export default async function PronounErrorsNotesPage() {
+  const user = await requireNoteAccess(NOTE_ID);
+  if (!user) return <NotesLocked noteId={NOTE_ID} />;
+  const { pronounErrorsTopic } = await import("@/components/notes/notes-content/pronoun-errors");
+  return <NotesTopicPage topic={pronounErrorsTopic} />;
 }

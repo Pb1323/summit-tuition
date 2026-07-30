@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Summit Tuition, Study Plan: Anagha, 4-Week NVR Starting Plan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root {
+    --navy: #10233f;
+    --navy-light: #1c3a63;
+    --gold: #b4893b;
+    --gold-light: #e8d9b5;
+    --cream: #faf6ec;
+    --ink: #1a1a1a;
+    --muted: #5b5b5b;
+    --rule: #d8cfb8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: var(--ink);
+    background: var(--cream);
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 34px 30px 50px;
+    line-height: 1.55;
+  }
+  header.sheet-header {
+    background: var(--navy);
+    color: white;
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin-bottom: 26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+  }
+  header.sheet-header .eyebrow {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin: 0 0 8px;
+  }
+  header.sheet-header h1 { font-size: 24px; margin: 0 0 6px; }
+  header.sheet-header p.meta {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    color: #d7ddea;
+    margin: 0;
+  }
+  .score-badge {
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(232,217,181,0.4);
+    border-radius: 8px;
+    padding: 10px 16px;
+    text-align: center;
+    min-width: 100px;
+  }
+  .score-badge .pct {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--gold-light);
+    line-height: 1.3;
+  }
+  .score-badge .sub {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10.5px;
+    color: #c3cbdc;
+    margin-top: 4px;
+  }
+
+  h2.section-title {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--navy);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 6px;
+    margin: 26px 0 14px;
+  }
+
+  .callout-box {
+    background: #fff;
+    border: 1px solid #e4ded0;
+    border-left: 4px solid var(--gold);
+    border-radius: 6px;
+    padding: 14px 18px;
+    margin: 4px 0 6px;
+  }
+  .callout-box p {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12.5px;
+    margin: 0 0 8px;
+  }
+  .callout-box p:last-child { margin-bottom: 0; }
+  .callout-box b { color: var(--navy); }
+
+  .week-card {
+    background: white;
+    border: 1px solid #e4ded0;
+    border-radius: 8px;
+    padding: 16px 20px 18px;
+    margin: 0 0 16px;
+    page-break-inside: avoid;
+  }
+  .week-card .head-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .week-card .head-left { display: flex; align-items: center; gap: 12px; }
+  .week-card .num {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    color: white;
+    background: var(--navy);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .week-card h3 { font-size: 17px; margin: 0; color: var(--navy); }
+  .week-card .week-tag {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10.5px;
+    font-weight: bold;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .week-card ul {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    margin: 6px 0 10px;
+    padding-left: 20px;
+  }
+  .week-card ul li { margin-bottom: 5px; }
+  .week-card .plan-note {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px dashed var(--rule);
+    padding-top: 8px;
+    margin-top: 6px;
+  }
+  .week-card .plan-note b { color: var(--ink); }
+  code {
+    font-family: 'Courier New', monospace;
+    background: #f1ede1;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+  }
+
+  .type-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 4px 0 14px;
+  }
+  .type-grid .type-chip {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11.5px;
+    text-align: center;
+    background: #f1f4f9;
+    border: 1px solid var(--navy-light);
+    color: var(--navy);
+    border-radius: 6px;
+    padding: 7px 6px;
+    font-weight: bold;
+  }
+
+  footer.sheet-footer {
+    margin-top: 30px;
+    padding-top: 12px;
+    border-top: 1px solid var(--rule);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  @media print {
+    body { padding: 12mm 14mm; max-width: none; background: white; }
+    @page { size: A4; margin: 10mm; }
+  }
+</style>
+</head>
+<body>
+
+<header class="sheet-header">
+  <div>
+    <p class="eyebrow">Summit Tuition &middot; Study Plan</p>
+    <h1>4-Week NVR Starting Plan</h1>
+    <p class="meta">Anagha &middot; no Non-Verbal Reasoning mock attempted yet</p>
+  </div>
+  <div class="score-badge">
+    <div class="pct">New Subject</div>
+    <div class="sub">baseline set<br>in week 1</div>
+  </div>
+</header>
+
+<h2 class="section-title">Why This Plan Looks Different</h2>
+<div class="callout-box">
+  <p>Anagha hasn't sat an NVR paper yet, so unlike the Maths and English plans, there's no marked report to target weak topics from. This plan starts with a genuine baseline assessment in week 1, then adjusts around whatever it shows &mdash; the specific target percentage and weak pattern types below will get set <b>after</b> that first attempt, not guessed in advance.</p>
+  <p>Worth flagging honestly: NVR doesn't yet have a dedicated Study Notes strand on the platform the way Maths and English do (it's a known content gap, being worked on). For now, the pattern-type coaching below is tutor-led &mdash; live explanation plus printed practice questions &mdash; rather than self-study notes pages.</p>
+</div>
+
+<h2 class="section-title">Week By Week</h2>
+
+<div class="week-card">
+  <div class="head-row">
+    <div class="head-left"><span class="num">1</span><h3>Baseline Assessment</h3></div>
+    <span class="week-tag">Week 1</span>
+  </div>
+  <ul>
+    <li>Complete <b>Non-Verbal Reasoning Pattern Lab</b> (20 questions / 24 marks, <code>/dashboard</code> &rarr; unlocked mocks) cold, with no prior coaching or prep</li>
+  </ul>
+  <p class="plan-note">The point of this week is honest data, not a good score &mdash; going in cold shows which of the classic NVR question types (sequences, matrices, rotations, reflections, nets, analogies, odd-one-out, code-breaking) she already handles instinctively and which need real teaching. Resist the urge to prep beforehand; a coached first attempt would hide exactly what we need to see.</p>
+  <div class="type-grid">
+    <span class="type-chip">Sequences</span>
+    <span class="type-chip">Matrices</span>
+    <span class="type-chip">Rotations</span>
+    <span class="type-chip">Reflections</span>
+    <span class="type-chip">Nets / 3D</span>
+    <span class="type-chip">Analogies</span>
+    <span class="type-chip">Odd-One-Out</span>
+    <span class="type-chip">Code-Breaking</span>
+  </div>
+</div>
+
+<div class="week-card">
+  <div class="head-row">
+    <div class="head-left"><span class="num">2</span><h3>Targeted Coaching on Weakest Types</h3></div>
+    <span class="week-tag">Week 2</span>
+  </div>
+  <ul>
+    <li>Tutor-led session on whichever 2-3 pattern types the baseline showed weakest</li>
+    <li>Fresh practice questions pulled by pattern type (Admin &rarr; Homework Generator, subject: NVR)</li>
+  </ul>
+  <p class="plan-note">For each weak type: tutor demonstrates the underlying rule first (e.g. "each shape rotates 90&deg; clockwise and gains one dot"), then Anagha talks through 3-4 questions out loud before answering, not just after getting one wrong. This is the part that can't come from notes alone &mdash; NVR rules need to be seen worked through live.</p>
+</div>
+
+<div class="week-card">
+  <div class="head-row">
+    <div class="head-left"><span class="num">3</span><h3>Independent Practice, Same Weak Types</h3></div>
+    <span class="week-tag">Week 3</span>
+  </div>
+  <ul>
+    <li>Fresh questions on the same 2-3 pattern types from week 2, this time answered independently first</li>
+    <li>Tutor checks by asking her to explain the rule out loud before revealing whether she got it right</li>
+  </ul>
+  <p class="plan-note">Goal: she should be able to state the rule confidently before checking the answer, not reverse-engineer it from being told she's wrong. If she's still guessing rather than reasoning by the end of this week, week 2's coaching repeats on those specific types before moving on.</p>
+</div>
+
+<div class="week-card">
+  <div class="head-row">
+    <div class="head-left"><span class="num">4</span><h3>Second Full Assessment</h3></div>
+    <span class="week-tag">Week 4</span>
+  </div>
+  <ul>
+    <li>Retake a full NVR paper covering all pattern types, not just the weak ones from week 1</li>
+  </ul>
+  <p class="plan-note"><b>How this decides what's next:</b> if the retake shows solid improvement on the week-1 weak spots and a comfortable overall score, she's ready to try a genuinely harder paper next month. If the weak spots are still weak, this plan repeats for another 4 weeks on the same pattern types before introducing anything harder &mdash; there's no value pushing to a tougher paper before the fundamentals are solid.</p>
+</div>
+
+<h2 class="section-title">Every Week, Alongside The Above</h2>
+<div class="callout-box">
+  <p><b>No score target is set for week 4 yet.</b> Unlike the Maths and English plans, there's no existing paper to calibrate "good progress" against &mdash; the honest answer is that we'll know what a reasonable target looks like once the week-1 baseline is in. Worth mentioning to the family directly so week 1's score, whatever it is, doesn't read as a verdict on her ability &mdash; it's a diagnostic tool, not a test she can fail.</p>
+</div>
+
+<footer class="sheet-footer">
+  Summit Tuition &middot; internal planning document, not for redistribution.
+</footer>
+
+</body>
+</html>

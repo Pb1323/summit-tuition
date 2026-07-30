@@ -1,15 +1,12 @@
-"use client";
-
-import { RequireAuth, RequireNoteAccess } from "@/components/platform/ui";
+import { requireNoteAccess } from "@/lib/server/notes-access";
+import { NotesLocked } from "@/components/notes/notes-locked";
 import { NotesTopicPage } from "@/components/notes/notes-shell";
-import { prepositionsConjunctionsTopic } from "@/components/notes/notes-content/prepositions-conjunctions";
 
-export default function PrepositionsConjunctionsNotesPage() {
-  return (
-    <RequireAuth role="student">
-      <RequireNoteAccess noteId="english-grammar">
-        <NotesTopicPage topic={prepositionsConjunctionsTopic} />
-      </RequireNoteAccess>
-    </RequireAuth>
-  );
+const NOTE_ID = "english-grammar";
+
+export default async function PrepositionsConjunctionsNotesPage() {
+  const user = await requireNoteAccess(NOTE_ID);
+  if (!user) return <NotesLocked noteId={NOTE_ID} />;
+  const { prepositionsConjunctionsTopic } = await import("@/components/notes/notes-content/prepositions-conjunctions");
+  return <NotesTopicPage topic={prepositionsConjunctionsTopic} />;
 }

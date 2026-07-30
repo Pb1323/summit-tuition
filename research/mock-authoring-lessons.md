@@ -1,6 +1,6 @@
 # Mock authoring lessons (English & Maths) — read before authoring a new mock
 
-This file exists because the same 3 bugs kept getting rediscovered across
+This file exists because the same bugs kept getting rediscovered across
 sessions when authoring English/Maths mocks. Read this before writing new
 mock questions or touching `SegmentMistakeAnswer` / `ClozeGapRenderer` /
 `mock-room-shell.tsx` question ordering, so they don't get reintroduced.
@@ -103,6 +103,45 @@ weighting) with zero `undefined`, and `evaluateMockQuality()` (the same
 checker used by the admin Quality Checks tab) returned status `Ready` with no
 warnings.
 
+## Bug 4 — a "reference vs. query" NVR question type where the query figure IS the answer
+
+**Symptom (found 2026-07-28, in `ripon-nvr-maths-test`'s two `nvrSimilarity`
+questions, `nvr34`/`nvr35`):** a new NVR archetype was authored where two
+"reference" figures share a property (e.g. both hatched fill), and a separate
+"query" figure is drawn on-screen for the student to compare against — but
+the multiple-choice options are literal text descriptions of a figure
+("A hatched hexagon"), and the *query figure's own on-screen description
+matched the correct option word-for-word* (query was a hatched hexagon,
+correct answer text was "A hatched hexagon"). A student could solve it purely
+by reading the picture and text-matching — no reasoning about which property
+is actually shared was required. This is a different failure mode from Bugs
+1-3: those were about *option order/position* being predictable; this one is
+about the *content of the correct option restating something already fully
+visible on screen*, i.e. the question answers itself.
+
+**Fix (current, live):** for `nvr34`/`nvr35`, the query figure's shape was
+changed so it no longer matches the shape named in any answer option (e.g.
+query is a pentagon, but the options describe triangle/square/hexagon
+figures only). This forces the only usable signal to be the shared property
+(fill/rotation), not a literal description of what's drawn. Also fixed a
+related smaller flaw in `nvr35`: one of the "wrong" options had described one
+of the two reference figures exactly (pentagon rotated 45°) — since that
+figure genuinely does share the target property (rotation 45°), marking it
+wrong was internally inconsistent; its rotation was changed so it's
+unambiguously wrong.
+
+**General rule for any future "compare a shown figure/example against text
+options" question type** (not just NVR): if a visual renders a concrete
+example (a "query", a "test" figure, a worked sample, etc.) and the answer
+options are text descriptions, check that **no option's text is a verbatim
+description of anything already drawn on screen** unless that really is the
+intended, checkable-by-inspection answer (e.g. reading a value straight off a
+bar chart is fine — that's the whole point of a "read the chart" question).
+If the task is meant to require inference/reasoning (matching an abstract
+shared property, applying a rule, etc.), the correct option must describe
+something that *differs* from every figure already shown, so it can only be
+reached by applying the rule, not by copying what's visible.
+
 ## How to verify a newly authored mock isn't shipping any of the above
 
 There's no dedicated npm script for this — write a small one-off script,
@@ -122,6 +161,9 @@ const questions = QUESTIONS.filter((q) => mock.questionIds.includes(q.id));
 // 4. (English) getEnglishSectionId() classifies every question, section
 //    counts roughly match ENGLISH_SECTIONS weights, zero "undefined"
 // 5. evaluateMockQuality(mock, questions, PASSAGES).status === "Ready"
+// 6. For any visual with a "query"/"test"/worked-example figure and text
+//    options (e.g. nvrSimilarity): the correct option's text must not be a
+//    verbatim description of anything already drawn in the visual (see Bug 4)
 ```
 
 Run with `npx tsx scripts/_tmp-check-mock.mts`, confirm clean output, delete

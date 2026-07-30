@@ -1,15 +1,12 @@
-"use client";
-
-import { RequireAuth, RequireNoteAccess } from "@/components/platform/ui";
+import { requireNoteAccess } from "@/lib/server/notes-access";
+import { NotesLocked } from "@/components/notes/notes-locked";
 import { NotesTopicPage } from "@/components/notes/notes-shell";
-import { fractionsDecimalsPercentagesTopic } from "@/components/notes/notes-content/fractions-decimals-percentages";
 
-export default function FractionsDecimalsPercentagesNotesPage() {
-  return (
-    <RequireAuth role="student">
-      <RequireNoteAccess noteId="maths-fractions-decimals-percentages">
-        <NotesTopicPage topic={fractionsDecimalsPercentagesTopic} />
-      </RequireNoteAccess>
-    </RequireAuth>
-  );
+const NOTE_ID = "maths-fractions-decimals-percentages";
+
+export default async function FractionsDecimalsPercentagesNotesPage() {
+  const user = await requireNoteAccess(NOTE_ID);
+  if (!user) return <NotesLocked noteId={NOTE_ID} />;
+  const { fractionsDecimalsPercentagesTopic } = await import("@/components/notes/notes-content/fractions-decimals-percentages");
+  return <NotesTopicPage topic={fractionsDecimalsPercentagesTopic} />;
 }

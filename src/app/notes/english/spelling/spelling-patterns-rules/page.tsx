@@ -1,15 +1,12 @@
-"use client";
-
-import { RequireAuth, RequireNoteAccess } from "@/components/platform/ui";
+import { requireNoteAccess } from "@/lib/server/notes-access";
+import { NotesLocked } from "@/components/notes/notes-locked";
 import { NotesTopicPage } from "@/components/notes/notes-shell";
-import { spellingPatternsRulesTopic } from "@/components/notes/notes-content/spelling-patterns-rules";
 
-export default function SpellingPatternsRulesNotesPage() {
-  return (
-    <RequireAuth role="student">
-      <RequireNoteAccess noteId="english-spelling">
-        <NotesTopicPage topic={spellingPatternsRulesTopic} />
-      </RequireNoteAccess>
-    </RequireAuth>
-  );
+const NOTE_ID = "english-spelling";
+
+export default async function SpellingPatternsRulesNotesPage() {
+  const user = await requireNoteAccess(NOTE_ID);
+  if (!user) return <NotesLocked noteId={NOTE_ID} />;
+  const { spellingPatternsRulesTopic } = await import("@/components/notes/notes-content/spelling-patterns-rules");
+  return <NotesTopicPage topic={spellingPatternsRulesTopic} />;
 }
