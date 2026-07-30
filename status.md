@@ -1,10 +1,15 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-30 (fixed a real sign-in bug and tightened how locked Study Notes pages are gated, plus a new Creative Writing lesson and worksheet PDFs — see below)
+Last updated: 2026-07-30 (added an even harder new English paper, `english-gl-19-ultra`, and seeded it live automatically — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-07-30, another harder English paper + auto-seeded live)
+
+- You asked for another new English paper, harder again than the "Elite+" ones added earlier — with genuinely different, niche grammar topics (not repeating any grammar area already used in the last two papers), and specifically asked for the reading-comprehension "what does this imply" questions to be properly difficult — the kind where two or three answers all look plausible at first glance and you have to read closely to work out which one is actually right. Built exactly that: a new story about two school-newspaper reporters investigating why a corner shop is really closing (everyone involved tells a slightly different version of events), with 5 of its harder questions built specifically so a student has to weigh conflicting clues (a receipt dated before a rent notice, a "sold" sign's timing, a character's tone not quite matching what they say) to land on the one correct answer — vague-feeling on purpose, but never actually a trick question with no real answer. Calibrated so a strong student who'd get around 80% on the last "Elite+" paper should land more like 40-50% on this one.
+- You also told me to seed automatically from now on rather than waiting for you to review first — done, and done again for this paper: both this session's new mock and the earlier batch (the 4 Elite+ papers and the Spelling Tester content) are live in the real database now, not just sitting in the code waiting for a manual step.
 
 ## Done (session — 2026-07-30, sign-in bug fix + tighter Study Notes locking)
 
