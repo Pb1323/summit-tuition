@@ -217,8 +217,17 @@ export function StudentDashboard() {
       <section>
         <h2 className="text-2xl font-black text-navy">Available mocks</h2>
         <div className="mt-5 grid gap-6 lg:grid-cols-2">
-          {unlocked.map((mock) => <MockCard key={mock.id} mock={mock} attempt={studentAttempts.find((attempt) => attempt.mockId === mock.id)} />)}
+          {unlocked
+            .filter((mock) => {
+              const attempt = studentAttempts.find((item) => item.mockId === mock.id);
+              return attempt?.status !== "submitted" && attempt?.status !== "report_released";
+            })
+            .map((mock) => <MockCard key={mock.id} mock={mock} attempt={studentAttempts.find((attempt) => attempt.mockId === mock.id)} />)}
           {unlocked.length === 0 && <EmptyState icon={<Lock />} title="No mocks unlocked yet" text="Contact Summit Tuition to unlock a mock." />}
+          {unlocked.length > 0 && unlocked.every((mock) => {
+            const attempt = studentAttempts.find((item) => item.mockId === mock.id);
+            return attempt?.status === "submitted" || attempt?.status === "report_released";
+          }) && <EmptyState icon={<ClipboardList />} title="All caught up" text="You've completed every unlocked mock — see your reports below, or wait for Summit Tuition to unlock more." />}
         </div>
       </section>
 

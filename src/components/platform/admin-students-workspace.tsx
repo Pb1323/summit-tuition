@@ -12,7 +12,7 @@ function confirmDelete(name: string, email: string) {
 }
 
 export function AdminStudentsWorkspace({ compact = false }: { compact?: boolean }) {
-  const { users, mocks, notes, products, approveUser, rejectUser, approveAndUnlockFirstMock, assignPlan, unlockMock, unlockNote, createTestStudent, setStudentLessons } = usePlatform();
+  const { users, mocks, notes, products, attempts, approveUser, rejectUser, approveAndUnlockFirstMock, assignPlan, unlockMock, unlockNote, createTestStudent, setStudentLessons } = usePlatform();
   const students = users.filter((user) => user.role === "student");
   const pending = students.filter((student) => !student.approved);
   const publishedMocks = mocks.filter((mock) => mock.published);
@@ -106,6 +106,9 @@ export function AdminStudentsWorkspace({ compact = false }: { compact?: boolean 
                   notes={notes}
                   unlockedMockIds={student.unlockedMockIds}
                   unlockedNoteIds={student.unlockedNoteIds}
+                  completedMockIds={attempts
+                    .filter((attempt) => attempt.studentId === student.id && (attempt.status === "submitted" || attempt.status === "report_released"))
+                    .map((attempt) => attempt.mockId)}
                   onToggleMock={unlockMock}
                   onToggleNote={unlockNote}
                 />
@@ -210,14 +213,17 @@ function PlanBundleEditor({
   );
 }
 
-function groupBySubject<T extends { subject: Subject; title: string }>(items: T[], query: string) {
+function groupBySubject<T extends { subject: Subject; title: string; tier?: string }>(items: T[], query: string) {
   const q = query.trim().toLowerCase();
   const filtered = q ? items.filter((item) => item.title.toLowerCase().includes(q)) : items;
-  const groups = new Map<Subject, T[]>();
+  const groups = new Map<Subject, Map<string, T[]>>();
   for (const item of filtered) {
-    const list = groups.get(item.subject) ?? [];
+    const tierGroups = groups.get(item.subject) ?? new Map<string, T[]>();
+    const tierLabel = item.tier ?? "";
+    const list = tierGroups.get(tierLabel) ?? [];
     list.push(item);
-    groups.set(item.subject, list);
+    tierGroups.set(tierLabel, list);
+    groups.set(item.subject, tierGroups);
   }
   return groups;
 }
@@ -229,6 +235,7 @@ function UnlockPanel({
   notes,
   unlockedMockIds,
   unlockedNoteIds,
+  completedMockIds,
   onToggleMock,
   onToggleNote,
 }: {
@@ -238,6 +245,7 @@ function UnlockPanel({
   notes: NotePage[];
   unlockedMockIds: string[];
   unlockedNoteIds: string[];
+  completedMockIds: string[];
   onToggleMock: (studentId: string, mockId: string, unlocked: boolean) => void;
   onToggleNote: (studentId: string, noteId: string, unlocked: boolean) => void;
 }) {
@@ -270,6 +278,7 @@ function UnlockPanel({
             label="Mocks"
             groups={mockGroups}
             checkedIds={unlockedMockIds}
+            completedIds={completedMockIds}
             onToggleAll={(ids, checked) => ids.forEach((id) => onToggleMock(studentId, id, checked))}
             onToggleOne={(id, checked) => onToggleMock(studentId, id, checked)}
           />
@@ -286,16 +295,18 @@ function UnlockPanel({
   );
 }
 
-function UnlockGroup<T extends { id: string; subject: Subject; title: string; isFree?: boolean }>({
+function UnlockGroup<T extends { id: string; subject: Subject; title: string; isFree?: boolean; tier?: string }>({
   label,
   groups,
   checkedIds,
+  completedIds = [],
   onToggleAll,
   onToggleOne,
 }: {
   label: string;
-  groups: Map<Subject, T[]>;
+  groups: Map<Subject, Map<string, T[]>>;
   checkedIds: string[];
+  completedIds?: string[];
   onToggleAll: (ids: string[], checked: boolean) => void;
   onToggleOne: (id: string, checked: boolean) => void;
 }) {
@@ -304,9 +315,10 @@ function UnlockGroup<T extends { id: string; subject: Subject; title: string; is
     <div>
       <p className="text-xs font-black uppercase tracking-wide text-muted">{label}</p>
       <div className="mt-2 space-y-3">
-        {Array.from(groups.entries()).map(([subject, items]) => {
-          const ids = items.map((item) => item.id);
-          const allChecked = ids.every((id) => checkedIds.includes(id));
+        {Array.from(groups.entries()).map(([subject, tierGroups]) => {
+          const allItems = Array.from(tierGroups.values()).flat();
+          const ids = allItems.map((item) => item.id);
+          const sortedTiers = Array.from(tierGroups.entries()).sort(([a], [b]) => a.localeCompare(b));
           return (
             <div key={subject} className="rounded-xl border border-line bg-white p-3">
               <div className="flex items-center justify-between gap-2">
@@ -316,13 +328,40 @@ function UnlockGroup<T extends { id: string; subject: Subject; title: string; is
                   <button type="button" onClick={() => onToggleAll(ids, false)} className="rounded-full border border-line px-2 py-0.5 text-xs font-bold text-navy hover:border-gold">Lock all</button>
                 </div>
               </div>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {items.map((item) => (
-                  <label key={item.id} className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold text-navy ${allChecked || checkedIds.includes(item.id) ? "bg-gold/15" : "bg-navy/5"}`}>
-                    <input type="checkbox" checked={checkedIds.includes(item.id)} onChange={(event) => onToggleOne(item.id, event.target.checked)} />
-                    {item.title}{item.isFree && <span className="text-xs font-black text-gold-dark">FREE</span>}
-                  </label>
-                ))}
+              <div className="mt-2 space-y-2">
+                {sortedTiers.map(([tier, items]) => {
+                  const tierIds = items.map((item) => item.id);
+                  return (
+                    <div key={tier || "untiered"}>
+                      {tier && (
+                        <div className="flex items-center justify-between gap-2 pt-1">
+                          <span className="text-[11px] font-black uppercase tracking-wide text-gold-dark">{tier} <span className="text-muted">({tierIds.filter((id) => checkedIds.includes(id)).length}/{tierIds.length})</span></span>
+                          <div className="flex gap-1">
+                            <button type="button" onClick={() => onToggleAll(tierIds, true)} className="rounded-full border border-line px-2 py-0.5 text-[10px] font-bold text-navy hover:border-gold">All</button>
+                            <button type="button" onClick={() => onToggleAll(tierIds, false)} className="rounded-full border border-line px-2 py-0.5 text-[10px] font-bold text-navy hover:border-gold">None</button>
+                          </div>
+                        </div>
+                      )}
+                      <div className="mt-1 divide-y divide-line rounded-lg border border-line/70">
+                        {items.map((item) => {
+                          const isCompleted = completedIds.includes(item.id);
+                          return (
+                            <label key={item.id} className={`flex items-center gap-2 px-3 py-1.5 text-sm font-semibold text-navy ${checkedIds.includes(item.id) ? "bg-gold/10" : "bg-white"}`}>
+                              <input type="checkbox" checked={checkedIds.includes(item.id)} onChange={(event) => onToggleOne(item.id, event.target.checked)} />
+                              <span className="flex-1">{item.title}</span>
+                              {isCompleted && (
+                                <span title="Student has already completed this mock" className="inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-green-700">
+                                  <CheckCircle2 className="h-3 w-3" /> Done
+                                </span>
+                              )}
+                              {item.isFree && <span className="text-xs font-black text-gold-dark">FREE</span>}
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           );
