@@ -1,10 +1,16 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-30 (fixed a real bug causing some students' mock submissions to appear doubled/tripled on the dashboard — see below)
+Last updated: 2026-07-31 (added 2 more Ripon Grammar style practice papers — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-07-31, 2 more Ripon Grammar style papers)
+
+- You asked for two more Ripon Grammar style practice papers with a different question split than the original two: roughly 25 maths, 32 comprehension, 25 verbal reasoning, 38 non-verbal reasoning. Checked first whether you meant this as a second set alongside the existing two Ripon papers or a fix to their split — you confirmed: a new second set, same pairing pattern (comprehension+VR in one paper, NVR+maths in the other).
+- Added "Ripon Grammar Style — Verbal Skills II" (57 questions: 32 reading comprehension + 25 verbal reasoning) and "Ripon Grammar Style — Non-Verbal Reasoning & Maths II" (63 questions: 38 non-verbal reasoning + 25 maths). Both published and live in the code straight away, matching the "auto-seed/publish, don't wait for review" habit from recent sessions.
+- All questions reused from the existing question bank (an existing story passage plus 4 questions from a second one for the comprehension section, and existing VR/NVR/Maths question pools) rather than written from scratch — same reuse approach used for the original 2 Ripon papers and the 11 real-school-style papers. Double-checked with an automated script: right question counts, no duplicates, marks add up correctly (57 and 63). Site type-checks and lints clean (only pre-existing, unrelated warnings remain). Committed and pushed to GitHub.
 
 ## Done (session — 2026-07-30, fixed doubled/tripled mock submissions)
 
