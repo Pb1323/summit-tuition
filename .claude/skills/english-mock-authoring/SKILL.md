@@ -148,13 +148,30 @@ resolve. It does **not** catch weak items. These do, and they're what
 actually separates a paper that stretches a strong 11+ candidate from one
 that's just GL-shaped busywork:
 
-- **Distractor plausibility is the whole game.** For retrieval and
+- **Distractor plausibility is the whole game — every comprehension question
+  needs 2-3 genuinely plausible options, not 1 right answer plus 4 options a
+  strong reader eliminates on sight.** (Founder feedback, 2026-08-02, after a
+  strong student was scoring 100% on comprehension even on the platform's
+  hardest papers — not because the passages were easy, but because the wrong
+  options were: "don't let them do eliminations.") For retrieval and
   vocabulary questions, at least 2 of the 4 wrong options must require the
   student to have actually read the relevant paragraph to rule out — pull
   distractors from *other true details in the same passage* (a different
-  character's action, a different paragraph's fact) rather than inventing
-  generic wrong answers. A question is too easy if a student who skipped the
-  passage entirely could eliminate 3 of 4 options on plausibility alone.
+  character's action, a different paragraph's fact, a detail that's real but
+  answers a slightly different question than the one asked) rather than
+  inventing generic wrong answers. For inference questions, 1-2 wrong options
+  should be plausible *over-reads* of the same evidence the correct answer
+  uses, not unrelated invented claims. For vocabulary, use near-synonyms that
+  are wrong specifically in that sentence's context, not generically wrong
+  words. A question is too easy if a student who skipped the passage
+  entirely could eliminate 3 of 4 options on plausibility alone — the bar is
+  that even a student who read carefully still has to weigh 2-3 real
+  candidates against the text, not just recognise the one real-sounding
+  option. This must not tip into ambiguity: every question still needs to
+  resolve to exactly one objectively correct answer — spot-check each
+  rewritten distractor against the passage text (see below) before calling
+  it done. See `english-gl-15-elite`'s `frh1`-`frh28` for a worked example of
+  hardening an existing, too-easy comprehension section this way.
 - **Don't over-template against your own reference mock.** It's tempting
   (and fast) to take a working Elite paper and swap nouns/setting per
   question 1:1 — same sentence shape, same clause count, same connective
