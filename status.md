@@ -1,10 +1,17 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-07-31 (added 2 more Ripon Grammar style practice papers — see below)
+Last updated: 2026-08-02 (removed the in-progress referral code feature — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-08-02, removed the referral code feature)
+
+- While pulling a student's marked reports, found that the referral program (built 2026-08-01, never pushed — see prior status entry) had left the local code out of sync with the live database: the local Prisma schema had a `referralCode` column the production database doesn't have, so running the app locally against the live database threw a 500 on every login/session check. You asked to remove the feature for now rather than push the migration.
+- Reverted every uncommitted referral-related change: the Prisma schema fields (`referralCode`/`referredById`/`referrals`), the `src/lib/referral.ts` helper file, the referral-aware login/register API routes, the referral link box on the student dashboard, the admin "Referrals" panel on the student workspace, and the `referralCode`/`referredById`/`referralCount` fields on the account type. Also removed the 4 leftover `referralCode: "..."` values on the demo seed accounts in `src/data/platform.ts` that had been committed by accident in an earlier, unrelated commit (`f50ec93`) — those were the one piece of this that had already made it into git history.
+- Regenerated the Prisma client so it matches the reverted schema again. `npm.cmd run typecheck` clean. Left one unrelated in-progress edit in `src/data/platform.ts` untouched (a new passage/question set that was already uncommitted before this session — not mine to touch, per the "don't delete unrecognized work" rule).
+- Net effect: the app can run locally against the live production database again without the login/session 500. The referral feature no longer exists anywhere in the codebase — if you want it back later, it'll need to be rebuilt and shipped as an actual migration against production, not left half-applied like this.
 
 ## Done (session — 2026-07-31, 2 more Ripon Grammar style papers)
 

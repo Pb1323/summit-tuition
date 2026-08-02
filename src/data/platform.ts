@@ -41,7 +41,6 @@ export const SEEDED_USERS: StudentAccount[] = [
     unlockedMockIds: ["maths-gl-1", "english-gl-1"],
     unlockedNoteIds: NOTE_PAGES.map((note) => note.id),
     createdAt: "2026-07-01T09:00:00.000Z",
-    referralCode: "ADMIN1",
   },
   {
     id: "student-1",
@@ -59,7 +58,6 @@ export const SEEDED_USERS: StudentAccount[] = [
       { date: "2026-07-21", time: "16:30", note: "Maths — Ratio & Proportion" },
       { date: "2026-07-28", time: "16:30", note: "English — Comprehension" },
     ],
-    referralCode: "SUMMIT1",
   },
   {
     id: "student-2",
@@ -72,8 +70,6 @@ export const SEEDED_USERS: StudentAccount[] = [
     unlockedMockIds: [],
     unlockedNoteIds: NOTE_PAGES.filter((note) => note.isFree).map((note) => note.id),
     createdAt: "2026-07-01T11:00:00.000Z",
-    referralCode: "TESTSTU",
-    referredById: "student-1",
   },
   {
     id: "student-demo-testing",
@@ -91,7 +87,6 @@ export const SEEDED_USERS: StudentAccount[] = [
       { date: "2026-07-22", time: "17:00", note: "Maths — Algebra" },
       { date: "2026-07-29", time: "17:00", note: "Verbal Reasoning" },
     ],
-    referralCode: "PRIYAC",
   },
 ];
 
