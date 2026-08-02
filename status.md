@@ -1,12 +1,16 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-02 (removed the in-progress referral code feature — see below)
+Last updated: 2026-08-02 (hardened `english-gl-15-elite`'s comprehension questions — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
 
-## Done (session — 2026-08-02, removed the referral code feature)
+## Done (session — 2026-08-02, made `english-gl-15-elite`'s comprehension section genuinely harder)
+
+- You noticed one student (Lupin) got 16/16 on reading comprehension even on the platform's hardest "Difficult"-tier papers — comprehension was never actually testing him, while cloze/sentence-grammar were his real weak spots. For a paper you're about to give him for a confidence-friendly ~80% overall target, you asked specifically for the comprehension questions to be made hard enough that he'd land closer to 70% there — not by adding harder knowledge, but by making the wrong answers genuinely close and easy to talk yourself into.
+- Rewrote all 23 non-grammar comprehension questions (`frh1`-`frh22`, `frh28`) on `english-gl-15-elite` (passage "The Second Runner"). The 4 grammar-mechanics questions (word class/clause function/sentence structure) were left as-is since making those "vague" would just make them wrong, not hard. Every rewritten question still has exactly one objectively correct answer — verified nothing became ambiguous — but the wrong options now do real work: retrieval questions have distractors that reuse other true facts from the same passage (e.g. borrowing "a decade" from a different sentence, or swapping which girl did what), inference questions have 1-2 options that are plausible but subtly over-read or misdirect the passage's evidence, and vocabulary questions have close near-synonyms that are wrong specifically in that sentence's context rather than obviously wrong in general.
+- No other students had attempted this mock yet, so nothing was invalidated. Verified with a throwaway script (deleted after use): every question still resolves correctly, section split is still the correct 28/9/9/8, `evaluateMockQuality()` still returns `Ready`. `npm.cmd run typecheck` clean. Seeded live (`npm run db:seed`) so the harder version is what's actually visible when unlocked. Committed and pushed.
 
 - While pulling a student's marked reports, found that the referral program (built 2026-08-01, never pushed — see prior status entry) had left the local code out of sync with the live database: the local Prisma schema had a `referralCode` column the production database doesn't have, so running the app locally against the live database threw a 500 on every login/session check. You asked to remove the feature for now rather than push the migration.
 - Reverted every uncommitted referral-related change: the Prisma schema fields (`referralCode`/`referredById`/`referrals`), the `src/lib/referral.ts` helper file, the referral-aware login/register API routes, the referral link box on the student dashboard, the admin "Referrals" panel on the student workspace, and the `referralCode`/`referredById`/`referralCount` fields on the account type. Also removed the 4 leftover `referralCode: "..."` values on the demo seed accounts in `src/data/platform.ts` that had been committed by accident in an earlier, unrelated commit (`f50ec93`) — those were the one piece of this that had already made it into git history.
