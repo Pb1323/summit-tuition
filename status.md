@@ -1,10 +1,18 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-02 (hardened `english-gl-15-elite`'s comprehension questions — see below)
+Last updated: 2026-08-03 (deep-researched real GL exam question styles and fixed the QE Barnet mock — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-08-03, researched real GL exam papers and fixed the QE Barnet mock)
+
+- You suspected the English and Maths mocks weren't just missing topics, but weren't testing questions the *way* the real GL exam board actually does. Spent 20 minutes doing real research instead of guessing: read two official GL Assessment sample Maths papers (100 real questions) and cross-checked against an existing writeup of a real GL English paper, then checked our own question bank to see which real question styles we're missing.
+- Found a genuine gap: out of over 2,000 questions in the bank, almost none use some of GL's most common question styles — things like "which of these statements is NOT true" (checking a chart against several claims at once) or discount-price tables with a family's total cost to work out. Wrote these up as a reference file so future mock-writing sessions build the right *style* of question, not just the right topic.
+- Also researched Queen Elizabeth's School Barnet's real entrance exam specifically (multiple independent sources) and found our existing "QE Barnet style" mock had a mistake — it included a Verbal Reasoning section that the real QE exam doesn't have. The real exam is English and Maths only, two same-day papers, both multiple choice.
+- Rebuilt the QE Barnet mock to match: dropped the Verbal Reasoning section entirely, reordered it as English paper then Maths paper (matching the real exam's order), and added a punctuation section that was missing before. Used only questions that already existed in the bank — nothing new was written, just recombined and corrected. Site still type-checks clean.
+- Not yet done: the newly-documented "missing question styles" haven't been used to write any new content yet — that's a follow-up task if you want it.
 
 ## Done (session — 2026-08-02, made `english-gl-15-elite`'s comprehension section genuinely harder)
 
