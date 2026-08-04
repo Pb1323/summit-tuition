@@ -16851,7 +16851,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "english-gl-8-elite",
-    title: "English GL-Style Full Paper I — Elite",
+    title: "English GL-Style Full Paper I",
     subject: "English",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
@@ -16872,7 +16872,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "english-gl-9-elite",
-    title: "English GL-Style Full Paper II — Elite",
+    title: "English GL-Style Full Paper II",
     subject: "English",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
@@ -17052,7 +17052,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "maths-elite-1",
-    title: "Maths GL-Style Full Paper — Elite",
+    title: "Maths GL-Style Full Paper",
     subject: "Maths",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
@@ -17075,7 +17075,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "maths-elite-2",
-    title: "Maths GL-Style Full Paper II — Elite",
+    title: "Maths GL-Style Full Paper II",
     subject: "Maths",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
@@ -17098,7 +17098,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "maths-elite-3",
-    title: "Maths GL-Style Full Paper III — Elite",
+    title: "Maths GL-Style Full Paper III",
     subject: "Maths",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
@@ -17121,7 +17121,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "maths-elite-4",
-    title: "Maths GL-Style Full Paper IV — Elite",
+    title: "Maths GL-Style Full Paper IV",
     subject: "Maths",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
@@ -17144,7 +17144,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "maths-elite-5",
-    title: "Maths GL-Style Full Paper V — Elite",
+    title: "Maths GL-Style Full Paper V",
     subject: "Maths",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
@@ -17213,7 +17213,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "english-gl-10-elite",
-    title: "English GL-Style Full Paper III — Elite",
+    title: "English GL-Style Full Paper III",
     subject: "English",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
@@ -17235,7 +17235,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "english-gl-11-elite",
-    title: "English GL-Style Full Paper IV — Elite",
+    title: "English GL-Style Full Paper IV",
     subject: "English",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
@@ -17257,7 +17257,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "english-gl-12-elite",
-    title: "English GL-Style Full Paper V — Elite",
+    title: "English GL-Style Full Paper V",
     subject: "English",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
@@ -17279,7 +17279,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "english-gl-13-elite",
-    title: "English GL-Style Full Paper VI — Elite",
+    title: "English GL-Style Full Paper VI",
     subject: "English",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
@@ -17301,7 +17301,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "english-gl-14-elite",
-    title: "English GL-Style Full Paper VII — Elite",
+    title: "English GL-Style Full Paper VII",
     subject: "English",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
@@ -17323,7 +17323,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "english-gl-15-elite",
-    title: "English GL-Style Full Paper VIII — Elite",
+    title: "English GL-Style Full Paper VIII",
     subject: "English",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
@@ -17743,7 +17743,7 @@ export const MOCKS: MockExam[] = [
   } as MockExam,
   {
     id: "english-gl-16-elite-plus",
-    title: "English GL-Style Full Paper IX — Advanced Grammar (Difficult)",
+    title: "English GL-Style Full Paper IX",
     subject: "English",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
@@ -17762,7 +17762,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "maths-elite-8",
-    title: "Maths GL-Style Full Paper VIII (Difficult)",
+    title: "Maths GL-Style Full Paper VIII",
     subject: "Maths",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
@@ -17785,7 +17785,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "maths-elite-9",
-    title: "Maths GL-Style Full Paper IX — Summit Limit (Difficult)",
+    title: "Maths GL-Style Full Paper IX",
     subject: "Maths",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
@@ -17808,7 +17808,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "maths-elite-10",
-    title: "Maths GL-Style Full Paper X — Beyond the Limit",
+    title: "Maths GL-Style Full Paper X",
     subject: "Maths",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
@@ -17831,7 +17831,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "nvr-elite-difficult",
-    title: "Non-Verbal Reasoning — Elite Full Paper (Difficult)",
+    title: "Non-Verbal Reasoning — Full Paper",
     subject: "NVR",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
@@ -17889,7 +17889,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "english-gl-20-pinnacle",
-    title: "English GL-Style Full Paper XII — Pinnacle (Beyond Ultra)",
+    title: "English GL-Style Full Paper XII",
     subject: "English",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
@@ -17908,7 +17908,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "english-gl-21-apex",
-    title: "English GL-Style Full Paper XIII — Apex (Beyond Pinnacle)",
+    title: "English GL-Style Full Paper XIII",
     subject: "English",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
