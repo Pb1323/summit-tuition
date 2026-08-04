@@ -4,10 +4,12 @@ import { useMemo, useState } from "react";
 import { isCorrect, analyseAttempt, patternDescription, recommendationsForTopics } from "@/lib/assessment";
 import { usePlatform } from "@/context/platform-context";
 import { GlowCard, PremiumBadge, ProgressBar, QuestionRenderer, ReportPreview, WeakTopicBreakdown } from "@/components/platform/ui";
+import { RetryMistakes } from "@/components/platform/retry-mistakes";
+import { hasReviewFeatures } from "@/lib/review-features";
 import type { Attempt, MockExam } from "@/types/platform";
 
 export function StudentReportView({ attempt, mock }: { attempt: Attempt; mock: MockExam }) {
-  const { questions: questionBank, passages } = usePlatform();
+  const { currentUser, questions: questionBank, passages } = usePlatform();
   const questions = useMemo(() => questionBank.filter((question) => mock.questionIds.includes(question.id)), [mock, questionBank]);
   const [filterMode, setFilterMode] = useState<"all" | "wrong" | "flagged">("all");
   const [topicFilter, setTopicFilter] = useState("All topics");
@@ -45,6 +47,7 @@ export function StudentReportView({ attempt, mock }: { attempt: Attempt; mock: M
           <p className="text-sm text-muted">highest priority topic</p>
         </GlowCard>
       </section>
+      {hasReviewFeatures(currentUser?.email) && <RetryMistakes attempt={attempt} questions={questions} />}
       <div className="grid gap-6 lg:grid-cols-2">
         <GlowCard className="p-6">
           <h2 className="text-xl font-black text-navy">Topic breakdown</h2>

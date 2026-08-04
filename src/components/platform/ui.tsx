@@ -15,7 +15,7 @@ const COMPACT_QUESTION_NAV_THRESHOLD = 15;
 // Deterministic per-question shuffle so multiple-choice answers aren't left in a
 // predictable sequential order (e.g. always option A) while staying stable across
 // renders/sessions for the same question.
-function seededShuffle<T>(items: T[], seed: string): T[] {
+export function seededShuffle<T>(items: T[], seed: string): T[] {
   const arr = [...items];
   // FNV-1a gives short, near-identical seeds (e.g. "mp1" vs "mp2") a well-diffused
   // initial state; a naive additive hash left short prefixed ids (mp/mh/ms/nvr/rgh...)
@@ -397,6 +397,7 @@ export function QuestionRenderer({
   passage,
   questionNumber,
   hidePassage,
+  shuffleSeed,
 }: {
   question: Question;
   value?: string;
@@ -411,6 +412,11 @@ export function QuestionRenderer({
    * does not render twice. Omitting `passage` entirely in that case previously made the
    * "Linked passage not found" draft warning fire spuriously for every comprehension question. */
   hidePassage?: boolean;
+  /** Overrides the seed used for option shuffling (defaults to question.id). Used by the
+   * per-student "blind retry" review feature (src/lib/review-features.ts) so a reattempted
+   * question's option order genuinely differs from what the student originally saw, instead of
+   * reproducing the exact same shuffle every time via the stable question.id seed. */
+  shuffleSeed?: string;
 }) {
   const correct = value ? String(question.correctAnswer).toLowerCase() === value.toLowerCase() : false;
   const hasText = typeof question.text === "string" && question.text.trim().length > 0;
@@ -418,7 +424,10 @@ export function QuestionRenderer({
   const isSegmentFormat = question.tags?.includes("segment-format") && rawOptions.length > 0;
   // Segment-format options map to fixed lettered sentence positions and must stay in order;
   // everything else gets a per-question shuffle so the correct answer isn't always in the same slot.
-  const options = useMemo(() => (isSegmentFormat ? rawOptions : seededShuffle(rawOptions, question.id)), [isSegmentFormat, question.id, rawOptions]);
+  const options = useMemo(
+    () => (isSegmentFormat ? rawOptions : seededShuffle(rawOptions, shuffleSeed ?? question.id)),
+    [isSegmentFormat, question.id, rawOptions, shuffleSeed]
+  );
   const hasOptions = options.length > 0;
   const isChoiceQuestion = question.questionType === "multiple_choice" || question.questionType === "cloze";
   const isCloze = question.questionType === "cloze";

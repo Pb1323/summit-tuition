@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { SITE } from "@/data/site";
 import { AnimatedButton, EnglishPassageRenderer, GlowCard, MockTimer, PremiumBadge, ProgressBar, QuestionNavigator, QuestionRenderer, RequireAuth } from "@/components/platform/ui";
 import { ENGLISH_SECTIONS, getEnglishSectionId, type EnglishSectionId, type EnglishSectionMeta } from "@/lib/english-sections";
+import { hasReviewFeatures } from "@/lib/review-features";
+import type { Question } from "@/types/platform";
 
 type MockRoomShellProps = {
   mockId: string;
@@ -100,6 +102,49 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
   const submitInFlightRef = useRef(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // "Second look" submit cooldown — one specific student's tutor asked for this (see
+  // src/lib/review-features.ts), not a site-wide feature. Tracks, per question, how long it sat
+  // active before he first answered it; questions answered in under 5 seconds get surfaced back
+  // to him in a dedicated screen before the real submit fires, so a reflex answer gets one more
+  // look instead of silently going straight to marking. Ephemeral, component-state only.
+  const reviewFeaturesEnabled = hasReviewFeatures(currentUser?.email);
+  const questionShownAtRef = useRef<Record<string, number>>({});
+  const timeToFirstAnswerRef = useRef<Record<string, number>>({});
+  const [showFastAnswerReview, setShowFastAnswerReview] = useState(false);
+  const [fastAnsweredQuestions, setFastAnsweredQuestions] = useState<Question[]>([]);
+
+  useEffect(() => {
+    if (!reviewFeaturesEnabled || !active) return;
+    if (questionShownAtRef.current[active.id] === undefined) {
+      questionShownAtRef.current[active.id] = Date.now();
+    }
+  }, [active, reviewFeaturesEnabled]);
+
+  const handleAnswerChange = useCallback(
+    (value: string) => {
+      if (!active || !mock) return;
+      if (reviewFeaturesEnabled && timeToFirstAnswerRef.current[active.id] === undefined) {
+        const shownAt = questionShownAtRef.current[active.id] ?? Date.now();
+        timeToFirstAnswerRef.current[active.id] = Date.now() - shownAt;
+      }
+      const next = { ...answers, [active.id]: value };
+      setAnswers(next);
+      if (!isAdminPreview) {
+        saveAttemptDraft(mock.id, next, flagged, elapsedSeconds());
+        setLastSavedAt(new Date());
+      }
+    },
+    [active, answers, elapsedSeconds, flagged, isAdminPreview, mock, reviewFeaturesEnabled, saveAttemptDraft]
+  );
+
+  const getFastAnsweredQuestions = useCallback(() => {
+    if (!reviewFeaturesEnabled) return [] as Question[];
+    return questions.filter((question) => {
+      const time = timeToFirstAnswerRef.current[question.id];
+      return Boolean(answers[question.id]) && time !== undefined && time < 5000;
+    });
+  }, [answers, questions, reviewFeaturesEnabled]);
+
   const submit = useCallback(async () => {
     if (!mock || existing || isAdminPreview || submitInFlightRef.current) return;
     submitInFlightRef.current = true;
@@ -112,6 +157,20 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
       setIsSubmitting(false);
     }
   }, [answers, elapsedSeconds, existing, flagged, isAdminPreview, mock, router, submitAttempt]);
+
+  // Real "Submit for marking" click handler for review-features students: intercepts with the
+  // fast-answer screen when there's something to flag, otherwise submits exactly as normal. Any
+  // other student (hasReviewFeatures false) always falls straight through to submit() unchanged.
+  const handleSubmitButtonClick = useCallback(() => {
+    const fastQuestions = getFastAnsweredQuestions();
+    if (fastQuestions.length > 0) {
+      setFastAnsweredQuestions(fastQuestions);
+      setShowSubmitConfirm(false);
+      setShowFastAnswerReview(true);
+      return;
+    }
+    submit();
+  }, [getFastAnsweredQuestions, submit]);
 
   const toggleFlag = useCallback(() => {
     if (!mock || !active) return;
@@ -336,14 +395,7 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
                         hidePassage
                         value={answers[active.id]}
                         adminPreview={isAdminPreview}
-                        onChange={(value) => {
-                          const next = { ...answers, [active.id]: value };
-                          setAnswers(next);
-                          if (!isAdminPreview) {
-                            saveAttemptDraft(mock.id, next, flagged, elapsedSeconds());
-                            setLastSavedAt(new Date());
-                          }
-                        }}
+                        onChange={handleAnswerChange}
                       />
                     </div>
                   </div>
@@ -354,14 +406,7 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
                     passage={activePassage}
                     value={answers[active.id]}
                     adminPreview={isAdminPreview}
-                    onChange={(value) => {
-                      const next = { ...answers, [active.id]: value };
-                      setAnswers(next);
-                      if (!isAdminPreview) {
-                        saveAttemptDraft(mock.id, next, flagged, elapsedSeconds());
-                        setLastSavedAt(new Date());
-                      }
-                    }}
+                    onChange={handleAnswerChange}
                   />
                 )
               ) : (
@@ -429,7 +474,42 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
                   <p className="mt-4 text-sm text-muted">Your answers stay saved on this device. You will not see the full review until admin releases the report.</p>
                   <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
                     <button onClick={() => setShowSubmitConfirm(false)} className="rounded-full border border-line px-5 py-2 text-sm font-bold text-navy">Keep working</button>
-                    <button onClick={submit} disabled={isSubmitting} className="rounded-full bg-gold px-5 py-2 text-sm font-bold text-navy disabled:cursor-not-allowed disabled:opacity-60">{isSubmitting ? "Submitting…" : "Submit for marking"}</button>
+                    <button onClick={handleSubmitButtonClick} disabled={isSubmitting} className="rounded-full bg-gold px-5 py-2 text-sm font-bold text-navy disabled:cursor-not-allowed disabled:opacity-60">{isSubmitting ? "Submitting…" : "Submit for marking"}</button>
+                  </div>
+                </div>
+              </div>
+            )}
+            {showFastAnswerReview && reviewFeaturesEnabled && !isAdminPreview && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-navy/45 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="cooldown-title">
+                <div className="max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-gold/30 bg-white p-6 shadow-[0_28px_90px_-35px_rgba(17,24,39,0.8)]">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gold/15 text-gold-dark"><AlertTriangle className="h-6 w-6" /></div>
+                  <h2 id="cooldown-title" className="mt-4 text-2xl font-black text-navy">Take a second look</h2>
+                  <p className="mt-2 rounded-xl border border-gold/30 bg-gold/10 p-3 text-sm font-semibold leading-relaxed text-navy">
+                    You answered {fastAnsweredQuestions.length} question{fastAnsweredQuestions.length === 1 ? "" : "s"} in under 5 seconds. Quick and confident is great — but worth a second check that it wasn&apos;t just a reflex before you submit.
+                  </p>
+                  <div className="mt-5 space-y-3">
+                    {fastAnsweredQuestions.map((question) => {
+                      const questionIndex = questions.findIndex((item) => item.id === question.id);
+                      return (
+                        <div key={question.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-line bg-cream p-3">
+                          <div>
+                            <p className="text-sm font-black text-navy">Question {questionIndex + 1}</p>
+                            <p className="mt-1 text-sm text-muted">Your answer: <span className="font-bold text-navy">{answers[question.id] || "No answer"}</span></p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => { setIndex(questionIndex); setShowFastAnswerReview(false); }}
+                            className="rounded-full border border-gold bg-gold/10 px-4 py-1.5 text-sm font-bold text-gold-dark transition hover:bg-gold/20"
+                          >
+                            Review this question
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                    <button onClick={() => { setShowFastAnswerReview(false); setShowSubmitConfirm(true); }} className="rounded-full border border-line px-5 py-2 text-sm font-bold text-navy">Back to review</button>
+                    <button onClick={() => { setShowFastAnswerReview(false); submit(); }} disabled={isSubmitting} className="rounded-full bg-gold px-5 py-2 text-sm font-bold text-navy disabled:cursor-not-allowed disabled:opacity-60">{isSubmitting ? "Submitting…" : "Confirm and submit"}</button>
                   </div>
                 </div>
               </div>
