@@ -12,7 +12,7 @@ import { isCorrect } from "@/lib/assessment";
 import { GlowCard, PremiumBadge, ProgressBar, QuestionRenderer } from "@/components/platform/ui";
 import type { Attempt, Question } from "@/types/platform";
 
-const DECOY_COUNT = 5;
+const DECOY_COUNT = 10;
 
 export function RetryMistakes({ attempt, questions }: { attempt: Attempt; questions: Question[] }) {
   const [retrySet, setRetrySet] = useState<Question[] | null>(null);
