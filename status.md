@@ -1,10 +1,15 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-04 (added two per-student review features to help catch careless mistakes — see below)
+Last updated: 2026-08-04 (added a real "no time limit" option to every mock — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-08-04, later same day — genuine untimed practice mode)
+
+- The existing "hide timer" button only hid the clock from view — it still counted down and still auto-submitted the mock when time ran out, even while hidden. You asked for a real version of this instead of a cosmetic one.
+- Added a second button next to it in the mock room: turning it off now genuinely removes the time limit — no countdown, no auto-submit at zero. Available on every mock, for every student, remembered per device. Committed and pushed.
 
 ## Done (session — 2026-08-04, two new review features for specific students who make careless mistakes)
 
