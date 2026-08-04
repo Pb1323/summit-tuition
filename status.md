@@ -1,10 +1,18 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-03 (deep-researched real GL exam question styles and fixed the QE Barnet mock — see below)
+Last updated: 2026-08-04 (added two per-student review features to help catch careless mistakes — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-08-04, two new review features for specific students who make careless mistakes)
+
+- You described a real pattern with one student: he gets easy questions wrong under time pressure but hard ones right, and in his creative writing he knows the grammar rule but doesn't spot his own mistake when he reads it back. Rather than change the platform for everyone, built two new features that only turn on for accounts you specifically choose (currently his and your own, for testing) — a simple on/off list in the code, not a database change.
+- **"Take a second look" screen**: if a student answers a question in under 5 seconds, clicking "Submit for marking" no longer submits straight away — it shows those fast-answered questions first and asks him to double-check before confirming. Everyone else's submit button still works exactly as before.
+- **"Retry your mistakes"**: once a marked report is released, an eligible student gets a button that re-serves every question they got wrong, mixed in with 5 they got right, answer order shuffled, with no hint of which is which — a genuine second attempt rather than a memory test, so you can tell whether a wrong answer was a slip (gets it right the second time) or a real gap (still wrong). It doesn't create a new attempt in the system, it's just a practice re-run.
+- Also tidied up 4 mock titles that had "Ultra"/difficulty-branding wording in them, now just showing the paper number.
+- Committed and pushed to the live site.
 
 ## Done (session — 2026-08-03, researched real GL exam papers and fixed the QE Barnet mock)
 
