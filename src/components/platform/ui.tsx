@@ -165,7 +165,22 @@ export function RequireAuth({ role, children }: { role?: Role; children: React.R
   return <>{children}</>;
 }
 
-export function MockTimer({ durationMinutes, initialElapsedSeconds = 0, onExpire, visible = true }: { durationMinutes: number; initialElapsedSeconds?: number; onExpire: () => void; visible?: boolean }) {
+export function MockTimer({
+  durationMinutes,
+  initialElapsedSeconds = 0,
+  onExpire,
+  visible = true,
+  timeLimitEnabled = true,
+}: {
+  durationMinutes: number;
+  initialElapsedSeconds?: number;
+  onExpire: () => void;
+  visible?: boolean;
+  /** When false, this is genuine untimed practice: the countdown doesn't run and onExpire never
+   * fires, not just a hidden readout. Distinct from `visible`, which only hides the display while
+   * the countdown/auto-submit still happen underneath. */
+  timeLimitEnabled?: boolean;
+}) {
   const [seconds, setSeconds] = useState(() => Math.max(0, durationMinutes * 60 - initialElapsedSeconds));
   // onExpire (the parent's submit callback) gets a new identity whenever answers/flagged change.
   // Route calls through a ref instead of putting onExpire in the effect's deps, so expiry only
@@ -175,6 +190,7 @@ export function MockTimer({ durationMinutes, initialElapsedSeconds = 0, onExpire
   onExpireRef.current = onExpire;
   const hasExpiredRef = useRef(false);
   useEffect(() => {
+    if (!timeLimitEnabled) return;
     if (seconds <= 0) {
       if (!hasExpiredRef.current) {
         hasExpiredRef.current = true;
@@ -184,7 +200,11 @@ export function MockTimer({ durationMinutes, initialElapsedSeconds = 0, onExpire
     }
     const timer = window.setTimeout(() => setSeconds((value) => value - 1), 1000);
     return () => window.clearTimeout(timer);
-  }, [seconds]);
+  }, [seconds, timeLimitEnabled]);
+  if (!timeLimitEnabled) {
+    if (!visible) return null;
+    return <span className="rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-sm font-bold text-gold-dark">Untimed practice</span>;
+  }
   // The countdown keeps running and still auto-submits on expiry even while hidden — only the visible readout is suppressed.
   if (!visible) {
     return <span className="rounded-full border border-line bg-cream px-3 py-1 text-sm font-bold text-muted">Timer hidden</span>;

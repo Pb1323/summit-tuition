@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AlertTriangle, ArrowLeft, CheckCircle2, Eye, EyeOff, Flag, Lock, ShieldAlert } from "lucide-react";
+import { AlertTriangle, ArrowLeft, CheckCircle2, Eye, EyeOff, Flag, Lock, ShieldAlert, Timer, TimerOff } from "lucide-react";
 import { usePlatform } from "@/context/platform-context";
 import { cn } from "@/lib/utils";
 import { Container } from "@/components/ui/container";
@@ -74,6 +74,20 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
     setShowTimer((value) => {
       const next = !value;
       window.localStorage.setItem("summit-mock-show-timer", String(next));
+      return next;
+    });
+  }, []);
+  // Distinct from showTimer: this actually removes the time limit (no countdown, no auto-submit
+  // on expiry), not just hides the readout. Persisted per-device like showTimer, defaults to timed.
+  const [timeLimitEnabled, setTimeLimitEnabled] = useState(() => {
+    if (typeof window === "undefined") return true;
+    const stored = window.localStorage.getItem("summit-mock-time-limit-enabled");
+    return stored !== "false";
+  });
+  const toggleTimeLimit = useCallback(() => {
+    setTimeLimitEnabled((value) => {
+      const next = !value;
+      window.localStorage.setItem("summit-mock-time-limit-enabled", String(next));
       return next;
     });
   }, []);
@@ -324,6 +338,16 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
                   )}
                   {!isAdminPreview && (
                     <button
+                      onClick={toggleTimeLimit}
+                      aria-label={timeLimitEnabled ? "Remove time limit (untimed practice)" : "Restore time limit"}
+                      title={timeLimitEnabled ? "Remove time limit (untimed practice)" : "Restore time limit"}
+                      className="rounded-full border border-line bg-white p-1.5 text-navy transition hover:bg-cream"
+                    >
+                      {timeLimitEnabled ? <Timer className="h-4 w-4" /> : <TimerOff className="h-4 w-4" />}
+                    </button>
+                  )}
+                  {!isAdminPreview && timeLimitEnabled && (
+                    <button
                       onClick={toggleTimer}
                       aria-label={showTimer ? "Hide timer" : "Show timer"}
                       title={showTimer ? "Hide timer" : "Show timer"}
@@ -332,7 +356,17 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
                       {showTimer ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
                     </button>
                   )}
-                  {isAdminPreview ? <span className="rounded-full bg-navy px-3 py-1 text-sm font-bold text-white">Preview timer</span> : <MockTimer durationMinutes={mock.durationMinutes} initialElapsedSeconds={baseElapsed} onExpire={submit} visible={showTimer} />}
+                  {isAdminPreview ? (
+                    <span className="rounded-full bg-navy px-3 py-1 text-sm font-bold text-white">Preview timer</span>
+                  ) : (
+                    <MockTimer
+                      durationMinutes={mock.durationMinutes}
+                      initialElapsedSeconds={baseElapsed}
+                      onExpire={submit}
+                      visible={showTimer}
+                      timeLimitEnabled={timeLimitEnabled}
+                    />
+                  )}
                 </div>
               </div>
               <div className="mt-4"><QuestionNavigator questions={questions} activeIndex={index} answers={answers} flagged={flagged} onSelect={setIndex} /></div>
