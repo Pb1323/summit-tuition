@@ -1,10 +1,18 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-04 (added a real "no time limit" option to every mock — see below)
+Last updated: 2026-08-05 (added a new, harder Verbal Reasoning mock — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-08-05, new hard Verbal Reasoning mock)
+
+- You asked specifically for a Verbal Reasoning mock in the style of the GL exam board (not a generic one), built from the hardest real GL question types, aimed at top students landing around 75% rather than full marks.
+- Did some quick research first on GL's real Verbal Reasoning format — GL uses 21 official question types (word codes, letter/number sequences, analogies, odd-one-out, double meanings, etc.), and most real papers only use a subset of those types per paper.
+- Wrote 50 brand-new questions using the harder half of those types: multi-step letter/number codes, tricky number sequences, hidden words spanning two words, nuanced synonym/antonym pairs where the wrong answers are genuinely tempting (not obvious throwaways), and one multi-clue number riddle.
+- Built it into a new 50-question, 50-mark, 45-minute mock called "Verbal Reasoning — Elite Full Paper (Difficult)". It's set at the same access level as your other hardest papers, so only your top-tier students will see it.
+- Checked it for mistakes with an automated script (no duplicate questions, every answer checks out, marks add up correctly) and the site still builds cleanly. Committed and pushed live.
 
 ## Done (session — 2026-08-04, later same day — genuine untimed practice mode)
 
