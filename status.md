@@ -1,10 +1,21 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-06 (marked Lupin's second creative writing piece — see below)
+Last updated: 2026-08-06 (retuned four English Elite papers for Lupin — two harder, two easier — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-08-06, retuned four English papers so Lupin lands around 70%)
+
+- You wanted four of the English papers Lupin has not sat yet retuned so he scores roughly 70% on each — hard enough to genuinely stretch him, not so hard that it puts him off. His real reports had him at 83% and 85% on the two hardest papers, with a perfect comprehension score but only 2 out of 8 on cloze.
+- **Made harder: Paper IV and Paper VI.** These were sitting at the old Elite level and would have been close to a free pass for him now. Every question in both papers was rewritten. The comprehension questions no longer have one obvious answer and four throwaways — the wrong options are now real details lifted from elsewhere in the same passage, so he has to weigh two or three genuine candidates every time. The inference questions ask about people rather than facts: why someone starts an explanation twice and stops both times, why a character writes a name "without quite deciding to", why a master keeps changing the subject to one specific technical topic. Every question still has exactly one correct answer that can be pointed to in the text.
+- The spelling, grammar and cloze sections in those two papers were rebuilt from scratch with genuinely niche points he will not have seen — things like "could of" for "could have", "neither... or", "besides" versus "beside", "raise" versus "rise", and cloze on inverted structures ("Scarcely had the lamp begun...", "Had it not been for..."). Cloze got the most attention, since that is his weakest section by a distance.
+- **Made easier: Paper XII and Paper XIII.** These had been written to land a 100%-scoring student at 35-45%, which would have put Lupin near 30% — a wasted, dispiriting attempt. Their comprehension sections were pulled back: the questions that required juggling four or five paragraphs at once now use two or three, and the answer options were cut from paragraph-long arguments down to single clear statements. The wrong options are still deliberately plausible, so it is still a thinking paper, just a fair one.
+- Deliberately left the spelling, grammar and cloze sections of XII and XIII hard, because that is exactly where he actually drops marks and where the practice is worth having. Only four individual questions were softened across both papers, and only where they were unfairly obscure rather than merely difficult.
+- **Paper X was not touched at all**, as you asked, since he has already sat it.
+- Ran an automated check over all four: no duplicate questions, every answer resolves correctly, marks add up to 54 each, section structure still correct, all four pass the quality gate. The site typechecks cleanly.
+- One thing worth knowing: two of the school-style practice papers (Pate's and Wilson's) borrow some questions from Papers IV and VI, so their English sections got harder too as a side effect. The question numbers were kept as they were rather than renumbered, which is what causes that.
 
 ## Done (session — 2026-08-06, marked Lupin's second creative writing piece)
 
