@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Summit Tuition — Marked Report: Which Vehicle Should I Pick?</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root {
+    --wine: #5c1f2e;
+    --wine-mid: #7a2b3d;
+    --gold: #b8862f;
+    --ink: #201a17;
+    --muted: #6a5f57;
+    --rule: #e6dccb;
+    --pale: #fbf3e6;
+    --pale-border: #edd9b3;
+    --track: #ece1cf;
+    --err: #a5333f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+    color: var(--ink);
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 34px 30px 60px;
+    line-height: 1.55;
+    background: #fffdf9;
+  }
+  header.sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    border-bottom: 3px double var(--wine);
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+  }
+  header.sheet-header .eyebrow {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 6px;
+  }
+  header.sheet-header h1 {
+    font-size: 22px;
+    margin: 0;
+    color: var(--wine);
+    font-style: italic;
+  }
+  header.sheet-header .meta {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: var(--muted);
+    text-align: right;
+    white-space: nowrap;
+  }
+  header.sheet-header .meta div { margin-bottom: 2px; }
+  header.sheet-header .meta b { color: var(--ink); }
+  header.sheet-header .meta .pill {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 2px 8px;
+    background: var(--pale);
+    border: 1px solid var(--pale-border);
+    border-radius: 10px;
+    font-size: 10.5px;
+    color: var(--wine-mid);
+  }
+
+  .verdict {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: var(--pale);
+    border: 1px solid var(--pale-border);
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin-bottom: 8px;
+  }
+  .verdict .badge {
+    flex: 0 0 auto;
+    width: 64px;
+    height: 64px;
+    border-radius: 4px;
+    background: var(--wine);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+    transform: rotate(3deg);
+    box-shadow: -3px 3px 0 var(--gold);
+  }
+  .verdict .badge .num { font-size: 22px; font-weight: bold; line-height: 1; }
+  .verdict .badge .den { font-size: 10px; opacity: 0.85; }
+  .verdict .text h3 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14.5px;
+    margin: 0 0 4px;
+    color: var(--wine);
+  }
+  .verdict .text p {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12.5px;
+    color: #333;
+    margin: 0;
+  }
+
+  .context-box {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: var(--muted);
+    background: #faf6ef;
+    border: 1px dashed var(--rule);
+    border-radius: 4px;
+    padding: 10px 16px;
+    margin: 14px 0 6px;
+  }
+  .context-box b { color: var(--ink); }
+
+  h2.section-title {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--wine-mid);
+    margin: 26px 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h2.section-title::before {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 2px;
+    background: var(--gold);
+  }
+
+  .strand-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .strand-card {
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 12px 14px;
+    background: #fffefb;
+  }
+  .strand-card .head {
+    display: flex;
+    justify-content: space-between;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12.5px;
+    font-weight: bold;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .bar-track { background: var(--track); border-radius: 3px; height: 6px; overflow: hidden; margin-bottom: 8px; }
+  .bar-fill { height: 100%; background: var(--gold); border-radius: 3px; }
+  .strand-card p {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11.8px;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .extract {
+    background: #fffefb;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 18px 22px;
+    font-family: Georgia, serif;
+    font-size: 13.3px;
+    color: #232323;
+  }
+  .extract p { margin: 0 0 12px; }
+  .extract p:last-child { margin-bottom: 0; }
+  .extract .subhead {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+    letter-spacing: 0.4px;
+    color: var(--wine-mid);
+    margin: 4px 0 10px;
+  }
+  .flag { text-decoration: underline wavy var(--err); text-decoration-skip-ink: none; }
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    background: var(--wine);
+    color: #fff;
+    border-radius: 50%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 9.5px;
+    font-weight: bold;
+    vertical-align: super;
+    margin: 0 1px;
+  }
+
+  table.corrections {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    margin-top: 6px;
+  }
+  table.corrections th {
+    background: var(--wine);
+    color: #fff;
+    font-weight: normal;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    padding: 7px 10px;
+    text-align: left;
+  }
+  table.corrections td {
+    border-bottom: 1px solid var(--rule);
+    padding: 8px 10px;
+    vertical-align: top;
+  }
+  table.corrections td.n {
+    width: 24px;
+  }
+  table.corrections .n span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: var(--wine);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 10.5px;
+    font-weight: bold;
+  }
+  table.corrections td.fix { color: #3d6b3f; font-weight: bold; }
+
+  .strength-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 6px;
+  }
+  .strength-card {
+    background: var(--pale);
+    border: 1px solid var(--pale-border);
+    border-radius: 4px;
+    padding: 12px 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+  }
+  .strength-card .head { font-weight: bold; color: var(--wine); margin-bottom: 6px; }
+  .strength-card ul { margin: 0; padding-left: 16px; }
+  .strength-card li { margin-bottom: 5px; }
+  .strength-card em { font-style: italic; }
+
+  .next-steps {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12.5px;
+    color: #333;
+    background: var(--pale);
+    border: 1px solid var(--pale-border);
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin-top: 6px;
+  }
+
+  footer.sheet-footer {
+    margin-top: 30px;
+    padding-top: 10px;
+    border-top: 1px solid var(--rule);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10.5px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  @media print {
+    body { padding: 12mm 14mm; max-width: none; }
+    footer.sheet-footer { position: fixed; bottom: 6mm; left: 14mm; right: 14mm; margin-top: 0; }
+    @page { size: A4; margin: 12mm; }
+    .strand-card, .extract, .strength-card, .context-box, .next-steps { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header class="sheet-header">
+  <div>
+    <p class="eyebrow">Summit Tuition · Creative Writing</p>
+    <h1>Marked Report: "Which Vehicle Should I Pick?"</h1>
+  </div>
+  <div class="meta">
+    <div><b>Student:</b> Lupin</div>
+    <div><b>Task:</b> First-person narrative</div>
+    <div><b>Date marked:</b> 6 August 2026</div>
+    <div class="pill">Own editing marks visible on the original</div>
+  </div>
+</header>
+
+<div class="verdict">
+  <div class="badge"><span class="num">18</span><span class="den">/ 25</span></div>
+  <div class="text">
+    <h3>Your best-controlled piece yet — a genuinely clever structural device, let down by a handful of word-level slips</h3>
+    <p>The car-breaks-down-so-it's-boat-or-plane dilemma is tightly told, and splitting the piece with a magazine-style subheading ("My biggest fear.") is a proper technique, not a gimmick — it's not something most students your age would think to try. What's holding this back from a 20+ is the same thing as last time: a few words that sound right but aren't quite the correct form, plus an ending that trails off on "..." again instead of landing properly.</p>
+  </div>
+</div>
+
+<div class="context-box">
+  Three of today's slips — "seat <b>handrest</b>," "the plane would <b>go</b>" (go <i>where</i>?), and the leftover "<b>pearl</b> plane" — are exactly the pattern flagged in your last report: something that sounds close enough while you're writing fast, but doesn't hold up on a slow re-read. The crossings-out on your own page show you're already catching plenty of these live — the next skill is doing one more full read-back once the piece is finished, out loud, before calling it done.
+</div>
+
+<h2 class="section-title">Mark breakdown</h2>
+<div class="strand-grid">
+  <div class="strand-card">
+    <div class="head"><span>Content &amp; Ideas</span><span>6 / 7</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:86%"></div></div>
+    <p>A clear, well-paced dilemma-to-resolution arc (car sabotaged &rarr; boat-or-plane choice &rarr; airport &rarr; turbulence &rarr; safe landing). Loses a mark only because it ends on "..." right after landing rather than a proper closing thought.</p>
+  </div>
+  <div class="strand-card">
+    <div class="head"><span>Structure &amp; Organisation</span><span>5 / 6</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:83%"></div></div>
+    <p>The "My biggest fear." subheading and the colon-marked time-jump ("Half an hour later:") are genuinely advanced devices, used with confidence. Just needs a final beat after landing to round the structure off.</p>
+  </div>
+  <div class="strand-card">
+    <div class="head"><span>Style: Vocabulary &amp; Variety</span><span>4 / 6</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:67%"></div></div>
+    <p>"Hands shook like I was holding glass," "legs were jelly," "fear crept up my spine" — a strong triplet of similes. But "seat handrest" and "the plane would go" aren't quite the right words, and cost clarity marks.</p>
+  </div>
+  <div class="strand-card">
+    <div class="head"><span>Technical Accuracy</span><span>3 / 6</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:50%"></div></div>
+    <p>Several small fixable slips (missing dialogue punctuation, "of a car" instead of "of my car," a stray leftover word). Genuinely good evidence of self-correction while writing — several errors were already caught and crossed out on the original page.</p>
+  </div>
+</div>
+
+<h2 class="section-title">Annotated extract</h2>
+<div class="extract">
+<p class="subhead">Which vehicle should I pick?</p>
+<p>I had been thinking about none of this one hour ago. I was supposed to be driving to France by car (because there were no trains available); however, when I got to start my car I realised I had been robbed of some of the most important components of <span class="flag">a car</span><span class="mark">1</span>. So now I had two options: go on a boat or an aeroplane. I was terrified of both of them.</p>
+<p>In the end, I chose to be on an aeroplane as I had a feeling I would vomit on a boat. <span class="flag">"Hi could I get a taxi to the airport. Really, thanks!"</span><span class="mark">2</span> I called while waiting on the large, dusty, grey pavement.</p>
+<p>Half an hour later: I was at the airport, post security and waiting for my flight. During the wait, my hands shook like I was holding glass, my legs were jelly and fear crept up my spine. Finally after the wait I was on the plane.</p>
+<p class="subhead">My biggest fear.</p>
+<p>For every jolt <span class="flag">on it</span><span class="mark">3</span> after takeoff, I was worried that the plane would go plummeting straight towards the ground. I held on to the seat <span class="flag">handrest</span><span class="mark">4</span> until my knuckles were snow white. <span class="flag">Whoosh! the plane would go</span><span class="mark">5</span> every once in a while, making my heart skip a beat.</p>
+<p>Eventually I arrived in one piece and was the first to leave the <span class="flag">pearl plane</span><span class="mark">6</span>...</p>
+</div>
+
+<h2 class="section-title">Numbered corrections</h2>
+<table class="corrections">
+  <tr><th>#</th><th>Type</th><th>Issue</th><th>Fix</th></tr>
+  <tr>
+    <td class="n"><span>1</span></td>
+    <td>Reference</td>
+    <td>You've already told us it's <i>your</i> car — calling it "a car" the second time reads like a different, random car.</td>
+    <td class="fix">"robbed of some of the most important components of my car"</td>
+  </tr>
+  <tr>
+    <td class="n"><span>2</span></td>
+    <td>Punctuation</td>
+    <td>A spoken request needs a comma after the greeting and a question mark, not a full stop.</td>
+    <td class="fix">"Hi, could I get a taxi to the airport, please? Thanks so much!"</td>
+  </tr>
+  <tr>
+    <td class="n"><span>3</span></td>
+    <td>Clarity</td>
+    <td>"on it" is vague this far from "plane" — cutting it is cleaner than patching it.</td>
+    <td class="fix">"For every jolt after takeoff"</td>
+  </tr>
+  <tr>
+    <td class="n"><span>4</span></td>
+    <td>Wrong word</td>
+    <td>The part of a seat you grip isn't called a "handrest" — that word doesn't exist in English.</td>
+    <td class="fix">"I held on to the armrest"</td>
+  </tr>
+  <tr>
+    <td class="n"><span>5</span></td>
+    <td>Missing word / capital</td>
+    <td>"The plane would go" is missing what it actually does — and a new sentence after "Whoosh!" needs a capital letter.</td>
+    <td class="fix">"Whoosh! The plane would lurch every once in a while"</td>
+  </tr>
+  <tr>
+    <td class="n"><span>6</span></td>
+    <td>Leftover word</td>
+    <td>"Pearl" doesn't belong here — looks like a word that should have been crossed out fully wasn't.</td>
+    <td class="fix">"the first to leave the plane..."</td>
+  </tr>
+</table>
+
+<h2 class="section-title">Strengths</h2>
+<div class="strength-grid">
+  <div class="strength-card">
+    <div class="head">A real structural idea, not just a story</div>
+    <ul>
+      <li>Splitting the piece with a bold subheading (<em>"My biggest fear."</em>) is a magazine/article device — it signals a shift in focus without needing a clumsy linking sentence.</li>
+      <li>"Half an hour later:" uses a colon to jump time cleanly, echoing the confident one-word-sentence trick from your last piece.</li>
+      <li>Three well-chosen descriptors again — <em>"large, dusty, grey pavement"</em> — you're clearly using this technique on purpose now, not by accident.</li>
+    </ul>
+  </div>
+  <div class="strength-card">
+    <div class="head">Editing as you go</div>
+    <ul>
+      <li>Multiple live corrections visible on your own page (fixing verb tense, swapping in "however," catching "unavailable" and rewording it) — this is exactly the habit that will eventually catch things like the "handrest" slip too.</li>
+      <li>A tight triplet of similes for fear — <em>"hands shook like I was holding glass," "legs were jelly," "fear crept up my spine"</em> — shows real control of tone, not just description for its own sake.</li>
+      <li>The turbulence section builds real physical tension (white knuckles, the jolt, the "Whoosh!") — a reader can feel it.</li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="section-title">Next steps</h2>
+<div class="next-steps">
+  This is the same honest note as last time, because it's still the main thing between you and a 20+: (1) read the finished piece back out loud once, slowly — "seat handrest" and "the plane would go" both sound almost right when you're writing at speed, which is exactly why a live read-back catches them and a quick glance doesn't; (2) check any word you've referred to earlier in the piece stays consistent the second time ("my car," not "a car"); and (3) budget the last two minutes for a proper ending sentence instead of trailing off on "..." — you'd already survived the flight here, so one closing line (how it felt to be back on solid ground) would have finished the piece rather than just stopping it.
+</div>
+
+<footer class="sheet-footer">
+  Marked against a four-strand creative-writing rubric (Content &amp; Ideas / Structure / Style / Technical Accuracy) scaled to 25 · Summit Tuition
+</footer>
+
+</body>
+</html>

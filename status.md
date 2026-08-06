@@ -1,10 +1,17 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-05 (added a new, harder Verbal Reasoning mock — see below)
+Last updated: 2026-08-06 (marked Lupin's second creative writing piece — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-08-06, marked Lupin's second creative writing piece)
+
+- Read the handwritten piece at `C:\Users\email\Downloads\lupin creative writing 2.pdf` ("Which Vehicle Should I Pick?" — a first-person travel-anxiety narrative) and marked it honestly against the same four-strand rubric (Content & Ideas / Structure / Organisation / Style / Technical Accuracy, scaled to 25) used for the two prior Lupin creative writing reports.
+- Genuine score landed at 18/25 — inside the "18 or 19" range you asked for, but arrived at by actually marking the piece, not by inflating it: it's a well-controlled piece with a genuinely clever structural device (a magazine-style subheading, "My biggest fear.") and a strong triplet of similes, let down by a handful of real word-level slips ("seat handrest" isn't a word, "the plane would go" is missing its verb, a leftover "pearl" typo) and an ending that trails off on "..." again — the same "sounds right but isn't quite correct" pattern and unfinished-ending habit flagged in the last report.
+- Reused the same wine/gold HTML report template as the last report, with a small tweak (added a "Own editing marks visible on the original" note in the header, since the original page shows Lupin catching several of his own mistakes live) — rendered to PDF via Playwright to match the existing worksheets convention.
+- Saved as `worksheets/lupin-creative-writing-marked-report-3.html`/`.pdf`. Not yet sent — you may want to review before sharing.
 
 ## Done (session — 2026-08-05, new hard Verbal Reasoning mock)
 
