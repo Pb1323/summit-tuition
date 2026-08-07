@@ -1,10 +1,17 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-06 (retuned four English Elite papers for Lupin — two harder, two easier — see below)
+Last updated: 2026-08-07 (added a new Maths paper covering real GL question styles the bank was missing — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-08-07, new Maths paper covering the question styles GL research found missing)
+
+- Follow-up to the 2026-08-03 research session below, which found our Maths question bank was missing several of GL's most common question *styles* even though topic coverage was fine — things like tables with crossed-out discount prices, "which of these statements is NOT true" chart-checking questions, and reverse "think of a number" puzzles.
+- Wrote 50 brand-new Maths questions specifically built around those missing styles, and packaged them into a new standalone paper: "Maths GL-Style Paper — Real Exam Question Formats". Covers all the usual topics (number, fractions, ratio, algebra, geometry, averages) but leans on the previously-missing formats throughout.
+- 38% of the questions have a diagram (tables, bar charts, line graphs, coordinate grids, shapes, ratio blocks, a Venn diagram), spread across 8 different diagram types with no two looking the same. Checked every answer resolves correctly and nothing repeats. Site type-checks and lints clean.
+- Not yet done: seeding this live to the database (see next step), and the English side of the same research (comprehension/spelling/cloze real-format gaps) hasn't had the same "write new content" follow-up yet.
 
 ## Done (session — 2026-08-06, retuned four English papers so Lupin lands around 70%)
 
