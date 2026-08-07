@@ -1,8 +1,15 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-07 (turned on the Codes & Ciphers section of Verbal Reasoning notes — see below)
+Last updated: 2026-08-07 (added the hardest English paper yet, for students scoring ~90% on the previous hardest — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (session — 2026-08-07, new hardest-ever English paper)
+
+- Follow-up to the Maths research paper earlier today — same idea, applied to English. Students were scoring around 90% on the two hardest English papers we had, so this builds a genuinely harder one, on every section, not just the reading comprehension.
+- New story ("The Prize Marrow", about an allotment-show rivalry) written from scratch — a fresh setting the platform hasn't used before. Every reading-comprehension question was built so a fast reader can't just eliminate the obviously-wrong answers; each wrong option is a real detail from elsewhere in the story, not an invented throwaway. The grammar and fill-in-the-gap sections use 17 genuinely new points not used in any earlier paper.
+- Note: another agent was working in this same file at the same time doing similar work. One thing got briefly overwritten mid-session (the new story's data) — caught it during the usual verification check and re-added it before committing, so nothing was lost, but it's a reminder that having two agents edit the same file at once carries real collision risk.
+- Checked everything lines up correctly (54 questions, right section split, answers all resolve, nothing missing) before pushing. Site type-checks clean.
 
 ---
 
