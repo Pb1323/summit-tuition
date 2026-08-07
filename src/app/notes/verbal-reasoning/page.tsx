@@ -18,7 +18,7 @@ const STRANDS = [
     name: "Codes & Ciphers",
     icon: KeyRound,
     description: "Letter-for-number codes, word-to-number codes and shift ciphers.",
-    available: false,
+    available: true,
   },
   {
     slug: "word-building",
