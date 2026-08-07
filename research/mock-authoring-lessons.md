@@ -142,6 +142,45 @@ shared property, applying a rule, etc.), the correct option must describe
 something that *differs* from every figure already shown, so it can only be
 reached by applying the rule, not by copying what's visible.
 
+## Bug 5 — a Maths `table`/`venn` visual baked in the solved answer instead of the given values
+
+**Symptom (found 2026-08-06, in `maths-elite-6`/`maths-elite-7`):** four
+questions had a `.visual` authored from the *solved* system rather than the
+*given* one, so the diagram let a student read the answer off the picture
+with no working at all:
+- `mx73` — a Venn diagram testing "find the overlap from totals" rendered
+  `overlap: 12`, which was literally the correct answer option.
+- `my78` — a Venn diagram for an algebra question (find `x`, then the Venn
+  shows `x`/`2x`/`3x` people) rendered the fully-solved `14`/`28`/`42`
+  instead of the unknowns.
+- `my55` — an angle table asking students to solve for `x` then evaluate
+  four expressions had a `"Value"` column showing the solved `90°/135°/
+  55°/80°` right next to the unsolved `2x°/3x°/(x+10)°/(2x-10)°`.
+- `my2`/`my43` — tables pre-computed the derived intermediate working (the
+  five actual consecutive integers; three sequence terms built up from a
+  stated rule) rather than showing only the given starting facts, leaving
+  only the last trivial step for the student.
+
+Same failure family as Bug 4 (the correct answer is fully visible on
+screen, so the question answers itself) but for Maths `table`/`venn`
+visuals specifically, and with a different root cause: the visual was
+copy-pasted from the working already written in the `markScheme`, which
+naturally contains the solved system.
+
+**Fix (current, live):** every affected visual was rewritten to show either
+(a) a literal `"?"` placeholder for anything requiring solving, (b) the raw
+given constants/totals, or (c) algebraic labels (`"x"`, `"2x"`, `"4 ×
+Angle X"`) instead of their solved numeric values.
+
+**General rule:** a `.visual`'s `data` may only contain what the question
+stem *gives*, never a value — final or intermediate — that requires doing
+the maths the question is testing to know. Ask: "would rendering this value
+require solving (part of) the question?" If yes, replace it with `"?"` or an
+algebraic label. This is **not** caught by `evaluateMockQuality()` — it only
+checks that a visual exists, not what it shows — so it has to be checked by
+eye, one `table`/`venn` visual at a time. See `maths-mock-authoring`
+SKILL.md for the full rule and more examples.
+
 ## How to verify a newly authored mock isn't shipping any of the above
 
 There's no dedicated npm script for this — write a small one-off script,
@@ -164,6 +203,10 @@ const questions = QUESTIONS.filter((q) => mock.questionIds.includes(q.id));
 // 6. For any visual with a "query"/"test"/worked-example figure and text
 //    options (e.g. nvrSimilarity): the correct option's text must not be a
 //    verbatim description of anything already drawn in the visual (see Bug 4)
+// 7. (Maths) For every `type: "table"`/`type: "venn"` visual: manually check
+//    no row/segment shows a solved value (final or intermediate) instead of
+//    a "?" placeholder or the given constants/algebraic labels (see Bug 5) —
+//    this is not automated, eyeball each one against its question text
 ```
 
 Run with `npx tsx scripts/_tmp-check-mock.mts`, confirm clean output, delete

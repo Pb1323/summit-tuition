@@ -1,17 +1,27 @@
 ---
 name: maths-mock-authoring
-description: Write and wire up new Maths mocks for Summit Tuition — full-length 80-question GL/Elite-style papers or shorter diagnostic sets — as hand-authored fixtures in src/data/platform.ts. Use when asked to add a new Maths mock, a new Elite Maths paper, or a batch of new Maths questions.
+description: Write and wire up new Maths mocks for Summit Tuition — full-length GL/Elite-style papers (capped at 50 questions, see below) or shorter diagnostic sets — as hand-authored fixtures in src/data/platform.ts. Use when asked to add a new Maths mock, a new Elite Maths paper, or a batch of new Maths questions.
 ---
 
 # Maths mock authoring
+
+**Question cap (2026-08-03, founder instruction): new full-length Maths mocks
+are capped at 50 questions, not 80.** The older 80-question Elite papers
+(`maths-elite-1` through `maths-elite-9`) are too tiring for students to sit
+in one go and are left as-is (not retroactively cut down), but every new
+full-length Maths mock going forward should target **50 questions,
+`totalMarks: 50`**, scaling `durationMinutes` down proportionally (~40-45 min
+rather than 60-70). Apply the same percentage thresholds below (visual ratio,
+stretch %) against the new 50-question total, not 80 — e.g. ≥30% visual ratio
+is now ~15+ of 50 questions, not 24+ of 80.
 
 Scope: hand-authored Maths mocks in `src/data/platform.ts` (questions +
 optional `QuestionVisual` diagrams + the `MockExam` metadata entry). Not the
 deterministic generator (`src/lib/mock-generation.ts`'s `chooseMathsTemplate`,
 used by the admin "Generate draft mock" button) — separate code path with a
 small fixed template array per topic; this skill is for writing a full paper
-by hand the way the 3 existing Elite Maths papers (`maths-elite-1/2/3`) were
-built.
+by hand the way the 3 original Elite Maths papers (`maths-elite-1/2/3`, back
+when the format was still 80 questions) were built.
 
 **Before writing anything**: if the mock needs diagrams (most full mocks
 do — see visual ratio requirement below), read the `question-visual-design`
@@ -25,7 +35,9 @@ step. If you're picking up a mock partway through, also check
 
 ## Structure of a full-length Elite Maths paper
 
-80 questions, `totalMarks: 80`, `durationMinutes` ~60-70, covering all 6 core
+**50 questions, `totalMarks: 50`, `durationMinutes` ~40-45** (2026-08-03 cap —
+see above; the pre-existing 80-question papers referenced below as examples
+predate this cap), covering all 6 core
 areas (existing question `topic` fields are fine-grained subtopic names, e.g.
 `"Angles in a triangle"`, `"Percentage decrease"`, `"Simplifying ratios"` —
 not the 6 broad category names themselves):
@@ -59,7 +71,8 @@ don't cluster every question under one subtopic string.
 
 `evaluateMockQuality()` requires **≥30% of questions in a full Maths mock
 carry a `.visual`** (`"Maths full mock visual ratio is at least 30%"` check).
-That's ~24+ of 80 questions needing a real `QuestionVisual` object — number
+Against the new 50-question cap that's ~15+ questions needing a real
+`QuestionVisual` object — number
 lines, bar/line charts, coordinate grids, fraction bars, ratio blocks, shapes,
 sequences, a clock, a Venn diagram, tables. Don't rely on text-only word
 problems for the bulk of the paper. See the `question-visual-design` skill
@@ -137,6 +150,46 @@ order is natural to read while authoring.
   description: "...", // mention topic coverage, visual density, and explicitly state original/not-copied content
 }
 ```
+
+## Never bake the solved answer into a `.visual` (2026-08-06 bug, fixed live)
+
+A real student-facing bug was found and fixed in `maths-elite-6`/`-7`: a
+`table`/`venn` visual's `data` was authored from the **solved** values
+instead of the **given** ones, so the diagram let a student read the answer
+straight off the picture with zero working. Two concrete examples that shipped:
+
+- A Venn diagram testing "find the overlap from totals" rendered
+  `overlap: 12` — which was *literally* the correct answer option.
+- An algebra table asking students to solve for `x` then evaluate four angle
+  expressions had a `"Value"` column showing the fully-solved `90°/135°/55°/
+  80°` right next to the unsolved `2x°/3x°/(x+10)°/(2x-10)°` expressions.
+
+**Root cause**: the visual was written by copy-pasting from the working in
+the `markScheme`, which already contains the solved system — easy to do
+without noticing the diagram now shows the answer.
+
+**Rule going forward**: a `.visual` may only show what the question stem
+*gives* the student, never a value that requires solving the question (or
+part of it) to know. Concretely:
+- If a value is the target the student must find (or an intermediate value
+  only reachable by solving), either omit that row/segment entirely or mark
+  it with a literal `"?"` placeholder (see the many `mt`/`mu`/`mb`-prefix
+  examples already in the bank showing `rows: [["8", "15"], ["6", "?"]]`
+  style tables) — never the resolved number.
+- For algebra-with-unknowns questions (Venn/table/angle problems that ask
+  "solve for x then find..."), show the *given relationships* only —
+  algebraic labels (`"x"`, `"2x"`, an expression like `"4 × Angle X"`) or the
+  given constants (totals, rates, starting values) — never the numbers that
+  only exist after solving.
+- Raw datasets the question asks you to summarise (a list of test scores to
+  find the mean/median of, marbles in a bag for a probability question) are
+  fine to show in full — that data isn't "the answer," it's the given input.
+  The distinction is: would rendering this value require doing the maths the
+  question is testing? If yes, it's a leak.
+- Before finishing a mock, grep your own new questions for every `type:
+  "table"`/`type: "venn"` visual and manually check each one against this
+  rule — the automated quality gate (`evaluateMockQuality`) does **not**
+  catch this, it only checks that a visual exists, not what it shows.
 
 ## Verify before calling it done
 
