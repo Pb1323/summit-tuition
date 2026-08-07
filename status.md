@@ -1,10 +1,17 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-07 (added a new Maths paper covering real GL question styles the bank was missing — see below)
+Last updated: 2026-08-07 (turned on the Codes & Ciphers section of Verbal Reasoning notes — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ---
+
+## Done (session — 2026-08-07, turned on Codes & Ciphers in the Verbal Reasoning notes)
+
+- Lupin finds VR "code" questions (letter codes, number codes, shift codes) annoying even though he already knows the techniques — this is a working-habit issue, not a knowledge gap.
+- Built out the "Codes & Ciphers" section of the Verbal Reasoning study notes, which previously just said "Coming soon". It now has a full lesson ("Codes Essentials") with 6 parts, working from the basics (what a code question is, shifting letters along the alphabet) up through combined codes, finishing with a dedicated "working fast without losing accuracy" lesson that teaches the actual habits that fix the annoyance: write the letter-key on paper instead of doing it in your head, do a batch of code questions together rather than dotted about, do them early in a session while fresh, and treat timed practice as a personal-best game.
+- This section needs to be unlocked for a student from the admin panel like any other paid notes section (it isn't free) — worth doing for Lupin's account specifically since this was written with him in mind.
+- Site type-checks, lints and builds clean. Committed and pushed.
 
 ## Done (session — 2026-08-07, new Maths paper covering the question styles GL research found missing)
 
