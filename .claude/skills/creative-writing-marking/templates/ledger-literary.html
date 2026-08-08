@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Summit Tuition — Marked Report: [Piece Title]</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root {
+    --wine: #5c1f2e; --wine-mid: #7a2b3d; --gold: #b8862f; --ink: #201a17;
+    --muted: #6a5f57; --rule: #e6dccb; --pale: #fbf3e6; --pale-border: #edd9b3;
+    --track: #ece1cf; --err: #a5333f;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: 'Iowan Old Style', Georgia, 'Times New Roman', serif; color: var(--ink); max-width: 820px; margin: 0 auto; padding: 34px 30px 60px; line-height: 1.55; background: #fffdf9; }
+  header.sheet-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; border-bottom: 3px double var(--wine); padding-bottom: 14px; margin-bottom: 20px; }
+  header.sheet-header .eyebrow { font-family: Arial, Helvetica, sans-serif; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--gold); margin: 0 0 6px; }
+  header.sheet-header h1 { font-size: 22px; margin: 0; color: var(--wine); font-style: italic; }
+  header.sheet-header .meta { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: var(--muted); text-align: right; white-space: nowrap; }
+  header.sheet-header .meta div { margin-bottom: 2px; }
+  header.sheet-header .meta b { color: var(--ink); }
+  header.sheet-header .meta .pill { display: inline-block; margin-top: 4px; padding: 2px 8px; background: var(--pale); border: 1px solid var(--pale-border); border-radius: 10px; font-size: 10.5px; color: var(--wine-mid); }
+  .verdict { display: flex; align-items: center; gap: 18px; background: var(--pale); border: 1px solid var(--pale-border); border-radius: 4px; padding: 16px 20px; margin-bottom: 8px; }
+  .verdict .badge { flex: 0 0 auto; width: 64px; height: 64px; border-radius: 4px; background: var(--wine); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: Arial, Helvetica, sans-serif; transform: rotate(3deg); box-shadow: -3px 3px 0 var(--gold); }
+  .verdict .badge .num { font-size: 22px; font-weight: bold; line-height: 1; }
+  .verdict .badge .den { font-size: 10px; opacity: 0.85; }
+  .verdict .text h3 { font-family: Arial, Helvetica, sans-serif; font-size: 14.5px; margin: 0 0 4px; color: var(--wine); }
+  .verdict .text p { font-family: Arial, Helvetica, sans-serif; font-size: 12.5px; color: #333; margin: 0; }
+  .context-box { font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: var(--muted); background: #faf6ef; border: 1px dashed var(--rule); border-radius: 4px; padding: 10px 16px; margin: 14px 0 6px; }
+  .context-box b { color: var(--ink); }
+  h2.section-title { font-family: Arial, Helvetica, sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--wine-mid); margin: 26px 0 10px; display: flex; align-items: center; gap: 8px; page-break-after: avoid; break-after: avoid; }
+  h2.section-title::before { content: ""; display: inline-block; width: 18px; height: 2px; background: var(--gold); }
+  .strand-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .strand-card { border: 1px solid var(--rule); border-radius: 4px; padding: 12px 14px; background: #fffefb; }
+  .strand-card .head { display: flex; justify-content: space-between; font-family: Arial, Helvetica, sans-serif; font-size: 12.5px; font-weight: bold; color: var(--ink); margin-bottom: 6px; }
+  .bar-track { background: var(--track); border-radius: 3px; height: 6px; overflow: hidden; margin-bottom: 8px; }
+  .bar-fill { height: 100%; background: var(--gold); border-radius: 3px; }
+  .strand-card p { font-family: Arial, Helvetica, sans-serif; font-size: 11.8px; color: var(--muted); margin: 0; }
+  .extract { background: #fffefb; border: 1px solid var(--rule); border-radius: 4px; padding: 18px 22px; font-family: Georgia, serif; font-size: 13.3px; color: #232323; }
+  .extract p { margin: 0 0 12px; } .extract p:last-child { margin-bottom: 0; }
+  .extract .subhead { font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 12px; letter-spacing: 0.4px; color: var(--wine-mid); margin: 4px 0 10px; }
+  .flag { text-decoration: underline wavy var(--err); text-decoration-skip-ink: none; }
+  .mark { display: inline-flex; align-items: center; justify-content: center; width: 15px; height: 15px; background: var(--wine); color: #fff; border-radius: 50%; font-family: Arial, Helvetica, sans-serif; font-size: 9.5px; font-weight: bold; vertical-align: super; margin: 0 1px; }
+  table.corrections { width: 100%; border-collapse: collapse; font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin-top: 6px; }
+  table.corrections th { background: var(--wine); color: #fff; font-weight: normal; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px; padding: 7px 10px; text-align: left; }
+  table.corrections td { border-bottom: 1px solid var(--rule); padding: 8px 10px; vertical-align: top; }
+  table.corrections td.n { width: 24px; }
+  table.corrections .n span { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; background: var(--wine); color: #fff; border-radius: 50%; font-size: 10.5px; font-weight: bold; }
+  table.corrections td.fix { color: #3d6b3f; font-weight: bold; }
+  .strength-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px; }
+  .strength-card { background: var(--pale); border: 1px solid var(--pale-border); border-radius: 4px; padding: 12px 14px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; }
+  .strength-card .head { font-weight: bold; color: var(--wine); margin-bottom: 6px; }
+  .strength-card ul { margin: 0; padding-left: 16px; }
+  .strength-card li { margin-bottom: 5px; }
+  .strength-card em { font-style: italic; }
+  .next-steps { font-family: Arial, Helvetica, sans-serif; font-size: 12.5px; color: #333; background: var(--pale); border: 1px solid var(--pale-border); border-radius: 4px; padding: 12px 16px; margin-top: 6px; }
+  footer.sheet-footer { margin-top: 30px; padding-top: 10px; border-top: 1px solid var(--rule); font-family: Arial, Helvetica, sans-serif; font-size: 10.5px; color: var(--muted); text-align: center; }
+  @media print {
+    body { padding: 12mm 14mm; max-width: none; }
+    @page { size: A4; margin: 12mm; }
+    .strand-card, .extract, .strength-card, .context-box, .next-steps, .verdict { page-break-inside: avoid; break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header class="sheet-header">
+  <div>
+    <p class="eyebrow">Summit Tuition · Creative Writing</p>
+    <h1>Marked Report: "[Piece Title]"</h1>
+  </div>
+  <div class="meta">
+    <div><b>Student:</b> [Name]</div>
+    <div><b>Task:</b> [Task type]</div>
+    <div><b>Date marked:</b> [Date]</div>
+    <div class="pill">[Optional badge, e.g. "Own editing marks visible on the original"]</div>
+  </div>
+</header>
+
+<div class="verdict">
+  <div class="badge"><span class="num">[X]</span><span class="den">/ 25</span></div>
+  <div class="text">
+    <h3>[One-line verdict headline]</h3>
+    <p>[2-3 sentence overall summary — what earns the mark, what's holding it back.]</p>
+  </div>
+</div>
+
+<div class="context-box">
+  [Optional: continuity note referencing a pattern from the student's last report — only include if there IS a prior report to reference.]
+</div>
+
+<h2 class="section-title">Mark breakdown</h2>
+<div class="strand-grid">
+  <div class="strand-card">
+    <div class="head"><span>Content &amp; Ideas</span><span>[x] / 7</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:[XX]%"></div></div>
+    <p>[Comment]</p>
+  </div>
+  <div class="strand-card">
+    <div class="head"><span>Structure &amp; Organisation</span><span>[x] / 6</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:[XX]%"></div></div>
+    <p>[Comment]</p>
+  </div>
+  <div class="strand-card">
+    <div class="head"><span>Style: Vocabulary &amp; Variety</span><span>[x] / 6</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:[XX]%"></div></div>
+    <p>[Comment]</p>
+  </div>
+  <div class="strand-card">
+    <div class="head"><span>Technical Accuracy</span><span>[x] / 6</span></div>
+    <div class="bar-track"><div class="bar-fill" style="width:[XX]%"></div></div>
+    <p>[Comment]</p>
+  </div>
+</div>
+
+<h2 class="section-title">Annotated extract</h2>
+<div class="extract">
+<p class="subhead">[Piece title / opening line]</p>
+<p>[Transcribed text with <span class="flag">flagged phrase</span><span class="mark">1</span> markers inline.]</p>
+</div>
+
+<h2 class="section-title">Numbered corrections</h2>
+<table class="corrections">
+  <tr><th>#</th><th>Type</th><th>Issue</th><th>Fix</th></tr>
+  <tr>
+    <td class="n"><span>1</span></td>
+    <td>[Type]</td>
+    <td>[Issue explanation]</td>
+    <td class="fix">"[corrected text]"</td>
+  </tr>
+</table>
+
+<h2 class="section-title">Strengths</h2>
+<div class="strength-grid">
+  <div class="strength-card">
+    <div class="head">[Strength theme]</div>
+    <ul><li>[Specific, quoted example]</li></ul>
+  </div>
+  <div class="strength-card">
+    <div class="head">[Strength theme]</div>
+    <ul><li>[Specific, quoted example]</li></ul>
+  </div>
+</div>
+
+<h2 class="section-title">Next steps</h2>
+<div class="next-steps">
+  [2-3 concrete, actionable next steps — link back to the context-box pattern if there is one.]
+</div>
+
+<footer class="sheet-footer">
+  Marked against a four-strand creative-writing rubric (Content &amp; Ideas / Structure / Style / Technical Accuracy) scaled to 25 · Summit Tuition
+</footer>
+
+</body>
+</html>

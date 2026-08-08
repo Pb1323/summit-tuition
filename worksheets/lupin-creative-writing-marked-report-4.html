@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Summit Tuition — Marked Report: Danger</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root {
+    --navy: #142a4a; --navy-mid: #1f3d68; --teal: #1c8073; --teal-lt: #2fa896;
+    --ink: #1a2130; --muted: #5b6577; --line: #dfe4ec; --panel: #f4f7fb;
+    --panel-border: #dde5f0; --amber: #c8811a; --err: #b23a3a;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: Arial, Helvetica, sans-serif; color: var(--ink); max-width: 880px; margin: 0 auto; padding: 30px 28px 60px; line-height: 1.5; background: #fff; }
+  header.top-bar { display: flex; justify-content: space-between; align-items: center; background: var(--navy); color: #fff; border-radius: 10px; padding: 18px 24px; margin-bottom: 18px; }
+  header.top-bar .brand { font-size: 11px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--teal-lt); margin: 0 0 4px; }
+  header.top-bar h1 { font-size: 19px; margin: 0; font-weight: 700; }
+  header.top-bar .meta { text-align: right; font-size: 11.5px; color: #b9c6db; }
+  header.top-bar .meta div { margin-bottom: 2px; }
+  header.top-bar .meta b { color: #fff; }
+
+  .stat-strip { display: grid; grid-template-columns: 1.1fr 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .stat-strip .ring-tile { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 10px; padding: 14px; display: flex; align-items: center; gap: 12px; }
+  .ring-tile svg { flex: 0 0 auto; }
+  .ring-tile .ring-label { font-size: 10.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .ring-tile .ring-score { font-size: 18px; font-weight: 700; color: var(--navy); }
+  .stat-strip .headline-tile { grid-column: 1 / 2; grid-row: 1 / 3; background: var(--navy); color: #fff; border-radius: 10px; padding: 16px; display: flex; flex-direction: column; justify-content: center; }
+  .headline-tile .big-score { font-size: 34px; font-weight: 800; line-height: 1; }
+  .headline-tile .big-score span { font-size: 14px; font-weight: 400; opacity: 0.7; }
+  .headline-tile .tag { display: inline-block; margin-top: 8px; background: var(--teal); font-size: 10.5px; padding: 3px 9px; border-radius: 20px; }
+
+  .verdict-panel { background: var(--panel); border: 1px solid var(--panel-border); border-left: 4px solid var(--teal); border-radius: 8px; padding: 14px 18px; margin-bottom: 18px; font-size: 12.8px; color: #2a3040; }
+  .verdict-panel b { color: var(--navy); }
+
+  .continuity-note { font-size: 11.8px; color: var(--muted); background: #fff; border: 1px dashed var(--line); border-radius: 8px; padding: 10px 16px; margin-bottom: 18px; }
+  .continuity-note b { color: var(--ink); }
+
+  h2.section-title { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--navy); margin: 24px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--line); page-break-after: avoid; break-after: avoid; }
+
+  .strand-list { display: grid; gap: 8px; }
+  .strand-item { page-break-inside: avoid; break-inside: avoid; }
+  .strand-row { display: grid; grid-template-columns: 170px 1fr 34px; align-items: center; gap: 10px; background: var(--panel); border: 1px solid var(--panel-border); border-radius: 8px; padding: 9px 14px; }
+  .strand-row .name { font-size: 12px; font-weight: 700; color: var(--ink); }
+  .strand-row .track { background: var(--line); border-radius: 20px; height: 8px; overflow: hidden; }
+  .strand-row .fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--teal-lt)); border-radius: 20px; }
+  .strand-row .score { font-size: 12px; font-weight: 700; color: var(--navy); text-align: right; }
+  .strand-note { font-size: 11.3px; color: var(--muted); padding: 2px 14px 8px; margin-top: -6px; }
+
+  .manuscript { background: #fbfcfe; border: 1px solid var(--panel-border); border-radius: 10px; padding: 18px 20px; font-family: Georgia, 'Times New Roman', serif; font-size: 13px; color: #232323; }
+  .manuscript .subhead { font-family: Arial, sans-serif; font-weight: 700; font-size: 11.5px; color: var(--teal); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 10px; }
+  .manuscript p { margin: 0 0 11px; } .manuscript p:last-child { margin-bottom: 0; }
+  .flag { background: #fde8e8; border-bottom: 2px solid var(--err); padding: 0 1px; }
+  .tag-num { display: inline-flex; align-items: center; justify-content: center; min-width: 15px; height: 15px; padding: 0 3px; background: var(--err); color: #fff; border-radius: 3px; font-family: Arial, sans-serif; font-size: 9px; font-weight: 700; vertical-align: super; margin-left: 1px; }
+
+  .fix-grid { display: grid; gap: 8px; margin-top: 8px; }
+  .fix-row { display: grid; grid-template-columns: 26px 1fr; gap: 10px; background: var(--panel); border-radius: 8px; padding: 10px 12px; align-items: start; }
+  .fix-row .num { width: 22px; height: 22px; background: var(--err); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+  .fix-row .body { font-size: 12px; }
+  .fix-row .body .issue { color: var(--muted); }
+  .fix-row .body .arrow { color: var(--teal); font-weight: 700; margin: 0 4px; }
+  .fix-row .body .fixed { color: #1e6e3c; font-weight: 700; }
+
+  .strength-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 6px; }
+  .strength-panel { background: #eef8f6; border: 1px solid #c9e8e2; border-radius: 8px; padding: 12px 14px; font-size: 12px; }
+  .strength-panel .head { font-weight: 700; color: var(--teal); margin-bottom: 6px; }
+  .strength-panel ul { margin: 0; padding-left: 16px; } .strength-panel li { margin-bottom: 5px; }
+  .strength-panel em { font-style: italic; color: var(--ink); }
+
+  .next-panel { background: var(--navy); color: #e7edf6; border-radius: 8px; padding: 14px 18px; font-size: 12.5px; margin-top: 6px; }
+  .next-panel b { color: var(--teal-lt); }
+
+  footer.sheet-footer { margin-top: 28px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 10.5px; color: var(--muted); text-align: center; }
+
+  @media print {
+    body { padding: 10mm 12mm; max-width: none; }
+    @page { size: A4; margin: 10mm; }
+    .strand-row, .strand-item, .manuscript, .strength-panel, .fix-row, .continuity-note, .next-panel, .verdict-panel, .stat-strip, .strength-cols { page-break-inside: avoid; break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top-bar">
+  <div>
+    <p class="brand">Summit Tuition · Creative Writing</p>
+    <h1>Marked Report: "Danger"</h1>
+  </div>
+  <div class="meta">
+    <div><b>Lupin</b></div>
+    <div>First-person survival narrative</div>
+    <div>8 August 2026</div>
+  </div>
+</header>
+
+<div class="stat-strip">
+  <div class="headline-tile">
+    <div class="big-score">20<span> / 25</span></div>
+    <span class="tag">Strong</span>
+  </div>
+  <div class="ring-tile">
+    <svg width="46" height="46" viewBox="0 0 60 60">
+      <circle cx="30" cy="30" r="24" fill="none" stroke="#dde5f0" stroke-width="7"/>
+      <circle cx="30" cy="30" r="24" fill="none" stroke="#1c8073" stroke-width="7" stroke-dasharray="129 151" stroke-linecap="round" transform="rotate(-90 30 30)"/>
+    </svg>
+    <div><div class="ring-label">Content</div><div class="ring-score">6/7</div></div>
+  </div>
+  <div class="ring-tile">
+    <svg width="46" height="46" viewBox="0 0 60 60">
+      <circle cx="30" cy="30" r="24" fill="none" stroke="#dde5f0" stroke-width="7"/>
+      <circle cx="30" cy="30" r="24" fill="none" stroke="#1c8073" stroke-width="7" stroke-dasharray="126 151" stroke-linecap="round" transform="rotate(-90 30 30)"/>
+    </svg>
+    <div><div class="ring-label">Structure</div><div class="ring-score">5/6</div></div>
+  </div>
+  <div class="ring-tile">
+    <svg width="46" height="46" viewBox="0 0 60 60">
+      <circle cx="30" cy="30" r="24" fill="none" stroke="#dde5f0" stroke-width="7"/>
+      <circle cx="30" cy="30" r="24" fill="none" stroke="#1c8073" stroke-width="7" stroke-dasharray="126 151" stroke-linecap="round" transform="rotate(-90 30 30)"/>
+    </svg>
+    <div><div class="ring-label">Style</div><div class="ring-score">5/6</div></div>
+  </div>
+</div>
+
+<div class="verdict-panel"><b>A genuinely well-planned survival scene, let down mainly by an ending that stops rather than finishes.</b> The dramatic irony of setting off to climb an "inactive" volcano that turns active is a deliberate, well-executed idea, and opening in medias res ("Danger. It surrounded me.") before flashing back to the morning is an ambitious structural choice most students your age wouldn't attempt. What's holding this back from a 22+ is a small handful of real, fixable slips and — again — an ending that trails off on "..." instead of landing on a proper final line.</div>
+
+<div class="continuity-note">This is the second piece in a row that ends on "..." instead of a full closing sentence — the exact same note was in your last report ("Which Vehicle Should I Pick?"). The fix hasn't changed: save the last two minutes for one proper closing line rather than letting the piece just stop. You'd already survived the jump here — one sentence on how it felt to land safely would have finished the story instead of cutting it off.</div>
+
+<h2 class="section-title">Mark breakdown</h2>
+<div class="strand-list">
+  <div class="strand-item">
+    <div class="strand-row"><span class="name">Content &amp; Ideas</span><div class="track"><div class="fill" style="width:86%"></div></div><span class="score">6/7</span></div>
+    <p class="strand-note">A vivid, high-stakes scenario with a genuinely planned twist — you set the volcano up as "inactive" in paragraph one specifically so it can betray that word later. Loses a mark only because the piece stops mid-action rather than showing what happens after the jump.</p>
+  </div>
+  <div class="strand-item">
+    <div class="strand-row"><span class="name">Structure &amp; Organisation</span><div class="track"><div class="fill" style="width:83%"></div></div><span class="score">5/6</span></div>
+    <p class="strand-note">Opening in medias res then flashing back to the morning is an advanced move, and "Was it even possible?" standing alone as its own one-line paragraph is the same tension-building trick as the "Half an hour later:" line from your last piece — you're clearly doing this on purpose now. Held back only by the abrupt "..." ending.</p>
+  </div>
+  <div class="strand-item">
+    <div class="strand-row"><span class="name">Style: Vocabulary &amp; Variety</span><div class="track"><div class="fill" style="width:83%"></div></div><span class="score">5/6</span></div>
+    <p class="strand-note">"Lava started to surround me like a bad smell" is an unusual, memorable simile — most students reach for an obvious comparison ("like a wave," "like fire") and you didn't. "Vroom! Rumble!" gives the jump real sound. A few more varied sentence openings (several in a row start with "I") would push this further.</p>
+  </div>
+  <div class="strand-item">
+    <div class="strand-row"><span class="name">Technical Accuracy</span><div class="track"><div class="fill" style="width:67%"></div></div><span class="score">4/6</span></div>
+    <p class="strand-note">Real, visible self-editing on the original page (fixing "was" to "were," catching and rewriting "terrible" mid-word) shows genuine proofreading instinct. What's left uncaught: a missing "to" ("try jump"), a doubled "a" ("a sort of a bridge"), and one unclear opening connective.</p>
+  </div>
+</div>
+
+<h2 class="section-title">Annotated extract</h2>
+<div class="manuscript">
+  <p class="subhead">Danger.</p>
+  <p>It surrounded me.</p>
+  <p>None of these thoughts had occurred to me earlier today. Going back to this morning, I remembered that my friend Tom and I were going to climb an inactive volcano; however, I was having a feeling something terrible was going to happen. <span class="flag">Before we checked that we had everything<span class="tag-num">1</span></span>: food, water, climbing rope, hiking sticks and cameras.</p>
+  <p>An hour later, we were hiking until we reached 5000m and decided to have a break. "How much longer do you think we need to climb to the top?" he would ask me every once in a while, just as we were going to continue, lava started to surround me like a bad smell until I was on an island of rock surrounded by a sea of lava.</p>
+  <p>"Help!" I shouted but Tom could not do anything. He started making <span class="flag">a sort of a bridge<span class="tag-num">2</span></span> by putting large rocks, but he barely made it any closer because it was so deep. Instead of making him place more, I told him I was going to <span class="flag">try jump<span class="tag-num">3</span></span>.</p>
+  <p>Was it even possible?</p>
+  <p>He took some steps back while I prepared myself. Annoyingly, when I looked at the lava it urged me to leap. It felt like jumping off a cliff. Vroom! Rumble! was the sound I heard after jumping successfully across to the other side. Behind me the rocks were melted in the lava<span class="flag">...<span class="tag-num">4</span></span></p>
+</div>
+
+<h2 class="section-title">Corrections</h2>
+<div class="fix-grid">
+  <div class="fix-row">
+    <div class="num">1</div>
+    <div class="body"><span class="issue">"Before we checked" doesn't say before <i>what</i> — it reads like the connecting word got left out.</span><span class="arrow">&rarr;</span><span class="fixed">"Before we set off, we checked that we had everything"</span></div>
+  </div>
+  <div class="fix-row">
+    <div class="num">2</div>
+    <div class="body"><span class="issue">"A sort of a bridge" doubles up the word "a" — only one is needed.</span><span class="arrow">&rarr;</span><span class="fixed">"a sort of bridge"</span></div>
+  </div>
+  <div class="fix-row">
+    <div class="num">3</div>
+    <div class="body"><span class="issue">"Try jump" is missing the infinitive "to" — you always try <i>to</i> do something.</span><span class="arrow">&rarr;</span><span class="fixed">"I was going to try to jump"</span></div>
+  </div>
+  <div class="fix-row">
+    <div class="num">4</div>
+    <div class="body"><span class="issue">The piece stops on "..." right after the jump instead of a real final sentence — the same issue as your last report.</span><span class="arrow">&rarr;</span><span class="fixed">"...melted into the lava behind me, and for the first time all day, I let myself breathe."</span></div>
+  </div>
+</div>
+
+<h2 class="section-title">Strengths</h2>
+<div class="strength-cols">
+  <div class="strength-panel">
+    <div class="head">A structural idea, planned in advance</div>
+    <ul>
+      <li>Opening on <em>"Danger. It surrounded me."</em> before flashing back to the morning is a proper in medias res opening — you're starting at the most dramatic point and earning the backstory afterwards, not just telling events in order.</li>
+      <li>Calling the volcano "inactive" in paragraph one is dramatic irony done on purpose — you set the word up so it could be broken later, which is exactly the kind of planning that separates a strong piece from a random one.</li>
+      <li><em>"Was it even possible?"</em> standing alone as its own paragraph is the same one-line-tension trick as "Half an hour later:" from your last piece — good to see you reusing a technique deliberately rather than by accident.</li>
+    </ul>
+  </div>
+  <div class="strength-panel">
+    <div class="head">Editing as you go</div>
+    <ul>
+      <li>Multiple live corrections visible on your own page (fixing "was" to "were," catching and rewriting a misspelling mid-word) — exactly the habit that will eventually catch things like "try jump" too.</li>
+      <li><em>"Lava started to surround me like a bad smell"</em> is a genuinely unusual simile — an unexpected sense (smell) for a visual threat (lava), which is more memorable than the obvious comparison.</li>
+      <li>"Vroom! Rumble!" as its own short burst of onomatopoeia gives the jump real sound rather than just describing the action.</li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="section-title">Next steps</h2>
+<div class="next-panel"><b>Focus for next time:</b> (1) the ending, again — plan your last sentence before you start writing so you always have somewhere to land, rather than running out of time; (2) read the very first sentence of each paragraph back and check it actually says what happened before it, not just what happened next ("Before we checked" needs to say before <i>what</i>); (3) watch for missing small linking words like "to" after "try" — these are easy to skip when writing fast and easy to catch on a slow read-back.</div>
+
+<footer class="sheet-footer">
+  Marked against a four-strand creative-writing rubric (Content &amp; Ideas / Structure / Style / Technical Accuracy) scaled to 25 · Summit Tuition
+</footer>
+
+</body>
+</html>
