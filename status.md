@@ -1,8 +1,14 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-07 (added the hardest English paper yet, for students scoring ~90% on the previous hardest — see below)
+Last updated: 2026-08-08 (added a creative-writing marking skill with 3 alternating report styles, then used it to mark Lupin's latest homework — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (session — 2026-08-08, creative-writing marking skill + Lupin's "Danger" report)
+
+- The last three marked reports for creative writing homework (Lupin x2, Changlun x1) all used basically the same look, just recolored — not the "look genuinely different each time" variety asked for. Built a proper reusable workflow for this instead of doing it ad hoc each time: a new skill (`.claude/skills/creative-writing-marking/`) that writes down the marking rubric (four categories: Content & Ideas, Structure & Organisation, Style, Technical Accuracy, out of 25 total) and the report format that's been used so far, plus three genuinely different-looking report layouts to rotate between — a literary/ledger look, a card-based dashboard look, and a dark magazine-style look — so the same student's reports don't all look identical over time.
+- Used the new skill to mark Lupin's latest homework, a short survival story called "Danger" (a volcano-hike-turned-emergency), using the new dashboard-style layout since his last three reports were all the older look. Scored 20/25 — a genuinely well-planned piece (deliberate dramatic irony, a flashback opening) let down by a handful of real slips and, notably, the same "story just trails off with '...' instead of a proper ending" habit flagged in his previous report — called that out directly so it's not a one-off note, it's a pattern.
+- Delivered as both a webpage and a PDF (`worksheets/lupin-creative-writing-marked-report-4.html`/`.pdf`), matching how every other worksheet in the project is delivered.
 
 ## Done (session — 2026-08-07, new hardest-ever English paper)
 
