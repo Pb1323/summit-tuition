@@ -17547,7 +17547,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "vr-elite-difficult",
-    title: "Verbal Reasoning — Elite Full Paper (Difficult)",
+    title: "Verbal Reasoning — Elite Full Paper",
     subject: "VR",
     style: "GL-style",
     durationMinutes: 45,
@@ -18626,7 +18626,7 @@ export const MOCKS: MockExam[] = [
   },
   {
     id: "english-gl-22-zenith",
-    title: "English GL-Style Full Paper XIV — Zenith (Beyond Ultra)",
+    title: "English GL-Style Full Paper XIV — Zenith",
     subject: "English",
     style: "GL-style",
     difficultyLabel: "Summit Stretch",
