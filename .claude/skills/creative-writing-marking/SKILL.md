@@ -110,10 +110,19 @@ then fill in every `[bracketed placeholder]` with the real content — keep the
   could apply to any piece).
 - **Annotated extract**: the full (or near-full, if very long) transcribed
   text, with genuine errors wrapped in the template's flag span and a
-  numbered marker, in reading order.
+  numbered marker, in reading order. **Only wrap actual mistakes in the flag
+  span** — grammar/spelling/wording errors that have one clear fix. Don't
+  flag structural/craft gaps (an abrupt ending, thin description, missing
+  reflection) the same way; the red squiggly-underline styling reads as "this
+  specific mark is wrong," which isn't true of e.g. a trailing "..." ending —
+  the ellipsis itself isn't an error, the missing resolution after it is. For
+  these, either leave the text unflagged and address it in a separate craft
+  tip callout (not the numbered Corrections list, which is transactional
+  issue→fix), or in the mark-breakdown commentary.
 - **Corrections table/list**: one row per flagged number — issue explanation,
   then the corrected text. Keep explanations short and specific about *why*
-  it's wrong (not just "grammar error").
+  it's wrong (not just "grammar error"). Reserve this list for genuine
+  mistakes only (see above) — a structural/craft note doesn't belong here.
 - **Strengths**: 2 cards/columns, each with 2-4 bullet points that quote the
   piece directly (`<em>"exact phrase"</em>`) rather than describing it
   abstractly — "a strong triplet of similes" beats "good use of language."

@@ -51,6 +51,7 @@
   .manuscript p { margin: 0 0 11px; } .manuscript p:last-child { margin-bottom: 0; }
   .flag { background: #fde8e8; border-bottom: 2px solid var(--err); padding: 0 1px; }
   .tag-num { display: inline-flex; align-items: center; justify-content: center; min-width: 15px; height: 15px; padding: 0 3px; background: var(--err); color: #fff; border-radius: 3px; font-family: Arial, sans-serif; font-size: 9px; font-weight: 700; vertical-align: super; margin-left: 1px; }
+  .tip-note { font-family: Arial, Helvetica, sans-serif; font-size: 10.5px; font-style: italic; color: var(--teal); }
 
   .fix-grid { display: grid; gap: 8px; margin-top: 8px; }
   .fix-row { display: grid; grid-template-columns: 26px 1fr; gap: 10px; background: var(--panel); border-radius: 8px; padding: 10px 12px; align-items: start; }
@@ -69,12 +70,17 @@
   .next-panel { background: var(--navy); color: #e7edf6; border-radius: 8px; padding: 14px 18px; font-size: 12.5px; margin-top: 6px; }
   .next-panel b { color: var(--teal-lt); }
 
+  .tip-box { background: #eef8f6; border: 1px solid #c9e8e2; border-radius: 8px; padding: 12px 16px; margin-top: 10px; font-size: 12px; color: #234a44; }
+  .tip-box .head { font-family: Arial, Helvetica, sans-serif; font-weight: 700; color: var(--teal); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .tip-box p { margin: 0 0 6px; } .tip-box p:last-child { margin-bottom: 0; }
+  .tip-box .example { font-style: italic; color: #1e6e3c; }
+
   footer.sheet-footer { margin-top: 28px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 10.5px; color: var(--muted); text-align: center; }
 
   @media print {
     body { padding: 10mm 12mm; max-width: none; }
     @page { size: A4; margin: 10mm; }
-    .strand-row, .strand-item, .manuscript, .strength-panel, .fix-row, .continuity-note, .next-panel, .verdict-panel, .stat-strip, .strength-cols { page-break-inside: avoid; break-inside: avoid; }
+    .strand-row, .strand-item, .manuscript, .strength-panel, .fix-row, .continuity-note, .next-panel, .verdict-panel, .stat-strip, .strength-cols, .tip-box { page-break-inside: avoid; break-inside: avoid; }
   }
 </style>
 </head>
@@ -152,7 +158,7 @@
   <p>An hour later, we were hiking until we reached 5000m and decided to have a break. "How much longer do you think we need to climb to the top?" he would ask me every once in a while, just as we were going to continue, lava started to surround me like a bad smell until I was on an island of rock surrounded by a sea of lava.</p>
   <p>"Help!" I shouted but Tom could not do anything. He started making <span class="flag">a sort of a bridge<span class="tag-num">2</span></span> by putting large rocks, but he barely made it any closer because it was so deep. Instead of making him place more, I told him I was going to <span class="flag">try jump<span class="tag-num">3</span></span>.</p>
   <p>Was it even possible?</p>
-  <p>He took some steps back while I prepared myself. Annoyingly, when I looked at the lava it urged me to leap. It felt like jumping off a cliff. Vroom! Rumble! was the sound I heard after jumping successfully across to the other side. Behind me the rocks were melted in the lava<span class="flag">...<span class="tag-num">4</span></span></p>
+  <p>He took some steps back while I prepared myself. Annoyingly, when I looked at the lava it urged me to leap. It felt like jumping off a cliff. Vroom! Rumble! was the sound I heard after jumping successfully across to the other side. Behind me the rocks were melted in the lava... <span class="tip-note">see structure tip below</span></p>
 </div>
 
 <h2 class="section-title">Corrections</h2>
@@ -169,10 +175,12 @@
     <div class="num">3</div>
     <div class="body"><span class="issue">"Try jump" is missing the infinitive "to" — you always try <i>to</i> do something.</span><span class="arrow">&rarr;</span><span class="fixed">"I was going to try to jump"</span></div>
   </div>
-  <div class="fix-row">
-    <div class="num">4</div>
-    <div class="body"><span class="issue">The piece stops on "..." right after the jump instead of a real final sentence — the same issue as your last report.</span><span class="arrow">&rarr;</span><span class="fixed">"...melted into the lava behind me, and for the first time all day, I let myself breathe."</span></div>
-  </div>
+</div>
+
+<div class="tip-box">
+  <div class="head">Structure tip — how to resolve an ending properly</div>
+  <p>The "..." isn't a mistake to fix, it's a gap to fill — the piece needs one more sentence, not a correction. Use the <b>"zoom out" technique</b>: once the action is over, give one sentence on how the character feels or what they notice now that the danger has passed, instead of stopping the instant the danger ends.</p>
+  <p class="example">Example: "...melted into the lava behind me, and for the first time all day, I let myself breathe."</p>
 </div>
 
 <h2 class="section-title">Strengths</h2>
@@ -196,7 +204,7 @@
 </div>
 
 <h2 class="section-title">Next steps</h2>
-<div class="next-panel"><b>Focus for next time:</b> (1) the ending, again — plan your last sentence before you start writing so you always have somewhere to land, rather than running out of time; (2) read the very first sentence of each paragraph back and check it actually says what happened before it, not just what happened next ("Before we checked" needs to say before <i>what</i>); (3) watch for missing small linking words like "to" after "try" — these are easy to skip when writing fast and easy to catch on a slow read-back.</div>
+<div class="next-panel"><b>Focus for next time:</b> (1) use the "zoom out" ending technique above — this is the second piece in a row it would have fixed; (2) read the very first sentence of each paragraph back and check it actually says what happened before it, not just what happened next ("Before we checked" needs to say before <i>what</i>); (3) watch for missing small linking words like "to" after "try" — these are easy to skip when writing fast and easy to catch on a slow read-back.</div>
 
 <footer class="sheet-footer">
   Marked against a four-strand creative-writing rubric (Content &amp; Ideas / Structure / Style / Technical Accuracy) scaled to 25 · Summit Tuition
