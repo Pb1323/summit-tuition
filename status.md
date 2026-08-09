@@ -1,8 +1,12 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-09 (three new student worksheets ahead of today's sessions — Lupin comprehension + walkthrough, Mayuka poetry, Radha grammar — see below)
+Last updated: 2026-08-09 (admin Attempts panel now split per student — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (session — 2026-08-09, admin marking screen now split by student)
+
+- The admin "Attempts" screen (where finished mocks get marked and their reports released) used to show every student's finished exams in one long mixed-together list. Changed it to a dropdown — pick a student (Mayuka, Anagha, Changlun or Lupin, in that order) and you only see their exams, listed in the order they actually sat them, numbered "Exam 1 of 4" and so on, instead of hunting through everyone's papers mixed together. The QA test account stays hidden from this list like it already is elsewhere. Site type-checks and lints clean.
 
 ## Done (session — 2026-08-09, three new worksheets ahead of today's tutoring sessions)
 
