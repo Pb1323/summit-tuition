@@ -150,42 +150,18 @@ export function AdminMocksCommandCentre() {
       </section>
 
       <section id="attempts" className="scroll-mt-28">
-        <SectionTitle title="Attempts" text="Submitted attempts awaiting marking and report release." />
-        <div className="mt-5 grid gap-4">
-          {attempts.filter((attempt) => attempt.status !== "in_progress").map((attempt) => {
-            const mock = mocks.find((item) => item.id === attempt.mockId);
-            const student = users.find((item) => item.id === attempt.studentId);
-            return (
-              <GlowCard key={attempt.id} className="p-5">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div>
-                    <h3 className="font-black text-navy">{mock?.title ?? "Unknown mock"}</h3>
-                    <p className="text-sm text-muted">{student?.name ?? "Unknown student"} / {attempt.score}/{attempt.maxScore} / {attempt.status.replaceAll("_", " ")}</p>
-                  </div>
-                  <PremiumBadge tone={attempt.status === "report_released" ? "green" : "navy"}>{attempt.status.replaceAll("_", " ")}</PremiumBadge>
-                </div>
-                {attempt.status === "submitted" && (
-                  <div className="mt-4 space-y-3">
-                    <textarea value={feedback[attempt.id] ?? attempt.adminFeedback} onChange={(event) => setFeedback((prev) => ({ ...prev, [attempt.id]: event.target.value }))} placeholder="Manual feedback notes" className="min-h-20 w-full rounded-xl border border-line p-3 text-sm outline-none focus:border-gold" />
-                    <div className="flex flex-wrap gap-3">
-                      <Link href={`/admin/reports/${attempt.id}`} className="rounded-full border border-navy/40 bg-navy/5 px-3 py-1 text-sm font-bold text-navy">Preview report (PDF)</Link>
-                      {mock && (
-                        <button
-                          onClick={() => setFeedback((prev) => ({ ...prev, [attempt.id]: autoGenerateReport(mock, attempt, questions) }))}
-                          className="rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-sm font-bold text-navy"
-                        >
-                          Auto-fill statistics report
-                        </button>
-                      )}
-                      <button onClick={() => addFeedback(attempt.id, feedback[attempt.id] ?? attempt.adminFeedback)} className="rounded-full border border-line px-3 py-1 text-sm font-bold text-navy">Save feedback</button>
-                      <button onClick={() => releaseReport(attempt.id, feedback[attempt.id] ?? attempt.adminFeedback)} className="rounded-full bg-gold px-3 py-1 text-sm font-bold text-navy">Release report</button>
-                    </div>
-                  </div>
-                )}
-              </GlowCard>
-            );
-          })}
-          {attempts.filter((attempt) => attempt.status !== "in_progress").length === 0 && <EmptyPanel title="No attempts submitted yet" text="Submitted mock attempts will appear here for marking." />}
+        <SectionTitle title="Attempts" text="Submitted attempts awaiting marking and report release, grouped by student in the order they sat each exam." />
+        <div className="mt-5">
+          <AttemptsByStudentPanel
+            attempts={attempts}
+            mocks={mocks}
+            users={users}
+            questions={questions}
+            feedback={feedback}
+            setFeedback={setFeedback}
+            addFeedback={addFeedback}
+            releaseReport={releaseReport}
+          />
         </div>
       </section>
 
@@ -232,6 +208,130 @@ type MockActions = { onTogglePublish: () => void; onClone: () => void; onArchive
 type AttemptLike = Pick<Attempt, "mockId" | "status">;
 
 const SUBJECT_ORDER: Subject[] = ["English", "Maths", "VR", "NVR"];
+
+// Founder's real students, in the order they should appear in the dropdown. Any other student
+// (e.g. the "Pranav" QA test account, or a new signup) is appended after these, alphabetically.
+const PREFERRED_STUDENT_ORDER = ["mayuka", "anagha", "changlun", "lupin"];
+const EXCLUDED_TEST_STUDENT_NAMES = ["pranav"];
+
+function AttemptsByStudentPanel({
+  attempts,
+  mocks,
+  users,
+  questions,
+  feedback,
+  setFeedback,
+  addFeedback,
+  releaseReport,
+}: {
+  attempts: Attempt[];
+  mocks: MockExam[];
+  users: { id: string; name: string }[];
+  questions: Question[];
+  feedback: Record<string, string>;
+  setFeedback: (updater: (prev: Record<string, string>) => Record<string, string>) => void;
+  addFeedback: (attemptId: string, feedback: string) => void;
+  releaseReport: (attemptId: string, feedback: string) => void;
+}) {
+  const gradableAttempts = attempts.filter((attempt) => attempt.status !== "in_progress");
+
+  const studentGroups = useMemo(() => {
+    const byStudent = new Map<string, Attempt[]>();
+    for (const attempt of gradableAttempts) {
+      const student = users.find((item) => item.id === attempt.studentId);
+      const name = student?.name ?? "Unknown student";
+      if (EXCLUDED_TEST_STUDENT_NAMES.some((excluded) => name.toLowerCase().includes(excluded))) continue;
+      if (!byStudent.has(attempt.studentId)) byStudent.set(attempt.studentId, []);
+      byStudent.get(attempt.studentId)!.push(attempt);
+    }
+    const groups = Array.from(byStudent.entries()).map(([studentId, studentAttempts]) => ({
+      studentId,
+      name: users.find((item) => item.id === studentId)?.name ?? "Unknown student",
+      attempts: [...studentAttempts].sort((a, b) => (a.submittedAt ?? "").localeCompare(b.submittedAt ?? "")),
+    }));
+    groups.sort((a, b) => {
+      const aIndex = PREFERRED_STUDENT_ORDER.indexOf(a.name.toLowerCase());
+      const bIndex = PREFERRED_STUDENT_ORDER.indexOf(b.name.toLowerCase());
+      if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+      if (aIndex !== -1) return -1;
+      if (bIndex !== -1) return 1;
+      return a.name.localeCompare(b.name);
+    });
+    return groups;
+  }, [gradableAttempts, users]);
+
+  const [selectedStudentId, setSelectedStudentId] = useState<string>("");
+  const activeStudentId = studentGroups.some((group) => group.studentId === selectedStudentId) ? selectedStudentId : studentGroups[0]?.studentId ?? "";
+  const activeGroup = studentGroups.find((group) => group.studentId === activeStudentId);
+
+  if (studentGroups.length === 0) {
+    return <EmptyPanel title="No attempts submitted yet" text="Submitted mock attempts will appear here for marking." />;
+  }
+
+  return (
+    <div className="space-y-5">
+      <GlowCard className="flex flex-wrap items-center gap-3 p-4">
+        <label htmlFor="attempts-student-select" className="text-sm font-bold text-navy">Student</label>
+        <div className="relative">
+          <select
+            id="attempts-student-select"
+            value={activeStudentId}
+            onChange={(event) => setSelectedStudentId(event.target.value)}
+            className="appearance-none rounded-full border border-line bg-white px-4 py-2 pr-9 text-sm font-bold text-navy outline-none focus:border-gold"
+          >
+            {studentGroups.map((group) => (
+              <option key={group.studentId} value={group.studentId}>{group.name} ({group.attempts.length})</option>
+            ))}
+          </select>
+          <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+        </div>
+        {activeGroup && (
+          <span className="text-sm text-muted">
+            {activeGroup.attempts.length} attempt{activeGroup.attempts.length === 1 ? "" : "s"}, oldest first (the order {activeGroup.name} sat them)
+          </span>
+        )}
+      </GlowCard>
+
+      {activeGroup && (
+        <div className="grid gap-4">
+          {activeGroup.attempts.map((attempt, index) => {
+            const mock = mocks.find((item) => item.id === attempt.mockId);
+            return (
+              <GlowCard key={attempt.id} className="p-5">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wide text-muted">Exam {index + 1} of {activeGroup.attempts.length}{attempt.submittedAt ? ` / ${attempt.submittedAt}` : ""}</p>
+                    <h3 className="font-black text-navy">{mock?.title ?? "Unknown mock"}</h3>
+                    <p className="text-sm text-muted">{attempt.score}/{attempt.maxScore} / {attempt.status.replaceAll("_", " ")}</p>
+                  </div>
+                  <PremiumBadge tone={attempt.status === "report_released" ? "green" : "navy"}>{attempt.status.replaceAll("_", " ")}</PremiumBadge>
+                </div>
+                {attempt.status === "submitted" && (
+                  <div className="mt-4 space-y-3">
+                    <textarea value={feedback[attempt.id] ?? attempt.adminFeedback} onChange={(event) => setFeedback((prev) => ({ ...prev, [attempt.id]: event.target.value }))} placeholder="Manual feedback notes" className="min-h-20 w-full rounded-xl border border-line p-3 text-sm outline-none focus:border-gold" />
+                    <div className="flex flex-wrap gap-3">
+                      <Link href={`/admin/reports/${attempt.id}`} className="rounded-full border border-navy/40 bg-navy/5 px-3 py-1 text-sm font-bold text-navy">Preview report (PDF)</Link>
+                      {mock && (
+                        <button
+                          onClick={() => setFeedback((prev) => ({ ...prev, [attempt.id]: autoGenerateReport(mock, attempt, questions) }))}
+                          className="rounded-full border border-gold/40 bg-gold/10 px-3 py-1 text-sm font-bold text-navy"
+                        >
+                          Auto-fill statistics report
+                        </button>
+                      )}
+                      <button onClick={() => addFeedback(attempt.id, feedback[attempt.id] ?? attempt.adminFeedback)} className="rounded-full border border-line px-3 py-1 text-sm font-bold text-navy">Save feedback</button>
+                      <button onClick={() => releaseReport(attempt.id, feedback[attempt.id] ?? attempt.adminFeedback)} className="rounded-full bg-gold px-3 py-1 text-sm font-bold text-navy">Release report</button>
+                    </div>
+                  </div>
+                )}
+              </GlowCard>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function MockListPanel({
   sectionId,
