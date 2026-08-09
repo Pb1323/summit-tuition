@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Written-Response Comprehension — Answer Structures</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root {
+    --ink: #111;
+    --line: #e2e2e2;
+    --muted: #7a7a7a;
+    --accent: #16233f;
+    --gold: #a97e2f;
+  }
+  * { box-sizing: border-box; }
+  @page { size: A4; margin: 14mm; }
+  body {
+    font-family: -apple-system, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 36px 70px;
+    line-height: 1.5;
+    background: #fff;
+    letter-spacing: 0.1px;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 14px;
+    margin-bottom: 8px;
+  }
+  header .mark { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); }
+  header h1 { font-size: 26px; font-weight: 700; margin: 6px 0 0; letter-spacing: -0.3px; }
+  header .num { font-size: 44px; font-weight: 200; color: var(--line); line-height: 1; text-align: right; }
+
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin: 18px 0 26px;
+    border: 1px solid var(--line);
+  }
+  .meta div { padding: 10px 14px; border-right: 1px solid var(--line); }
+  .meta div:last-child { border-right: none; }
+  .meta label { display: block; font-size: 9.5px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 3px; }
+  .meta b { font-size: 13px; }
+
+  .intro { font-size: 13.5px; color: #333; background: #f7f7f5; border-left: 3px solid var(--accent); padding: 12px 16px; margin-bottom: 10px; }
+
+  h2.section {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin: 34px 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2.section::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+  .rule-box { border: 1px solid var(--ink); padding: 14px 18px; margin-bottom: 16px; }
+  .rule-box b.tag { display: inline-block; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; background: var(--ink); color: #fff; padding: 2px 8px; margin-bottom: 8px; }
+  .rule-box p { margin: 0 0 6px; font-size: 13.5px; }
+
+  .frame-card { border: 1px solid var(--line); border-radius: 6px; padding: 14px 18px; margin-bottom: 14px; page-break-inside: avoid; }
+  .frame-card .qtype { font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 2px; }
+  .frame-card .marks { font-size: 10.5px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 8px; }
+  .frame-card .stem { font-size: 13px; color: #333; margin-bottom: 8px; }
+  .frame-card .template { font-family: Georgia, serif; font-style: italic; font-size: 13.5px; background: #fbf8f0; border: 1px dashed var(--gold); border-radius: 4px; padding: 10px 14px; color: #4a3a10; }
+  .frame-card .watch { font-size: 12px; color: #a9291c; margin-top: 8px; }
+  .frame-card .watch b { text-transform: uppercase; font-size: 10px; letter-spacing: 1px; }
+
+  table.starters { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 6px 0 4px; }
+  table.starters th { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; background: var(--ink); color: #fff; padding: 7px 9px; text-align: left; }
+  table.starters td { border: 1px solid var(--line); padding: 8px 9px; vertical-align: top; }
+  table.starters td.use { font-weight: 700; color: var(--accent); white-space: nowrap; }
+
+  .time-grid { display: grid; grid-template-columns: 1fr auto; gap: 0; font-size: 13px; }
+  .time-grid .row { display: contents; }
+  .time-grid .label { padding: 9px 12px; border-bottom: 1px solid var(--line); }
+  .time-grid .val { padding: 9px 12px; border-bottom: 1px solid var(--line); text-align: right; color: var(--accent); font-weight: 700; white-space: nowrap; }
+
+  .worked { border: 1px solid var(--ink); padding: 16px 20px; margin-top: 10px; page-break-inside: avoid; }
+  .worked .excerpt { font-family: Georgia, serif; font-style: italic; font-size: 13.5px; color: #333; border-left: 3px solid var(--line); padding-left: 14px; margin-bottom: 14px; }
+  .worked .q { font-weight: 700; font-size: 13.5px; margin-bottom: 8px; }
+  .worked .marking { font-size: 12.5px; }
+  .worked .point { display: block; margin-bottom: 6px; padding-left: 14px; position: relative; }
+  .worked .point::before { content: "✓"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+  .worked .point b { color: var(--accent); }
+
+  footer { margin-top: 50px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 10px; color: var(--muted); display: flex; justify-content: space-between; text-transform: uppercase; letter-spacing: 1px; }
+
+  @media print { body { padding: 20px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="mark">Summit Tuition · Lupin · One-to-One</div>
+    <h1>Written-Response Comprehension — Answer Structures</h1>
+  </div>
+  <div class="num">WR</div>
+</header>
+
+<div class="meta">
+  <div><label>Name</label><b>Lupin</b></div>
+  <div><label>Date</label><b>9 August 2026</b></div>
+  <div><label>Applies to</label><b>Latymer · QE Boys' Barnet · Dame Alice Owen's</b></div>
+  <div><label>Use</label><b>Every written-answer comprehension question</b></div>
+</div>
+
+<div class="intro">Your <b>Comprehension Operating System</b> sheet (7 August) covers how to eliminate distractor traps on multiple-choice comprehension — that's the GL/CEM-style paper. This sheet is different: it's for <b>written-answer</b> comprehension, where nobody hands you four options and there's no elimination safety net. Latymer's paper is written-response throughout. Dame Alice Owen's and QE Barnet both mix some short written-answer questions into their comprehension sections too. Marks are awarded per distinct point you make, in the words you actually write — so the structure of your answer matters as much as knowing the right idea.</div>
+
+<h2 class="section">The One Rule That Matters Most</h2>
+<div class="rule-box">
+  <b class="tag">Marks-to-points</b>
+  <p><b>Before you write a single word, look at the marks in brackets.</b> A question worth 3 marks needs three genuinely distinct points — not one good point said three different ways. A question worth 1 mark needs exactly one clear point, stated plainly, with no padding.</p>
+  <p>This is the single biggest source of dropped marks in written-response papers: strong readers who understand the passage perfectly but write a beautiful one-idea paragraph for a 4-mark question, and lose three marks they were fully capable of getting.</p>
+</div>
+
+<h2 class="section">Answer Templates, By Question Type</h2>
+
+<div class="frame-card">
+  <div class="qtype">1 · Retrieval / short factual</div>
+  <div class="marks">Usually 1–2 marks · "What did X do when…", "Where was X when…"</div>
+  <div class="stem">State the fact. If the question says "in your own words," you must paraphrase — copying the exact phrase from the text scores zero even if it's the right fact.</div>
+  <div class="template">[Fact], because/when [supporting detail from the passage, in your own words].</div>
+</div>
+
+<div class="frame-card">
+  <div class="qtype">2 · "In your own words" / paraphrase</div>
+  <div class="marks">Usually 2–3 marks · one mark per point you successfully reword</div>
+  <div class="stem">The no-lifting rule: you cannot reuse three or more consecutive words from the original text and still score that point. Swap the key words for genuine synonyms — don't just rearrange the same words into a different order, that's still lifting.</div>
+  <div class="template">Original: "she hesitated, unwilling to admit the mistake" → Your words: "she paused, reluctant to own up to what she'd got wrong"</div>
+</div>
+
+<div class="frame-card">
+  <div class="qtype">3 · Explain / Why</div>
+  <div class="marks">Usually 2–3 marks · Point–Evidence–Explain</div>
+  <div class="stem">Never just quote and stop — a quotation with no explanation attached scores the evidence mark at most, not the explain mark.</div>
+  <div class="template"><b>Point:</b> [your point] — <b>Evidence:</b> "[short embedded quotation]" — <b>Explain:</b> this shows/suggests [why it proves your point].</div>
+</div>
+
+<div class="frame-card">
+  <div class="qtype">4 · Language / effect analysis</div>
+  <div class="marks">Usually 3–4 marks · one mark for technique, one for quotation, one or two for effect</div>
+  <div class="stem">Naming a technique ("the writer uses a metaphor") is worth almost nothing on its own. The marks are in explaining what the specific word choice does to the reader.</div>
+  <div class="template">The writer's use of "[word/phrase]" suggests [connotation/image], which creates an impression of [effect] and makes the reader feel/picture [reader response].</div>
+  <div class="watch"><b>Watch for:</b> don't drift into retelling the plot — every sentence in a language-effect answer should be doing analytical work, not summary.</div>
+</div>
+
+<div class="frame-card">
+  <div class="qtype">5 · Structure / organisation</div>
+  <div class="marks">Usually 3–4 marks · order-of-reveal, then its effect</div>
+  <div class="stem">Track what information the writer gives the reader first, second, third — and why that order was chosen rather than a different one.</div>
+  <div class="template">The writer withholds/reveals [detail] until [point in the extract]. This has the effect of [suspense/sympathy/surprise/dramatic irony] because the reader [what the reader now knows or feels that they didn't before].</div>
+</div>
+
+<div class="frame-card">
+  <div class="qtype">6 · Character / "what do we learn about X"</div>
+  <div class="marks">Usually 4–6 marks · two or three separate Point–Evidence–Explain blocks</div>
+  <div class="stem">Treat this as several mini-answers, not one long paragraph. Each point needs its own piece of evidence — reusing the same quotation for two "different" points only scores once.</div>
+  <div class="template">Firstly, [character trait] — shown when "[quote]," which suggests [explain]. In addition, [second, genuinely different trait] — shown when "[quote]," which suggests [explain].</div>
+</div>
+
+<div class="frame-card">
+  <div class="qtype">7 · Summary</div>
+  <div class="marks">Usually 4–6 marks · one mark per distinct, correct point covered</div>
+  <div class="stem">Coverage beats elegance. List the separate events/ideas in your own words; order roughly follows the passage but doesn't have to be exact. Don't repeat a point using different phrasing — the examiner is counting distinct ideas, not sentences.</div>
+  <div class="template">[Point 1, own words]. [Point 2, own words — must be a genuinely new idea, not a restatement of point 1]. [Point 3, own words]…</div>
+</div>
+
+<h2 class="section">Sentence Starters — Memorise a Handful</h2>
+<table class="starters">
+  <tr><th>Use for</th><th>Starter</th></tr>
+  <tr><td class="use">Introducing evidence</td><td>"This is shown when the writer states…" / "This is reinforced by…"</td></tr>
+  <tr><td class="use">Explaining effect</td><td>"This suggests to the reader that…" / "This creates an impression of…"</td></tr>
+  <tr><td class="use">Adding a second point</td><td>"In addition…" / "Furthermore…" / "This is also seen when…"</td></tr>
+  <tr><td class="use">Contrasting</td><td>"In contrast…" / "However, this changes when…"</td></tr>
+  <tr><td class="use">Cause and result</td><td>"As a result…" / "This leads to…" / "Because of this…"</td></tr>
+  <tr><td class="use">Inference (no direct quote available)</td><td>"Although the text doesn't state this directly, we can infer that…"</td></tr>
+</table>
+
+<h2 class="section">Time Budget — Written-Answer Paper</h2>
+<div class="time-grid">
+  <div class="row"><div class="label">First read of the whole passage, no writing yet</div><div class="val">≈ 3 min</div></div>
+  <div class="row"><div class="label">Rule of thumb per question</div><div class="val">≈ 1 min per mark</div></div>
+  <div class="row"><div class="label">A 4-mark question</div><div class="val">≈ 4 min, four visible points</div></div>
+  <div class="row"><div class="label">Final sweep — check every mark-count is actually met</div><div class="val">last 3–4 min</div></div>
+</div>
+
+<h2 class="section">Worked Example</h2>
+<div class="worked">
+  <div class="excerpt">"Mia had checked the running order twice already, but she checked it a third time anyway, because the alternative was sitting still with the thought that kept circling back: the jingle file on the desk wasn't the one she remembered exporting."</div>
+  <div class="q">Why did Mia check the running order a third time? (2 marks)</div>
+  <div class="marking">
+    <span class="point"><b>Point 1 (1 mark):</b> She had a nagging worry/doubt about the jingle file — "the thought that kept circling back."</span>
+    <span class="point"><b>Point 2 (1 mark):</b> Checking again was a way of avoiding sitting with that worry — "the alternative was sitting still with the thought."</span>
+  </div>
+  <div class="q" style="margin-top:12px;">What does "circling back" suggest about Mia's state of mind? (2 marks)</div>
+  <div class="marking">
+    <span class="point"><b>Technique/quote (1 mark):</b> "circling back" suggests something repetitive, going round and round, like a thought she can't switch off.</span>
+    <span class="point"><b>Effect (1 mark):</b> this creates an impression of mounting anxiety rather than a single passing doubt, making the reader sense her unease is building, not settled.</span>
+  </div>
+</div>
+
+<footer>
+  <span>Summit Tuition</span>
+  <span>Written-Response Comprehension — Answer Structures</span>
+</footer>
+
+</body>
+</html>

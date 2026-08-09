@@ -1,8 +1,15 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-08 (added a creative-writing marking skill with 3 alternating report styles, then used it to mark Lupin's latest homework — see below)
+Last updated: 2026-08-09 (three new student worksheets ahead of today's sessions — Lupin comprehension + walkthrough, Mayuka poetry, Radha grammar — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (session — 2026-08-09, three new worksheets ahead of today's tutoring sessions)
+
+- Lupin has a comprehension session today, and he's now specifically preparing for Latymer, QE Boys' Barnet, and Dame Alice Owen's — schools whose entrance exams include written short-answer comprehension, not just multiple choice. He already had a multiple-choice "eliminate the trap answer" framework sheet from last week, so this needed to be genuinely different, not a repeat. Built two new sheets: a technique walkthrough (`worksheets/lupin/written-response-answer-structures.html`/`.pdf`) teaching the actual answer templates examiners give marks for — how many separate points a question needs based on its mark value, the "no copying three words in a row" rule for "in your own words" questions, the Point-Evidence-Explain pattern, and separate templates for language analysis, structure questions, character questions, and summaries — plus a brand-new practice passage ("Frequency Check," a school radio-club story) with 7 written-answer questions and full model answers showing the technique actually applied.
+- Mayuka got a new poetry comprehension worksheet (`worksheets/mayuka-poetry-comprehension-worksheet.html`/`.pdf`) — she hadn't had one before. Original poem ("Low Tide," about rock pools and the returning tide) written specifically to give her something to practise on: rhyme scheme, simile, alliteration, personification, and a "volta" (tone shift) in the final verse. Seven questions building up to a full extended-response question, plus a glossary of poetry terms and full model answers.
+- Radha got a general grammar worksheet (`worksheets/radha-grammar-mix-worksheet.html`/`.pdf`), pitched at a steady 11+ level rather than the harder trap-style questions used for stronger students — she already has a punctuation-specific sheet, so this one covers a broader mix instead: word classes, tenses, pronouns, subject-verb agreement, sentence types, and active/passive voice, in two practice sets with full answer keys.
+- All three saved as both HTML and PDF, matching how every other worksheet in the project is delivered.
 
 ## Done (session — 2026-08-08, creative-writing marking skill + Lupin's "Danger" report)
 

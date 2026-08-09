@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Grammar Mix — Practice Sheet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root { --ink:#2c3547; --line:#d8e2e8; --accent:#3a7d6b; --accent2:#e08a3c; --bg:#fbfaf6; --panel:#fff; }
+  * { box-sizing: border-box; }
+  @page { size: A4; margin: 14mm; }
+  body {
+    font-family: -apple-system, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 38px 70px;
+    background: var(--bg);
+    line-height: 1.5;
+  }
+  header { border-radius: 14px; background: linear-gradient(120deg, var(--accent), #5aab94); color: #fff; padding: 20px 26px; margin-bottom: 8px; }
+  header .brand { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.85; }
+  header h1 { font-size: 26px; margin: 6px 0 2px; font-weight: 700; }
+  header p { margin: 0; font-size: 13px; opacity: 0.95; }
+
+  .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin: 16px 0 22px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--panel); }
+  .meta div { padding: 10px 16px; border-right: 1px solid var(--line); }
+  .meta div:last-child { border-right: none; }
+  .meta label { display: block; font-size: 9.5px; text-transform: uppercase; letter-spacing: 1px; color: #8a93a3; margin-bottom: 3px; }
+  .meta .val { font-size: 14px; font-weight: 600; }
+
+  .intro { background: #fff5ea; border: 1px solid #f0d3ab; border-radius: 10px; padding: 14px 18px; margin-bottom: 26px; font-size: 13.5px; }
+  .intro b { color: var(--accent2); }
+
+  h2.section { font-size: 12px; text-transform: uppercase; letter-spacing: 1.8px; color: var(--accent); margin: 30px 0 14px; display: flex; align-items: center; gap: 10px; }
+  h2.section::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  h2.section.key { color: var(--accent2); }
+
+  .q { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; margin-bottom: 10px; page-break-inside: avoid; }
+  .q .top { display: flex; gap: 10px; align-items: baseline; }
+  .q .n { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-weight: 700; font-size: 12px; flex: none; }
+  .q .tag { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #8a93a3; }
+  .q p.qtext { font-size: 13.8px; margin: 6px 0 6px 32px; }
+  .q .opts { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 4px 32px; }
+  .q .opts span { background: #f2f6f4; border: 1px solid var(--line); border-radius: 12px; padding: 4px 12px; font-size: 12.5px; }
+  .q .ans { border-bottom: 1px solid #ccc; height: 20px; margin: 6px 0 2px 32px; }
+  .q .ans.tall { height: 38px; }
+
+  .key-item { background: #f4faf7; border: 1px solid #cfe6db; border-radius: 10px; padding: 10px 16px; margin-bottom: 8px; page-break-inside: avoid; }
+  .key-item .n { font-weight: 700; color: var(--accent); font-size: 12.5px; }
+  .key-item .answer { font-size: 13.5px; margin: 3px 0 4px; font-weight: 600; }
+  .key-item .why { font-size: 12.5px; color: #556; }
+
+  .key-block.tutor-only .key-item { border-style: dashed; }
+
+  footer { margin-top: 40px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 10px; color: #8a93a3; display: flex; justify-content: space-between; text-transform: uppercase; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">Summit Tuition</div>
+  <h1>Grammar Mix — 11+ Practice</h1>
+  <p>A steady spread of the grammar basics that come up again and again in 11+ papers.</p>
+</header>
+
+<div class="meta">
+  <div><label>Name</label><span class="val">Radha</span></div>
+  <div><label>Date</label><span class="val">9 August 2026</span></div>
+  <div><label>Subject</label><span class="val">Grammar</span></div>
+</div>
+
+<div class="intro"><b>Today's focus:</b> word classes (nouns, verbs, adjectives, adverbs), verb tense and agreement, pronouns, sentence types, and simple/compound/complex sentences. Nothing here is a trick question — read each sentence carefully and use what you already know.</div>
+
+<h2 class="section">Practice Set A</h2>
+
+<div class="q"><div class="top"><span class="n">1</span><span class="tag">Word class</span></div>
+  <p class="qtext">In the sentence "The excited dog barked loudly," which word is the adjective?</p>
+  <div class="ans"></div>
+</div>
+
+<div class="q"><div class="top"><span class="n">2</span><span class="tag">Verb tense</span></div>
+  <p class="qtext">Choose the correct verb to complete the sentence: "By the time we arrived, the film already ___."</p>
+  <div class="opts"><span>A had started</span><span>B has started</span><span>C starts</span><span>D was starting</span></div>
+  <div class="ans"></div>
+</div>
+
+<div class="q"><div class="top"><span class="n">3</span><span class="tag">Pronoun</span></div>
+  <p class="qtext">Choose the correct pronoun: "Neither Sam nor his sisters had brought ___ umbrella."</p>
+  <div class="opts"><span>A his</span><span>B her</span><span>C their</span><span>D its</span></div>
+  <div class="ans"></div>
+</div>
+
+<div class="q"><div class="top"><span class="n">4</span><span class="tag">Subject-verb agreement</span></div>
+  <p class="qtext">Which sentence is correct?</p>
+  <div class="opts"><span>A The team of players were tired.</span><span>B The team of players was tired.</span></div>
+  <div class="ans"></div>
+</div>
+
+<div class="q"><div class="top"><span class="n">5</span><span class="tag">Common error</span></div>
+  <p class="qtext">Rewrite this sentence, correcting the error: "There was less children at the party than last year."</p>
+  <div class="ans tall"></div>
+</div>
+
+<div class="q"><div class="top"><span class="n">6</span><span class="tag">Sentence type</span></div>
+  <p class="qtext">What type of sentence is this: "Close the door quietly."?</p>
+  <div class="opts"><span>A Statement</span><span>B Question</span><span>C Command</span><span>D Exclamation</span></div>
+  <div class="ans"></div>
+</div>
+
+<div class="q"><div class="top"><span class="n">7</span><span class="tag">Adverbs</span></div>
+  <p class="qtext">Rewrite this sentence, changing the underlined adjective into an adverb: "She spoke in a <u>careful</u> way." → "She spoke ___."</p>
+  <div class="ans"></div>
+</div>
+
+<div class="q"><div class="top"><span class="n">8</span><span class="tag">Conjunctions</span></div>
+  <p class="qtext">Choose the connective that best completes the sentence: "We left early ___ we wanted to avoid the traffic."</p>
+  <div class="opts"><span>A although</span><span>B because</span><span>C unless</span><span>D whereas</span></div>
+  <div class="ans"></div>
+</div>
+
+<div class="q"><div class="top"><span class="n">9</span><span class="tag">Sentence structure</span></div>
+  <p class="qtext">Is this sentence simple, compound, or complex? "Although it was raining, the match went ahead."</p>
+  <div class="ans"></div>
+</div>
+
+<div class="q"><div class="top"><span class="n">10</span><span class="tag">Active / passive</span></div>
+  <p class="qtext">Rewrite this sentence in the passive voice: "The chef prepared the meal."</p>
+  <div class="ans tall"></div>
+</div>
+
+<h2 class="section key">Answer Key &amp; Explanations — Set A</h2>
+
+<div class="key-item"><span class="n">1.</span>
+  <div class="answer">"Excited" is the adjective.</div>
+  <div class="why">It describes the noun "dog." "Loudly" describes the verb "barked," so that's an adverb, not an adjective.</div>
+</div>
+<div class="key-item"><span class="n">2.</span>
+  <div class="answer">Correct answer: A — had started</div>
+  <div class="why">The film finished happening before we arrived, so it needs the past perfect ("had started") to show one past action happened before another past action.</div>
+</div>
+<div class="key-item"><span class="n">3.</span>
+  <div class="answer">Correct answer: C — their</div>
+  <div class="why">With "neither...nor," the pronoun agrees with the noun closest to it — here that's "his sisters" (plural), so "their" is needed, not the singular "his."</div>
+</div>
+<div class="key-item"><span class="n">4.</span>
+  <div class="answer">Correct answer: B — The team of players was tired.</div>
+  <div class="why">"Team" is the actual subject of the sentence (singular), not "players" — so the verb should be "was," not "were."</div>
+</div>
+<div class="key-item"><span class="n">5.</span>
+  <div class="answer">There were fewer children at the party than last year.</div>
+  <div class="why">"Fewer" is used for things you can count (children), and "less" is used for amounts you can't count (like water or time). "Was" also needs to become "were" to agree with the plural "children."</div>
+</div>
+<div class="key-item"><span class="n">6.</span>
+  <div class="answer">Correct answer: C — Command</div>
+  <div class="why">It's giving an instruction (an imperative), not stating a fact, asking something, or showing strong feeling.</div>
+</div>
+<div class="key-item"><span class="n">7.</span>
+  <div class="answer">She spoke carefully.</div>
+  <div class="why">Adverbs describing how something is done usually add "-ly" to the adjective — careful becomes carefully.</div>
+</div>
+<div class="key-item"><span class="n">8.</span>
+  <div class="answer">Correct answer: B — because</div>
+  <div class="why">The second half of the sentence gives the reason for the first half, so it needs a connective that shows cause, not contrast ("although," "whereas") or condition ("unless").</div>
+</div>
+<div class="key-item"><span class="n">9.</span>
+  <div class="answer">Complex sentence.</div>
+  <div class="why">It has a main clause ("the match went ahead") and a subordinate clause ("Although it was raining") that can't stand alone as a full sentence — that combination makes it complex.</div>
+</div>
+<div class="key-item"><span class="n">10.</span>
+  <div class="answer">The meal was prepared by the chef.</div>
+  <div class="why">In the passive voice, the thing being acted upon (the meal) becomes the subject of the sentence, and "by the chef" shows who did the action.</div>
+</div>
+
+<h2 class="section">Practice Set B — Now You Try</h2>
+
+<div class="q"><div class="top"><span class="n">1</span><span class="tag">Word class</span></div>
+  <p class="qtext">In the sentence "The tired hikers rested peacefully," which word is the adverb?</p>
+  <div class="ans"></div>
+</div>
+
+<div class="q"><div class="top"><span class="n">2</span><span class="tag">Verb tense</span></div>
+  <p class="qtext">Choose the correct verb to complete the sentence: "Tomorrow, we ___ to visit our grandparents."</p>
+  <div class="opts"><span>A went</span><span>B are going</span><span>C had gone</span><span>D go</span></div>
+  <div class="ans"></div>
+</div>
+
+<div class="q"><div class="top"><span class="n">3</span><span class="tag">Pronoun</span></div>
+  <p class="qtext">Choose the correct pronoun: "Each of the girls brought ___ own lunch."</p>
+  <div class="opts"><span>A their</span><span>B her</span><span>C its</span><span>D them</span></div>
+  <div class="ans"></div>
+</div>
+
+<div class="q"><div class="top"><span class="n">4</span><span class="tag">Subject-verb agreement</span></div>
+  <p class="qtext">Which sentence is correct?</p>
+  <div class="opts"><span>A Neither of the answers were right.</span><span>B Neither of the answers was right.</span></div>
+  <div class="ans"></div>
+</div>
+
+<div class="q"><div class="top"><span class="n">5</span><span class="tag">Common error</span></div>
+  <p class="qtext">Rewrite this sentence, correcting the error: "She done her homework before dinner."</p>
+  <div class="ans tall"></div>
+</div>
+
+<div class="q"><div class="top"><span class="n">6</span><span class="tag">Sentence type</span></div>
+  <p class="qtext">What type of sentence is this: "What an incredible goal that was!"?</p>
+  <div class="opts"><span>A Statement</span><span>B Question</span><span>C Command</span><span>D Exclamation</span></div>
+  <div class="ans"></div>
+</div>
+
+<div class="q"><div class="top"><span class="n">7</span><span class="tag">Adverbs</span></div>
+  <p class="qtext">Rewrite this sentence, changing the underlined adjective into an adverb: "He gave a <u>quick</u> reply." → "He replied ___."</p>
+  <div class="ans"></div>
+</div>
+
+<div class="q"><div class="top"><span class="n">8</span><span class="tag">Conjunctions</span></div>
+  <p class="qtext">Choose the connective that best completes the sentence: "I enjoy swimming, ___ my brother prefers football."</p>
+  <div class="opts"><span>A because</span><span>B whereas</span><span>C since</span><span>D so</span></div>
+  <div class="ans"></div>
+</div>
+
+<div class="q"><div class="top"><span class="n">9</span><span class="tag">Sentence structure</span></div>
+  <p class="qtext">Is this sentence simple, compound, or complex? "The sun set, and the sky turned orange."</p>
+  <div class="ans"></div>
+</div>
+
+<div class="q"><div class="top"><span class="n">10</span><span class="tag">Active / passive</span></div>
+  <p class="qtext">Rewrite this sentence in the passive voice: "The gardener watered the plants."</p>
+  <div class="ans tall"></div>
+</div>
+
+<h2 class="section key">Answer Key &amp; Explanations — Set B <span style="font-size:10px; color:#8a93a3; text-transform:none; letter-spacing:0;">(tutor key)</span></h2>
+
+<div class="key-block tutor-only">
+<div class="key-item"><span class="n">1.</span>
+  <div class="answer">"Peacefully" is the adverb.</div>
+  <div class="why">It describes how the hikers rested (the verb). "Tired" is the adjective describing "hikers."</div>
+</div>
+<div class="key-item"><span class="n">2.</span>
+  <div class="answer">Correct answer: B — are going</div>
+  <div class="why">"Tomorrow" signals a planned future action, which in everyday English is usually expressed with "am/is/are going to," not the simple present or past tense.</div>
+</div>
+<div class="key-item"><span class="n">3.</span>
+  <div class="answer">Correct answer: B — her</div>
+  <div class="why">"Each" is singular, and here it clearly refers to "girls," so the singular feminine "her" is correct rather than the plural "their."</div>
+</div>
+<div class="key-item"><span class="n">4.</span>
+  <div class="answer">Correct answer: B — Neither of the answers was right.</div>
+  <div class="why">"Neither" is singular even though it's followed by a plural noun phrase ("of the answers") — the verb should agree with "neither," not "answers."</div>
+</div>
+<div class="key-item"><span class="n">5.</span>
+  <div class="answer">She did her homework before dinner.</div>
+  <div class="why">"Done" needs a helping verb ("had done" or "has done") to work correctly — on its own as the main verb of the sentence, the correct past tense form is "did."</div>
+</div>
+<div class="key-item"><span class="n">6.</span>
+  <div class="answer">Correct answer: D — Exclamation</div>
+  <div class="why">It expresses strong feeling and starts with "What," a classic exclamation-sentence opener, ending in an exclamation mark.</div>
+</div>
+<div class="key-item"><span class="n">7.</span>
+  <div class="answer">He replied quickly.</div>
+  <div class="why">Quick becomes quickly by adding "-ly," following the same pattern as question 7 in Set A.</div>
+</div>
+<div class="key-item"><span class="n">8.</span>
+  <div class="answer">Correct answer: B — whereas</div>
+  <div class="why">The sentence is contrasting two different preferences, so it needs a contrasting connective — "because," "since" and "so" all suggest cause and effect, which isn't what's happening here.</div>
+</div>
+<div class="key-item"><span class="n">9.</span>
+  <div class="answer">Compound sentence.</div>
+  <div class="why">It joins two complete sentences ("The sun set" and "the sky turned orange") with "and" — both halves could stand alone, which is what makes it compound rather than complex.</div>
+</div>
+<div class="key-item"><span class="n">10.</span>
+  <div class="answer">The plants were watered by the gardener.</div>
+  <div class="why">The thing receiving the action (the plants) becomes the subject, and "by the gardener" shows who did it — same pattern as Set A Q10.</div>
+</div>
+</div>
+
+<footer>
+  <span>Summit Tuition</span>
+  <span>Grammar Mix · Radha</span>
+</footer>
+
+</body>
+</html>
