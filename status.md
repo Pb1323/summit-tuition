@@ -1,8 +1,15 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-09 (admin Attempts panel now split per student — see below)
+Last updated: 2026-08-10 (recalibrated comprehension on the two hardest English papers — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (session — 2026-08-10, made the two hardest English papers' comprehension actually hard)
+
+- Founder reported that even on the hardest English papers (Zenith and Ultra), strong students were still hitting 100% on the reading comprehension section — meaning some of the questions were too easy and not telling us anything useful about the student's real level.
+- Rewrote 8 of the easiest comprehension questions across those two papers (same papers, same question count, nothing else touched) into genuinely trickier ones: several were turned into "which of these is NOT true" questions where every wrong answer is a real detail from the story, just attached to the wrong moment or the wrong character; two were rewritten to directly test double-negative sentences lifted straight from the story text (the kind of sentence where careless reading gives the opposite of the right answer); a couple were turned into "connect the dots across the whole story" questions instead of one-line fact lookups.
+- This was originally meant to run overnight as an automated cloud task, but setting up the cloud/GitHub connection for that took several back-and-forth attempts and ultimately didn't work, so the work was done directly in a live session instead — the intended second overnight task (10 brand-new very hard mocks) is still queued and needs to be run separately, either by trying the cloud routine again once GitHub access is sorted, or by asking directly in a future session.
+- Site type-checks clean, no new lint errors introduced. Committed and pushed; not yet reseeded to the live database this session — needs `npm run db:seed` run wherever `DATABASE_URL` is available.
 
 ## Done (session — 2026-08-09, admin marking screen now split by student)
 
