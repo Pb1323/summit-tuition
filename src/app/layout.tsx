@@ -33,6 +33,9 @@ export const metadata: Metadata = {
     type: "website",
   },
   robots: { index: true, follow: true },
+  verification: {
+    google: "NxnP36IcVSQa1-yo0OlTfiMYfHYGcCxk6tu7W5zP_f4",
+  },
 };
 
 const organizationJsonLd = {
