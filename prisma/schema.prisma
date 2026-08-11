@@ -17,6 +17,9 @@ enum Subject {
   Maths
   VR
   NVR
+  Biology
+  Chemistry
+  Physics
 }
 
 enum ReferenceStyle {

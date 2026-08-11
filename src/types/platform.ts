@@ -1,5 +1,5 @@
 export type Role = "student" | "admin";
-export type Subject = "English" | "Maths" | "VR" | "NVR";
+export type Subject = "English" | "Maths" | "VR" | "NVR" | "Biology" | "Chemistry" | "Physics";
 export type ReferenceStyle = "GL-style" | "non-GL" | "unknown";
 export type Difficulty = "foundation" | "standard" | "stretch";
 export type MockDifficulty = "Standard" | "GL+" | "Summit Stretch";
