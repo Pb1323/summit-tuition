@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Annotation Method — Comprehension Masterclass</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root {
+    --ink: #1c2b2e;
+    --line: #cfe0de;
+    --teal: #0f6e64;
+    --teal-dark: #0a4b44;
+    --amber: #c98a2b;
+    --rose: #b8483f;
+    --muted: #5c6f6d;
+    --paper: #fbfaf5;
+    --panel: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  @page { size: A4; margin: 13mm; }
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: var(--ink);
+    max-width: 830px;
+    margin: 0 auto;
+    padding: 36px 44px 70px;
+    line-height: 1.55;
+    background: var(--paper);
+  }
+  .masthead { border-bottom: 4px solid var(--teal-dark); padding-bottom: 14px; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: flex-end; }
+  .masthead .brand { font-family: Arial, Helvetica, sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); }
+  .masthead h1 { font-size: 30px; margin: 4px 0 0; color: var(--teal-dark); }
+  .masthead .sub { font-family: Arial, sans-serif; font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .masthead .badge { background: var(--teal-dark); color: #fff; font-family: Arial, sans-serif; font-size: 10.5px; text-transform: uppercase; letter-spacing: 1px; padding: 7px 14px; border-radius: 4px; text-align: center; line-height: 1.5; }
+
+  .meta-line { display: flex; justify-content: space-between; font-family: Arial, sans-serif; font-size: 11px; color: var(--muted); padding: 9px 2px; margin: 10px 0 20px; border-bottom: 1px solid var(--line); }
+  .meta-line b { color: var(--ink); }
+
+  h2.section { font-family: Arial, Helvetica, sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--teal-dark); margin: 30px 0 10px; padding-bottom: 5px; border-bottom: 2px solid var(--line); }
+  h3.sub { font-family: Arial, sans-serif; font-size: 12.5px; color: var(--rose); margin: 16px 0 6px; text-transform: uppercase; letter-spacing: 0.8px; }
+
+  .intro { background: #eef7f5; border-left: 4px solid var(--teal); border-radius: 0 6px 6px 0; padding: 12px 18px; font-size: 13px; margin-bottom: 6px; }
+
+  /* method cards */
+  .method-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 14px 0 6px; }
+  .method-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 10px; text-align: center; page-break-inside: avoid; }
+  .method-card .step-n { font-family: Arial, sans-serif; font-size: 10px; color: #fff; background: var(--teal); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 6px; }
+  .method-card .step-t { font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; color: var(--teal-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .method-card .step-d { font-size: 11.5px; color: var(--ink); line-height: 1.4; }
+
+  /* annotation code legend */
+  .code-legend { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px 18px; margin: 12px 0 8px; font-family: Arial, sans-serif; font-size: 11.5px; }
+  .code-legend .mark { display: flex; align-items: center; gap: 9px; }
+  .mark-swatch { flex: 0 0 auto; font-weight: 700; font-family: Georgia, serif; }
+  .swatch-underline { text-decoration: underline; text-decoration-color: var(--teal); text-decoration-thickness: 3px; }
+  .swatch-circle { border: 2px solid var(--rose); border-radius: 50%; padding: 1px 7px; }
+  .swatch-box { border: 2px solid var(--amber); padding: 1px 6px; }
+  .swatch-star::before { content: "★ "; color: var(--teal-dark); }
+
+  /* modeled annotation passage */
+  .model-passage { background: #fffef8; border: 1px solid var(--line); border-radius: 8px; padding: 22px 26px; margin: 10px 0 20px; position: relative; }
+  .model-passage p { margin: 0 0 12px; font-size: 14px; }
+  .model-passage p:last-child { margin-bottom: 0; }
+  .ann-underline { text-decoration: underline; text-decoration-color: var(--teal); text-decoration-thickness: 3px; text-decoration-skip-ink: none; }
+  .ann-circle { border: 2px solid var(--rose); border-radius: 50%; padding: 0 6px; }
+  .ann-box { border: 2px solid var(--amber); padding: 0 4px; }
+  .margin-note { display: block; font-family: Arial, sans-serif; font-size: 10.5px; color: var(--teal-dark); background: #eef7f5; border-left: 3px solid var(--teal); padding: 4px 9px; margin: 6px 0 10px 18px; border-radius: 0 5px 5px 0; }
+  .margin-note.rose { color: #7a2b24; background: #fbeceb; border-left-color: var(--rose); }
+  .margin-note.amber { color: #7a5511; background: #fdf3e3; border-left-color: var(--amber); }
+
+  /* mistakes checklist */
+  .mistakes { background: #fbeceb; border: 1px solid #e3b3ae; border-radius: 8px; padding: 14px 18px; margin: 12px 0 18px; }
+  .mistakes .mhead { font-family: Arial, sans-serif; font-size: 11.5px; font-weight: 700; color: var(--rose); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+  .mistakes ul { margin: 0; padding-left: 18px; font-size: 12.5px; }
+  .mistakes li { margin-bottom: 5px; }
+  .mistakes li b { color: #7a2b24; }
+
+  /* passage boxes for practice */
+  .passage-box { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 22px 26px; margin: 10px 0 18px; page-break-inside: avoid; }
+  .passage-box .ptitle { font-family: Arial, sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 1.3px; color: var(--muted); margin-bottom: 10px; }
+  .passage-box p { font-size: 13.7px; margin: 0 0 11px; }
+  .passage-box p:last-child { margin-bottom: 0; }
+  .para-n { font-family: Arial, sans-serif; font-size: 9.5px; color: var(--muted); vertical-align: super; margin-right: 3px; }
+  .annotate-margin { font-family: Arial, sans-serif; font-size: 9.5px; color: var(--muted); text-align: right; border-left: 1px dashed var(--line); padding-left: 8px; float: right; width: 90px; margin-left: 10px; }
+
+  .q-block { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 13px 18px; margin-bottom: 12px; page-break-inside: avoid; }
+  .q-block .qhead { font-family: Arial, sans-serif; font-size: 11.5px; font-weight: 700; color: var(--teal-dark); margin-bottom: 5px; display: flex; justify-content: space-between; }
+  .q-block .qhead .marks { font-weight: 400; color: var(--rose); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .q-block .qtext { font-size: 13.5px; margin: 0 0 8px; }
+  .q-block .hint { font-family: Arial, sans-serif; font-size: 10px; color: var(--muted); font-style: italic; margin-bottom: 8px; }
+  .q-block .ansline { border-bottom: 1px solid #ccc; height: 19px; margin-bottom: 3px; }
+
+  .answer-key { margin-top: 34px; border-top: 3px double var(--teal-dark); padding-top: 6px; }
+  .answer-key .kicker { font-family: Arial, sans-serif; font-size: 10.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--rose); text-align: center; margin: 8px 0 18px; }
+  .model { background: #eef7f5; border: 1px solid var(--line); border-radius: 8px; padding: 11px 16px; margin-bottom: 10px; page-break-inside: avoid; }
+  .model .qn { font-family: Arial, sans-serif; font-size: 10.5px; font-weight: 700; color: var(--teal-dark); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+  .model .point { display: block; font-size: 12.5px; margin-bottom: 4px; padding-left: 14px; position: relative; }
+  .model .point::before { content: "✓"; position: absolute; left: 0; color: var(--teal); font-weight: 700; }
+
+  footer { font-family: Arial, sans-serif; font-size: 10px; color: var(--muted); margin-top: 40px; }
+  .page-break { page-break-before: always; }
+  @media print { body { padding: 22px; } }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div>
+    <div class="brand">Summit Tuition — Comprehension Masterclass</div>
+    <h1>The Annotation Method</h1>
+    <div class="sub">Stop losing marks to silly mistakes: a repeatable structure for every comprehension question</div>
+  </div>
+  <div class="badge">2-Hour<br>Session</div>
+</div>
+
+<div class="meta-line">
+  <span>Name: <b>Mungola</b></span>
+  <span>Date: <b>11 August 2026</b></span>
+  <span>Focus: <b>Annotation skills &amp; question structure</b></span>
+  <span>Marks: <b>___ / 46</b></span>
+</div>
+
+<div class="intro">
+  <b>Why this session exists:</b> most marks lost in comprehension aren't lost because you didn't understand the passage — they're lost because you answered the wrong question, forgot to quote, or rushed past a keyword. This session teaches you a fixed method to annotate the text and structure every answer, so those mistakes stop happening.
+</div>
+
+<h2 class="section">Part 1 · The 3-Pass Reading Method</h2>
+<p style="font-size:13px; margin-top:0;">Every comprehension passage gets read <b>three times</b> — never once. Each pass has one job.</p>
+
+<div class="method-grid">
+  <div class="method-card">
+    <div class="step-n">1</div>
+    <div class="step-t">First Pass</div>
+    <div class="step-d">Read the whole passage fast, no annotating. Just get the story: who, where, what happens.</div>
+  </div>
+  <div class="method-card">
+    <div class="step-n">2</div>
+    <div class="step-t">Second Pass</div>
+    <div class="step-d">Read the <u>questions</u> first. Circle the command word and keywords in each one before going back to the text.</div>
+  </div>
+  <div class="method-card">
+    <div class="step-n">3</div>
+    <div class="step-t">Annotate</div>
+    <div class="step-d">Go paragraph by paragraph, marking evidence using the annotation code below as you find it.</div>
+  </div>
+  <div class="method-card">
+    <div class="step-n">4</div>
+    <div class="step-t">Answer</div>
+    <div class="step-d">Build each answer with the Point → Evidence → Explain chain (Part 3). Never skip the Explain.</div>
+  </div>
+</div>
+
+<h3 class="sub">The Annotation Code — Use the Same Marks Every Time</h3>
+<div class="code-legend">
+  <div class="mark"><span class="mark-swatch swatch-underline">underline</span> Evidence that directly answers a question — the exact words you'll quote.</div>
+  <div class="mark"><span class="mark-swatch swatch-circle">name</span> Circle every character, place, or time reference — stops you mixing people up.</div>
+  <div class="mark"><span class="mark-swatch swatch-box">word</span> Box any word you're not 100% sure of — check it against the sentence around it.</div>
+  <div class="mark"><span class="mark-swatch swatch-star">note</span> Star a margin note wherever the writer implies something without stating it outright — that's an inference clue.</div>
+</div>
+
+<h2 class="section">Part 2 · Worked Example — Watch the Method in Action</h2>
+<p style="font-size:12.5px; color:var(--muted); margin-top:0;">Below is a short extract already annotated exactly as you should mark your own passages. Read the margin notes — they show the thinking, not just the marking.</p>
+
+<div class="model-passage">
+  <p>
+  <span class="ann-circle">Reuben</span> had checked the timer four times in the last minute, and each time it told him the same thing: <span class="ann-underline">eleven minutes left, and the circuit still wasn't drawing power.</span>
+  </p>
+  <span class="margin-note">Underlined = the key fact the whole extract turns on. If a question asks "how much time did Reuben have left," this is the exact evidence to quote.</span>
+  <p>
+  Across the hall, <span class="ann-circle">Priya's</span> team had already finished testing theirs twice. She caught his eye and gave him a small, <span class="ann-box">apologetic</span> shrug, as if the head start hadn't been her idea at all.
+  </p>
+  <span class="margin-note amber">Boxed word: "apologetic" is doing more than describing a shrug — it tells us Priya feels bad about being ahead, which matters for a "what does this suggest about their relationship" question.</span>
+  <p>
+  Reuben didn't shrug back. He unclipped the battery pack, turned it over, and noticed for the first time that the wire he'd soldered that morning had come away from the terminal — not snapped, just never quite attached.
+  </p>
+  <span class="margin-note rose">★ No one says Reuben rushed this morning. But "never quite attached" strongly implies it — that's an inference, not a stated fact. This is exactly the kind of clue a "star" note is for.</span>
+</div>
+
+<div class="mistakes">
+  <div class="mhead">The Five Silly Mistakes This Method Fixes</div>
+  <ul>
+    <li><b>Answering the question you expected, not the one asked</b> — always re-read the exact wording after circling the command word (explain / suggest / how does / why).</li>
+    <li><b>Forgetting to quote</b> — if you didn't underline it during annotation, you probably won't remember to include it in your answer. Annotate first, always.</li>
+    <li><b>Stopping after the quote</b> — a quote on its own earns 0 marks for an "explain" question. You must add what it shows.</li>
+    <li><b>Mixing up characters</b> — circling names during the second pass prevents attributing the wrong action to the wrong person under time pressure.</li>
+    <li><b>Missing marks that are "worth it"</b> — a 3-mark question needs three separate, distinct points. Count the marks before you start writing and count your points as you go.</li>
+  </ul>
+</div>
+
+<h2 class="section">Part 3 · The Point → Evidence → Explain Chain</h2>
+<p style="font-size:13px; margin-top:0;">Every answer worth more than one mark follows the same three-step chain. Missing any one step is the single most common way marks are lost.</p>
+<div class="method-grid" style="grid-template-columns: repeat(3, 1fr);">
+  <div class="method-card">
+    <div class="step-t">Point</div>
+    <div class="step-d">State your answer in one clear sentence, directly matching the command word.</div>
+  </div>
+  <div class="method-card">
+    <div class="step-t">Evidence</div>
+    <div class="step-d">Quote the exact underlined words from the passage — short and precise, in quotation marks.</div>
+  </div>
+  <div class="method-card">
+    <div class="step-t">Explain</div>
+    <div class="step-d">Say what the quote shows or suggests. This is the step that actually earns the marks.</div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<h2 class="section">Part 4 · Practice Passage — "The Last Circuit"</h2>
+<div class="passage-box">
+  <div class="ptitle">Original passage · annotate this yourself before answering</div>
+  <p><span class="para-n">¶1</span>Reuben had checked the timer four times in the last minute, and each time it told him the same thing: eleven minutes left, and the circuit still wasn't drawing power. Around him, five other teams murmured over breadboards and coils of wire, the low hum of the school hall almost drowning out the countdown clock bolted above the stage.</p>
+  <p><span class="para-n">¶2</span>Across the hall, Priya's team had already finished testing theirs twice. She caught his eye and gave him a small, apologetic shrug, as if the head start hadn't been her idea at all. Reuben knew it hadn't — Priya had wanted to build the simpler circuit from the start, and it was he who had insisted on the version with the extra sensor, the one that impressed judges but left far less room for error.</p>
+  <p><span class="para-n">¶3</span>He didn't shrug back. He unclipped the battery pack, turned it over, and noticed for the first time that the wire he'd soldered that morning had come away from the terminal — not snapped, just never quite attached. His stomach dropped in a way that had nothing to do with the timer.</p>
+  <p><span class="para-n">¶4</span>"Nine minutes," said Priya quietly, appearing at his elbow with a spare soldering iron already warm in her hand. She didn't ask what was wrong. She simply held the wire steady while he reheated the joint, the two of them working in the kind of silence that didn't need explaining.</p>
+  <p><span class="para-n">¶5</span>When the connection finally held and the small red light on the board blinked on, Reuben let out a breath he hadn't realised he was holding. "You should be testing your own again," he said. Priya shook her head. "Mine already works. Yours needed to." She said it plainly, without any hint that she thought it made her the better engineer — which, Reuben suspected, was exactly why it did.</p>
+  <p><span class="para-n">¶6</span>With four minutes left on the clock, the judges called his team forward. Reuben glanced back once at Priya, who was already re-testing her own circuit as though nothing had happened, and understood that some kinds of help are never meant to be thanked out loud.</p>
+</div>
+
+<h2 class="section">Part 5 · Questions — Apply the Method</h2>
+
+<div class="q-block">
+  <div class="qhead">Q1 — Retrieval <span class="marks">1 mark</span></div>
+  <p class="qtext">How much time was left on the clock when Reuben discovered the loose wire?</p>
+  <div class="hint">Command word check: "how much" — a direct fact, no explanation needed.</div>
+  <div class="ansline"></div>
+</div>
+
+<div class="q-block">
+  <div class="qhead">Q2 — Vocabulary in context <span class="marks">2 marks</span></div>
+  <p class="qtext">Look at Paragraph 2. Explain what the word "apologetic" suggests about how Priya feels about her team finishing first.</p>
+  <div class="hint">Box the word before answering, then use the Explain step to say what it implies, not just what it means.</div>
+  <div class="ansline"></div><div class="ansline"></div>
+</div>
+
+<div class="q-block">
+  <div class="qhead">Q3 — Inference <span class="marks">3 marks</span></div>
+  <p class="qtext">What does Paragraph 3 suggest about how the loose wire happened, even though the text never states it directly?</p>
+  <div class="hint">Star clue: "never quite attached" — a Point → Evidence → Explain answer, in full.</div>
+  <div class="ansline"></div><div class="ansline"></div><div class="ansline"></div>
+</div>
+
+<div class="q-block">
+  <div class="qhead">Q4 — Character relationships <span class="marks">3 marks</span></div>
+  <p class="qtext">Using evidence from Paragraphs 2, 4 and 5, explain what the passage suggests about the relationship between Reuben and Priya.</p>
+  <div class="hint">This needs three separate points across three paragraphs — count them as you write.</div>
+  <div class="ansline"></div><div class="ansline"></div><div class="ansline"></div>
+</div>
+
+<div class="q-block">
+  <div class="qhead">Q5 — Language choice <span class="marks">3 marks</span></div>
+  <p class="qtext">Explain the effect of the phrase "his stomach dropped in a way that had nothing to do with the timer" (Paragraph 3).</p>
+  <div class="hint">Two things are being compared here — what feeling is being described, and why is it worse than the time pressure?</div>
+  <div class="ansline"></div><div class="ansline"></div><div class="ansline"></div>
+</div>
+
+<div class="q-block">
+  <div class="qhead">Q6 — Structure <span class="marks">3 marks</span></div>
+  <p class="qtext">How does the writer build tension across Paragraphs 1 to 3, before Priya arrives to help in Paragraph 4?</p>
+  <div class="hint">Look at how the timer, the crowd, and the discovery of the loose wire are ordered — is anything getting closer together?</div>
+  <div class="ansline"></div><div class="ansline"></div><div class="ansline"></div>
+</div>
+
+<div class="q-block">
+  <div class="qhead">Q7 — Final line interpretation <span class="marks">4 marks</span></div>
+  <p class="qtext">What does the final line, "some kinds of help are never meant to be thanked out loud," suggest about Priya's character and about Reuben's understanding of her by the end of the passage?</p>
+  <div class="hint">Two things are being asked — Priya's character, and how Reuben's understanding of her has changed. Answer both.</div>
+  <div class="ansline"></div><div class="ansline"></div><div class="ansline"></div><div class="ansline"></div>
+</div>
+
+<div class="q-block">
+  <div class="qhead">Q8 — Extended response <span class="marks">6 marks</span></div>
+  <p class="qtext">How does the writer use language and structure across the whole passage to show that real teamwork doesn't need to be announced? Support your answer with at least four separate, evidenced points.</p>
+  <div class="hint">Plan before you write: find four different pieces of evidence from four different paragraphs first.</div>
+  <div class="ansline"></div><div class="ansline"></div><div class="ansline"></div><div class="ansline"></div><div class="ansline"></div><div class="ansline"></div>
+</div>
+
+<div class="page-break"></div>
+
+<div class="answer-key">
+  <div class="kicker">Model Answers &amp; Mark Scheme</div>
+
+  <div class="model">
+    <div class="qn">Q1 — Retrieval (1 mark)</div>
+    <span class="point">Nine minutes were left when Priya arrived to help — but the loose wire was discovered with eleven minutes left on the clock ("eleven minutes left, and the circuit still wasn't drawing power").</span>
+  </div>
+
+  <div class="model">
+    <div class="qn">Q2 — Vocabulary in context (2 marks)</div>
+    <span class="point"><b>Point + Evidence:</b> "apologetic" suggests Priya feels genuinely uncomfortable about being ahead, not proud or smug about it.</span>
+    <span class="point"><b>Explain:</b> this shows she values Reuben's success as much as her own, setting up why she later stops her own testing to help him.</span>
+  </div>
+
+  <div class="model">
+    <div class="qn">Q3 — Inference (3 marks)</div>
+    <span class="point"><b>Point:</b> the passage implies Reuben was careless or rushed when soldering the wire that morning.</span>
+    <span class="point"><b>Evidence:</b> the wire "had come away from the terminal — not snapped, just never quite attached."</span>
+    <span class="point"><b>Explain:</b> "never quite attached" rules out an accident (like snapping) and instead suggests the joint was never done properly in the first place — an inference, since the text never directly says he rushed.</span>
+  </div>
+
+  <div class="model">
+    <div class="qn">Q4 — Character relationships (3 marks)</div>
+    <span class="point"><b>Point 1:</b> Priya's "apologetic shrug" (¶2) shows she cares about Reuben's feelings, not just winning.</span>
+    <span class="point"><b>Point 2:</b> in ¶4, she "didn't ask what was wrong" and simply helped — showing quiet trust and understanding rather than needing to be asked.</span>
+    <span class="point"><b>Point 3:</b> in ¶5, she plainly says "Mine already works. Yours needed to" without pride, showing she sees helping him as simply logical, not a favour — reinforcing a relationship built on equality rather than competition.</span>
+  </div>
+
+  <div class="model">
+    <div class="qn">Q5 — Language choice (3 marks)</div>
+    <span class="point"><b>Point:</b> the phrase compares two kinds of pressure — the time pressure of the countdown, and a deeper emotional pressure (guilt, fear of having ruined his own project).</span>
+    <span class="point"><b>Evidence:</b> "nothing to do with the timer" explicitly separates the physical dread from the ticking clock.</span>
+    <span class="point"><b>Explain:</b> this shows the reader that Reuben's real fear is about his own mistake and the choice he made (the riskier circuit), not simply about running out of time — deepening his character beyond just "a student under pressure."</span>
+  </div>
+
+  <div class="model">
+    <div class="qn">Q6 — Structure (3 marks)</div>
+    <span class="point"><b>Point 1:</b> the writer opens with the timer already counting down, immediately establishing urgency before any problem is even revealed.</span>
+    <span class="point"><b>Point 2:</b> Priya's team finishing "twice" (¶2) is placed directly before the wire problem is discovered (¶3), so the reader feels Reuben falling behind before they even know why.</span>
+    <span class="point"><b>Point 3:</b> the short, blunt sentence "His stomach dropped" at the end of ¶3 lands right after the discovery, structurally mirroring the sudden drop in Reuben's confidence — tension peaks right before Priya's rescue in ¶4.</span>
+  </div>
+
+  <div class="model">
+    <div class="qn">Q7 — Final line interpretation (4 marks)</div>
+    <span class="point"><b>Point 1 (character):</b> the line suggests Priya deliberately avoids drawing attention to her own kindness — she helps because it's right, not to be praised for it.</span>
+    <span class="point"><b>Point 2 (character):</b> this fits her earlier plain, unshowy dialogue ("Mine already works. Yours needed to"), confirming a consistent, modest character rather than a one-off act.</span>
+    <span class="point"><b>Point 3 (Reuben's understanding):</b> Reuben only "understood" this at the very end, suggesting he hadn't fully appreciated it in the moment — he was too focused on the crisis to notice.</span>
+    <span class="point"><b>Point 4 (Reuben's understanding):</b> the fact that he "glanced back" before realising this shows a shift from simply receiving help to properly recognising what it cost her — a small but real moment of growth in his character.</span>
+  </div>
+
+  <div class="model">
+    <div class="qn">Q8 — Extended response (6 marks, indicative content)</div>
+    <span class="point"><b>Point 1:</b> Priya's help is offered without being asked ("She didn't ask what was wrong"), showing teamwork that doesn't need to be requested or acknowledged to happen.</span>
+    <span class="point"><b>Point 2:</b> her dialogue throughout is short and unemotional ("Nine minutes," "Mine already works") — the plainness of her language mirrors how ordinary and unremarkable she wants the help to seem, even though it clearly isn't.</span>
+    <span class="point"><b>Point 3:</b> structurally, Priya returns to testing her own circuit immediately afterwards "as though nothing had happened" (¶6) — the writer deliberately shows her moving on without expecting thanks, reinforcing the passage's final idea.</span>
+    <span class="point"><b>Point 4:</b> the final line itself ("some kinds of help are never meant to be thanked out loud") is a generalisation that lifts the story beyond just these two characters, suggesting this is a wider truth about real teamwork the writer wants the reader to take away.</span>
+    <span class="point">(Full marks require four genuinely distinct, evidenced points spanning different paragraphs — reward any well-evidenced point in this spirit, not only these four.)</span>
+  </div>
+</div>
+
+<footer>Summit Tuition · Mungola, 11 August 2026 · The Annotation Method — Comprehension Masterclass</footer>
+
+</body>
+</html>
