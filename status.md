@@ -1,8 +1,14 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-10 (recalibrated comprehension on the two hardest English papers — see below)
+Last updated: 2026-08-11 (added GCSE subjects + first GCSE student's diagnostic papers — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (session — 2026-08-11, first steps toward supporting GCSE students)
+
+- Founder has one real Year 8 student now doing GCSE Triple Science (Biology, Chemistry, Physics) and wanted a way to gauge where he's at — three diagnostic papers were built as standalone PDFs (light coverage across every topic in each subject, mixed 1-4 mark written questions, real diagrams, hand-marked by the founder — not auto-scored, since these are free-response questions the platform can't grade automatically).
+- Those three papers are now also listed in the platform itself as "Diagnostic Assessment" mocks under three brand-new subjects (Biology, Chemistry, Physics), so the founder can unlock/track them for this student like any other mock, even though sitting the actual paper still happens on paper. This is the first bit of GCSE support in Summit Tuition — a real dashboard toggle between "11+ Prep" and "GCSE Prep," and proper online GCSE mocks, are intentionally saved for a fuller build after September once there's more than one GCSE student to build for.
+- Known rough edge: the admin "Mocks" overview page's subject filter tabs only know about the original four subjects (English/Maths/VR/NVR) — Biology/Chemistry/Physics mocks exist and can be unlocked from the per-student panel, but don't yet show up in that one admin tab view. Small fix, not done yet.
 
 ## Done (session — 2026-08-10, made the two hardest English papers' comprehension actually hard)
 
