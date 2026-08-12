@@ -1,8 +1,13 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-11 (added GCSE subjects + first GCSE student's diagnostic papers — see below)
+Last updated: 2026-08-12 (marked the first GCSE student's 3 diagnostic papers + fixed the marked-report screen for hand-marked papers — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (session — 2026-08-12, marked Changxun's GCSE mocks + fixed a real report bug)
+
+- Changxun (the first GCSE student) had sat all 3 diagnostic papers (Biology, Chemistry, Physics) online, but they were showing 0 marks since these are free-response questions nobody had marked yet. Read every answer against the model mark scheme and entered real marks and per-question feedback: Biology 25/36, Chemistry 26/39, Physics 19/33 — his reports are now released so he/his parents can see them.
+- While reviewing this, found and fixed a real bug: the marked-report screen has an "every question missed" section built for multiple-choice questions, which checks answers by exact text match — for free-response questions that never matches, so it was showing every single question as "wrong" even ones marked full-credit, which looked like the marking was sloppy when it wasn't. Fixed so hand-marked papers (like these GCSE ones) show a proper question-by-question breakdown with the real marks awarded and marking notes, instead of that broken auto-check. This will apply automatically to any future hand-marked GCSE papers too, not just these three.
 
 ## Done (session — 2026-08-11, first steps toward supporting GCSE students)
 
