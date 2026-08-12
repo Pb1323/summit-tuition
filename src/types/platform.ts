@@ -20,7 +20,8 @@ export type QuestionType =
   | "cloze"
   | "synonyms_antonyms"
   | "future_vr"
-  | "future_nvr";
+  | "future_nvr"
+  | "written_response";
 
 export type ErrorPattern = "careless_error" | "concept_gap" | "timing_pressure";
 
