@@ -14,8 +14,13 @@ export function AdminAttemptReport({ attempt, mock, audience = "admin" }: { atte
   const { users, questions: bank } = usePlatform();
   const student = users.find((user) => user.id === attempt.studentId);
   const questions = bank.filter((question) => mock.questionIds.includes(question.id));
-  const wrong = questions.filter((question) => !isCorrect(question, attempt.answers[question.id]));
-  const { topicBreakdown, weakTopics } = analyseAttempt(mock, attempt.answers, bank);
+  // Free-response questions are hand-marked by an admin (score/adminFeedback set manually),
+  // not auto-gradable by exact-string match — isCorrect() would flag virtually all of them
+  // as "wrong" regardless of quality, so this whole mock skips the auto-graded sections below
+  // and shows the admin's own per-question feedback instead.
+  const isHandMarked = questions.length > 0 && questions.every((question) => question.questionType === "written_response");
+  const wrong = isHandMarked ? [] : questions.filter((question) => !isCorrect(question, attempt.answers[question.id]));
+  const { topicBreakdown, weakTopics } = isHandMarked ? { topicBreakdown: [], weakTopics: [] } : analyseAttempt(mock, attempt.answers, bank);
   const sortedTopics = [...topicBreakdown].sort((a, b) => b.maxScore - a.maxScore);
   const percentage = attempt.maxScore ? Math.round((attempt.score / attempt.maxScore) * 100) : 0;
   const recommendations = recommendationsForTopics(weakTopics.map((topic) => topic.topic));
@@ -41,6 +46,17 @@ export function AdminAttemptReport({ attempt, mock, audience = "admin" }: { atte
     })
     .map((question) => ({ subtopic: question.subtopic, explanation: question.markScheme || question.explanation }));
 
+  // Parses this admin's own "qid: N marks - note" lines (written by the marking script/UI)
+  // back into a per-question map so hand-marked papers get a real per-question breakdown
+  // instead of the auto-graded sections above, which don't apply to free-response answers.
+  const handMarkedNotes = new Map<string, { earned: number; note: string }>();
+  if (isHandMarked) {
+    for (const line of attempt.adminFeedback.split("\n")) {
+      const match = line.match(/^(\S+):\s*(\d+)\s*marks?\s*-\s*(.*)$/);
+      if (match) handMarkedNotes.set(match[1], { earned: Number(match[2]), note: match[3] });
+    }
+  }
+
   return (
     <div className="space-y-6 rounded-2xl border border-navy/15 bg-gradient-to-b from-navy/[0.04] to-white p-6 print:border-0 print:bg-white print:p-0 print:shadow-none">
       <div className="flex flex-wrap items-start justify-between gap-4 rounded-2xl bg-gradient-to-r from-navy-dark to-navy px-6 py-5 print:rounded-none">
@@ -55,24 +71,51 @@ export function AdminAttemptReport({ attempt, mock, audience = "admin" }: { atte
         </div>
       </div>
 
-      <section>
-        <h3 className="text-sm font-black uppercase tracking-[0.12em] text-navy-dark border-b border-navy/15 pb-1.5">Marks by topic</h3>
-        <div className="mt-3 space-y-2">
-          {sortedTopics.map((topic) => {
-            const pct = topic.maxScore ? Math.round((topic.score / topic.maxScore) * 100) : 0;
-            return (
-              <div key={topic.topic}>
-                <div className="flex justify-between text-xs font-bold text-navy"><span>{topic.topic}</span><span>{topic.score}/{topic.maxScore} ({pct}%)</span></div>
-                <div className="mt-1 h-2 w-full overflow-hidden rounded-full bg-navy/10">
-                  <div className="h-full bg-emerald-500" style={{ width: `${pct}%` }} />
+      {!isHandMarked && (
+        <section>
+          <h3 className="text-sm font-black uppercase tracking-[0.12em] text-navy-dark border-b border-navy/15 pb-1.5">Marks by topic</h3>
+          <div className="mt-3 space-y-2">
+            {sortedTopics.map((topic) => {
+              const pct = topic.maxScore ? Math.round((topic.score / topic.maxScore) * 100) : 0;
+              return (
+                <div key={topic.topic}>
+                  <div className="flex justify-between text-xs font-bold text-navy"><span>{topic.topic}</span><span>{topic.score}/{topic.maxScore} ({pct}%)</span></div>
+                  <div className="mt-1 h-2 w-full overflow-hidden rounded-full bg-navy/10">
+                    <div className="h-full bg-emerald-500" style={{ width: `${pct}%` }} />
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
-      {spotlight.length > 0 && (
+      {isHandMarked && (
+        <section>
+          <h3 className="text-sm font-black uppercase tracking-[0.12em] text-navy-dark border-b border-navy/15 pb-1.5">Every question, marked by hand ({attempt.score}/{attempt.maxScore})</h3>
+          <p className="mt-1 text-xs text-muted">Free-response answers, marked against the model mark scheme by an admin — not auto-graded.</p>
+          <div className="mt-3 space-y-3">
+            {questions.map((question, index) => {
+              const marked = handMarkedNotes.get(question.id);
+              return (
+                <div key={question.id} className="break-inside-avoid rounded-xl border border-navy/15 bg-white p-3">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-bold text-gold-dark">Q{index + 1} &middot; {question.topic} &middot; {question.subtopic}</p>
+                    {marked && <span className="text-xs font-black text-navy">{marked.earned}/{question.marks}</span>}
+                  </div>
+                  <p className="mt-1 text-sm text-navy">{question.text}</p>
+                  <div className="mt-2 rounded-lg bg-navy/5 p-2 text-xs text-navy">
+                    <span className="font-bold">Their answer: </span>{attempt.answers[question.id] || "No answer"}
+                  </div>
+                  {marked && <p className="mt-2 text-xs text-muted">{marked.note}</p>}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {!isHandMarked && spotlight.length > 0 && (
         <section>
           <h3 className="text-sm font-black uppercase tracking-[0.12em] text-navy-dark border-b border-navy/15 pb-1.5">Skill spotlight</h3>
           <div className="mt-3 space-y-2">
@@ -89,17 +132,19 @@ export function AdminAttemptReport({ attempt, mock, audience = "admin" }: { atte
         </section>
       )}
 
-      <section>
-        <h3 className="text-sm font-black uppercase tracking-[0.12em] text-navy-dark border-b border-navy/15 pb-1.5">Where marks were lost</h3>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {weakTopics.length === 0 && <p className="text-sm text-muted">No significant weak topics.</p>}
-          {weakTopics.map((topic) => (
-            <PremiumBadge key={topic.topic} tone="navy">{topic.topic} &middot; -{topic.missedMarks} &middot; {patternLabel(topic.pattern)}</PremiumBadge>
-          ))}
-        </div>
-      </section>
+      {!isHandMarked && (
+        <section>
+          <h3 className="text-sm font-black uppercase tracking-[0.12em] text-navy-dark border-b border-navy/15 pb-1.5">Where marks were lost</h3>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {weakTopics.length === 0 && <p className="text-sm text-muted">No significant weak topics.</p>}
+            {weakTopics.map((topic) => (
+              <PremiumBadge key={topic.topic} tone="navy">{topic.topic} &middot; -{topic.missedMarks} &middot; {patternLabel(topic.pattern)}</PremiumBadge>
+            ))}
+          </div>
+        </section>
+      )}
 
-      {conceptsExplained.length > 0 && (
+      {!isHandMarked && conceptsExplained.length > 0 && (
         <section>
           <h3 className="text-sm font-black uppercase tracking-[0.12em] text-navy-dark border-b border-navy/15 pb-1.5">What they don&apos;t know yet</h3>
           <p className="mt-1 text-xs text-muted">The exact concept behind every mark lost, in plain terms</p>
@@ -111,28 +156,32 @@ export function AdminAttemptReport({ attempt, mock, audience = "admin" }: { atte
         </section>
       )}
 
-      <section>
-        <h3 className="text-sm font-black uppercase tracking-[0.12em] text-navy-dark border-b border-navy/15 pb-1.5">Recommended next steps</h3>
-        <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted">
-          {recommendations.map((item) => <li key={item}>{item}</li>)}
-        </ul>
-      </section>
+      {!isHandMarked && (
+        <section>
+          <h3 className="text-sm font-black uppercase tracking-[0.12em] text-navy-dark border-b border-navy/15 pb-1.5">Recommended next steps</h3>
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted">
+            {recommendations.map((item) => <li key={item}>{item}</li>)}
+          </ul>
+        </section>
+      )}
 
-      <section>
-        <h3 className="text-sm font-black uppercase tracking-[0.12em] text-navy-dark border-b border-navy/15 pb-1.5">Every question missed ({wrong.length})</h3>
-        <div className="mt-3 space-y-3">
-          {wrong.map((question) => (
-            <div key={question.id} className="break-inside-avoid rounded-xl border border-gold/25 bg-white p-3">
-              <p className="text-xs font-bold text-gold-dark">Q{questions.findIndex((item) => item.id === question.id) + 1} &middot; {question.topic} &middot; {question.subtopic}</p>
-              <p className="mt-1 text-sm text-navy">{question.text}</p>
-              <div className="mt-2 grid gap-2 sm:grid-cols-2">
-                <div className="rounded-lg bg-red-50 p-2 text-xs"><span className="font-bold text-red-700">Their answer: </span>{attempt.answers[question.id] || "No answer"}</div>
-                <div className="rounded-lg bg-emerald-50 p-2 text-xs"><span className="font-bold text-emerald-700">Correct: </span>{Array.isArray(question.correctAnswer) ? question.correctAnswer.join(", ") : question.correctAnswer}</div>
+      {!isHandMarked && (
+        <section>
+          <h3 className="text-sm font-black uppercase tracking-[0.12em] text-navy-dark border-b border-navy/15 pb-1.5">Every question missed ({wrong.length})</h3>
+          <div className="mt-3 space-y-3">
+            {wrong.map((question) => (
+              <div key={question.id} className="break-inside-avoid rounded-xl border border-gold/25 bg-white p-3">
+                <p className="text-xs font-bold text-gold-dark">Q{questions.findIndex((item) => item.id === question.id) + 1} &middot; {question.topic} &middot; {question.subtopic}</p>
+                <p className="mt-1 text-sm text-navy">{question.text}</p>
+                <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                  <div className="rounded-lg bg-red-50 p-2 text-xs"><span className="font-bold text-red-700">Their answer: </span>{attempt.answers[question.id] || "No answer"}</div>
+                  <div className="rounded-lg bg-emerald-50 p-2 text-xs"><span className="font-bold text-emerald-700">Correct: </span>{Array.isArray(question.correctAnswer) ? question.correctAnswer.join(", ") : question.correctAnswer}</div>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      )}
 
       <p className="hidden text-xs text-muted print:block">Prepared by Summit Tuition · Not for redistribution beyond the family and student named above.</p>
     </div>
