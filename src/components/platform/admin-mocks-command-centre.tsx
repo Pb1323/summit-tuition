@@ -207,7 +207,7 @@ export function AdminMocksCommandCentre() {
 type MockActions = { onTogglePublish: () => void; onClone: () => void; onArchive: () => void };
 type AttemptLike = Pick<Attempt, "mockId" | "status">;
 
-const SUBJECT_ORDER: Subject[] = ["English", "Maths", "VR", "NVR"];
+const SUBJECT_ORDER: Subject[] = ["English", "Maths", "VR", "NVR", "Biology", "Chemistry", "Physics"];
 
 // Founder's real students, in the order they should appear in the dropdown. Any other student
 // (e.g. the "Pranav" QA test account, or a new signup) is appended after these, alphabetically.
