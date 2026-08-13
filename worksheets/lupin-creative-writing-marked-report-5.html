@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Summit Tuition — Marked Report: The Ice Cave</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root {
+    --bg: #10131c; --panel: #171b28; --panel-border: #2a3042; --gold: #d1a24a;
+    --gold-dim: #a87f38; --text: #e9ebf2; --muted: #9098ac; --rule: #2a3042;
+    --err: #e07a6b; --good: #6fbf8f;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: Georgia, 'Times New Roman', serif; color: var(--text); max-width: 860px; margin: 0 auto; padding: 36px 32px 60px; line-height: 1.6; background: var(--bg); }
+  header.masthead { text-align: center; border-bottom: 1px solid var(--rule); padding-bottom: 18px; margin-bottom: 22px; }
+  header.masthead .eyebrow { font-family: Arial, Helvetica, sans-serif; font-size: 10.5px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin: 0 0 8px; }
+  header.masthead h1 { font-size: 25px; font-style: italic; margin: 0 0 10px; color: #fff; }
+  header.masthead .meta { font-family: Arial, Helvetica, sans-serif; font-size: 11px; color: var(--muted); display: flex; justify-content: center; gap: 18px; }
+  header.masthead .meta b { color: var(--text); }
+
+  .pull-verdict { text-align: center; padding: 20px 10px 24px; margin-bottom: 10px; }
+  .pull-verdict .score { font-family: Arial, Helvetica, sans-serif; font-size: 46px; font-weight: 800; color: var(--gold); letter-spacing: 1px; }
+  .pull-verdict .score span { font-size: 18px; color: var(--muted); font-weight: 400; }
+  .pull-verdict h3 { font-size: 16px; font-style: italic; color: #fff; margin: 6px 0 8px; max-width: 560px; margin-left: auto; margin-right: auto; }
+  .pull-verdict p { font-family: Arial, Helvetica, sans-serif; font-size: 12.5px; color: var(--muted); max-width: 600px; margin: 0 auto; }
+
+  .continuity { font-family: Arial, Helvetica, sans-serif; font-size: 11.5px; color: var(--muted); background: var(--panel); border: 1px solid var(--panel-border); border-radius: 2px; padding: 10px 16px; margin: 18px 0; }
+  .continuity b { color: var(--text); }
+
+  h2.section-title { font-family: Arial, Helvetica, sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); text-align: center; margin: 30px 0 14px; page-break-after: avoid; break-after: avoid; }
+  h2.section-title::after { content: ""; display: block; width: 40px; height: 1px; background: var(--gold-dim); margin: 8px auto 0; }
+
+  .strand-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+  .strand-cell { background: var(--panel); padding: 14px 16px; }
+  .strand-cell .head { display: flex; justify-content: space-between; font-family: Arial, Helvetica, sans-serif; font-size: 11.5px; font-weight: bold; color: #fff; margin-bottom: 8px; }
+  .strand-cell .head .score { color: var(--gold); }
+  .bar-track { background: #262c3d; border-radius: 2px; height: 4px; overflow: hidden; margin-bottom: 8px; }
+  .bar-fill { height: 100%; background: var(--gold-dim); }
+  .strand-cell p { font-family: Arial, Helvetica, sans-serif; font-size: 11.3px; color: var(--muted); margin: 0; }
+
+  .manuscript-panel { background: var(--panel); border: 1px solid var(--panel-border); padding: 24px 28px; column-gap: 30px; }
+  .manuscript-panel .dropcap-title { font-family: Arial, Helvetica, sans-serif; font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); margin: 0 0 14px; }
+  .manuscript-panel p { margin: 0 0 13px; font-size: 13.5px; color: #d8dae4; }
+  .manuscript-panel p:last-child { margin-bottom: 0; }
+  .flag { color: var(--err); border-bottom: 1px dotted var(--err); }
+  .mark { font-family: Arial, Helvetica, sans-serif; font-size: 9px; color: var(--gold); vertical-align: super; margin-left: 1px; }
+
+  .corrections-list { list-style: none; margin: 0; padding: 0; }
+  .corrections-list li { display: grid; grid-template-columns: 26px 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); font-family: Arial, Helvetica, sans-serif; font-size: 12px; }
+  .corrections-list li:last-child { border-bottom: none; }
+  .corrections-list .idx { color: var(--gold); font-weight: 700; }
+  .corrections-list .issue { color: var(--muted); }
+  .corrections-list .fixed { color: var(--good); display: block; margin-top: 3px; font-style: italic; }
+
+  .strength-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 6px; }
+  .strength-col .head { font-family: Arial, Helvetica, sans-serif; font-size: 11.5px; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .strength-col ul { margin: 0; padding-left: 16px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #cfd2dd; }
+  .strength-col li { margin-bottom: 7px; }
+  .strength-col em { color: #fff; font-style: italic; }
+
+  .next-steps { font-family: Arial, Helvetica, sans-serif; font-size: 12.5px; color: #d8dae4; text-align: center; max-width: 620px; margin: 6px auto 0; }
+  .next-steps b { color: var(--gold); }
+
+  footer.sheet-footer { margin-top: 34px; padding-top: 12px; border-top: 1px solid var(--rule); font-family: Arial, Helvetica, sans-serif; font-size: 10px; color: var(--muted); text-align: center; letter-spacing: 0.5px; }
+
+  @media print {
+    body { padding: 12mm 14mm; max-width: none; background: var(--bg); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    @page { size: A4; margin: 12mm; }
+    .strand-cell, .manuscript-panel, .continuity, .corrections-list li, .pull-verdict, .strength-col { page-break-inside: avoid; break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <p class="eyebrow">Summit Tuition — Creative Writing Review</p>
+  <h1>"The Ice Cave"</h1>
+  <div class="meta">
+    <span><b>Lupin</b></span>
+    <span>Creative Writing — Survival/Danger Story</span>
+    <span>13 August 2026</span>
+  </div>
+</header>
+
+<div class="pull-verdict">
+  <div class="score">14<span> / 25</span></div>
+  <h3>A genuinely tense idea, told too fast to land.</h3>
+  <p>You've got a real hook here — a friend dangling over an ice hole, a countdown rescue, a wall of ice sealing the exit. But the piece rushes through the middle in a handful of lines, and several sentences have a word missing or two actions run together, which makes the danger harder to picture than it should be.</p>
+</div>
+
+<div class="continuity"><b>Continuity from your last report:</b> your last piece was flagged for trailing off on "..." instead of a real ending — this is now <b>three pieces in a row</b> that stop this way. It's clearly become a habit under time pressure, not a one-off. This time, make finishing the story the very last thing you do before you put your pen down, even if it's just one sentence.</div>
+
+<h2 class="section-title">Mark Breakdown</h2>
+<div class="strand-grid">
+  <div class="strand-cell"><div class="head"><span>Content &amp; Ideas</span><span class="score">4/7</span></div><div class="bar-track"><div class="bar-fill" style="width:57%"></div></div><p>A strong, genuinely dangerous scenario (an ice-hole rescue against a collapsing cave), but it's compressed into a handful of lines — the actual rescue happens in one sentence with no sense of how close, cold or frightening it really was.</p></div>
+  <div class="strand-cell"><div class="head"><span>Structure &amp; Organisation</span><span class="score">4/6</span></div><div class="bar-track"><div class="bar-fill" style="width:67%"></div></div><p>Good instinct for pacing — two separate one-line paragraphs (the opening, and "He was hanging on by a strand of hair") used deliberately for dramatic pause. Let down by the unfinished ending.</p></div>
+  <div class="strand-cell"><div class="head"><span>Style: Vocabulary &amp; Variety</span><span class="score">3/6</span></div><div class="bar-track"><div class="bar-fill" style="width:50%"></div></div><p>Some precise words ("musty", "mysterious", "tiresome") and a reach for a simile/pun ("like a chicken with its head off"), but a missing word blunts the joke and "hole" and "path" both repeat.</p></div>
+  <div class="strand-cell"><div class="head"><span>Technical Accuracy</span><span class="score">3/6</span></div><div class="bar-track"><div class="bar-fill" style="width:50%"></div></div><p>Visible self-editing on the page is a real strength, but several sentences still have a missing word or run two actions together without a joining word — see Corrections.</p></div>
+</div>
+
+<h2 class="section-title">Annotated Extract</h2>
+<div class="manuscript-panel">
+  <p class="dropcap-title">The Ice Cave</p>
+  <p>It was a choice between life and death.</p>
+  <p>Nobody had ever thought that this would ever happen. Earlier, my friends and I were planning to explore this dark, musty cave, which was in an icy mountain. We checked that we had everything: ice picks, helmets, flashlights and food.</p>
+  <p>We started off by climbing using the metal ice picks until we reached the mouth of the mysterious cave<span class="flag">. Inside</span><span class="mark">1</span>, there were two paths, so we split into two groups of two. Moments later, one of our friends, Bob, was suddenly <span class="flag">yelling his</span><span class="mark">2</span> like a chicken with its head off. "Help!" he screamed while we came darting from the other path.</p>
+  <p>He was hanging on by a strand of hair.</p>
+  <p>In front of us there was a large, deep hole, where he was gripping an ice pick. <span class="flag">Based off</span><span class="mark">3</span> the ice, we could tell it was going to break <span class="flag">in any minute</span><span class="mark">4</span>. Fortunately we could reach his hips, where <span class="flag">we started to pull, strapped a rope</span><span class="mark">5</span>.</p>
+  <p>"3... 2... 1... Pull!" I chanted, and after thirty tiresome minutes which felt like a day, we managed to pull him out. Suddenly a wall of ice covered the exit just as we were leaving. We were trapped...</p>
+</div>
+
+<h2 class="section-title">Corrections</h2>
+<ul class="corrections-list">
+  <li><span class="idx">1</span><span><span class="issue">Missing full stop — "cave inside" runs two ideas together as one sentence.</span><span class="fixed">"...mysterious cave. Inside, there were two paths..."</span></span></li>
+  <li><span class="idx">2</span><span><span class="issue">Missing word — the joke needs "head off" before "like a chicken", or it just reads as "yelling his... like a chicken."</span><span class="fixed">"...was suddenly yelling his head off, like a chicken with its head off."</span></span></li>
+  <li><span class="idx">3</span><span><span class="issue">Wrong preposition — you judge something "based on" evidence, not "based off" it.</span><span class="fixed">"Based on the ice, we could tell..."</span></span></li>
+  <li><span class="idx">4</span><span><span class="issue">Wrong preposition — "in any minute" isn't standard English.</span><span class="fixed">"...it was going to break at any moment."</span></span></li>
+  <li><span class="idx">5</span><span><span class="issue">Two actions run together with no joining word, so it's unclear what happened first — did they strap the rope, then pull?</span><span class="fixed">"...we strapped a rope around him and started to pull."</span></span></li>
+</ul>
+
+<h2 class="section-title">Strengths</h2>
+<div class="strength-cols">
+  <div class="strength-col">
+    <div class="head">Structure &amp; Craft</div>
+    <ul>
+      <li>Opening straight into danger with <em>"It was a choice between life and death"</em> as its own line — a real hook, no slow build-up needed.</li>
+      <li><em>"He was hanging on by a strand of hair"</em> isolated as its own one-line paragraph — you're using this device on purpose now, not by accident.</li>
+      <li>The <em>"3... 2... 1... Pull!"</em> countdown is a good instinct for building tension through dialogue rather than description.</li>
+    </ul>
+  </div>
+  <div class="strength-col">
+    <div class="head">Editing &amp; Language</div>
+    <ul>
+      <li>Real evidence of redrafting as you write — you crossed out and rebuilt the "large deep hole" and the group-splitting sentence rather than leaving your first attempt.</li>
+      <li>Reaching for imagery under pressure with the <em>"chicken with its head off"</em> simile, even though the wording needs tightening.</li>
+      <li>Good precise word choices: <em>"musty"</em>, <em>"mysterious"</em>, <em>"tiresome"</em>.</li>
+    </ul>
+  </div>
+</div>
+
+<h2 class="section-title">Next Steps</h2>
+<p class="next-steps"><b>Focus for next time —</b> 1) Finish the story properly — three pieces in a row have stopped on "...", so plan your last line before you start writing, not after. 2) Slow the rescue down: add a sentence or two of what it looked, sounded or felt like as the ice cracked, instead of jumping straight to "we managed to pull him out." 3) Read your last sentence back before moving on — that's how you'll catch missing words like in Correction 2.</p>
+
+<footer class="sheet-footer">
+  MARKED AGAINST A FOUR-STRAND CREATIVE-WRITING RUBRIC (CONTENT &amp; IDEAS / STRUCTURE / STYLE / TECHNICAL ACCURACY) SCALED TO 25 · SUMMIT TUITION
+</footer>
+
+</body>
+</html>
