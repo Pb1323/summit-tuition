@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Summit Review — Comprehension Technique-Spotting</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root { --ink:#1a1a1a; --accent:#a9291c; --navy:#16233f; --rule:#1a1a1a; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: var(--ink);
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 44px 40px 70px;
+    background: #fdfcf9;
+  }
+  .masthead {
+    text-align: center;
+    border-top: 4px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding: 10px 0 12px;
+    margin-bottom: 4px;
+  }
+  .masthead .kicker {
+    font-family: Arial, sans-serif;
+    font-size: 10.5px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .masthead h1 {
+    font-size: 38px;
+    margin: 4px 0 2px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+  }
+  .masthead .issue {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .meta-line { display: flex; justify-content: space-between; font-family: Arial, sans-serif; font-size: 11px; color: #666; border-bottom: 1px solid #ddd; padding: 8px 2px 10px; margin-bottom: 20px; }
+  .meta-line span b { color: var(--ink); }
+
+  .headline-block { margin: 22px 0 16px; }
+  .headline-block h2 { font-size: 27px; line-height: 1.15; margin: 0 0 8px; font-weight: 400; }
+  .headline-block .dek { font-style: italic; color: #555; font-size: 14.5px; }
+  .headline-block .dek::before { content: "— "; font-style: normal; color: var(--accent); font-weight: bold; }
+
+  .cols { columns: 2; column-gap: 30px; margin-top: 16px; }
+  .cols p { margin: 0 0 12px; font-size: 13.5px; text-align: justify; }
+  .dropcap:first-letter { float: left; font-size: 48px; line-height: 40px; padding: 4px 6px 0 0; font-weight: bold; color: var(--navy); }
+
+  .pullquote { break-inside: avoid; font-family: Georgia, serif; font-size: 17px; font-style: italic; line-height: 1.35; color: var(--navy); border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); padding: 10px 0; margin: 10px 0 14px; }
+
+  h3.section { font-family: Arial, sans-serif; font-size: 14px; color: var(--accent); text-transform: uppercase; letter-spacing: 1.5px; margin: 30px 0 12px; border-bottom: 2px solid var(--ink); padding-bottom: 6px; }
+
+  .technique-card { background: #fff; border: 1px solid #ddd; padding: 14px 18px; margin-bottom: 14px; page-break-inside: avoid; }
+  .technique-card .name { font-family: Arial, sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); margin: 0 0 6px; }
+  .technique-card p { font-size: 13px; margin: 0 0 8px; }
+  .technique-card .method { font-size: 12.5px; color: #444; margin: 0; padding-left: 18px; }
+  .technique-card .method li { margin-bottom: 2px; }
+
+  .q-block { background: #fff; border: 1px solid #ddd; padding: 16px 18px; margin-top: 16px; page-break-inside: avoid; }
+  .q-block .q { margin-bottom: 14px; font-size: 13.5px; }
+  .q-block .q b { color: var(--navy); }
+  .q-block .ans-line { border-bottom: 1px solid #ccc; height: 20px; margin: 6px 0 0 20px; }
+  .q-block .opts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 16px; margin: 6px 0 4px 20px; font-family: Arial, sans-serif; font-size: 12px; }
+
+  .answer-key { margin-top: 30px; border: 1.5px dashed var(--accent); padding: 14px 18px; font-family: Arial, sans-serif; font-size: 12px; }
+  .answer-key h3 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); }
+  .answer-key ol { margin: 0; padding-left: 18px; }
+  .answer-key li { margin-bottom: 5px; line-height: 1.4; }
+
+  footer { font-family: Arial, sans-serif; font-size: 10px; color: #888; text-align: center; margin-top: 40px; border-top: 1px solid #ddd; padding-top: 10px; letter-spacing: 1px; text-transform: uppercase; }
+  @media print { body { padding: 24px; } .cols { columns: 2; } .technique-card, .q-block { box-shadow: none; } }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="kicker">Comprehension &amp; Close Reading — Elite Level</div>
+  <h1>The Summit Review</h1>
+  <div class="issue">Technique-Spotting Edition — For Lupin</div>
+</div>
+
+<div class="meta-line">
+  <span>Name: <b>Lupin</b></span>
+  <span>Date: <b>______________</b></span>
+  <span>Time: <b>35 min</b></span>
+  <span>Marks: <b>___ / 22</b></span>
+</div>
+
+<div class="headline-block">
+  <h2>The Judging Table</h2>
+  <p class="dek">Two committee members remember the same science-fair afternoon completely differently — work out why, and what it reveals about each of them.</p>
+</div>
+
+<div class="cols">
+<p class="dropcap">The rule at Fenmoor Academy's science fair had always been simple: three judges, three scores, and the highest average won. Priti's magnetic-levitation model had wobbled twice during her demonstration, and she'd spent the walk back to her seat convinced the wobble had cost her everything.</p>
+<p>Mr. Aldous, who taught physics and judged every year without fail, gave her a 9 out of 10. He wrote a single line on his scorecard: "Understood the failure better than the success." Priti didn't understand what he meant until she reread her own explanation sheet — she'd spent more words describing why the model wobbled than describing how it worked in the first place.</p>
+<p>Dr. Yun, the visiting judge from the university, gave her a 6. Her note read: "Promising, but the presentation undersold the physics." She had arrived forty minutes late, missing the demonstration itself and judging only the explanation card and Priti's rushed, nervous summary at the end of the day, when three other exhibits still needed a look before the hall closed.</p>
+<p>The third judge, Mrs. Okafor, gave an 8, and wrote nothing at all — she never did, every year, a fact the older students had stopped remarking on.</p>
+<div class="pullquote">"Two judges saw the same three minutes. Only one of them was actually there for it."</div>
+<p>Priti's average came to 7.7, not enough for the top three. When she asked Mr. Aldous afterwards whether the wobble had ruined it, he seemed surprised by the question. "The wobble was the interesting part," he said. "Anyone can build a model that works. Explaining why it almost didn't — that's the harder thing." He didn't mention Dr. Yun's score at all, and Priti noticed, for the first time, that he never once looked toward the judging table while he said it.</p>
+</div>
+</div>
+
+<h3 class="section">1 · Multiple-Viewpoint Synthesis</h3>
+<div class="technique-card">
+  <p class="name">Copy Down — Definition</p>
+  <p>Working out why two accounts of the same event genuinely disagree — not by picking a "correct" one, but by identifying what each observer actually had access to.</p>
+  <p class="name" style="margin-top:8px;">Method</p>
+  <ol class="method">
+    <li>List what each person witnessed directly versus what they only heard about or inferred</li>
+    <li>Check for a stated or implied gap in their access (timing, position, information)</li>
+    <li>Explain the disagreement using that gap — not by assuming one person is simply wrong</li>
+  </ol>
+</div>
+<div class="q-block">
+  <div class="q"><b>1.</b> Dr. Yun's score note focuses on "the presentation," while Mr. Aldous's focuses on Priti's explanation of the failure. Using one detail from the passage, explain why they judged such different things.</div>
+  <div class="ans-line"></div>
+  <div class="q"><b>2.</b> Is it fair to say Dr. Yun's score was "wrong"? Justify your answer using only evidence in the passage, not your own opinion of judging fairness.</div>
+  <div class="ans-line"></div><div class="ans-line"></div>
+</div>
+
+<h3 class="section">2 · Structural Withholding</h3>
+<div class="technique-card">
+  <p class="name">Copy Down — Definition</p>
+  <p>A writer deliberately delays a piece of information the reader needs, so that an earlier detail only makes full sense once it's supplied later.</p>
+  <p class="name" style="margin-top:8px;">Method</p>
+  <ol class="method">
+    <li>Find a detail early in the passage that feels slightly odd or unexplained on first read</li>
+    <li>Locate where the passage later supplies the missing context</li>
+    <li>Explain what effect the delay has — suspicion, sympathy, a change of mind</li>
+  </ol>
+</div>
+<div class="q-block">
+  <div class="q"><b>3.</b> The passage doesn't explain why Dr. Yun missed the demonstration until the third paragraph. What effect does withholding this until then have on how the reader judges her score?</div>
+  <div class="ans-line"></div>
+  <div class="q"><b>4.</b> Mrs. Okafor's silence is mentioned twice — once as a plain fact, once as something "the older students had stopped remarking on." What does the second mention add that the first didn't?</div>
+  <div class="ans-line"></div>
+</div>
+
+<h3 class="section">3 · Inference from What Is Not Said</h3>
+<div class="technique-card">
+  <p class="name">Copy Down — Definition</p>
+  <p>Working out a character's real feeling or motive from an absence — something they pointedly avoid saying or doing — rather than from a direct statement.</p>
+  <p class="name" style="margin-top:8px;">Method</p>
+  <ol class="method">
+    <li>Notice what a character conspicuously does not mention, ask, or look at</li>
+    <li>Ask what a neutral, unbothered person would have done instead in that moment</li>
+    <li>Use the gap between the two to infer the real feeling</li>
+  </ol>
+</div>
+<div class="q-block">
+  <div class="q"><b>5.</b> "He didn't mention Dr. Yun's score at all... he never once looked toward the judging table while he said it." What does this suggest about Mr. Aldous's real opinion of Dr. Yun's score, and why doesn't the passage state it directly?</div>
+  <div class="ans-line"></div><div class="ans-line"></div>
+  <div class="q"><b>6.</b> Which of the following best describes why the writer chose not to have Mr. Aldous criticise Dr. Yun directly?
+    <div class="opts">
+      <span>A. It would make him seem unprofessional</span>
+      <span>B. Readers should infer his view, not be told it</span>
+      <span>C. The passage has no room left for dialogue</span>
+      <span>D. Dr. Yun is not important to the story</span>
+    </div>
+  </div>
+</div>
+
+<h3 class="section">4 · Tone Shift Detection</h3>
+<div class="technique-card">
+  <p class="name">Copy Down — Definition</p>
+  <p>Spotting the exact sentence where a passage's emotional register changes — from anxious to reassured, from neutral to pointed — and identifying what triggers it.</p>
+  <p class="name" style="margin-top:8px;">Method</p>
+  <ol class="method">
+    <li>Read the passage once for overall mood before answering anything</li>
+    <li>Find the specific sentence where the mood measurably changes</li>
+    <li>Identify what causes the shift — a new fact, a line of dialogue, a change of scene</li>
+  </ol>
+</div>
+<div class="q-block">
+  <div class="q"><b>7.</b> Track the passage's tone from Priti's opening anxiety to the final paragraph. Identify the exact sentence where the tone shifts, and explain what causes the shift.</div>
+  <div class="ans-line"></div><div class="ans-line"></div>
+  <div class="q"><b>8.</b> "The wobble was the interesting part" reverses something Priti believed at the start of the passage. State what she believed, and explain in one sentence why the reversal matters to the story's meaning, not just its plot.</div>
+  <div class="ans-line"></div><div class="ans-line"></div>
+</div>
+
+<div class="answer-key">
+  <h3>Marking Notes (for the tutor, not the student)</h3>
+  <ol>
+    <li><b>Q1:</b> Look for: Dr. Yun arrived 40 minutes late and missed the demonstration, so she could only judge the explanation card and the rushed end-of-day summary — a genuinely different, more limited data set than Mr. Aldous's.</li>
+    <li><b>Q2:</b> Accept either "fair" or "not simply wrong" if justified by her limited access — reject any answer that argues from general fairness rather than the text.</li>
+    <li><b>Q3:</b> Should note the delay initially makes Dr. Yun's low score seem harsh/unjustified, then recontextualises it as understandable once her limited access is revealed.</li>
+    <li><b>Q4:</b> The first mention is neutral fact; the second frames it as a long-standing, accepted pattern — suggesting it's a deliberate, known trait rather than a one-off, which invites the reader to wonder why.</li>
+    <li><b>Q5:</b> Suggests quiet disapproval or discomfort with Dr. Yun's score, shown through avoidance rather than stated criticism — professional restraint, not indifference.</li>
+    <li><b>Q6:</b> B.</li>
+    <li><b>Q7:</b> Shift occurs at "He didn't mention Dr. Yun's score at all" (or "Anyone can build a model that works...") — triggered by Mr. Aldous's reframing of the wobble as valuable, not by an external event.</li>
+    <li><b>Q8:</b> She believed the wobble had cost her the competition (a flaw); the reversal shows the passage's real theme — that explaining failure well is itself a skill, not just a fallback.</li>
+  </ol>
+</div>
+
+<footer>Summit Tuition · Comprehension Technique-Spotting · Style: Editorial Magazine</footer>
+
+</body>
+</html>
