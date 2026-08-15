@@ -1,8 +1,13 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-12 (marked the first GCSE student's 3 diagnostic papers + fixed the marked-report screen for hand-marked papers — see below)
+Last updated: 2026-08-15 (added a new, even harder Verbal Reasoning paper for Lupin — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (session — 2026-08-15, new harder Verbal Reasoning paper)
+
+- Lupin scored 44/50 (88%) on the hardest Verbal Reasoning paper on the site and had nothing harder left to try. Wrote a brand new 50-question VR paper, "Verbal Reasoning — Summit Full Paper", that takes every question type from the old hardest paper and pushes it one genuine step further — codes now combine two rules instead of one, number/letter sequences weave together three patterns instead of two, and every multiple-choice question has a properly tricky wrong answer instead of an obvious throwaway one. Every code, sequence, and number puzzle in it was checked by a small script before writing the questions, so nothing is a hand-calculation mistake. Typecheck and lint both came back clean, and it's live in the shared database.
+- Unlocked the new paper for Lupin specifically so it shows up for him next time he logs in.
 
 ## Done (session — 2026-08-12, marked Changxun's GCSE mocks + fixed a real report bug)
 
