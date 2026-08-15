@@ -1,8 +1,13 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-15 (added a new, even harder Verbal Reasoning paper for Lupin — see below)
+Last updated: 2026-08-15 (added a new GCSE Biology mock on cell structure/organelles/diffusion, and fixed a badly-formatted question — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (session — 2026-08-15, later same day, new GCSE Biology cell structure/organelles/diffusion mock + fixed a badly-formatted question)
+
+- Founder flagged one of the GCSE Biology questions added earlier (an osmosis question about potato cylinders in salt solution) as bad — it crammed five data points into one dense, hard-to-read run of numbers, and because every question renders as one big bold heading on screen, that made it look like a wall of text. Rewrote it as a normal readable sentence with the same numbers and same marks, just easier to actually read.
+- Built a second new GCSE Biology paper as requested: 40 questions on cell organelles, cell structure, and diffusion — deliberately leaving out cell division/mitosis for a later paper. Every organelle in an animal cell, plant cell and bacterial cell is individually defined (nucleus, mitochondria, ribosomes, cell wall, chloroplasts, and so on), plus microscope/magnification maths and a full section on diffusion (what it is, what speeds it up or slows it down, real examples in the body). No diagrams anywhere — every question stands on its own as plain text, learning from the "unanswerable figure question" mistake from the earlier GCSE session. Typecheck clean, live in the shared database, committed and pushed.
 
 ## Done (session — 2026-08-15, new harder Verbal Reasoning paper)
 
