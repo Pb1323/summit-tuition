@@ -1,8 +1,12 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-15 (added a new GCSE Biology mock on cell structure/organelles/diffusion, and fixed a badly-formatted question — see below)
+Last updated: 2026-08-15, overnight (added a new English paper between Ultra and Zenith in difficulty — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (overnight session — 2026-08-15, one new English paper)
+
+- Added "English GL-Style Full Paper XV" (`english-gl-23-vertex`), a 54-question/54-mark Elite paper deliberately calibrated to sit between the existing Ultra and Zenith papers in difficulty — harder than Ultra, a clear notch below Zenith. New original passage, "The Missing Half-Second," about a school robotics team tracing a competition-robot fault back to a teammate's hidden mistake — a fresh story genre for the platform, not another craft-apprentice or sports-rivalry tale. Verified structurally sound (answers all resolve, no duplicate ids, right section split, marks add up) and typechecks clean.
 
 ## Done (session — 2026-08-15, later same day, new GCSE Biology cell structure/organelles/diffusion mock + fixed a badly-formatted question)
 
