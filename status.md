@@ -607,3 +607,9 @@ The 3 new Grammar topics from today's session (Pronoun Errors, Apostrophes & Pos
 3. **VR/NVR content** was flagged in the business research as the single biggest gap versus competitors — separate from Study Notes. Do you want that prioritised over more Notes pages at some point soon, or keep the current focus?
 4. **Progress-saving groundwork** — do you want me to look at adding real save-progress (so mastery meters / badges / certificates become possible later), or keep Notes content-only for now and revisit that later?
 5. Anything from the business/marketing docs you want acted on now (e.g. setting up a Google Business Profile, drafting outreach messages to Chinese schools/temples), or is that purely for your own reference at this stage?
+
+---
+
+## 2026-08-16 (overnight session — new English mock, Full Paper XVI "Meridian")
+
+Added one new English mock: `english-gl-24-meridian` ("English GL-Style Full Paper XVI — Meridian"), 54 questions/54 marks, Elite tier, published. New original passage "Route Seven" — a paper-round coming-of-age story (a girl inheriting her brother's newspaper round), a fresh genre not used by any recent passage. Calibrated to sit strictly between the existing Ultra and Zenith papers in difficulty. Note: `english-gl-23-vertex` (added the previous overnight session) is also calibrated to that same band — content doesn't overlap, but the two papers are now similarly hard; worth a look if a future session wants to space the tier out further. Verified with a throwaway script and `npm run typecheck` (clean, no new errors); committed and pushed, not yet seeded to the production DB.
