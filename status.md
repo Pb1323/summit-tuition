@@ -1,8 +1,13 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-15, overnight (added a new English paper between Ultra and Zenith in difficulty — see below)
+Last updated: 2026-08-16, overnight (added a new Maths paper at the maths-elite-7/8/9 difficulty band — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (overnight session — 2026-08-16, one new Maths paper)
+
+- Added "Maths GL-Style Full Paper XI" (`maths-elite-11`), a 50-question/50-mark Elite paper covering all six core areas (number, fractions/decimals/percentages, ratio, algebra, geometry, statistics). Deliberately calibrated to the same difficulty band as the existing `maths-elite-7`/`-8`/`-9` papers — where a strong student has been scoring around 75% — rather than pushing any harder.
+- 46% of questions carry a diagram, using all 11 documented Maths visual types (table, number line, fraction bar, ratio blocks, sequence, shape, coordinate grid, bar chart, line graph, Venn diagram, clock) with no repeated diagrams. Verified structurally sound (answers all resolve, no duplicate ids, marks add up, quality checks pass) and typechecks clean.
 
 ## Done (overnight session — 2026-08-15, one new English paper)
 
