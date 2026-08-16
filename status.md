@@ -4,6 +4,11 @@ Last updated: 2026-08-16, overnight (added a new Maths paper at the maths-elite-
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
+## Done (overnight session — 2026-08-16, later same day, new Verbal Reasoning paper)
+
+- Added "Verbal Reasoning — Horizon Full Paper" (`vr-horizon-full`), a 50-question/50-mark Elite VR paper calibrated to the same solid difficulty as the existing `vr-elite-difficult` paper (not pushing past `vr-summit-full`, the current hardest). Deliberately built around question types not used in either existing VR paper — family-relationship logic puzzles, "select a word from each group" cross-referencing, "follow the instructions" multi-step letter/number puzzles, "odd pair out", "one word fits both sentences", number analogies, word ladders, and letters-as-digits equations — rather than new wording on old templates.
+- Every odd-one-out/vocabulary-style question has a genuinely plausible near-miss distractor, and every cipher/sequence/riddle answer was hand-verified before writing the mark scheme. Verified structurally sound (no duplicate ids, every answer resolves in its own options, marks add up to 50) and typechecks clean.
+
 ## Done (overnight session — 2026-08-16, one new Maths paper)
 
 - Added "Maths GL-Style Full Paper XI" (`maths-elite-11`), a 50-question/50-mark Elite paper covering all six core areas (number, fractions/decimals/percentages, ratio, algebra, geometry, statistics). Deliberately calibrated to the same difficulty band as the existing `maths-elite-7`/`-8`/`-9` papers — where a strong student has been scoring around 75% — rather than pushing any harder.
