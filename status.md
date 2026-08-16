@@ -1,8 +1,13 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-16, overnight (added a new Maths paper at the maths-elite-7/8/9 difficulty band — see below)
+Last updated: 2026-08-16, overnight (added a second Elite Non-Verbal Reasoning paper — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (overnight session — 2026-08-16, another new Non-Verbal Reasoning paper)
+
+- Added "Non-Verbal Reasoning — Full Paper III" (`nvr-elite-summit`), a second Elite-tier 50-question/50-mark NVR paper alongside the existing `nvr-elite-difficult`, at a comparable difficulty but built from fresh rule combinations — nested "shape inside a shape" matrix questions, rules based on diagonal position rather than row/column, a growing-arrow-count sequence, and figure codes that reuse the same letters for two different meanings.
+- Every similarity question was checked against the platform's known "query figure gives away the answer" bug and confirmed clean. Verified structurally sound (no duplicate ids, answers all resolve, marks add up to 50) and typechecks clean.
 
 ## Done (overnight session — 2026-08-16, later same day, new Verbal Reasoning paper)
 
