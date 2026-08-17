@@ -1,8 +1,17 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-16, overnight (added a second Elite Non-Verbal Reasoning paper — see below)
+Last updated: 2026-08-17, overnight (added a new English paper, "Keystone" — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (overnight session — 2026-08-17, new English paper "Keystone")
+
+- Added `english-gl-25-keystone` ("English GL-Style Full Paper XVII — Keystone"), a 54-question/54-mark Elite English paper built around a brand-new passage, "The Rooftop Hive" (a school beekeeping club), calibrated to sit between `english-gl-19-ultra` and `english-gl-22-zenith` in difficulty. Note: this is now the third paper explicitly calibrated to that same band (after `english-gl-23-vertex` and `english-gl-24-meridian`, both added the last two nights) — worth a future session differentiating the band further or adding a paper above Zenith instead of a fourth at this level.
+
+## Done (overnight session — 2026-08-17, a third Elite Non-Verbal Reasoning paper)
+
+- Added "Non-Verbal Reasoning — Full Paper IV" (`nvr-elite-beacon`), a third Elite-tier 50-question/50-mark NVR paper bringing the Elite NVR selection up to three alongside the existing `nvr-elite-difficult`. Built from fresh rule combinations across all 10 NVR visual types, deliberately phase-shifted from the two earlier Elite papers — features include phase-shifted fill cycles, rotation driven by row-minus-column math, checkerboard-parity patterns in nested figures, second-difference rotation sequences, interleaved cycles of different lengths, numeric codes combined with rotation-band rules, and edge cases including a "no valid join" combining-solids case and a punch placed exactly on a fold line.
+- Every similarity question was checked against the platform's known "query figure gives away the answer" bug and confirmed clean. Verified structurally sound (no duplicate ids, answers all resolve, marks add up to 50) via script before commit, and typechecks clean.
 
 ## Done (overnight session — 2026-08-16, another new Non-Verbal Reasoning paper)
 
