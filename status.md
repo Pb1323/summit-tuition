@@ -619,3 +619,9 @@ Added one new English mock: `english-gl-24-meridian` ("English GL-Style Full Pap
 ## 2026-08-17 (overnight session — new Maths mock, Full Paper XII)
 
 Added one new Maths mock: `maths-elite-12` ("Maths GL-Style Full Paper XII"), id prefix `mf1`-`mf50`, 50 questions/50 marks, Elite tier, published, calibrated to the same difficulty band as `maths-elite-7`/`8`/`9`/`11` (~75% for a strong student). Covers all six core areas with 46% visual ratio across all 11 documented visual types and 40% stretch questions. Verified with a throwaway script (Ready status, no duplicate ids/visuals) and `npm run typecheck` (no new errors); committed and pushed, not yet seeded to the production DB.
+
+---
+
+## 2026-08-17 (overnight session — new VR mock, "Vantage Full Paper")
+
+Added one new Verbal Reasoning mock: `vr-vantage-full` ("Verbal Reasoning — Vantage Full Paper"), id prefix `vrz1`-`vrz50`, 50 questions/50 marks, 45-minute limit, Elite tier, published. Calibrated to sit alongside `vr-elite-difficult` rather than exceeding `vr-summit-full`, built around six question types not used in any existing VR mock: statement-and-conclusion syllogisms, word-structure odd-one-outs (vowel count/double letters/silent letters), "which word fits in front of all four of these words" linking puzzles, ranking/ordering logic puzzles from clues, logic-grid matching puzzles, and two-blank sentence-completion questions. Verified with a throwaway script (no duplicate/missing ids, all answers resolve, totalMarks sums to 50) and `npm run typecheck` (no new errors); committed and pushed, not yet seeded to the production DB.
