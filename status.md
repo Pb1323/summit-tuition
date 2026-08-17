@@ -613,3 +613,9 @@ The 3 new Grammar topics from today's session (Pronoun Errors, Apostrophes & Pos
 ## 2026-08-16 (overnight session — new English mock, Full Paper XVI "Meridian")
 
 Added one new English mock: `english-gl-24-meridian` ("English GL-Style Full Paper XVI — Meridian"), 54 questions/54 marks, Elite tier, published. New original passage "Route Seven" — a paper-round coming-of-age story (a girl inheriting her brother's newspaper round), a fresh genre not used by any recent passage. Calibrated to sit strictly between the existing Ultra and Zenith papers in difficulty. Note: `english-gl-23-vertex` (added the previous overnight session) is also calibrated to that same band — content doesn't overlap, but the two papers are now similarly hard; worth a look if a future session wants to space the tier out further. Verified with a throwaway script and `npm run typecheck` (clean, no new errors); committed and pushed, not yet seeded to the production DB.
+
+---
+
+## 2026-08-17 (overnight session — new Maths mock, Full Paper XII)
+
+Added one new Maths mock: `maths-elite-12` ("Maths GL-Style Full Paper XII"), id prefix `mf1`-`mf50`, 50 questions/50 marks, Elite tier, published, calibrated to the same difficulty band as `maths-elite-7`/`8`/`9`/`11` (~75% for a strong student). Covers all six core areas with 46% visual ratio across all 11 documented visual types and 40% stretch questions. Verified with a throwaway script (Ready status, no duplicate ids/visuals) and `npm run typecheck` (no new errors); committed and pushed, not yet seeded to the production DB.
