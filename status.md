@@ -1,8 +1,12 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-18, later same day (added two new GCSE mocks — Physics on magnetism/electromagnetism and Biology on the digestive system — see below)
+Last updated: 2026-08-18, later same day (new Non-Verbal Reasoning Study Notes strand — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (2026-08-18, later same day, first Non-Verbal Reasoning Study Notes strand)
+
+- Non-Verbal Reasoning notes were switched on for the first time — it used to show as "Coming soon" on the Study Notes subject page. Built one full topic, "Shape Patterns & Sequences," covering the five most common NVR question types students actually meet on exams: odd one out, series (find the next figure), analogies, rotation, and mirror/reflection. Each has a full lesson (why it matters, common mistakes, an exam tip) plus a brand-new interactive "click the correct figure" demo built specifically for shapes, since the existing interactive demos only worked for words. This is free to try, matching the one-free-topic pattern used for Maths and English. Checked it builds and works correctly, then pushed to GitHub — it's live in the code now, not just a local file.
 
 ## Done (2026-08-18, later same day, two new GCSE mocks)
 
