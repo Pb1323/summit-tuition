@@ -1,8 +1,12 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-18, overnight (added a new VR paper with six novel question types, a new Maths paper, "Full Paper XIII", plus English/NVR papers from prior nights — see below)
+Last updated: 2026-08-18, overnight (added a new NVR paper "Full Paper V" with fresh rule-stacking, plus a VR paper with six novel question types, a new Maths paper "Full Paper XIII", and English/NVR papers from prior nights — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (overnight session — 2026-08-18, later same night, a fifth Elite Non-Verbal Reasoning paper)
+
+- Added "Non-Verbal Reasoning — Full Paper V" (`nvr-elite-crest`), a 50-question/50-mark Elite NVR paper (question ids `nvk1`-`nvk50`) alongside the existing `nvr-elite-difficult`, `nvr-elite-summit`, and `nvr-elite-beacon` papers, built entirely from the platform's existing 10 NVR visual types with fresh rule combinations not used in those three: diagonal-band and product-based matrix rules, a squared-rotation and a prime-position sequence rule, running-total/parity-based odd-one-out hidden rules, doubling/reversing figure analogies, angle-reflection and fill-gated-direction rotation puzzles, remainder- and running-total-based figure codes, and a hole-punch section built around a new edge-case family (repeating the same fold direction twice, which turns out not to double the hole count). Every value was computed and checked with a throwaway script (including re-running the renderer's own `unfoldPoints` fold logic and re-checking every similarity question against the known "Bug 4" query-figure-gives-away-the-answer issue) rather than hand-derived, then deleted. `npm run typecheck` shows no new errors. Committed and pushed (static file only — not yet seeded to the production database).
 
 ## Done (overnight session — 2026-08-18, new Verbal Reasoning paper with novel question types)
 
