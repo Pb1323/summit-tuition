@@ -1,6 +1,6 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-17, overnight (added a new English paper, "Keystone" — see below)
+Last updated: 2026-08-18, overnight (added a new Maths paper, "Full Paper XIII" — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
@@ -638,3 +638,7 @@ Added one new Verbal Reasoning mock: `vr-vantage-full` ("Verbal Reasoning — Va
 ## 2026-08-17 (overnight session — new NVR mock, "Full Paper IV / Beacon")
 
 Added a third Elite-difficulty Non-Verbal Reasoning mock: `nvr-elite-beacon` ("Non-Verbal Reasoning — Full Paper IV"), id prefix `nvw1`-`nvw50`, 50 questions/50 marks, 55-minute limit, Elite tier, published — alongside (not replacing) `nvr-elite-difficult` and `nvr-elite-summit`. Built entirely from the platform's existing 10 NVR visual types with fresh rule-stacking (phase-shifted fill cycles, row-minus-column rotation, checkerboard-parity nested figures, second-difference rotation sequences, interleaved cycles, numeric and rotation-band figure codes, a "no valid join" combining-solids edge case, and a punch-on-a-fold-line hole-punch edge case verified against the renderer's own `unfoldPoints` logic). Caught and fixed several real authoring bugs before finishing (a markScheme/answer mismatch, a flawed rotation-sequence pattern, two duplicate-option-text bugs, and two cases using compound/nested figures where the renderer only supports single figures) via a generate-then-verify throwaway script, per the project's established "compute, don't hand-derive" convention. `npm run typecheck` clean, no new errors. Committed and pushed, not yet seeded to the production DB.
+
+## 2026-08-18 (overnight session — new Maths mock, Full Paper XIII)
+
+Added one new Maths mock: `maths-elite-13` ("Maths GL-Style Full Paper XIII"), id prefix `mo1`-`mo50`, 50 questions/50 marks, Elite tier, published, calibrated to the same difficulty band as `maths-elite-7`/`8`/`9`/`11`/`12` (~75% for a strong student). Covers all six core areas with 46% visual ratio across all 11 documented visual types (zero duplicate visual data) and 42% stretch questions, plus one number-riddle tagged "challenge". Verified with a throwaway script (Ready status, no duplicate/missing ids or answers) and `npm run typecheck` (no new errors); committed and pushed, not yet seeded to the production DB.
