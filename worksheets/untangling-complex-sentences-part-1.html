@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Untangling Complex Sentences — Part 1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root { --ink:#20263a; --navy:#16233f; --gold:#a9781f; --line:#c9d2e8; --paper:#fdfcf8; }
+  * { box-sizing: border-box; }
+  body { font-family: Georgia, 'Times New Roman', serif; color: var(--ink); max-width: 800px; margin: 0 auto; padding: 36px 42px 60px; background: var(--paper); }
+  header { border-bottom: 3px solid var(--navy); padding-bottom: 10px; margin-bottom: 18px; }
+  header .brand { font-family: Arial, sans-serif; font-size: 10.5px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); }
+  header h1 { font-size: 27px; margin: 4px 0 6px; color: var(--navy); }
+  header .meta { display:flex; justify-content: space-between; font-family: Arial, sans-serif; font-size: 11px; color:#555; }
+  header .meta b { color: var(--ink); }
+  h2.section { font-family: Arial, sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; color: #fff; background: var(--navy); padding: 6px 12px; margin: 26px 0 12px; border-radius: 3px; }
+  .copy-box { background: #fff; border: 1.5px solid var(--line); padding: 14px 18px; margin-bottom: 14px; }
+  .copy-box .label { font-family: Arial, sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); margin: 0 0 6px; }
+  .copy-box p { margin: 0 0 8px; font-size: 14px; line-height: 1.5; }
+  .copy-box p:last-child { margin-bottom: 0; }
+  .copy-box ol, .copy-box ul { margin: 4px 0 0; padding-left: 20px; font-size: 13.5px; line-height: 1.55; }
+  .connectives { font-family: Arial, sans-serif; font-size: 12.5px; background: #f0f1f5; border-radius: 4px; padding: 8px 12px; margin-top: 6px; line-height: 1.7; }
+  .connectives b { color: var(--navy); }
+  .worked { background: #f4f2ea; border: 1px dashed var(--gold); padding: 12px 16px; margin: 10px 0 16px; font-size: 13.5px; line-height: 1.6; }
+  .worked .tag { display:inline-block; font-family: Arial, sans-serif; font-size: 10px; text-transform:uppercase; letter-spacing:1px; background: var(--navy); color:#fff; padding: 1px 7px; border-radius: 8px; margin-right: 6px; }
+  .worked .chunk-main { color: var(--navy); font-weight: bold; }
+  .worked .chunk-extra { color: #7a7a7a; font-style: italic; }
+  .passage { background: #fff; border: 1px solid var(--line); padding: 16px 20px; font-size: 13.5px; line-height: 1.7; text-align: justify; margin-bottom: 14px; }
+  .passage p { margin: 0 0 10px; }
+  .q-block { background: #fff; border: 1px solid var(--line); padding: 14px 18px; margin-bottom: 10px; }
+  .q-block .q { font-size: 13.5px; margin-bottom: 8px; }
+  .q-block .q b { color: var(--navy); }
+  .q-block .sentence { font-style: italic; color: var(--navy); }
+  .ans-line { border-bottom: 1px solid #bbb; height: 20px; margin: 4px 0 0 18px; }
+  .reminder { margin-top: 22px; background: #fff7e6; border: 1.5px solid var(--gold); padding: 12px 16px; font-family: Arial, sans-serif; font-size: 12.5px; color: #5a3f0a; line-height: 1.5; }
+  .reminder b { color: var(--navy); }
+  .answer-key { margin-top: 24px; border: 1.5px dashed #999; padding: 12px 16px; font-family: Arial, sans-serif; font-size: 11.5px; color: #444; }
+  .answer-key h3 { margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); }
+  .answer-key ol { margin: 0; padding-left: 18px; }
+  .answer-key li { margin-bottom: 4px; }
+  footer { font-family: Arial, sans-serif; font-size: 10px; color: #999; text-align: center; margin-top: 34px; border-top: 1px solid #ddd; padding-top: 8px; letter-spacing: 1px; text-transform: uppercase; }
+  @media print { body { padding: 20px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">Summit Tuition — Comprehension Skills</div>
+  <h1>Untangling Complex Sentences — Part 1</h1>
+  <div class="meta"><span>Name: <b>______________</b></span><span>Date: <b>______________</b></span><span>Time: <b>15 min</b></span></div>
+</header>
+
+<h2 class="section">1 · Copy This Down — Breaking a Sentence into Chunks</h2>
+<div class="copy-box">
+  <p class="label">The Problem</p>
+  <p>Long sentences feel confusing because your brain tries to hold the whole thing in your head at once. The fix is to stop reading it as one block, and instead break it into its <b>main point</b> and its <b>extra information</b>.</p>
+  <p class="label" style="margin-top:10px;">The Technique — 4 Steps</p>
+  <ol>
+    <li>Find the <b>main clause</b> — the core "who did what" of the sentence. It should make sense completely on its own.</li>
+    <li>Find any <b>subordinate clauses</b> — extra chunks giving more detail, usually set off by commas or a connective word</li>
+    <li>Mentally cross out the extra chunks and re-read just the main clause — check you now understand the core meaning</li>
+    <li>Add each extra chunk back in one at a time, asking what detail it adds (when, why, despite what, describing whom)</li>
+  </ol>
+  <div class="connectives"><b>Connective words that often signal a subordinate clause is starting:</b> although, despite, because, since, while, whereas, having, which, who, that, even though, in spite of</div>
+</div>
+
+<h2 class="section">2 · Worked Example</h2>
+<div class="worked">
+  <p><span class="chunk-main">Sofia refused to leave the library</span>, <span class="chunk-extra">even though the caretaker had already switched off half the lights and was jangling his keys pointedly by the door,</span> <span class="chunk-main">because she was one page from finishing the story.</span></p>
+  <p><span class="tag">Step 1</span> Main clause: "Sofia refused to leave the library" — makes sense alone.</p>
+  <p><span class="tag">Step 2</span> Two extra chunks: one starting "even though" (a contrast — someone wants her to leave), one starting "because" (her reason for staying).</p>
+  <p><span class="tag">Step 4</span> Full meaning: Sofia is being pressured to leave (dimming lights, jangling keys) but stays anyway, for a specific reason — she's nearly finished her book.</p>
+</div>
+
+<h2 class="section">3 · Practice</h2>
+<div class="q-block">
+  <div class="q"><b>1.</b> <span class="sentence">"Although the coach had warned them twice about the tide times, having checked her own watch only minutes before, Priya still lost track of how long they had been exploring the rock pools."</span><br>Identify the main clause of this sentence.</div>
+  <div class="ans-line"></div>
+  <div class="q"><b>2.</b> Using the same sentence above, what does the "although... twice" chunk add to our understanding of what happens?</div>
+  <div class="ans-line"></div>
+  <div class="q"><b>3.</b> <span class="sentence">"The letter, which had clearly been rewritten several times given the crossed-out lines beneath the final version, still ended with the same uncertain question it always had."</span><br>Break this sentence into its main clause and its extra chunk. What is the extra chunk telling us?</div>
+  <div class="ans-line"></div><div class="ans-line"></div>
+</div>
+
+<div class="passage">
+<p>Despite having lived three streets away from the old cinema his entire life, and despite walking past its boarded-up entrance most mornings on his way to school, Marcus had never actually known anyone who remembered what film had been playing the night it finally closed for good.</p>
+</div>
+<div class="q-block">
+  <div class="q"><b>4.</b> Break the passage sentence above into its main clause and its extra chunks. What is the sentence's actual core point, once the extra detail is removed?</div>
+  <div class="ans-line"></div><div class="ans-line"></div>
+  <div class="q"><b>5.</b> Why might the writer have chosen to put so much detail before the main clause, instead of stating the main point first?</div>
+  <div class="ans-line"></div>
+</div>
+
+<div class="reminder">
+  <b>Apply this every time:</b> If a sentence feels confusing, don't reread it the same way twice. Find the main clause first, understand that alone, then add the extra chunks back in one at a time.
+</div>
+
+<div class="answer-key">
+  <h3>Marking Notes (for the tutor)</h3>
+  <ol>
+    <li><b>Q1:</b> "Priya still lost track of how long they had been exploring the rock pools."</li>
+    <li><b>Q2:</b> Adds irony/tension — she had been warned and had even checked the time herself, making her losing track more surprising or careless, not a simple accident.</li>
+    <li><b>Q3:</b> Main clause: "The letter still ended with the same uncertain question it always had." Extra chunk ("which had clearly been rewritten...") tells us the writer struggled with or reworked the letter multiple times, even though the ending stayed the same — suggesting the difficulty was elsewhere in the letter, not the final question.</li>
+    <li><b>Q4:</b> Main clause: "Marcus had never actually known anyone who remembered what film had been playing the night it finally closed." Core point: despite living nearby and passing it daily, this specific piece of local history was unknown to him.</li>
+    <li><b>Q5:</b> Accept reasonable answers — e.g. builds irony/expectation (we expect him to know, given the proximity) before revealing he doesn't, making the final point land harder.</li>
+  </ol>
+</div>
+
+<footer>Summit Tuition · Untangling Complex Sentences · Part 1</footer>
+
+</body>
+</html>

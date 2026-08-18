@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Working Out Difficult Words in Context — Part 1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root { --ink:#20263a; --navy:#16233f; --gold:#a9781f; --line:#c9d2e8; --paper:#fdfcf8; }
+  * { box-sizing: border-box; }
+  body { font-family: Georgia, 'Times New Roman', serif; color: var(--ink); max-width: 800px; margin: 0 auto; padding: 36px 42px 60px; background: var(--paper); }
+  header { border-bottom: 3px solid var(--navy); padding-bottom: 10px; margin-bottom: 18px; }
+  header .brand { font-family: Arial, sans-serif; font-size: 10.5px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); }
+  header h1 { font-size: 26px; margin: 4px 0 6px; color: var(--navy); }
+  header .meta { display:flex; justify-content: space-between; font-family: Arial, sans-serif; font-size: 11px; color:#555; }
+  header .meta b { color: var(--ink); }
+  h2.section { font-family: Arial, sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; color: #fff; background: var(--navy); padding: 6px 12px; margin: 26px 0 12px; border-radius: 3px; }
+  .copy-box { background: #fff; border: 1.5px solid var(--line); padding: 14px 18px; margin-bottom: 14px; }
+  .copy-box .label { font-family: Arial, sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); margin: 0 0 6px; }
+  .copy-box p { margin: 0 0 8px; font-size: 14px; line-height: 1.5; }
+  .copy-box p:last-child { margin-bottom: 0; }
+  .copy-box ol, .copy-box ul { margin: 4px 0 0; padding-left: 20px; font-size: 13.5px; line-height: 1.55; }
+  table.clues { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 6px; }
+  table.clues th { font-family: Arial, sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--navy); text-align: left; border-bottom: 2px solid var(--navy); padding: 5px 8px; }
+  table.clues td { padding: 6px 8px; border-bottom: 1px solid #e2e2e2; vertical-align: top; }
+  .worked { background: #f4f2ea; border: 1px dashed var(--gold); padding: 12px 16px; margin: 10px 0 16px; font-size: 13.5px; line-height: 1.6; }
+  .worked .tag { display:inline-block; font-family: Arial, sans-serif; font-size: 10px; text-transform:uppercase; letter-spacing:1px; background: var(--navy); color:#fff; padding: 1px 7px; border-radius: 8px; margin-right: 6px; }
+  .passage { background: #fff; border: 1px solid var(--line); padding: 16px 20px; font-size: 13.5px; line-height: 1.7; text-align: justify; margin-bottom: 14px; }
+  .passage p { margin: 0 0 10px; }
+  .passage .pnum { color: var(--gold); font-weight: bold; margin-right: 4px; }
+  .passage .hard { font-weight: bold; text-decoration: underline; text-decoration-color: var(--gold); text-decoration-thickness: 2px; }
+  .q-block { background: #fff; border: 1px solid var(--line); padding: 14px 18px; margin-bottom: 10px; }
+  .q-block .q { font-size: 13.5px; margin-bottom: 8px; }
+  .q-block .q b { color: var(--navy); }
+  .ans-line { border-bottom: 1px solid #bbb; height: 20px; margin: 4px 0 0 18px; }
+  .reminder { margin-top: 22px; background: #fff7e6; border: 1.5px solid var(--gold); padding: 12px 16px; font-family: Arial, sans-serif; font-size: 12.5px; color: #5a3f0a; line-height: 1.5; }
+  .reminder b { color: var(--navy); }
+  .answer-key { margin-top: 24px; border: 1.5px dashed #999; padding: 12px 16px; font-family: Arial, sans-serif; font-size: 11.5px; color: #444; }
+  .answer-key h3 { margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); }
+  .answer-key ol { margin: 0; padding-left: 18px; }
+  .answer-key li { margin-bottom: 4px; }
+  footer { font-family: Arial, sans-serif; font-size: 10px; color: #999; text-align: center; margin-top: 34px; border-top: 1px solid #ddd; padding-top: 8px; letter-spacing: 1px; text-transform: uppercase; }
+  @media print { body { padding: 20px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">Summit Tuition — Comprehension Skills</div>
+  <h1>Working Out Difficult Words in Context — Part 1</h1>
+  <div class="meta"><span>Name: <b>______________</b></span><span>Date: <b>______________</b></span><span>Time: <b>15 min</b></span></div>
+</header>
+
+<h2 class="section">1 · Copy This Down — The Context Clues Checklist</h2>
+<div class="copy-box">
+  <p class="label">The Rule</p>
+  <p>You do not need to know every word to answer a question about it. The sentence and paragraph <b>around</b> a difficult word almost always contain a clue to its meaning. Never skip the question just because the word is unfamiliar.</p>
+  <p class="label" style="margin-top:10px;">The Technique — 4 Steps</p>
+  <ol>
+    <li><b>Don't panic</b> — read the whole sentence (and the one before/after) first, ignoring the hard word</li>
+    <li><b>Look for a clue type</b> in the surrounding text (see table below)</li>
+    <li><b>Check word parts</b> — does a prefix, root, or suffix look familiar? (e.g. "un-" = not, "-less" = without)</li>
+    <li><b>Test your guess</b> — substitute your guessed meaning back into the sentence. Does it still make sense?</li>
+  </ol>
+  <p class="label" style="margin-top:10px;">Types of Context Clue</p>
+  <table class="clues">
+    <tr><th>Clue type</th><th>What to look for</th></tr>
+    <tr><td>Synonym clue</td><td>A nearby word that means roughly the same thing</td></tr>
+    <tr><td>Contrast clue</td><td>A word like "but," "although," "unlike" signalling the opposite meaning nearby</td></tr>
+    <tr><td>Example clue</td><td>"such as," "for example," "like" followed by examples that explain it</td></tr>
+    <tr><td>General sense clue</td><td>No direct clue word, but the overall situation tells you the mood/meaning</td></tr>
+  </table>
+</div>
+
+<h2 class="section">2 · Worked Example</h2>
+<div class="worked">
+  <p>"Although her older brother was gregarious, chatting to everyone at the party within minutes, Priya hung back near the door, saying nothing."</p>
+  <p><span class="tag">Step 1</span> Read the whole sentence: it's comparing two people's behaviour at a party.</p>
+  <p><span class="tag">Step 2</span> "Although" signals a <b>contrast clue</b> — gregarious must be the opposite of Priya hanging back and saying nothing.</p>
+  <p><span class="tag">Step 4</span> Guess: outgoing / very sociable. Test it: "her older brother was very sociable, chatting to everyone" — makes sense.</p>
+</div>
+
+<h2 class="section">3 · Practice Passage</h2>
+<p style="font-family:Arial, sans-serif; font-size:11.5px; color:#666; margin:0 0 6px;">Underlined words are the ones to work out from context — do not look them up.</p>
+<div class="passage">
+<p><span class="pnum">1</span>The old bridge had always looked <span class="hard">precarious</span>, its wooden planks warped and one handrail missing entirely, but generations of villagers had crossed it without incident, so nobody thought much of it. Dev's grandmother, however, would only cross holding the remaining rail with both hands, muttering about how it wasn't built to last another winter.</p>
+<p><span class="pnum">2</span>When the council finally announced the bridge's <span class="hard">demolition</span>, replacing it with a proper concrete crossing, most of the village was relieved — except for a small, vocal group who argued the old bridge was part of the village's history and shouldn't be torn down for something so <span class="hard">utilitarian</span> and forgettable.</p>
+</div>
+
+<div class="q-block">
+  <div class="q"><b>1.</b> Using context clues, what does "precarious" most likely mean? Which clue type helped you decide?</div>
+  <div class="ans-line"></div>
+  <div class="q"><b>2.</b> What does "demolition" mean here? Point to the exact phrase later in the sentence that gives this away.</div>
+  <div class="ans-line"></div>
+  <div class="q"><b>3.</b> "Utilitarian" is contrasted with the idea of the bridge being part of the village's history. Using this contrast, explain what "utilitarian" most likely means.</div>
+  <div class="ans-line"></div>
+  <div class="q"><b>4.</b> Test your own understanding: rewrite the phrase "so utilitarian and forgettable" using a simpler word instead of "utilitarian," keeping the sentence's meaning the same.</div>
+  <div class="ans-line"></div>
+</div>
+
+<div class="reminder">
+  <b>Apply this every time:</b> Whenever you hit a word you don't know in a comprehension passage, don't stop — read on to the end of the sentence first. The answer is usually hiding in the words around it, not the word itself.
+</div>
+
+<div class="answer-key">
+  <h3>Marking Notes (for the tutor)</h3>
+  <ol>
+    <li><b>Q1:</b> Unsafe/unstable/dangerous-looking. General sense clue — warped planks, missing handrail, grandmother's careful behaviour all support this.</li>
+    <li><b>Q2:</b> Being torn down/knocked down. Example/synonym clue: "replacing it with a proper concrete crossing" and "torn down" later confirm this.</li>
+    <li><b>Q3:</b> Purely practical/functional, with no charm or sentimental value — contrasted directly against "part of the village's history."</li>
+    <li><b>Q4:</b> Any reasonable simpler synonym, e.g. "so plain and forgettable" or "so purely functional and forgettable" — mark on meaning preserved, not exact wording.</li>
+  </ol>
+</div>
+
+<footer>Summit Tuition · Working Out Difficult Words in Context · Part 1</footer>
+
+</body>
+</html>
