@@ -31,8 +31,8 @@ const SUBJECTS = [
     slug: "non-verbal-reasoning",
     name: "Non-Verbal Reasoning",
     icon: ShapesIcon,
-    description: "Rotations, sequences and codes explained visually.",
-    available: false,
+    description: "Odd one out, series, analogies, rotation and reflection — explained visually, figure by figure.",
+    available: true,
   },
 ];
 

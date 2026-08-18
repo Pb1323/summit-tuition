@@ -26,6 +26,7 @@ export const NOTE_PAGES: NotePage[] = [
   { id: "maths-ratio-proportion", subject: "Maths", slug: "/notes/maths/ratio-proportion", title: "Maths: Ratio & Proportion", isFree: false },
   { id: "vr-word-relationships", subject: "VR", slug: "/notes/verbal-reasoning/word-relationships", title: "Verbal Reasoning: Word Relationships", isFree: true },
   { id: "vr-codes-ciphers", subject: "VR", slug: "/notes/verbal-reasoning/codes-ciphers", title: "Verbal Reasoning: Codes & Ciphers", isFree: false },
+  { id: "nvr-shape-patterns", subject: "NVR", slug: "/notes/non-verbal-reasoning/shape-patterns", title: "Non-Verbal Reasoning: Shape Patterns & Sequences", isFree: true },
 ];
 
 export const MASTER_ADMIN_EMAIL = "admin@summittuition.local";
