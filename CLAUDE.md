@@ -2,7 +2,7 @@
 
 # Summit Tuition Project Context
 
-Last updated: 2026-08-18, overnight (added `nvr-elite-crest`, `vr-keystone-full`, and `maths-elite-13` papers, plus English/NVR papers from prior nights — see Recent Feature State and `status.md`).
+Last updated: 2026-08-18, later same day (added `gcse-physics-magnetism-electromagnetism` and `gcse-biology-digestive-system` mocks — see Recent Feature State and `status.md`).
 
 ## Sibling Projects In This Repo
 
@@ -109,6 +109,9 @@ Seed/static catalog lives in `src/data/platform.ts`:
 - Generated draft mocks, question edits, clone/archive actions, and reference style edits are currently local/demo admin state, not durable database versioning.
 
 ## Recent Feature State
+
+- **2026-08-18 session, later same day (2 new GCSE mocks: Physics Magnetism & Electromagnetism, Biology Digestive System)**: added `gcse-physics-magnetism-electromagnetism` ("GCSE Physics — Magnetism & Electromagnetism"), 40 questions (`gcsephysmag1`-`40`)/92 marks, `tier: "Elite"`, `published: true` — covers permanent/induced magnets, magnetic fields, electromagnets and solenoids, the motor effect (Fleming's left-hand rule, F=BIl calculation), and the generator effect through to transformers (turns-ratio calculation) and the National Grid, closing with a 6-mark extended motor-vs-generator comparison. And `gcse-biology-digestive-system` ("GCSE Biology — Digestive System & Enzymes"), 40 questions (`gcsebiodig1`-`40`)/101 marks, `tier: "Elite"`, `published: true` — covers digestive organs, mechanical vs chemical digestion, enzyme specificity/temperature/pH/denaturation, the three enzyme groups and where each is produced, bile/emulsification, villi absorption, and the required-practical food tests, closing with a 6-mark extended "journey of a meal" question. Both follow the exact same hand-authored `questionType: "written_response"` format as the existing `gcse-biology-cell-structure-diffusion` mock — text-only, no diagrams by design (explicit founder request), hand-marked by the founder rather than auto-scored. Verified via a throwaway script (deleted after use): 40 unique ids each, no bank-wide duplicate mock/question ids, `totalMarks` on each mock matches the sum of its questions' `marks`. `npm.cmd run typecheck` clean. Committed and pushed (static file only — not yet seeded to the production database).
+- **2026-08-18 session, overnight (new `nvr-elite-crest`, `vr-keystone-full`, `maths-elite-13` papers, plus English/NVR papers from prior nights)**: see `status.md` for full narrative history.
 
 Full narrative history of what was built/changed and when now lives in `status.md` (read explicitly when needed) — this section only keeps facts a session needs to not regress or duplicate existing work.
 

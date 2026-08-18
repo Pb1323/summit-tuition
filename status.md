@@ -1,8 +1,14 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-18, overnight (added a new NVR paper "Full Paper V" with fresh rule-stacking, plus a VR paper with six novel question types, a new Maths paper "Full Paper XIII", and English/NVR papers from prior nights — see below)
+Last updated: 2026-08-18, later same day (added two new GCSE mocks — Physics on magnetism/electromagnetism and Biology on the digestive system — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (2026-08-18, later same day, two new GCSE mocks)
+
+- Added a new GCSE Physics mock covering magnetism and electromagnetism from start to finish: magnets, magnetic fields, electromagnets, the motor effect, and the generator effect all the way through to transformers and the National Grid — 40 questions.
+- Added a new GCSE Biology mock covering the digestive system and enzymes: how digestion works, what each organ does, enzyme behaviour with temperature and pH, and the standard food tests — 40 questions.
+- Both follow the same format as the existing GCSE Biology cell-structure mock: hand-marked short-answer questions with no diagrams, by design. Checked for duplicate questions/marks matching up correctly, and the code compiles cleanly. Pushed to GitHub; still needs a database seed before it shows up live for students.
 
 ## Done (2026-08-18, VR paper honesty check)
 
