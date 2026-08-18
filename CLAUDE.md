@@ -2,7 +2,7 @@
 
 # Summit Tuition Project Context
 
-Last updated: 2026-08-18, overnight (added `vr-keystone-full` VR paper with six novel question types, `maths-elite-13` Maths paper, plus English/NVR papers from prior nights — see Recent Feature State and `status.md`).
+Last updated: 2026-08-18, overnight (added `nvr-elite-crest`, `vr-keystone-full`, and `maths-elite-13` papers, plus English/NVR papers from prior nights — see Recent Feature State and `status.md`).
 
 ## Sibling Projects In This Repo
 
@@ -251,7 +251,7 @@ Full narrative history of what was built/changed and when now lives in `status.m
 - **Comprehension passage sameness (flagged 2026-07-26, not yet fixed)**: ~14 of the 20 existing comprehension passages (`src/data/platform.ts`) follow an identical "apprentice earns a stern mentor's trust in an old-world craft" template — confirmed via real student feedback, not just a hunch. Only new passages from this point are required to break the pattern (see Recent Feature State); the older passages themselves haven't been rewritten yet and would need founder sign-off on which mocks to touch (rewriting a passage risks invalidating existing questions' `paragraphRefs`/distractors).
 - **Creative writing / free-text essays cannot be auto-marked anywhere on the platform (architectural, not a bug)** — every mock/question type on Summit Tuition is objective (MCQ, short-answer, segment-format) so it can be auto-graded; there is no essay-grading path. This is why the two real-school-style mocks whose actual format includes a creative-writing component (Latymer, Colyton, see the 2026-07-24 entry) explicitly omit it, and why the new Creative Writing Study Notes strand (2026-07-26) is guidance/practice only, not a submittable/markable exercise — any creative-writing homework has to be delivered as a printable task (see `worksheets/`) and marked by a human, not through the platform.
 - **English Study Notes coverage is thin outside Grammar**: Grammar has 5 of ~10 planned topics live; Comprehension, Spelling, Cloze, and the new Creative Writing strand (added 2026-07-26) each have only their first topic (1 of ~10) live. See `TODO.md` for the batch-out plan.
-- **VR/NVR mocks are stubs, not full papers**: `vr-placeholder`/`nvr-placeholder` each ship one batch of 20 real questions and stay `published: false`, `tier: "Future"` — flagged in `research/COMPETITOR_GAP_ANALYSIS.md` as the platform's biggest content gap vs. competitors.
+- **VR/NVR baseline coverage is thin**: `vr-placeholder`/`nvr-placeholder` each ship one batch of 20 basic questions and stay `published: false`, `tier: "Future"`, while Elite-tier full-length papers (`vr-elite-difficult`, `vr-summit-full`, `vr-horizon-full`, `vr-keystone-full` for VR; `nvr-elite-difficult`, `nvr-elite-summit`, `nvr-elite-beacon`, `nvr-elite-crest` for NVR) are live and published — but entry-level GL/Standard mocks are still missing.
 - **No real PMC/JMC-licensed question bank** — founder has asked for one; not attempted, since no source past papers are available and copying real competition content would be a copyright problem (see the 2026-07-26 entry above). Original `competition-style`-tagged questions are used instead.
 - **Study Notes progress is local-device only**, not synced across devices via the database yet — this is also the blocker for the entire gamification backlog (mastery meters, wax-seal badges, certificates) in `TODO.md`.
 
