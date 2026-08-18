@@ -1,8 +1,16 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-18, later same day (new Non-Verbal Reasoning Study Notes strand — see below)
+Last updated: 2026-08-18, overnight (fourth English paper in the Ultra-to-Zenith band + overnight batch complete — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Overnight mock-generation batch complete (2026-08-18)
+
+This was the last of 4 scheduled overnight sessions generating new mock content (English/Maths/VR/NVR). No further overnight mock-generation runs are scheduled after this one.
+
+## Done (overnight session — 2026-08-18, new English paper "Threshold")
+
+- Added `english-gl-26-threshold` ("English GL-Style Full Paper XVIII — Threshold"), a 54-question/54-mark Elite English paper built around a brand-new passage, "The 4:15" (a school concert band, second-trumpet player Elin working out that her stand partner's absences are hospital visits to see his mother, not lost interest), calibrated to sit strictly between `english-gl-19-ultra` and `english-gl-22-zenith` in difficulty — the same band as `english-gl-23-vertex`, `english-gl-24-meridian` and `english-gl-25-keystone`. Verified with a throwaway script (no duplicate/missing ids, every answer resolves, section split 28/9/9/8, marks sum to 54, quality check passes) and typechecked clean. Static file only — not yet seeded to the production database.
 
 ## Done (2026-08-18, later same day, first Non-Verbal Reasoning Study Notes strand)
 
