@@ -1,8 +1,12 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-18, overnight (added a new Maths paper, "Full Paper XIII" — see below)
+Last updated: 2026-08-18, overnight (added a new VR paper with six novel question types, a new Maths paper, "Full Paper XIII", plus English/NVR papers from prior nights — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (overnight session — 2026-08-18, new Verbal Reasoning paper with novel question types)
+
+- Added "Verbal Reasoning — Keystone Full Paper" (`vr-keystone-full`), a 50-question/50-mark Elite VR paper featuring six question types entirely new to the platform: compass direction/bearing reasoning (turning by degree increments, identifying opposite/resulting directions), alphabetical/dictionary-order reasoning (which words come where in dictionary order), insert-the-same-letter-into-two-words completion (finding one letter that completes two different words at once), two-dimensional compound-word grids (combining a row word and a column word to find the missing cell), move-one-letter-between-two-words puzzles (moving a single letter from one word to another to make two new real words), and arithmetic age-relationship puzzles (solving simultaneous equations for people's ages, not ordering-from-clues like the existing Vantage paper's age questions). This is the fourth full-length VR paper alongside `vr-elite-difficult`, `vr-summit-full`, and `vr-horizon-full`.
 
 ## Done (overnight session — 2026-08-17, new English paper "Keystone")
 
