@@ -2,7 +2,7 @@
 
 # Summit Tuition Project Context
 
-Last updated: 2026-08-17, overnight (added `english-gl-25-keystone` — English paper calibrated between Ultra and Zenith, plus `nvr-elite-beacon` and earlier papers — see Recent Feature State and `status.md`).
+Last updated: 2026-08-18, overnight (added `maths-elite-13` — Maths paper calibrated to the 7/8/9/11/12 difficulty band, plus English/NVR papers from prior nights — see Recent Feature State and `status.md`).
 
 ## Sibling Projects In This Repo
 
