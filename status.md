@@ -1,12 +1,16 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-18, overnight (fourth English paper in the Ultra-to-Zenith band + overnight batch complete — see below)
+Last updated: 2026-08-19, overnight (14th Elite Maths paper added — see below)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
 ## Overnight mock-generation batch complete (2026-08-18)
 
 This was the last of 4 scheduled overnight sessions generating new mock content (English/Maths/VR/NVR). No further overnight mock-generation runs are scheduled after this one.
+
+## Done (overnight session — 2026-08-19, 14th Elite Maths paper)
+
+- Added `maths-elite-14` ("Maths GL-Style Full Paper XIV"), a 50-question/50-mark Elite Maths paper calibrated to the same 75% difficulty band as the six existing papers at that level (`maths-elite-7`, `-8`, `-9`, `-11`, `-12`, `-13`), sitting alongside them rather than replacing any. Covers all core 11+ Maths areas: arithmetic/number (BIDMAS with powers, negative numbers, rounding, HCF, powers/roots, estimation, a number riddle, clock-based time), fractions/decimals/percentages (adding fractions with different denominators, percentage increases, reverse percentages, sequential fraction-of-remainder, combined discount totals, comparing mixed formats, percentage word problems, successive changes), ratio/proportion (simplifying, three-way sharing, combining linked ratios, direct/inverse proportion, map scales, ratio-with-algebra age problems, converting ratios to percentages), algebra (equations with x on both sides, expanding double brackets, forming equations, reverse function machines, sequences including second-difference, substitution, inequalities, rearranging formulae), geometry (algebraic angles at points/in triangles, compound-shape area, perimeter-from-area, circumference, cuboid volume, transformations, 3D-shape properties, regular polygon angles), and statistics (mean/median/range, simple and combined probability, extrapolating graphs, Venn diagrams). 44% of questions are "stretch" difficulty, plus one "challenge" number riddle. 44% of questions carry diagrams using all 11 documented visual types with zero repeats. Verified structurally sound (no duplicate ids, every answer resolves, marks add up to 50) and typechecks clean. Published immediately, live in code.
 
 ## Done (overnight session — 2026-08-18, new English paper "Threshold")
 
