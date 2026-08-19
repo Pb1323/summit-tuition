@@ -1,12 +1,16 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-19, overnight (14th Elite Maths paper and Elite VR mock with 5 novel question types added — see below)
+Last updated: 2026-08-19, overnight (6th Elite NVR mock "Spire" added — see below; this was the last of tonight's 4 overnight mock-generation runs)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
-## Overnight mock-generation batch complete (2026-08-18)
+## Overnight mock-generation batch complete (2026-08-19)
 
-This was the last of 4 scheduled overnight sessions generating new mock content (English/Maths/VR/NVR). No further overnight mock-generation runs are scheduled after this one.
+Tonight's scheduled 4-part overnight batch (English/Maths/VR/NVR) has now finished — the NVR mock below was the last piece. No further overnight mock-generation runs are scheduled after this one.
+
+## Done (overnight session — 2026-08-19, 6th Elite NVR mock "Spire")
+
+- Added `nvr-elite-spire` ("Non-Verbal Reasoning — Full Paper VI"), a 50-question/50-mark Elite NVR paper sitting alongside the five existing Elite NVR papers (`nvr-elite-difficult`, `-summit`, `-beacon`, `-crest`) rather than replacing any of them, built entirely from the platform's existing 10 NVR visual types (no new renderer code). Uses fresh rule combinations not seen in the earlier five papers — including a standout "which figure actually looks rotated" odd-one-out question, where four figures are rotated by an exact multiple of their own shape's symmetry angle (so they look unchanged) and only one is genuinely visibly turned — plus a new third "front join" type for combining-solids questions alongside the usual top/side joins, and fresh hole-punch edge cases. Every similarity question was re-checked against the known "query figure gives away the answer" bug and confirmed clean. Verified structurally sound (no duplicate ids bank-wide, every answer resolves in its own options with no duplicate option values, marks add up to 50) and typechecks clean. Published immediately, live in code (static file only — not yet seeded to the production database).
 
 ## Done (overnight session — 2026-08-19, Elite VR mock with 5 novel question types + 14th Elite Maths paper)
 
