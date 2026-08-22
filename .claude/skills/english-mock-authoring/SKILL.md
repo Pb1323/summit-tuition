@@ -5,374 +5,109 @@ description: Write and wire up new English mocks for Summit Tuition — full-len
 
 # English mock authoring
 
-**Note on the 2026-08-03 "cap new mocks at 50 questions" instruction**: this
-skill's 54-question structure is a real, researched GL Assessment paper
-format (`research/gl-english-question-bank.md`), not an arbitrary count like
-the old 80-question Maths papers were — so it has been left at 54 rather than
-cut to 50, since shrinking it would break the real 52/17/17/15% section-weight
-match. If the founder wants English capped too, that means either accepting a
-non-authentic section split or trimming comprehension specifically — ask
-before changing this structure.
+Scope: hand-authored English mocks in `src/data/platform.ts` (passages + questions + `MockExam` entry). Not the deterministic/AI generator (`src/lib/mock-generation.ts`, admin "Generate draft mock" button) — separate code path.
 
-**2026-08-22 recalibration**: student feedback flagged our comprehension as
-"way too easy" and our punctuation/grammar section as testing unfamiliar,
-harder-than-expected question types, both compared directly against a real
-QE Barnet/GL-style practice paper the founder supplied. That paper was
-transcribed into a full question-by-question teardown at
-`research/qe-barnet-test20-analysis.md` — read it before authoring the next
-English mock. The comprehension and punctuation guidance below has been
-rewritten against it; see those sections for what changed and why.
+Full papers stay at **54 questions** (not the 50-cap that applies to new Maths mocks) — a real researched GL section-weight match (`research/gl-english-question-bank.md`), not an arbitrary count; shrinking it breaks the 52/17/17/15% split. Ask before changing this structure.
 
-Scope: hand-authored English mocks in `src/data/platform.ts` (passages +
-questions + the `MockExam` metadata entry). Not the deterministic/AI
-generator pipeline (`src/lib/mock-generation.ts`, used by the admin
-"Generate draft mock" button) — that's a separate code path with its own
-templates; this skill is for writing a full paper by hand the way all the
-Elite papers and most published English mocks were built.
-
-**Before writing anything, read `research/mock-authoring-lessons.md` in
-full.** It documents 3 real bugs this project has hit and fixed (answer
-clustering, segment-letter shuffle, question-order jumbling) — the fixes
-live in shared rendering code so you don't need to work around them when
-authoring, but you do need to know they exist so you don't "fix" something
-that's already handled, or reintroduce a bug via bad data (e.g. every
-spelling question's mistake sitting in the same clause position).
+**Before writing anything**: read `research/mock-authoring-lessons.md` in full (3 real bugs already fixed in shared rendering code — answer clustering, segment-letter shuffle, question-order jumbling — know they exist so you don't reintroduce one via bad data). Also read `research/qe-barnet-test20-analysis.md`, a full question-by-question teardown of a real QE Barnet/GL-style paper the founder supplied after flagging our comprehension as "way too easy" and our punctuation section as testing unfamiliar, harder-than-expected question types next to a real exam. The guidance below is calibrated against it, **then deliberately pushed past it** — see the escalation note under comprehension.
 
 ## The real GL structure to match
 
-Every full-length paper is 54 questions across 4 fixed sections, researched
-from a real GL Assessment familiarisation booklet
-(`research/gl-english-question-bank.md`, weights formalised in
-`src/lib/english-sections.ts`'s `ENGLISH_SECTIONS`):
+54 questions across 4 fixed sections (`src/lib/english-sections.ts`'s `ENGLISH_SECTIONS`):
 
-| Section | Weight | Count (of 54) | `questionType` / tag |
+| Section | Weight | Count | tag/`questionType` |
 |---|---|---|---|
-| A: Reading comprehension | 52% | 28 | `retrieval` / `inference` / `vocabulary` / `grammar` / `language_analysis`, all with `passageId` |
+| A: Reading comprehension | 52% | 28 | `retrieval`/`inference`/`vocabulary`/`grammar`/`language_analysis`, all with `passageId` |
 | B: Spelling | 17% | 9 | tag `spelling` |
 | C: Punctuation (grammar-mistake) | 17% | 9 | tag `grammar-mistake` |
-| D: Cloze (best word) | 15% | 8 | `questionType: "cloze"` or tag `cloze` |
+| D: Cloze | 15% | 8 | `questionType: "cloze"` or tag `cloze` |
 
-Section membership is derived at **render time** from tags/`questionType` via
-`getEnglishSectionId()` (`src/lib/english-sections.ts`) — not from array
-position. You can write `questionIds` in whatever order is convenient (this
-project's convention: comp block, then spelling, then grammar, then cloze,
-purely for human readability of the source file) — `mock-room-shell.tsx`
-reorders into real section blocks for the student regardless. But **do** tag
-questions correctly, or they won't classify and `evaluateMockQuality()` will
-flag "Topic spread is balanced" as failed.
+Section membership is derived at render time from tags/`questionType` via `getEnglishSectionId()` — not array position. Write `questionIds` in comp/spelling/grammar/cloze block order for source-file readability (rendering reorders regardless), but **tag questions correctly** or they won't classify and the balance check fails.
 
 ## Writing the passage
 
-- 6 paragraphs, ~550-650 words total (full mocks need 650+, checked by
-  `hasAppropriateEnglishPassageLength` in `mock-quality.ts`), original
-  narrative fiction — never copy or closely paraphrase a real GL/other
-  publisher's passage, this project's content rule is original-only.
-- Give it both a `paragraphs: string[]` array (one entry per paragraph, used
-  for `paragraphRefs` lookups) and a flattened `text` string (`\n\n`-joined,
-  used for word-count and full-passage rendering) — they must match exactly.
-- Elite passages follow a recognisable emotional arc: an apprentice figure
-  under a strict mentor who withholds a specific privilege/trust; a
-  half-finished object (tapestry, chart, ledger, window) whose gap is tied to
-  a past loss the mentor won't discuss; a sudden accident/emergency that
-  forces the apprentice into the mentor's role without warning; the
-  apprentice succeeding through patience, not haste (a recurring stated
-  moral: "a rushed [X] was no different from a wrong one"); a wordless final
-  gesture from the mentor handing over the previously-withheld privilege.
-  You don't have to reuse this exact arc, but match its **register and
-  structural complexity** — real GL passages are literary, not simple.
-  Check `research/gl-english-question-bank.md` and the existing 5 Elite
-  passages (`passage-cartographers-apprentice`, `passage-glassblowers-legacy`,
-  `passage-weavers-thread`, `passage-lighthouse-keepers-ledger`,
-  `passage-clockmakers-apprentice`) before starting, so a new passage doesn't
-  reuse the same setting/objects/withheld-privilege ("climb the stair/tower
-  alone", "work the mechanism unsupervised") — vary what the privilege
-  actually is (a piece of equipment, a room, a decision, a signature) so five
-  papers in a row don't all read as the same story reskinned.
+- 6 paragraphs, ~550-650 words (full mocks need 650+), original narrative fiction — never copy/closely-paraphrase a real publisher's passage.
+- `paragraphs: string[]` (one entry per paragraph, used for `paragraphRefs`) and a flattened `text` (`\n\n`-joined) — must match exactly.
+- Elite passages run literary, not simple — match the register/structural complexity of `research/gl-english-question-bank.md` and the existing Elite passages. **Check recent passages before starting** (grep `src/data/platform.ts` for `passage-` ids, or check CLAUDE.md's Recent Feature State) so a new one doesn't reuse the same setting/objects/premise as the last few — vary genre, not just surface details, so five papers in a row don't read as the same story reskinned.
 
 ## Writing the 28 comprehension questions
 
-Split roughly: 6 retrieval, 6 inference, 5 vocabulary-in-context, 4 grammar
-(word class / clause function / sentence structure), 2 literary technique
-(simile/metaphor + symbolism), 3 NOT/negative-space questions, 2 author- or
-character-voice inference questions, covering all 6 paragraphs at least once
-each. This mix is deliberately calibrated against a real externally-sourced
-paper (`research/qe-barnet-test20-analysis.md`, a full question-by-question
-teardown of a QE Barnet/GL-style 30-question comprehension section) after
-student feedback that our comprehension was reading as "way too easy" next to
-a real exam — every archetype below exists because that analysis showed it's
-what actually makes a real paper hard to skim, not just harder wording.
+Split roughly: 6 retrieval, 6 inference, 5 vocabulary-in-context, 4 grammar (word class/clause function/sentence structure), 2 literary technique (simile/metaphor + symbolism), 3 NOT/negative-space, 2 author-/character-voice inference, covering all 6 paragraphs at least once. This mix is calibrated against `research/qe-barnet-test20-analysis.md` — every archetype exists because that teardown showed it's what actually makes a real paper hard to skim, not just harder wording.
 
-**2026-08-22 follow-up — target *at or above* that paper's difficulty, not
-level with it.** The archetypes below (NOT-questions, voice-inference,
-strength-gradient distractors, obscure vocabulary) are the *floor*, not the
-ceiling. Concretely, push past the source paper in these ways: stack 2 of
-them on the same question where the source only used 1 (e.g. a NOT-question
-whose 4 true-and-verified distractors are themselves drawn from a
-strength-gradient, not just 4 flatly-true facts); require synthesis across
-3+ paragraphs rather than the source's usual 2 for at least 2-3 inference
-questions per passage; and on vocabulary, prefer a word where the *common*
-everyday meaning is a trap and only the passage's specific context supports
-the rarer correct sense (the source's "liable" question is the model — do
-that more than once per passage, not as a single outlier). The test for
-"hard enough": a strong student who has read the passage once, carefully,
-should still get 2-4 of the 28 wrong on a first attempt. If a full read
-reliably yields 100%, the section is still too easy regardless of how
-sophisticated the vocabulary sounds — the sophistication has to show up in
-what the *distractors* force the student to weigh, not just in word choice.
+**Escalation (2026-08-22): target *at or above* that source paper's difficulty, not level with it.** The archetypes below are the floor, not the ceiling. Push past the source paper by: stacking 2 of them on the same question where the source only used 1 (e.g. a NOT-question whose 4 true distractors are themselves a strength-gradient, not 4 flatly-true facts); requiring synthesis across 3+ paragraphs rather than the source's usual 2, for at least 2-3 inference questions per passage; and on vocabulary, preferring a word where the *common* everyday meaning is a trap and only the passage's specific context supports the rarer correct sense (the source's "liable" question is the model — use that pattern more than once per passage, not as a single outlier). Test for "hard enough": a strong student who has read the passage once, carefully, should still get 2-4 of the 28 wrong on a first attempt — if a full read reliably yields 100%, the section is still too easy regardless of how sophisticated the vocabulary sounds. The sophistication has to show up in what the *distractors* force the student to weigh, not just in word choice.
 
 - Every question needs `passageId` and `paragraphRefs: number[]` (1-indexed).
-- **Retrieval**: "According to paragraph N, ..." — the correct answer must be
-  an exact restatement of a specific stated fact; distractors should be
-  *close, plausible paraphrases* of other details in the same passage, not
-  obviously-wrong options — real GL papers can't be beaten by skimming.
-- **Inference**: requires connecting two details the passage places near each
-  other without stating the link outright (e.g. an object's location +
-  an earlier detail about a loss = the object is emotionally, not
-  technically, significant). For at least 1-2 of these, build the wrong
-  options as a *strength gradient* around the same underlying claim (e.g.
-  unsure → interested → keen → enamoured) rather than four unrelated wrong
-  answers — the student has to judge *degree*, not just direction, which is
-  meaningfully harder than picking the one option that's "about right."
-- **Vocabulary**: "In paragraph N, what does 'X' most nearly mean in \"...\"?"
-  — quote the exact sentence, options are single words/short phrases, only
-  one is a genuine synonym in that context. For the harder passage of a pair
-  (or the second half of a single passage), lean into genuinely obscure or
-  period-flavoured words (e.g. preeminent, stupefaction, leviathan) rather
-  than everyday near-synonyms — this is what makes a vocabulary section feel
-  like a real exam rather than a synonym-matching drill. Include at least one
-  false-cognate trap (a distractor that shares a root with the real word but
-  means something different, e.g. "stupefaction" → "stupidity") and one
-  register-shift trap (a common word used in an uncommon sense in context,
-  e.g. "liable" meaning "prone to" rather than legally responsible).
-- **Grammar**: identify word class, clause function, or sentence structure
-  (compound vs. complex) in a quoted fragment from the passage. Space these
-  evenly through the section rather than clustering them — they function as
-  "breather" items between harder inference/vocabulary questions, not a
-  block.
-- **Literary technique**: name the device (simile, symbolism) in a quoted
-  fragment; the correct answer should require having read the whole passage
-  to justify (e.g. symbolism questions should trace an object's meaning back
-  to how it was introduced in paragraph 1). Consider at least one "which of
-  these is NOT present" device-spotting question (see NOT-questions below) —
-  it forces the student to find every device rather than recognise one.
-- **NOT-questions** (negative-space recall): "Which of the following is NOT
-  true / NOT mentioned / does the passage NOT suggest?" — the correct answer
-  is something never stated at all, and all 4 wrong options must be
-  individually verifiable as true statements from the passage. This is
-  structurally the hardest comprehension archetype (the student must confirm
-  4 things are true, not just spot 1 thing that's false) and is exactly the
-  kind of question our papers have been under-using — include at least 2-3
-  per 28-question section, spread across both retrieval-adjacent and
-  device-spotting flavors, not just one.
-- **Author-/character-voice inference**: "Which word would [the author /
-  the narrator / character X] be most likely to use to describe...?" —
-  requires synthesising tone or attitude across the *whole* passage, not one
-  quote. Build the wrong options as adjacent-but-wrong shades of the same
-  judgement (e.g. for a character shown as overconfident rather than
-  malicious: criminal/crafty/cranky/clueless as distractors around the
-  correct "complacent") so the student has to pick the *precise* shade the
-  text supports, not just the right general direction. Include at least 1-2
-  of these per passage — this is a distinct, reusable archetype, not a
-  variant of inference.
-- Optionally, once per paper, a light cross-subject hybrid question (a
-  general-knowledge fact wrapped in a quote, or a small date/time
-  calculation implied by details in the text) — used sparingly, not as a
-  section theme.
-- `difficulty: "stretch"` for Elite papers (a couple of "harder"/"challenge"
-  tagged retrieval/inference questions are fine at `"standard"` if the fact
-  is truly a single-step lookup).
-- `marks: 1` per question, `timeEstimateSeconds` 50-85 depending on
-  complexity (retrieval fastest, inference/literary/NOT-questions slowest).
+- **Retrieval**: "According to paragraph N..." — correct answer is an exact restatement of a stated fact; distractors are *close, plausible paraphrases of other real details in the same passage*, never obviously-wrong filler — real papers can't be beaten by skimming.
+- **Inference**: connects two details the passage places near each other without stating the link. For 1-2 of these, build wrong options as a *strength gradient* around the same claim (unsure→interested→keen→enamoured) rather than four unrelated wrongs — the student judges degree, not just direction.
+- **Vocabulary**: quote the exact sentence; only one option is a genuine synonym in context. Lean into genuinely obscure/period words for the harder half (preeminent, stupefaction, leviathan). Include one false-cognate trap (shares a root, means something different — "stupefaction"→"stupidity") and one register-shift trap (common word, uncommon sense — "liable" as "prone to" not legally responsible).
+- **Grammar**: word class/clause function/sentence structure in a quoted fragment. Space evenly as "breather" items between harder questions, don't cluster.
+- **Literary technique**: name the device in a quoted fragment; correct answer requires the whole passage to justify (symbolism traces back to paragraph 1). Include at least one "which of these is NOT present" device-spotting question.
+- **NOT-questions**: "Which is NOT true/NOT mentioned?" — correct answer is never stated at all, and all 4 wrong options are individually verifiable as true. Structurally the hardest archetype (confirm 4 true things, not spot 1 false one) — include 2-3 per section, spread across retrieval-adjacent and device-spotting flavors.
+- **Author-/character-voice inference**: "Which word would [author/narrator/character] most likely use to describe...?" — synthesises tone across the whole passage. Build wrong options as adjacent-but-wrong shades of the same judgement (for an overconfident-not-malicious character: criminal/crafty/cranky/clueless around correct "complacent") — the student picks the precise shade, not just the right direction. 1-2 per passage.
+- Optionally, once per paper: a light cross-subject hybrid (general-knowledge fact wrapped in a quote, or a small date/time calc implied by the text) — used sparingly, not as a theme.
+- `difficulty: "stretch"` for Elite papers (a couple of "standard" retrieval/inference is fine if truly single-step).
+- `marks: 1`, `timeEstimateSeconds` 50-85 (retrieval fastest, inference/literary/NOT slowest).
 
 ## Writing spelling / punctuation (grammar-mistake) questions
 
-Both use the **segment format**: a sentence split into 4 lettered clauses
-plus a 5th "no mistake" option, rendered by `SegmentMistakeAnswer` (see
-`research/mock-authoring-lessons.md` Bug 2 for why clause order must never be
-shuffled by you — the renderer handles randomising the *displayed letter*).
+Both use **segment format**: sentence split into 4 lettered clauses + a 5th "no mistake" option (`SegmentMistakeAnswer`) — clause order is fixed by you, the renderer randomises the *displayed letter* itself (never shuffle clause order yourself, see `research/mock-authoring-lessons.md` Bug 2).
 
-- `text` is two lines: an instruction line (`"Find the group of words with
-  the spelling/grammar mistake in it. If there is no mistake, choose N."`)
-  then the quoted sentence on the next line.
-- `options` is the sentence split into exactly 4 word-groups (each a
-  substring of the sentence, concatenating back to the full sentence) plus a
-  literal `"No mistake"` 5th option.
-- `correctAnswer` is the exact text of whichever segment (or `"No mistake"`)
-  contains the error.
-- Include exactly 1 genuine `"No mistake"` answer per set of 9 (tag
-  `no-mistake`) — ~10-11%, matching the real exam's rate. Not 2 — 2-in-9 was
-  drifting the section toward "assume there's no error more often than a
-  real paper does," which is its own kind of miscalibration.
-- Spelling: common misspellings appropriate for 11+ (receive/believe,
-  separate, occasion, government, privilege, tomorrow, etc.) — reusing the
-  same target words across different mocks with fresh sentences is fine and
-  expected, these are the standard 11+ trap words.
-- **Grammar-mistake (`egr*`) — this section title is "Punctuation," and it
-  must actually test punctuation mechanics, not abstract grammar rules.**
-  This was a real, student-flagged bug in this skill: the table above has
-  always labeled Section C "Punctuation (grammar-mistake)," but this
-  subsection previously told you to author subject-verb agreement, dangling
-  modifiers, and tense-consistency questions — genuine grammar-agreement
-  content, not punctuation at all. Students correctly flagged this section as
-  testing unfamiliar question types and reading harder than the real exam's
-  equivalent section, because it *was* a different, harder skill than what a
-  real punctuation section tests. Fixed per a full teardown of a real
-  QE Barnet/GL-style punctuation section
-  (`research/qe-barnet-test20-analysis.md`) — write from this list instead,
-  rotating through categories so no error type repeats within one set of 9:
-  - Hyphenation of compound numbers (twenty-one through ninety-nine) and
-    written-out fractions ("one-third", not "one third")
-  - Apostrophe placement for joint possession ("Sam and Priya's book" — one
-    apostrophe when the thing is jointly owned) vs. separate possession
-    ("Sam's and Priya's books" — one each)
-  - Comma splices and correct comma use around interrupting/parenthetical
-    clauses (bracketing commas around a clause that could be removed)
-  - Semicolon misuse — a semicolon incorrectly used where the following
-    clause isn't independent (should be a comma), or where the following
-    word is a coordinating conjunction like "yet"/"but" (should be a comma,
-    not a semicolon)
-  - Quotation marks incorrectly placed around paraphrased/reported speech
-    that isn't a verbatim quote
-  - Missing or misplaced comma before/after interrupted direct speech (e.g.
-    around "she explained" splitting a quotation)
-  - Apostrophes vs. plurals (its/it's, a plain plural mistaken for a
-    possessive)
-  **This is a category fix, not a difficulty cut — keep the section
-  genuinely hard.** Each of these categories has an easy version and a hard
-  version; write the hard one. Joint- vs. separate-possession apostrophes,
-  semicolon-vs-comma before a coordinating conjunction, and comma-splice
-  detection inside a long, multi-clause sentence are all naturally tricky
-  when the sentence is long enough and the correct/incorrect segment isn't
-  the obviously-clunky one — lean into that rather than picking short,
-  simple sentences just because the rule itself is mechanical. Keep 1-2 of
-  the 9 at `difficulty: "challenge"` (e.g. a semicolon-before-conjunction
-  error buried in a sentence long enough that the reader has forgotten the
-  clause started non-independent by the time they reach the semicolon).
+- `text`: instruction line (`"Find the group of words with the spelling/grammar mistake in it. If there is no mistake, choose N."`) then the quoted sentence.
+- `options`: sentence split into exactly 4 word-group substrings (concatenate back to the full sentence) + literal `"No mistake"`.
+- `correctAnswer`: exact text of the erroring segment, or `"No mistake"`.
+- Exactly 1 genuine `"No mistake"` per set of 9 (tag `no-mistake`, ~10-11%, matching the real exam's rate — not 2).
+- Spelling: standard 11+ trap words (receive/believe, separate, occasion, government, privilege, tomorrow) — reusing the same target words across mocks with fresh sentences is fine and expected.
+- **Punctuation (`egr*`) must test punctuation mechanics, not abstract grammar** — this section is titled "Punctuation" and previously (a real, student-flagged bug) tested subject-verb agreement/dangling modifiers/tense-consistency instead, which read as a different, harder skill than the real exam's equivalent section. Rotate through these categories so no error type repeats within one set of 9:
+  - Hyphenation of compound numbers (twenty-one..ninety-nine) and written-out fractions ("one-third")
+  - Apostrophe placement for joint ("Sam and Priya's book") vs. separate ("Sam's and Priya's books") possession
+  - Comma splices; correct bracketing commas around a removable interrupting clause
+  - Semicolon misuse (before a dependent clause that should take a comma, or before a coordinating conjunction like "yet"/"but")
+  - Quotation marks incorrectly wrapping paraphrased/reported (non-verbatim) speech
+  - Missing/misplaced comma around interrupted direct speech (e.g. splitting a quotation around "she explained")
+  - Apostrophes vs. plurals (its/it's, a plain plural mistaken for possessive)
 
-  A little genuine grammar-agreement content (subject-verb agreement,
-  double comparatives, relative pronouns) is fine as occasional variety
-  *within* this list, but punctuation-mechanics questions should be the
-  clear majority — that's what the section's own name promises and what a
-  real exam actually tests here.
-- Tag every question `["spelling"|"grammar-mistake", "GL-style", "harder",
-  "segment-format"]` (+ `"no-mistake"` where relevant, + `"challenge"` for
-  the hardest 1-2) — the `spelling`/`grammar-mistake` tag is what
-  `getEnglishSectionId()` uses to classify the question, this is not
-  optional decoration.
+  **This is a category fix, not a difficulty cut — keep the section genuinely hard.** Each category has an easy version and a hard version; write the hard one. Joint- vs. separate-possession apostrophes, semicolon-vs-comma before a coordinating conjunction, and comma-splice detection inside a long, multi-clause sentence are all naturally tricky when the sentence is long enough and the correct/incorrect segment isn't the obviously-clunky one — lean into that rather than picking short, simple sentences just because the rule itself is mechanical. Keep 1-2 of the 9 at `difficulty: "challenge"` (e.g. a semicolon-before-conjunction error buried in a sentence long enough that the reader has forgotten the clause started non-independent by the time they reach the semicolon).
+
+  A little genuine grammar-agreement content (subject-verb agreement, double comparatives, relative pronouns) is fine as occasional variety, but punctuation-mechanics should be the clear majority — that's what the section name promises and what a real exam tests here.
+- Tag every question `["spelling"|"grammar-mistake", "GL-style", "harder", "segment-format"]` (+ `"no-mistake"` where relevant, + `"challenge"` for the hardest 1-2) — the section/mistake tag is what `getEnglishSectionId()` classifies on, not optional.
 
 ## Writing cloze (best word) questions
 
-`questionType: "cloze"`, a single sentence with a `____` gap, 5 options where
-every option is grammatically plausible in isolation but only one is
-correct given tense/connective logic (conditionals, connectives like
-although/unless/despite, verb-tense agreement, adverb vs. adjective form).
-Tag `["cloze", "grammar", "GL-style", "harder"]`.
+`questionType: "cloze"`, one sentence with a `____` gap, 5 options all grammatically plausible in isolation but only one correct given tense/connective logic (conditionals, although/unless/despite, verb-tense agreement, adverb vs. adjective form). Tag `["cloze", "grammar", "GL-style", "harder"]`.
 
 ## Quality bar beyond the automated checks
 
-`evaluateMockQuality()` returning `status: "Ready"` proves the mock is
-*structurally* valid — right counts, every field present, correct answers
-resolve. It does **not** catch weak items. These do, and they're what
-actually separates a paper that stretches a strong 11+ candidate from one
-that's just GL-shaped busywork:
+`evaluateMockQuality()` returning `"Ready"` proves the mock is *structurally* valid. It does not catch weak items:
 
-- **Distractor plausibility is the whole game — every comprehension question
-  needs 2-3 genuinely plausible options, not 1 right answer plus 4 options a
-  strong reader eliminates on sight.** (Founder feedback, 2026-08-02, after a
-  strong student was scoring 100% on comprehension even on the platform's
-  hardest papers — not because the passages were easy, but because the wrong
-  options were: "don't let them do eliminations.") For retrieval and
-  vocabulary questions, at least 2 of the 4 wrong options must require the
-  student to have actually read the relevant paragraph to rule out — pull
-  distractors from *other true details in the same passage* (a different
-  character's action, a different paragraph's fact, a detail that's real but
-  answers a slightly different question than the one asked) rather than
-  inventing generic wrong answers. For inference questions, 1-2 wrong options
-  should be plausible *over-reads* of the same evidence the correct answer
-  uses, not unrelated invented claims. For vocabulary, use near-synonyms that
-  are wrong specifically in that sentence's context, not generically wrong
-  words. A question is too easy if a student who skipped the passage
-  entirely could eliminate 3 of 4 options on plausibility alone — the bar is
-  that even a student who read carefully still has to weigh 2-3 real
-  candidates against the text, not just recognise the one real-sounding
-  option. This must not tip into ambiguity: every question still needs to
-  resolve to exactly one objectively correct answer — spot-check each
-  rewritten distractor against the passage text (see below) before calling
-  it done. See `english-gl-15-elite`'s `frh1`-`frh28` for a worked example of
-  hardening an existing, too-easy comprehension section this way.
-- **Don't over-template against your own reference mock.** It's tempting
-  (and fast) to take a working Elite paper and swap nouns/setting per
-  question 1:1 — same sentence shape, same clause count, same connective
-  tested in the same slot. Doing this for all 54 questions produces a
-  paper that's structurally sound but reads as a reskin, not a fresh paper.
-  Vary sentence length, clause order, and which detail is being tested even
-  when the underlying grammar point repeats across mocks (repeating grammar
-  *points* like subject-verb agreement or third conditional across mocks is
-  fine and expected — GL papers do this too — but the sentences testing them
-  shouldn't be find-and-replace copies of a previous mock's sentences).
-- **Read the passage once start-to-finish after writing it**, purely for
-  register — 11+-level literary fiction should not be skimmable in one pass;
-  if every sentence resolves immediately with no held-back detail, the
-  inference/symbolism questions built on it won't have anything real to ask.
-- **Spot-check your own distractors against the passage text** by searching
-  for a couple of distractor phrases in the passage — if a "wrong" retrieval
-  option is actually a paraphrase of what the passage says (rather than a
-  paraphrase of something else true in the passage), you've written an item
-  with two correct answers without realising it.
-- **Run `npm.cmd run typecheck` after drafting, not only at the very end** —
-  a single stray/misspelled field on one question object (e.g. a leftover
-  `marksScheme:` typo next to the real `markScheme:`) won't fail
-  `evaluateMockQuality()` or the duplicate-id/correctAnswer checks, since
-  those only inspect the fields they know about — TypeScript's structural
-  check is what actually catches it.
+- **Distractor plausibility is the whole game.** Every comprehension question needs 2-3 genuinely plausible options, not 1 right answer plus 4 a strong reader eliminates on sight (founder feedback, after a strong student was scoring 100% on comprehension on the hardest papers — not because passages were easy, but wrong options were: "don't let them do eliminations"). For retrieval/vocabulary, at least 2 of 4 wrong options must require having actually read the relevant paragraph to rule out — pull them from *other true details in the same passage*, never generic invented wrongs. For inference, 1-2 wrong options should be plausible over-reads of the same evidence, not unrelated claims. A question is too easy if a student who skipped the passage could eliminate 3 of 4 on plausibility alone — but every question must still resolve to exactly one objectively correct answer, so spot-check each rewritten distractor against the passage text before calling it done. See `english-gl-15-elite`'s `frh1`-`frh28` for a worked example.
+- **Don't over-template against your own reference mock** — swapping nouns/setting 1:1 with the same sentence shape/clause count/connective slot produces a structurally sound reskin, not a fresh paper. Vary sentence length, clause order, and which detail is tested even when the underlying grammar point repeats across mocks (repeating grammar *points* like subject-verb agreement is fine and expected — GL does this too — the *sentences* shouldn't be find-and-replace copies).
+- **Read the passage once start-to-finish for register** after writing it — 11+ literary fiction shouldn't be skimmable in one pass; if every sentence resolves immediately with no held-back detail, inference/symbolism questions won't have anything real to ask.
+- **Spot-check distractors against the passage text** — search for a couple of distractor phrases; if a "wrong" retrieval option is actually a paraphrase of what the passage says, you've written a two-correct-answer item without realising it.
+- **Run `npm.cmd run typecheck` after drafting, not only at the end** — a stray typo'd field (e.g. `marksScheme:` instead of `markScheme:`) won't fail `evaluateMockQuality()` or the id/answer checks, only TypeScript's structural check catches it.
 
 ## Wiring up the `MockExam` entry
 
 ```ts
 {
   id: "english-gl-NN-elite", // or a descriptive non-elite id
-  title: "English GL-Style Full Paper N — Elite",
+  title: "English GL-Style Full Paper N", // plain single tier word if any, no stacked "(Beyond X)"/"(Difficult)" descriptors
   subject: "English",
   style: "GL-style",
-  difficultyLabel: "Summit Stretch", // or "Standard" for non-Elite
+  difficultyLabel: "Summit Stretch", // or "Standard"
   durationMinutes: 55,
   totalMarks: 54, // must equal the sum of every question's `marks`
-  questionIds: [...], // 28 + 9 + 9 + 8, in comp/spelling/grammar/cloze block order for readability
+  questionIds: [...], // 28 + 9 + 9 + 8, comp/spelling/grammar/cloze block order
   published: true,
   releaseDate: "YYYY-MM-DD",
-  tier: "Elite", // NOT "Diagnostic Assessment" — check this, english-gl-8/9-elite
-                 // have a pre-existing tier mismatch bug, don't copy it
+  tier: "Elite", // NOT "Diagnostic Assessment" — english-gl-8/9-elite have a pre-existing mismatch, don't copy it
   description: "...",
 }
 ```
 
-## Verify before calling it done
+## Verify and deploy
 
-Follow the "How to verify" section in `research/mock-authoring-lessons.md` —
-write a throwaway `tsx` script that resolves every `questionIds` entry, checks
-for duplicate/missing ids, confirms every `correctAnswer` is in that
-question's `options`, confirms every `passageId` resolves, checks
-`getEnglishSectionId()` classifies all 54 with the right ~28/9/9/8 split, and
-runs `evaluateMockQuality()` expecting `status: "Ready"`. Delete the script
-after. Then run `npm.cmd run typecheck` and `npm.cmd run lint`.
-
-## Deploy: seed the database, don't just push the code
-
-Pushing `src/data/platform.ts` to git is **not enough** for the new mock to
-show up on the live site. `platform-store.ts` reads mocks/questions/passages
-from Postgres (`prisma.mockExam.findMany(...)` etc.) whenever `DATABASE_URL`
-is configured — which production always has — not from the static file
-directly. The static file is only what demo/localStorage mode (no
-`DATABASE_URL`) falls back to.
-
-**After committing and pushing a new/edited mock, always also run
-`npm run db:seed`** (`scripts/seed-catalog.mts`) — an idempotent, id-keyed
-upsert of the whole catalog (products, email templates, passages, questions,
-mocks, references, notes pages) into whatever `DATABASE_URL` your local
-`.env` currently points at. This project's local `.env` has historically
-pointed at the **same Supabase database production uses** (see
-`project_shared_prod_db` in memory / `status.md`), so running it is normally
-exactly what makes a newly authored mock visible live — do this as a routine
-last step of authoring a mock, not something to ask permission for each time.
-It only touches catalog tables (never `User`/`Session`/`Attempt`), so it's
-safe to re-run.
+```bash
+npx tsx scripts/verify-mock.mts your-new-mock-id   # bank-wide dup ids, answers resolve, marks sum, English section split, evaluateMockQuality
+npm.cmd run typecheck && npm.cmd run lint
+npm run db:seed   # idempotent catalog upsert — pushing platform.ts alone does NOT make it live; production reads Postgres, not the static file. Catalog tables only, safe to re-run, do this as a routine last step.
+```

@@ -1,104 +1,57 @@
 ---
 name: maths-mock-authoring
-description: Write and wire up new Maths mocks for Summit Tuition — full-length GL/Elite-style papers (capped at 50 questions, see below) or shorter diagnostic sets — as hand-authored fixtures in src/data/platform.ts. Use when asked to add a new Maths mock, a new Elite Maths paper, or a batch of new Maths questions.
+description: Write and wire up new Maths mocks for Summit Tuition — full-length GL/Elite-style papers (capped at 50 questions, see below) or shorter diagnostic sets — as hand-authored fixtures in src/data/platform.ts, including the diagram-craft standard for their QuestionVisual SVGs. Use when asked to add a new Maths mock, a new Elite Maths paper, or a batch of new Maths questions.
 ---
 
 # Maths mock authoring
 
-**Question cap (2026-08-03, founder instruction): new full-length Maths mocks
-are capped at 50 questions, not 80.** The older 80-question Elite papers
-(`maths-elite-1` through `maths-elite-9`) are too tiring for students to sit
-in one go and are left as-is (not retroactively cut down), but every new
-full-length Maths mock going forward should target **50 questions,
-`totalMarks: 50`**, scaling `durationMinutes` down proportionally (~40-45 min
-rather than 60-70). Apply the same percentage thresholds below (visual ratio,
-stretch %) against the new 50-question total, not 80 — e.g. ≥30% visual ratio
-is now ~15+ of 50 questions, not 24+ of 80.
+**Question cap (2026-08-03, founder instruction): new full-length Maths mocks are capped at 50 questions, not 80.** The older 80-question Elite papers (`maths-elite-1` through `maths-elite-9`) are too tiring for students to sit in one go and are left as-is, but every new full-length mock targets **50 questions, `totalMarks: 50`, `durationMinutes` ~40-45**. Apply the visual-ratio/stretch-% thresholds below against 50, not 80 (e.g. ≥30% visual ratio is ~15+ of 50).
 
-Scope: hand-authored Maths mocks in `src/data/platform.ts` (questions +
-optional `QuestionVisual` diagrams + the `MockExam` metadata entry). Not the
-deterministic generator (`src/lib/mock-generation.ts`'s `chooseMathsTemplate`,
-used by the admin "Generate draft mock" button) — separate code path with a
-small fixed template array per topic; this skill is for writing a full paper
-by hand the way the 3 original Elite Maths papers (`maths-elite-1/2/3`, back
-when the format was still 80 questions) were built.
+Scope: hand-authored Maths mocks in `src/data/platform.ts` (questions + optional `QuestionVisual` diagrams + the `MockExam` entry). Not the deterministic generator (`src/lib/mock-generation.ts`'s `chooseMathsTemplate`, admin "Generate draft mock" button) — separate code path.
 
-**Before writing anything**: if the mock needs diagrams (most full mocks
-do — see visual ratio requirement below), read the `question-visual-design`
-skill in full for the `QuestionVisual` data model, palette, and interactivity
-conventions, **then** read `maths-mock-visual-craft` for how to make those
-diagrams genuinely impressive rather than just quality-gate-passing —
-variety across the paper, gradient/shadow/hover polish, and a duplicate-check
-step. If you're picking up a mock partway through, also check
-`research/mock-authoring-lessons.md` — it's mainly English-focused but the
-"how to verify a mock" pattern at the bottom applies here too.
+**Before writing diagrams**, read the `question-visual-design` skill for the `QuestionVisual` type catalogue, palette, and interactivity contract — this skill assumes it and covers structure + visual craft together.
 
-## Structure of a full-length Elite Maths paper
+## Structure — 6 core areas, 50 questions
 
-**50 questions, `totalMarks: 50`, `durationMinutes` ~40-45** (2026-08-03 cap —
-see above; the pre-existing 80-question papers referenced below as examples
-predate this cap), covering all 6 core
-areas (existing question `topic` fields are fine-grained subtopic names, e.g.
-`"Angles in a triangle"`, `"Percentage decrease"`, `"Simplifying ratios"` —
-not the 6 broad category names themselves):
+Existing `topic` fields are fine-grained subtopic names (e.g. `"Angles in a triangle"`, `"Percentage decrease"`), not the category names below:
 
-1. **Arithmetic & number** — place value, negative numbers, order of
-   operations (BIDMAS), rounding, powers/roots, HCF/LCM, prime factorisation.
-2. **Fractions / decimals / percentages** — add/subtract/multiply/divide
-   fractions and mixed numbers, decimal↔fraction↔percentage conversion,
-   percentage increase/decrease/reverse-percentage, multi-step money/word
-   problems.
-3. **Ratio & proportion** — simplifying/sharing/combining ratios, ratio↔
-   fraction↔percentage conversion, direct/inverse proportion, map scales.
-4. **Algebra** — expanding (incl. double brackets), factorising, solving
-   equations (incl. x on both sides), forming equations from word problems,
-   inequalities, sequences, substitution, function machines, rearranging
-   formulae.
-5. **Geometry** — angles (triangle/polygon/point/straight line), area
-   (rectangle/triangle/circle/compound shapes), circumference, perimeter,
-   volume of a cuboid, coordinates, reflection/translation, 3D shape
-   properties.
-6. **Averages & statistics** — mean/median/mode/range, mean with a new value,
-   bar chart/pictogram reasoning, survey data, simple/combined probability.
+1. **Arithmetic & number** — place value, negatives, BIDMAS, rounding, powers/roots, HCF/LCM, prime factorisation.
+2. **Fractions/decimals/percentages** — arithmetic with fractions/mixed numbers, conversions, increase/decrease/reverse-percentage, multi-step money problems.
+3. **Ratio & proportion** — simplify/share/combine ratios, ratio↔fraction↔percentage, direct/inverse proportion, map scales.
+4. **Algebra** — expanding (incl. double brackets), factorising, solving equations (incl. x on both sides), forming equations, inequalities, sequences, substitution, function machines, rearranging formulae.
+5. **Geometry** — angles, area (incl. compound shapes), circumference, perimeter, cuboid volume, coordinates, reflection/translation, 3D properties.
+6. **Averages & statistics** — mean/median/mode/range, mean-with-new-value, chart reasoning, simple/combined probability.
 
-`hasBalancedTopicSpread()` in `mock-quality.ts` checks max-share-per-`topic`
-≤25% — because `topic` is written at the fine-grained subtopic level (not the
-6 broad areas above), this is trivially satisfied as long as you don't write
-literally the same subtopic 20+ times; you don't need to hand-balance it, just
-don't cluster every question under one subtopic string.
+`hasBalancedTopicSpread()` caps any single fine-grained `topic` at ≤25% share — trivially satisfied as long as you don't repeat one subtopic 20+ times.
 
-## The visual-diagram requirement (this is the part most likely to get missed)
+## Visual-diagram requirement
 
-`evaluateMockQuality()` requires **≥30% of questions in a full Maths mock
-carry a `.visual`** (`"Maths full mock visual ratio is at least 30%"` check).
-Against the new 50-question cap that's ~15+ questions needing a real
-`QuestionVisual` object — number
-lines, bar/line charts, coordinate grids, fraction bars, ratio blocks, shapes,
-sequences, a clock, a Venn diagram, tables. Don't rely on text-only word
-problems for the bulk of the paper. See the `question-visual-design` skill
-for the full type catalogue and how to build each one; reuse the existing
-renderers verbatim (`chooseMathsTemplate` in `mock-generation.ts` shows which
-visual type pairs with which topic if you want a reference).
+`evaluateMockQuality()` requires **≥30% of questions carry a `.visual`** (~15+ of 50). Don't rely on text-only word problems for the bulk of the paper.
+
+**Visual craft — not just "has a diagram," make it good:**
+- **Gradients** on every fill (fraction bars, chart columns, shapes, ratio blocks — `linearGradient`, e.g. `gold/60→gold-dark/40`), never flat colour.
+- **Depth**: `shadow-[inset_0_1px_2px_rgba(255,255,255,0.5)]` for glassy elements, `hover:shadow-[0_10px_18px_-10px_rgba(180,83,9,0.55)]` + `hover:-translate-y-0.5` for hover-lift on clickable/hoverable pieces.
+- **Staggered entrance**: repeated elements get `style={{ animationDelay: `${index * 0.06}s` }}` + `qv-pop`, gated behind `prefers-reduced-motion` (shared CSS already handles the gate).
+- Every visual renders inside `frame()` (bordered card, `shadow-[0_16px_44px_-36px_rgba(17,24,39,0.45)]`, gold-dark title bar) — never a bare SVG.
+- Hoverable detail wrapped in `.qv-hit`/`.qv-mark`/`.qv-tooltip` (contract in `question-visual-design`).
+- If a new visual doesn't do gradient + shadow-depth + (where interactive) hover-lift, match an existing renderer instead of inventing a plainer one.
+
+**Variety is the real "impressive" lever, not more polish per diagram:**
+- No two questions in the same paper render an *identical* diagram (same type recurring is fine, same data is not — vary numbers/labels/shape/orientation every time).
+- Rotate real-world framing (not five straight "shop discount" questions — mix in exam scores, recipes, sports stats, population change).
+- Use most of the 11 types across a paper, not 2-3 repeated: `bar_chart`, `line_graph`, `table`, `number_line`, `coordinate_grid`, `shape`/`geometry`, `fraction`, `ratioBlocks`, `venn`, `clock`, `sequence`.
+- Vary shape/geometry specifically — triangle/quadrilateral/circle/compound should look visually distinct, not the same rectangle with new numbers.
+- Push visual ratio well past the 30% floor where the paper supports it — `maths-elite-1` hits 69%; treat that as the aspirational bar.
+- Every visual needs a real, specific `summary`/`aria-label` (a caption, not "chart showing data").
 
 ## Difficulty and challenge requirements
 
-- `difficulty: "standard" | "stretch"` on every question — full mocks need
-  **≥30% `"stretch"`** unless `difficultyLabel === "Standard"`
-  (`hasEnoughStretchQuestions`).
-- At least one question needs `"challenge"` somewhere in its `topic`/
-  `subtopic`/`tags` combined string (`hasChallengeQuestions`) — Elite papers
-  satisfy this via a handful of original, harder reasoning puzzles tagged
-  `"competition-style"` in `tags` (see `TODO.md`: these are Summit's own
-  original puzzles in the flavour of primary maths challenge papers, **never**
-  reproductions of real competition questions — no real PMC/JMC question bank
-  exists to draw from, and copying one would be a copyright problem).
+- `difficulty: "standard" | "stretch"` on every question — full mocks need **≥30% `"stretch"`** unless `difficultyLabel === "Standard"`.
+- At least one question needs `"challenge"` in its `topic`/`subtopic`/`tags` — Elite papers satisfy this via original, harder reasoning puzzles tagged `"competition-style"` (Summit's own puzzles in the flavour of primary maths challenge papers — **never** reproduce real PMC/JMC questions, no licensed bank exists and copying one is a copyright problem).
 
 ## Question id convention
 
-Each full Maths mock claims its **own 2-letter id prefix** so ids never
-collide across mocks in the shared bank: `maths-elite-1` uses `mz1`-`mz80`,
-`maths-elite-2` uses `mt1`-`mt80`, `maths-elite-3` uses `mu1`-`mu80`. Before
-picking a prefix for a new mock, grep the exact pattern to confirm it's free:
+Each mock claims its own 2-letter id prefix. Before picking one, grep it's free:
 
 ```bash
 grep -oE '"id": "yourprefix[0-9]+"|id: "yourprefix[0-9]+"' src/data/platform.ts
@@ -111,106 +64,50 @@ grep -oE '"id": "yourprefix[0-9]+"|id: "yourprefix[0-9]+"' src/data/platform.ts
   id: "mz1",
   subject: "Maths",
   topic: "Multiplication", // fine-grained subtopic name
-  subtopic: "...", // optional further detail, not always present
+  subtopic: "...", // optional
   difficulty: "standard", // or "stretch"
   questionType: "multiple_choice", // or "table_graph" for chart/visual-driven questions
   text: "Work out 47 × 68.",
-  options: ["3196", "3096", "3296", "3168"], // 4 options, any order — QuestionRenderer shuffles position per-question automatically, don't pre-shuffle yourself
+  options: ["3196", "3096", "3296", "3168"], // 4 options, any order — QuestionRenderer shuffles per-question, don't pre-shuffle
   correctAnswer: "3196",
   markScheme: "47 × 68 = 47 × 70 - 47 × 2 = 3290 - 94 = 3196.",
   explanation: "Standard two-digit multiplication.",
   marks: 1,
   visual: { type: "numberLine", title: "...", data: { ... } }, // omit if not a diagram question
   tags: ["arithmetic", "multiplication"], // add "challenge"/"competition-style" where relevant
-  timeEstimateSeconds: 60, // 45-90 typically, higher for multi-step/stretch
+  timeEstimateSeconds: 60, // 45-90, higher for multi-step/stretch
 }
 ```
-
-`options` order doesn't matter for correctness — `QuestionRenderer` applies
-its own deterministic per-question shuffle at render time (see
-`research/mock-authoring-lessons.md` Bug 1), so don't hand-randomise or
-worry about the correct answer's list position; write options in whatever
-order is natural to read while authoring.
 
 ## Wiring up the `MockExam` entry
 
 ```ts
 {
   id: "maths-elite-N",
-  title: "Maths GL-Style Full Paper N — Elite",
+  title: "Maths GL-Style Full Paper N", // plain single tier word if any — no stacked "(Beyond X)"/"(Difficult)" descriptors
   subject: "Maths",
   style: "GL-style",
   difficultyLabel: "Summit Stretch", // or "Standard"
-  durationMinutes: 65,
-  totalMarks: 80, // must equal the sum of every question's `marks`
-  questionIds: [ /* mz1..mz80 etc, order doesn't affect student-facing rendering for Maths (no section-block requirement like English) */ ],
+  durationMinutes: 45,
+  totalMarks: 50, // must equal the sum of every question's `marks`
+  questionIds: [ /* order doesn't affect rendering for Maths — no section-block requirement like English */ ],
   published: true,
   releaseDate: "YYYY-MM-DD",
   tier: "Elite",
-  description: "...", // mention topic coverage, visual density, and explicitly state original/not-copied content
+  description: "...", // topic coverage, visual density, explicitly state original/not-copied
 }
 ```
 
 ## Never bake the solved answer into a `.visual` (2026-08-06 bug, fixed live)
 
-A real student-facing bug was found and fixed in `maths-elite-6`/`-7`: a
-`table`/`venn` visual's `data` was authored from the **solved** values
-instead of the **given** ones, so the diagram let a student read the answer
-straight off the picture with zero working. Two concrete examples that shipped:
+A real shipped bug: a `table`/`venn` visual's `data` was authored from the **solved** values instead of the **given** ones (a Venn diagram literally showing `overlap: 12`, the correct answer itself; an algebra table showing the fully-solved angle values next to the unsolved expressions) — usually from copy-pasting out of the `markScheme`'s working.
 
-- A Venn diagram testing "find the overlap from totals" rendered
-  `overlap: 12` — which was *literally* the correct answer option.
-- An algebra table asking students to solve for `x` then evaluate four angle
-  expressions had a `"Value"` column showing the fully-solved `90°/135°/55°/
-  80°` right next to the unsolved `2x°/3x°/(x+10)°/(2x-10)°` expressions.
+**Rule**: a `.visual` may only show what the question stem *gives*, never a value reachable only by solving. If a value is the target (or an intermediate only reachable by solving), omit that row/segment or mark it `"?"` — never the resolved number. For algebra-with-unknowns questions, show only the given relationships/labels (`"x"`, `"2x"`) or given constants. Raw datasets the question asks you to summarise (a list to find the mean of) are fine in full — that's given input, not the answer. Test: would rendering this value require doing the maths being tested? If yes, it's a leak. Grep your own new questions' `type: "table"`/`type: "venn"` visuals against this before finishing — `evaluateMockQuality()` does not catch it.
 
-**Root cause**: the visual was written by copy-pasting from the working in
-the `markScheme`, which already contains the solved system — easy to do
-without noticing the diagram now shows the answer.
+## Verify and deploy
 
-**Rule going forward**: a `.visual` may only show what the question stem
-*gives* the student, never a value that requires solving the question (or
-part of it) to know. Concretely:
-- If a value is the target the student must find (or an intermediate value
-  only reachable by solving), either omit that row/segment entirely or mark
-  it with a literal `"?"` placeholder (see the many `mt`/`mu`/`mb`-prefix
-  examples already in the bank showing `rows: [["8", "15"], ["6", "?"]]`
-  style tables) — never the resolved number.
-- For algebra-with-unknowns questions (Venn/table/angle problems that ask
-  "solve for x then find..."), show the *given relationships* only —
-  algebraic labels (`"x"`, `"2x"`, an expression like `"4 × Angle X"`) or the
-  given constants (totals, rates, starting values) — never the numbers that
-  only exist after solving.
-- Raw datasets the question asks you to summarise (a list of test scores to
-  find the mean/median of, marbles in a bag for a probability question) are
-  fine to show in full — that data isn't "the answer," it's the given input.
-  The distinction is: would rendering this value require doing the maths the
-  question is testing? If yes, it's a leak.
-- Before finishing a mock, grep your own new questions for every `type:
-  "table"`/`type: "venn"` visual and manually check each one against this
-  rule — the automated quality gate (`evaluateMockQuality`) does **not**
-  catch this, it only checks that a visual exists, not what it shows.
-
-## Verify before calling it done
-
-Write a throwaway `tsx` script (see pattern in
-`research/mock-authoring-lessons.md`) that resolves every `questionIds` entry
-against the global `QUESTIONS` bank, checks for duplicate/missing ids and that
-every `correctAnswer` is present in that question's `options`, then runs
-`evaluateMockQuality(mock, questions, PASSAGES)` and confirms `status ===
-"Ready"` with the visual-ratio, challenge, stretch-percentage, and
-topic-spread checks all passing. Delete the script after. Then run
-`npm.cmd run typecheck` and `npm.cmd run lint`.
-
-## Deploy: seed the database, don't just push the code
-
-Pushing `src/data/platform.ts` alone won't make the new mock visible live —
-production reads mocks/questions from Postgres (`platform-store.ts`) whenever
-`DATABASE_URL` is set, not the static file directly (that's only the
-demo/localStorage fallback). **After committing and pushing, always also run
-`npm run db:seed`** (`scripts/seed-catalog.mts`) — an idempotent, id-keyed
-upsert of the whole catalog into whatever `DATABASE_URL` your local `.env`
-currently points at (historically the same database production uses — see
-`status.md`). Do this as a routine last step, not something to ask permission
-for each time; it only touches catalog tables, never `User`/`Session`/
-`Attempt`, so it's safe to re-run.
+```bash
+npx tsx scripts/verify-mock.mts your-new-mock-id   # bank-wide dup ids, answers resolve, marks sum, visual duplicates, evaluateMockQuality
+npm.cmd run typecheck && npm.cmd run lint
+npm run db:seed   # idempotent catalog upsert — pushing platform.ts alone does NOT make it live; production reads Postgres, not the static file. Catalog tables only, safe to re-run, do this as a routine last step.
+```
