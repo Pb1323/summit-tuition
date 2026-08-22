@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Summit Tuition — Start From This Line</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root { --ink:#2b1d10; --accent:#8a5a2b; --gold:#b8862f; --paper:#fffdf8; --line:#e3d3b8; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Palatino Linotype', Georgia, serif;
+    color: var(--ink);
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 44px 44px 70px;
+    background: var(--paper);
+    line-height: 1.55;
+    border: 6px double var(--gold);
+  }
+  header { text-align: center; margin-bottom: 6px; }
+  .kicker { font-family: 'Trebuchet MS', Arial, sans-serif; font-size: 10.5px; letter-spacing: 3.5px; text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: 32px; margin: 6px 0 2px; font-weight: 400; }
+  .subtitle { font-family: 'Trebuchet MS', Arial, sans-serif; font-size: 11px; color: #8a7a5a; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 18px; }
+  .rule-orn { text-align: center; color: var(--gold); font-size: 14px; margin-bottom: 20px; letter-spacing: 8px; }
+
+  .name-row {
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    font-size: 11.5px;
+    color: #7a6a4a;
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-bottom: 22px;
+  }
+  .name-row .fill { border-bottom: 1px solid var(--ink); display: inline-block; min-width: 100px; margin-left: 4px; }
+
+  .line-panel {
+    border-top: 1px solid var(--gold);
+    border-bottom: 1px solid var(--gold);
+    padding: 20px 10px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .line-panel .label { font-family: 'Trebuchet MS', Arial, sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin: 0 0 12px; font-weight: bold; }
+  .line-panel .the-line { font-size: 23px; font-style: italic; margin: 0; }
+  .line-panel .the-line::before { content: open-quote; }
+  .line-panel .the-line::after { content: close-quote; }
+
+  .rules-note {
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    font-size: 12.5px;
+    color: #4a3a20;
+    background: #faf3e5;
+    border: 1px solid var(--line);
+    padding: 12px 16px;
+    margin-bottom: 22px;
+  }
+  .rules-note b { color: var(--accent); }
+
+  h2.section {
+    font-family: 'Trebuchet MS', Arial, sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 6px;
+    margin: 28px 0 14px;
+  }
+
+  .q-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .q-block { background: #fff; border: 1px solid var(--line); padding: 14px 16px; }
+  .q-block h3 { font-family: 'Trebuchet MS', Arial, sans-serif; font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--accent); margin: 0 0 8px; }
+  .q-block .q { margin-bottom: 6px; font-family: 'Trebuchet MS', Arial, sans-serif; font-size: 12.5px; color: #333; }
+  .q-block .q:last-child { margin-bottom: 0; }
+  .q-block .q b { color: var(--ink); }
+
+  .write-space { min-height: 560px; border-top: 1px dashed var(--line); border-bottom: 1px dashed var(--line); margin-top: 18px; }
+
+  .checklist-panel { background: #faf3e5; border: 1px solid var(--gold); padding: 16px 18px; margin-top: 20px; }
+  .checklist-panel p.title { font-family: 'Trebuchet MS', Arial, sans-serif; font-weight: bold; font-size: 12px; margin: 0 0 8px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
+  .checklist-panel ol { margin: 0; padding-left: 20px; font-family: 'Trebuchet MS', Arial, sans-serif; font-size: 12.5px; line-height: 1.7; }
+  .checklist-panel li { margin-bottom: 7px; }
+  .checklist-panel li b { color: var(--accent); }
+
+  footer { font-family: 'Trebuchet MS', Arial, sans-serif; font-size: 10px; color: #9a8a6a; text-align: center; margin-top: 36px; border-top: 1px solid var(--line); padding-top: 10px; letter-spacing: 1px; text-transform: uppercase; }
+
+  @media print {
+    body { padding: 24px; border-width: 4px; }
+    .line-panel, .rules-note, .q-block, .checklist-panel { break-inside: avoid; }
+    @page { size: A4; margin: 12mm; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">Narrative Writing — Opening Line Given</div>
+  <h1>Start From This Line</h1>
+  <div class="subtitle">Difficult Practice</div>
+</header>
+<div class="rule-orn">&#10022; &#10022; &#10022;</div>
+
+<div class="name-row">
+  <span>Name:<span class="fill">&nbsp;</span></span>
+  <span>Date set:<span class="fill">&nbsp;</span></span>
+  <span>Due:<span class="fill">&nbsp;</span></span>
+</div>
+
+<div class="line-panel">
+  <p class="label">Your opening line — use it exactly, word for word, as the first line of your story</p>
+  <p class="the-line">By the time anyone thought to ask, it was already too late to matter.</p>
+</div>
+
+<div class="rules-note">
+  <b>Unlike "continue the story," you are building everything after this line yourself</b> — including who "anyone" is, what they should have asked, and why it's too late. This line can open a story in almost any genre. Choose one direction and commit to it fully rather than trying to keep several possibilities open.
+</div>
+
+<h2 class="section">Technique required</h2>
+<div class="q-grid">
+  <div class="q-block">
+    <h3>Using the given line</h3>
+    <div class="q">The line must genuinely set up what follows — by the end, a reader should be able to look back and see exactly what "it" and "too late" referred to.</div>
+    <div class="q">Do not explain the line directly in your second sentence ("It was too late because..."). Let the meaning unfold through the story instead.</div>
+  </div>
+  <div class="q-block">
+    <h3>Voice &amp; tense</h3>
+    <div class="q">The given line is past tense, third person — decide immediately whether you're staying in that voice throughout or shifting deliberately, and be consistent.</div>
+    <div class="q">At least one moment where the narration hints at foreknowledge (the narrator already knows how this ends) without giving the ending away.</div>
+  </div>
+  <div class="q-block">
+    <h3>Structure</h3>
+    <div class="q">Build toward a clear turning point — the moment "anyone" should have asked, or did ask too late.</div>
+    <div class="q">End the piece by circling back to the idea of "too late" in a way that feels earned, not repeated word-for-word.</div>
+  </div>
+  <div class="q-block">
+    <h3>Language</h3>
+    <div class="q">At least 2 pieces of figurative language that fit the tone you've chosen (tense thriller, quiet tragedy, dark comedy — your choice).</div>
+    <div class="q">Vary sentence openings and lengths — avoid three sentences in a row starting the same way.</div>
+  </div>
+</div>
+
+<h2 class="section">Your writing</h2>
+<div class="write-space"></div>
+
+<div class="checklist-panel">
+  <p class="title">Checklist — go over it again</p>
+  <ol>
+    <li><b>Check your opening line was copied exactly</b>, word for word, with correct punctuation.</li>
+    <li>Read the whole piece back — does the ending genuinely justify the ominous opening, or does the story undersell it?</li>
+    <li>Tense and person stay consistent (or any deliberate shift is clearly signalled).</li>
+    <li>No unearned twist — a strong ending should feel inevitable once you know it, not random.</li>
+    <li>Check punctuation around any dialogue and correct use of commas in longer sentences.</li>
+    <li>No word repeated in the same sentence or the one right after it — swap for a synonym.</li>
+  </ol>
+</div>
+
+<footer>Summit Tuition — original practice material, not affiliated with or copied from any real exam board</footer>
+
+</body>
+</html>

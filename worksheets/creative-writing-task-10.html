@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Summit Tuition — Write From This Title</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root { --ink:#111; --rule:#111; --accent:#1a4d3e; --paper:#fefefe; --grey:#666; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Times New Roman', Georgia, serif;
+    color: var(--ink);
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 40px 70px;
+    background: var(--paper);
+    line-height: 1.5;
+  }
+  .exam-header { border: 2px solid var(--rule); padding: 14px 20px; }
+  .exam-header .top-row { display: flex; justify-content: space-between; font-family: Arial, sans-serif; font-size: 10.5px; text-transform: uppercase; letter-spacing: 1px; color: var(--grey); border-bottom: 1px solid #ccc; padding-bottom: 8px; margin-bottom: 10px; }
+  .exam-header h1 { font-size: 26px; margin: 4px 0; font-weight: bold; text-align: center; letter-spacing: 0.5px; }
+  .exam-header .instructions { font-family: Arial, sans-serif; font-size: 11.5px; color: #333; text-align: center; }
+
+  .name-row {
+    font-family: Arial, sans-serif;
+    font-size: 11.5px;
+    color: var(--grey);
+    display: flex;
+    gap: 24px;
+    margin: 18px 0 20px;
+    justify-content: center;
+  }
+  .name-row .fill { border-bottom: 1px solid var(--ink); display: inline-block; min-width: 100px; margin-left: 4px; }
+
+  .title-box {
+    border: 2px solid var(--accent);
+    padding: 22px 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    background: #f7faf8;
+  }
+  .title-box .label { font-family: Arial, sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin: 0 0 10px; font-weight: bold; }
+  .title-box .the-title { font-size: 26px; font-style: italic; margin: 0; }
+  .title-box .sub { font-family: Arial, sans-serif; font-size: 11.5px; color: var(--grey); margin-top: 10px; }
+
+  .rules-note {
+    font-family: Arial, sans-serif;
+    font-size: 12.5px;
+    color: #333;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 12px 16px;
+    margin-bottom: 22px;
+  }
+  .rules-note b { color: var(--accent); }
+
+  h2.section {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 4px;
+    margin: 26px 0 14px;
+  }
+
+  .interp-panel { border: 1px solid #ccc; padding: 14px 18px; background: #fafafa; margin-bottom: 16px; }
+  .interp-panel .q { font-family: Arial, sans-serif; font-size: 12.5px; color: #333; margin-bottom: 6px; }
+  .interp-panel .q:last-child { margin-bottom: 0; }
+  .interp-panel .q b { color: var(--accent); }
+
+  .q-block { background: #fff; border: 1px solid #ddd; padding: 16px 18px; margin-top: 4px; }
+  .q-block h3 { font-family: Arial, sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); margin: 0 0 10px; }
+  .q-block .q { margin-bottom: 10px; font-size: 13px; font-family: Arial, sans-serif; color: #333; }
+  .q-block .q:last-child { margin-bottom: 0; }
+  .q-block .q b { color: #111; }
+
+  .write-space { min-height: 600px; border-top: 1px dashed #ccc; border-bottom: 1px dashed #ccc; }
+
+  .checklist-panel { background: #fff; border: 2px solid var(--rule); padding: 16px 18px; margin-top: 20px; }
+  .checklist-panel ol { margin: 0; padding-left: 20px; font-family: Arial, sans-serif; font-size: 12.5px; line-height: 1.7; }
+  .checklist-panel li { margin-bottom: 7px; }
+  .checklist-panel li b { color: var(--accent); }
+
+  footer { font-family: Arial, sans-serif; font-size: 10px; color: #888; text-align: center; margin-top: 36px; border-top: 1px solid #ddd; padding-top: 10px; letter-spacing: 1px; text-transform: uppercase; }
+
+  @media print {
+    body { padding: 24px; }
+    .title-box, .rules-note, .interp-panel, .q-block, .checklist-panel { break-inside: avoid; }
+    @page { size: A4; margin: 12mm; }
+  }
+</style>
+</head>
+<body>
+
+<div class="exam-header">
+  <div class="top-row"><span>Creative Writing — Titled Composition</span><span>Difficult Practice</span></div>
+  <h1>Write a Story or Description From the Title Given</h1>
+  <div class="instructions">You choose the genre and approach. The title must guide everything you write — nothing should feel bolted on.</div>
+</div>
+
+<div class="name-row">
+  <span>Name:<span class="fill">&nbsp;</span></span>
+  <span>Date set:<span class="fill">&nbsp;</span></span>
+  <span>Due:<span class="fill">&nbsp;</span></span>
+</div>
+
+<div class="title-box">
+  <p class="label">Your title</p>
+  <p class="the-title">"Nobody Noticed the Second Time"</p>
+  <p class="sub">Write a story OR a description inspired by this title. It does not have to appear as a line in your writing, but every reader should be able to see exactly why you chose it once they finish.</p>
+</div>
+
+<div class="rules-note">
+  <b>This is harder than it looks.</b> A weak answer bolts the title onto a generic story at the last line. A strong answer builds the whole piece — structure, pacing, even the ending — around what the title actually implies: that something happened once already, unnoticed, and now it's happening again.
+</div>
+
+<h2 class="section">Before you start — plan your interpretation</h2>
+<div class="interp-panel">
+  <div class="q"><b>1.</b> What is "the second time" — the second time what happens? Decide this before writing a single sentence.</div>
+  <div class="q"><b>2.</b> Who is the "nobody" — is it genuinely nobody, or is there one person who half-notices and dismisses it? That tension is often the strongest angle.</div>
+  <div class="q"><b>3.</b> Will your reader find out what the "first time" was, or is it left as implication? Both are valid — pick one deliberately.</div>
+</div>
+
+<h2 class="section">Technique required</h2>
+<div class="q-block">
+  <h3>Structural discipline</h3>
+  <div class="q">The title's idea must be earned by the structure, not just stated — e.g. an actual repeated event/pattern the reader can trace across the piece, not a single throwaway line explaining it.</div>
+  <div class="q">Clear beginning &rarr; complication/build &rarr; ending shape, even in a short piece. No meandering middle.</div>
+  <div class="q">Your final sentence must connect back to the title without literally repeating its words.</div>
+</div>
+<div class="q-block">
+  <h3>Language &amp; technique</h3>
+  <div class="q">At least one example of dramatic irony or situational irony — the reader knows or suspects something a character doesn't (or vice versa).</div>
+  <div class="q">A mix of long, flowing sentences and short, blunt ones — deliberately, not accidentally.</div>
+  <div class="q">At least 2 pieces of figurative language (simile, metaphor, or personification) that fit the mood, not decoration for its own sake.</div>
+  <div class="q">Show restraint with adverbs — replace at least three "-ly" words you'd normally reach for with a stronger verb or image instead.</div>
+</div>
+
+<h2 class="section">Your writing</h2>
+<div class="write-space"></div>
+
+<div class="checklist-panel">
+  <p style="font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 12.5px; margin: 0 0 8px;">Checklist — go over it again</p>
+  <ol>
+    <li><b>Could someone who hasn't seen the title guess it from your ending?</b> If not, the piece isn't built around it tightly enough yet.</li>
+    <li>Check every character's motivation makes sense — nobody acts a certain way "because the plot needed it."</li>
+    <li>Read the opening and closing paragraphs back to back — do they feel like they belong to the same piece?</li>
+    <li>No clichéd openings ("It was a dark and stormy night," "Little did I know").</li>
+    <li>Punctuation check: commas around interrupting phrases, correct use of ellipsis (not overused for suspense).</li>
+    <li>Paragraphs are used to control pace, not just length — a single-sentence paragraph should be a deliberate choice.</li>
+  </ol>
+</div>
+
+<footer>Summit Tuition — original practice material, not affiliated with or copied from any real exam board</footer>
+
+</body>
+</html>

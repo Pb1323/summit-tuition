@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Summit Tuition — Write About a Time...</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root { --ink:#1e2430; --accent:#c26a2c; --panel:#f4f1ea; --line:#d8d2c4; --navy:#22304a; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: var(--ink);
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 40px 42px 70px;
+    background: #fff;
+    line-height: 1.5;
+  }
+  .dash-header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 3px solid var(--navy); padding-bottom: 12px; margin-bottom: 20px; }
+  .dash-header .kicker { font-size: 10.5px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  .dash-header h1 { font-family: Georgia, serif; font-size: 30px; margin: 4px 0 0; font-weight: 400; color: var(--navy); }
+  .dash-header .tag { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+
+  .meta-strip { display: flex; gap: 14px; margin-bottom: 20px; }
+  .meta-chip { flex: 1; border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; font-size: 11px; color: #555; }
+  .meta-chip b { display: block; color: var(--navy); font-size: 11.5px; margin-bottom: 2px; }
+  .meta-chip .fill { border-bottom: 1px solid var(--line); display: inline-block; min-width: 90%; }
+
+  .stat-row { display: flex; gap: 12px; margin-bottom: 22px; }
+  .stat-card { flex: 1; background: var(--panel); border-radius: 8px; padding: 14px 16px; border-left: 4px solid var(--accent); }
+  .stat-card .num { font-family: Georgia, serif; font-size: 22px; color: var(--navy); font-weight: bold; }
+  .stat-card .lbl { font-size: 10.5px; color: #777; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  .prompt-panel {
+    border-radius: 8px;
+    padding: 20px 22px;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, var(--navy), #2c3d5f);
+    color: #fff;
+  }
+  .prompt-panel .label { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: #e3b98a; margin: 0 0 10px; font-weight: bold; }
+  .prompt-panel p { margin: 0; font-family: Georgia, serif; font-size: 18px; font-style: italic; line-height: 1.4; }
+
+  .rules-note {
+    font-size: 12.5px;
+    color: #444;
+    background: #fff8f0;
+    border: 1px solid #eddcc8;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 22px;
+  }
+  .rules-note b { color: var(--accent); }
+
+  h2.section {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--navy);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 6px;
+    margin: 26px 0 14px;
+    font-weight: 700;
+  }
+
+  .q-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .q-block { background: var(--panel); border-radius: 8px; padding: 14px 16px; }
+  .q-block h3 { font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--accent); margin: 0 0 8px; font-weight: 700; }
+  .q-block .q { margin-bottom: 6px; font-size: 12.5px; color: #333; }
+  .q-block .q:last-child { margin-bottom: 0; }
+  .q-block .q b { color: var(--navy); }
+
+  .write-space { min-height: 560px; border-top: 1px dashed var(--line); border-bottom: 1px dashed var(--line); margin-top: 16px; }
+
+  .checklist-panel { background: var(--panel); border-radius: 8px; padding: 16px 18px; margin-top: 20px; }
+  .checklist-panel p.title { font-weight: 700; font-size: 12px; margin: 0 0 8px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
+  .checklist-panel ol { margin: 0; padding-left: 20px; font-size: 12.5px; line-height: 1.7; }
+  .checklist-panel li { margin-bottom: 7px; }
+  .checklist-panel li b { color: var(--navy); }
+
+  footer { font-size: 10px; color: #888; text-align: center; margin-top: 36px; border-top: 1px solid var(--line); padding-top: 10px; letter-spacing: 1px; text-transform: uppercase; }
+
+  @media print {
+    body { padding: 24px; }
+    .prompt-panel { background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .stat-card, .q-block, .checklist-panel, .rules-note, .prompt-panel { break-inside: avoid; }
+    @page { size: A4; margin: 12mm; }
+  }
+</style>
+</head>
+<body>
+
+<div class="dash-header">
+  <div>
+    <div class="kicker">Personal / Reflective Writing</div>
+    <h1>Write About a Time...</h1>
+  </div>
+  <div class="tag">Difficult Practice</div>
+</div>
+
+<div class="meta-strip">
+  <div class="meta-chip"><b>Name</b><span class="fill">&nbsp;</span></div>
+  <div class="meta-chip"><b>Date set</b><span class="fill">&nbsp;</span></div>
+  <div class="meta-chip"><b>Due</b><span class="fill">&nbsp;</span></div>
+</div>
+
+<div class="stat-row">
+  <div class="stat-card"><div class="num">40&ndash;50 min</div><div class="lbl">Suggested time</div></div>
+  <div class="stat-card"><div class="num">1st person</div><div class="lbl">Required voice</div></div>
+  <div class="stat-card"><div class="num">Real or invented</div><div class="lbl">Can be either</div></div>
+</div>
+
+<div class="prompt-panel">
+  <p class="label">Your prompt</p>
+  <p>Write about a time you were certain you were right &mdash; and were not.</p>
+</div>
+
+<div class="rules-note">
+  <b>This can be a real memory or a fully invented one — either is fine.</b> What matters is that it reads as true: specific, sensory, and honest about how it actually felt to be wrong, not just a neat moral at the end.
+</div>
+
+<h2 class="section">Technique required</h2>
+<div class="q-grid">
+  <div class="q-block">
+    <h3>Honesty of voice</h3>
+    <div class="q">Show the moment of certainty <b>before</b> the reader knows it's wrong — don't foreshadow it too early.</div>
+    <div class="q">At least one moment of genuine embarrassment, frustration, or discomfort shown through action or thought, not just stated ("I felt embarrassed").</div>
+    <div class="q">Avoid a tidy "and that's when I learned..." closing line — real realisations are usually messier than that.</div>
+  </div>
+  <div class="q-block">
+    <h3>Structure</h3>
+    <div class="q">Use a flashback or time-shift at least once, signalled clearly (not confusingly) to the reader.</div>
+    <div class="q">Present the moment of being proven wrong as a specific scene, with dialogue or concrete detail — not a summary.</div>
+  </div>
+  <div class="q-block">
+    <h3>Language</h3>
+    <div class="q">At least 3 precise sensory details (specific, not generic — "the smell of the school photocopier," not "it smelled bad").</div>
+    <div class="q">One rhetorical question used naturally, to show the narrator questioning themselves.</div>
+  </div>
+  <div class="q-block">
+    <h3>Control</h3>
+    <div class="q">Vary sentence length deliberately around the moment of realisation — a short sentence can land harder than a long one here.</div>
+    <div class="q">Correct use of past perfect ("had done") where you're describing something that happened before the main timeline of the story.</div>
+  </div>
+</div>
+
+<h2 class="section">Your writing</h2>
+<div class="write-space"></div>
+
+<div class="checklist-panel">
+  <p class="title">Checklist — go over it again</p>
+  <ol>
+    <li><b>Does it feel true, even if it's invented?</b> Vague or generic details are the biggest giveaway of a rushed answer.</li>
+    <li>Check every use of "I" is followed by a verb that fits — no dangling or fragmented sentences unless deliberate.</li>
+    <li>Past perfect ("had") used correctly for anything that happened before the main scene.</li>
+    <li>No summarising sentence that explains the "lesson" too neatly — let the reader feel it instead.</li>
+    <li>Read the ending aloud — does it stop at the right moment, or does it keep going past where it should?</li>
+    <li>Check for repeated words across nearby sentences and swap for a synonym.</li>
+  </ol>
+</div>
+
+<footer>Summit Tuition — original practice material, not affiliated with or copied from any real exam board</footer>
+
+</body>
+</html>

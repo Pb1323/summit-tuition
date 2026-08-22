@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Summit Tuition — Continue the Story</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root { --bg:#0f1420; --panel:#171e2e; --ink:#e8e6df; --muted:#9aa3b8; --accent:#d4a24e; --line:#2a3448; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: var(--ink);
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 46px 42px 70px;
+    background: var(--bg);
+    line-height: 1.55;
+  }
+  header { border-bottom: 1px solid var(--line); padding-bottom: 18px; margin-bottom: 22px; }
+  .kicker { font-family: Arial, sans-serif; font-size: 10.5px; letter-spacing: 3.5px; text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: 34px; margin: 6px 0 4px; font-weight: 400; color: #fff; }
+  .subtitle { font-family: Arial, sans-serif; font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; }
+
+  .name-row {
+    font-family: Arial, sans-serif;
+    font-size: 11.5px;
+    color: var(--muted);
+    display: flex;
+    gap: 26px;
+    margin-bottom: 22px;
+  }
+  .name-row .fill { border-bottom: 1px solid var(--line); display: inline-block; min-width: 110px; margin-left: 4px; color: transparent; }
+
+  .opening-panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    padding: 20px 24px;
+    margin-bottom: 20px;
+  }
+  .opening-panel .label { font-family: Arial, sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin: 0 0 10px; font-weight: bold; }
+  .opening-panel p { margin: 0 0 12px; font-size: 14.5px; }
+  .opening-panel p:last-child { margin-bottom: 0; }
+  .opening-panel .cutoff { color: var(--accent); font-style: italic; font-family: Arial, sans-serif; font-size: 11.5px; }
+
+  .rules-note {
+    font-family: Arial, sans-serif;
+    font-size: 12.5px;
+    color: var(--muted);
+    background: rgba(212,162,78,0.08);
+    border: 1px solid var(--line);
+    padding: 12px 16px;
+    margin-bottom: 22px;
+  }
+  .rules-note b { color: var(--ink); }
+
+  h2.section {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 6px;
+    margin: 28px 0 14px;
+  }
+
+  .q-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .q-block { background: var(--panel); border: 1px solid var(--line); padding: 14px 16px; }
+  .q-block h3 { font-family: Arial, sans-serif; font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--accent); margin: 0 0 8px; }
+  .q-block .q { margin-bottom: 6px; font-size: 12.5px; font-family: Arial, sans-serif; color: var(--ink); }
+  .q-block .q:last-child { margin-bottom: 0; }
+
+  .write-space { min-height: 560px; border-top: 1px dashed var(--line); border-bottom: 1px dashed var(--line); margin-top: 18px; }
+
+  .checklist-panel { background: var(--panel); border: 1px solid var(--line); padding: 16px 18px; margin-top: 20px; }
+  .checklist-panel p.title { font-family: Arial, sans-serif; font-weight: bold; font-size: 12px; margin: 0 0 8px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
+  .checklist-panel ol { margin: 0; padding-left: 20px; font-family: Arial, sans-serif; font-size: 12.5px; line-height: 1.7; color: var(--ink); }
+  .checklist-panel li { margin-bottom: 7px; }
+  .checklist-panel li b { color: var(--accent); }
+
+  footer { font-family: Arial, sans-serif; font-size: 10px; color: var(--muted); text-align: center; margin-top: 36px; border-top: 1px solid var(--line); padding-top: 10px; letter-spacing: 1px; text-transform: uppercase; }
+
+  @media print {
+    body { background: #fff; color: #1a1a1a; padding: 24px; }
+    header, .opening-panel, .rules-note, .q-block, .checklist-panel { border-color: #333 !important; }
+    .opening-panel { background: #f6f3ec; border-left-color: #a9291c; }
+    .rules-note, .q-block, .checklist-panel { background: #fafafa; }
+    .kicker, .subtitle, .checklist-panel p.title, .opening-panel .label { color: #a9291c !important; }
+    h1 { color: #1a1a1a; }
+    footer { color: #666; }
+    .opening-panel, .rules-note, .q-block, .checklist-panel { break-inside: avoid; }
+    @page { size: A4; margin: 12mm; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">Narrative Writing — Continue the Story</div>
+  <h1>The Last Bus</h1>
+  <div class="subtitle">Difficult Practice</div>
+</header>
+
+<div class="name-row">
+  <span>Name:<span class="fill">.</span></span>
+  <span>Date set:<span class="fill">.</span></span>
+  <span>Due:<span class="fill">.</span></span>
+</div>
+
+<div class="opening-panel">
+  <p class="label">Opening — continue from here</p>
+  <p>The doors hissed shut behind me before I'd even found a seat, and for a moment the whole bus rocked with the force of it. Every other passenger had somewhere obvious to be — headphones in, eyes down, the particular stillness of people who have done this journey a thousand times. I hadn't. I'd got on because it was the only bus still running, and because the alternative was standing outside that house a minute longer than I already had.</p>
+  <p>Three stops later, someone sat down directly across the aisle from me and didn't look away.</p>
+  <p class="cutoff">— continue the story from this exact moment —</p>
+</div>
+
+<div class="rules-note">
+  <b>You are not starting from nothing.</b> Match the voice and tense already set (first person, past tense) and keep it consistent throughout. Whatever happens next has to make sense of two things the opening already tells us: something happened at "that house," and someone on this bus already recognises the narrator.
+</div>
+
+<h2 class="section">Technique required</h2>
+<div class="q-grid">
+  <div class="q-block">
+    <h3>Tension &amp; pace</h3>
+    <div class="q">Build tension gradually — don't reveal who the stranger is or what happened at the house in the first paragraph.</div>
+    <div class="q">At least one short, punchy sentence (3&ndash;5 words) placed at a moment of realisation.</div>
+    <div class="q">Vary sentence openings — no more than two sentences in a row starting with the same word type.</div>
+  </div>
+  <div class="q-block">
+    <h3>Character &amp; voice</h3>
+    <div class="q">At least one line of internal thought showing the narrator's fear or suspicion, not just their actions.</div>
+    <div class="q">Give the stranger one distinguishing physical detail that becomes significant later.</div>
+    <div class="q">Include natural, unattributed dialogue at least once — let the reader work out who's speaking from context.</div>
+  </div>
+  <div class="q-block">
+    <h3>Structure</h3>
+    <div class="q">Resolve the "house" mystery by the end — even partially — don't leave it as pure cliffhanger.</div>
+    <div class="q">At least one paragraph break used deliberately for dramatic effect, not just length.</div>
+  </div>
+  <div class="q-block">
+    <h3>Language</h3>
+    <div class="q">One extended metaphor carried across at least two sentences (not a one-off simile).</div>
+    <div class="q">Precise verbs throughout — avoid "walked," "said," "looked" where a more specific verb exists.</div>
+  </div>
+</div>
+
+<h2 class="section">Your writing</h2>
+<div class="write-space"></div>
+
+<div class="checklist-panel">
+  <p class="title">Checklist — go over it again</p>
+  <ol>
+    <li><b>Tense and person stay consistent</b> — first person, past tense, throughout, including flashback moments.</li>
+    <li>Every "he/she/they" clearly refers back to a named character — no ambiguous pronouns.</li>
+    <li>Read the dialogue aloud — does it sound like something a real person would actually say?</li>
+    <li><b>No unearned twist</b> — if the stranger turns out to be significant, the reader should be able to look back and see it was fair, not random.</li>
+    <li>Check paragraph lengths vary — not five paragraphs of identical length in a row.</li>
+    <li>Ending resolves or meaningfully changes the tension set up in the opening — it doesn't just stop.</li>
+  </ol>
+</div>
+
+<footer>Summit Tuition — original practice material, not affiliated with or copied from any real exam board</footer>
+
+</body>
+</html>
