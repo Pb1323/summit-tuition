@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Fact, Opinion &amp; Bias Detection — Part 1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
+:root { --ink:#20263a; --navy:#16233f; --gold:#a9781f; --line:#c9d2e8; --paper:#fdfcf8; }
+* { box-sizing: border-box; }
+body { font-family: Georgia, 'Times New Roman', serif; color: var(--ink); max-width: 820px; margin: 0 auto; padding: 34px 40px 55px; background: var(--paper); }
+header { border-bottom: 3px solid var(--navy); padding-bottom: 8px; margin-bottom: 16px; }
+header .brand { font-family: Arial, sans-serif; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); }
+header h1 { font-size: 25px; margin: 4px 0 6px; color: var(--navy); }
+header .meta { display:flex; justify-content: space-between; font-family: Arial, sans-serif; font-size: 10.5px; color:#555; }
+header .meta b { color: var(--ink); }
+h2.section { font-family: Arial, sans-serif; font-size: 12.5px; text-transform: uppercase; letter-spacing: 1.5px; color: #fff; background: var(--navy); padding: 5px 11px; margin: 20px 0 10px; border-radius: 3px; }
+.copy-box { background: #fff; border: 1.5px solid var(--line); padding: 12px 16px; margin-bottom: 10px; }
+.copy-box .label { font-family: Arial, sans-serif; font-size: 9.5px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); margin: 8px 0 5px; }
+.copy-box .label:first-child { margin-top: 0; }
+.copy-box p { margin: 0 0 6px; font-size: 13px; line-height: 1.45; }
+.copy-box ol, .copy-box ul { margin: 3px 0; padding-left: 18px; font-size: 12.5px; line-height: 1.45; }
+table.ref { width:100%; border-collapse:collapse; font-size:12px; margin:4px 0; }
+table.ref th { font-family:Arial,sans-serif; font-size:9.5px; text-transform:uppercase; letter-spacing:1px; color:var(--navy); text-align:left; border-bottom:2px solid var(--navy); padding:4px 6px; }
+table.ref td { padding:5px 6px; border-bottom:1px solid #e2e2e2; }
+.passage { background: #fff; border: 1px solid var(--line); padding: 12px 16px; font-size: 12.5px; line-height: 1.55; text-align: justify; margin-bottom: 6px; }
+.passage .ptitle { font-family: Arial, sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); margin-bottom: 4px; }
+.q-block { background: #fff; border: 1px solid var(--line); padding: 10px 16px; margin-bottom: 12px; }
+.q-block .q { font-size: 12.5px; margin: 6px 0; }
+.q-block .q b { color: var(--navy); }
+.ans-line { border-bottom: 1px solid #bbb; height: 16px; margin: 2px 0 0 16px; }
+.reminder { margin-top: 16px; background: #fff7e6; border: 1.5px solid var(--gold); padding: 10px 14px; font-family: Arial, sans-serif; font-size: 12px; color: #5a3f0a; line-height: 1.45; }
+.reminder b { color: var(--navy); }
+.answer-key { margin-top: 18px; border: 1.5px dashed #999; padding: 10px 14px; font-family: Arial, sans-serif; font-size: 10.5px; color: #444; }
+.answer-key h3 { margin: 0 0 5px; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); }
+.answer-key ol { margin: 0; padding-left: 16px; columns: 2; column-gap: 20px; }
+.answer-key li { margin-bottom: 3px; break-inside: avoid; }
+footer { font-family: Arial, sans-serif; font-size: 9.5px; color: #999; text-align: center; margin-top: 28px; border-top: 1px solid #ddd; padding-top: 7px; letter-spacing: 1px; text-transform: uppercase; }
+@media print { body { padding: 18px; } }
+</style></head><body>
+<header><div class="brand">Summit Tuition — Comprehension Skills</div><h1>Fact, Opinion &amp; Bias Detection — Part 1</h1>
+<div class="meta"><span>Name: <b>______________</b></span><span>Date: <b>______________</b></span><span>Time: <b>60 min</b></span></div></header>
+<h2 class="section">1 · Copy This Down — Notes, Structures &amp; Technique</h2>
+<div class="copy-box">
+<p class="label">Definitions</p>
+<p><b>Fact:</b> a statement that can be checked and proven true or false. <b>Opinion:</b> a personal judgement or belief that cannot be proven either way.</p>
+<p class="label">Technique — The Proof Test</p>
+<p>Ask: "could I look this up and confirm it?" If yes, it's a fact. If it depends on someone's personal view (best, worst, should, terrible, wonderful), it's an opinion — even if stated confidently.</p>
+<p class="label">Bias Clues — Copy the List</p>
+<ul><li><b>Loaded language:</b> emotionally charged words instead of neutral ones (e.g. "slashed" instead of "reduced")</li>
+<li><b>One-sided information:</b> only presenting evidence for one side</li>
+<li><b>Unsupported generalisation:</b> "everyone thinks," "nobody disputes," with no evidence</li>
+<li><b>Selective detail:</b> including facts that support one view, omitting ones that don't</li></ul>
+<p class="label">Sentence Frame to Copy</p>
+<p>"This is [a fact/an opinion], because it [can/cannot] be proven. The word '___' shows bias because ___."</p>
+</div>
+<h2 class="section">2 · Practice — 4 Passages, 20 Questions</h2>
+
+<div class="passage"><div class="ptitle">Extract A</div><p>The council spent £340,000 on the new playground. It's honestly the best use of public money the town has ever seen.</p></div>
+<div class="q-block">
+<div class="q"><b>1.</b> Which sentence is a fact? How do you know?</div><div class="ans-line"></div>
+<div class="q"><b>2.</b> Which sentence is an opinion? How do you know?</div><div class="ans-line"></div>
+<div class="q"><b>3.</b> Identify the loaded/opinion word in the second sentence.</div><div class="ans-line"></div>
+<div class="q"><b>4.</b> Rewrite the second sentence as a neutral, fact-based statement.</div><div class="ans-line"></div>
+<div class="q"><b>5.</b> Apply the Proof Test to explain your answer to Q1.</div><div class="ans-line"></div>
+</div>
+
+<div class="passage"><div class="ptitle">Extract B</div><p>Ever since the factory closed, unemployment in the town has risen by 12%. Naturally, nobody in charge seems to care.</p></div>
+<div class="q-block">
+<div class="q"><b>6.</b> Which sentence is a fact, and which is an opinion?</div><div class="ans-line"></div>
+<div class="q"><b>7.</b> Identify the bias clue used in the second sentence (loaded language, one-sided info, generalisation, or selective detail).</div><div class="ans-line"></div>
+<div class="q"><b>8.</b> Why is "nobody in charge seems to care" unproven?</div><div class="ans-line"></div>
+<div class="q"><b>9.</b> What evidence would be needed to support the second sentence as fact?</div><div class="ans-line"></div>
+<div class="q"><b>10.</b> Rewrite the passage removing the bias, keeping only verifiable information.</div><div class="ans-line"></div>
+</div>
+
+<div class="passage"><div class="ptitle">Extract C</div><p>The two candidates disagreed sharply on the new bypass. One local paper only quoted residents who supported it; a second only quoted those against.</p></div>
+<div class="q-block">
+<div class="q"><b>11.</b> What bias clue is described here?</div><div class="ans-line"></div>
+<div class="q"><b>12.</b> Why is quoting only one side a problem for a reader trying to form a balanced view?</div><div class="ans-line"></div>
+<div class="q"><b>13.</b> Is the passage itself biased, or is it describing bias in other sources? Explain.</div><div class="ans-line"></div>
+<div class="q"><b>14.</b> What would a balanced report need to include instead?</div><div class="ans-line"></div>
+<div class="q"><b>15.</b> Write a fact and an opinion sentence of your own about a local issue.</div><div class="ans-line"></div>
+</div>
+
+<div class="passage"><div class="ptitle">Extract D</div><p>The new bus route runs every 15 minutes during rush hour. Frankly, it's a pointless waste of a route nobody actually needed.</p></div>
+<div class="q-block">
+<div class="q"><b>16.</b> Which sentence is fact, which is opinion?</div><div class="ans-line"></div>
+<div class="q"><b>17.</b> Identify the loaded language in the opinion sentence.</div><div class="ans-line"></div>
+<div class="q"><b>18.</b> Apply the Proof Test to both sentences.</div><div class="ans-line"></div>
+<div class="q"><b>19.</b> What unsupported generalisation is made in the second sentence?</div><div class="ans-line"></div>
+<div class="q"><b>20.</b> Rewrite the second sentence as a fact-based, neutral alternative.</div><div class="ans-line"></div>
+</div>
+<div class="reminder"><b>Apply this every time:</b> Whenever a sentence uses a word like "best," "worst," "obviously," "nobody," or "everyone," treat it as a signal to check for opinion or bias before accepting it as fact.</div>
+<div class="answer-key"><h3>Marking Notes (for the tutor)</h3><ol><li>Sentence 1 — a checkable amount spent</li><li>Sentence 2 — a personal judgement</li><li>"best"</li><li>Model neutral rewrite</li><li>Can be verified via council records</li><li>1st = fact, 2nd = opinion</li><li>Unsupported generalisation ("nobody... seems")</li><li>No evidence given for what "in charge" think/feel</li><li>Statements/quotes from officials</li><li>Model rewrite</li><li>One-sided information</li><li>Reader only sees one perspective, can't judge fairly</li><li>Describing bias elsewhere, not necessarily biased itself</li><li>Quotes from both sides</li><li>Model fact + opinion pair</li><li>1st = fact, 2nd = opinion</li><li>"pointless waste"</li><li>Sentence 1 verifiable; sentence 2 cannot be proven</li><li>"nobody actually needed"</li><li>Model neutral rewrite</li></ol></div>
+<footer>Summit Tuition · Fact, Opinion & Bias Detection — Part 1</footer>
+</body></html>
