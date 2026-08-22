@@ -5,6 +5,24 @@ description: Write and wire up new English mocks for Summit Tuition — full-len
 
 # English mock authoring
 
+**Note on the 2026-08-03 "cap new mocks at 50 questions" instruction**: this
+skill's 54-question structure is a real, researched GL Assessment paper
+format (`research/gl-english-question-bank.md`), not an arbitrary count like
+the old 80-question Maths papers were — so it has been left at 54 rather than
+cut to 50, since shrinking it would break the real 52/17/17/15% section-weight
+match. If the founder wants English capped too, that means either accepting a
+non-authentic section split or trimming comprehension specifically — ask
+before changing this structure.
+
+**2026-08-22 recalibration**: student feedback flagged our comprehension as
+"way too easy" and our punctuation/grammar section as testing unfamiliar,
+harder-than-expected question types, both compared directly against a real
+QE Barnet/GL-style practice paper the founder supplied. That paper was
+transcribed into a full question-by-question teardown at
+`research/qe-barnet-test20-analysis.md` — read it before authoring the next
+English mock. The comprehension and punctuation guidance below has been
+rewritten against it; see those sections for what changed and why.
+
 Scope: hand-authored English mocks in `src/data/platform.ts` (passages +
 questions + the `MockExam` metadata entry). Not the deterministic/AI
 generator pipeline (`src/lib/mock-generation.ts`, used by the admin
@@ -73,9 +91,34 @@ flag "Topic spread is balanced" as failed.
 
 ## Writing the 28 comprehension questions
 
-Split roughly: 8 retrieval, 8 inference, 6 vocabulary-in-context, 4 grammar
+Split roughly: 6 retrieval, 6 inference, 5 vocabulary-in-context, 4 grammar
 (word class / clause function / sentence structure), 2 literary technique
-(simile/metaphor + symbolism), covering all 6 paragraphs at least once each.
+(simile/metaphor + symbolism), 3 NOT/negative-space questions, 2 author- or
+character-voice inference questions, covering all 6 paragraphs at least once
+each. This mix is deliberately calibrated against a real externally-sourced
+paper (`research/qe-barnet-test20-analysis.md`, a full question-by-question
+teardown of a QE Barnet/GL-style 30-question comprehension section) after
+student feedback that our comprehension was reading as "way too easy" next to
+a real exam — every archetype below exists because that analysis showed it's
+what actually makes a real paper hard to skim, not just harder wording.
+
+**2026-08-22 follow-up — target *at or above* that paper's difficulty, not
+level with it.** The archetypes below (NOT-questions, voice-inference,
+strength-gradient distractors, obscure vocabulary) are the *floor*, not the
+ceiling. Concretely, push past the source paper in these ways: stack 2 of
+them on the same question where the source only used 1 (e.g. a NOT-question
+whose 4 true-and-verified distractors are themselves drawn from a
+strength-gradient, not just 4 flatly-true facts); require synthesis across
+3+ paragraphs rather than the source's usual 2 for at least 2-3 inference
+questions per passage; and on vocabulary, prefer a word where the *common*
+everyday meaning is a trap and only the passage's specific context supports
+the rarer correct sense (the source's "liable" question is the model — do
+that more than once per passage, not as a single outlier). The test for
+"hard enough": a strong student who has read the passage once, carefully,
+should still get 2-4 of the 28 wrong on a first attempt. If a full read
+reliably yields 100%, the section is still too easy regardless of how
+sophisticated the vocabulary sounds — the sophistication has to show up in
+what the *distractors* force the student to weigh, not just in word choice.
 
 - Every question needs `passageId` and `paragraphRefs: number[]` (1-indexed).
 - **Retrieval**: "According to paragraph N, ..." — the correct answer must be
@@ -85,21 +128,61 @@ Split roughly: 8 retrieval, 8 inference, 6 vocabulary-in-context, 4 grammar
 - **Inference**: requires connecting two details the passage places near each
   other without stating the link outright (e.g. an object's location +
   an earlier detail about a loss = the object is emotionally, not
-  technically, significant).
+  technically, significant). For at least 1-2 of these, build the wrong
+  options as a *strength gradient* around the same underlying claim (e.g.
+  unsure → interested → keen → enamoured) rather than four unrelated wrong
+  answers — the student has to judge *degree*, not just direction, which is
+  meaningfully harder than picking the one option that's "about right."
 - **Vocabulary**: "In paragraph N, what does 'X' most nearly mean in \"...\"?"
   — quote the exact sentence, options are single words/short phrases, only
-  one is a genuine synonym in that context.
+  one is a genuine synonym in that context. For the harder passage of a pair
+  (or the second half of a single passage), lean into genuinely obscure or
+  period-flavoured words (e.g. preeminent, stupefaction, leviathan) rather
+  than everyday near-synonyms — this is what makes a vocabulary section feel
+  like a real exam rather than a synonym-matching drill. Include at least one
+  false-cognate trap (a distractor that shares a root with the real word but
+  means something different, e.g. "stupefaction" → "stupidity") and one
+  register-shift trap (a common word used in an uncommon sense in context,
+  e.g. "liable" meaning "prone to" rather than legally responsible).
 - **Grammar**: identify word class, clause function, or sentence structure
-  (compound vs. complex) in a quoted fragment from the passage.
+  (compound vs. complex) in a quoted fragment from the passage. Space these
+  evenly through the section rather than clustering them — they function as
+  "breather" items between harder inference/vocabulary questions, not a
+  block.
 - **Literary technique**: name the device (simile, symbolism) in a quoted
   fragment; the correct answer should require having read the whole passage
   to justify (e.g. symbolism questions should trace an object's meaning back
-  to how it was introduced in paragraph 1).
+  to how it was introduced in paragraph 1). Consider at least one "which of
+  these is NOT present" device-spotting question (see NOT-questions below) —
+  it forces the student to find every device rather than recognise one.
+- **NOT-questions** (negative-space recall): "Which of the following is NOT
+  true / NOT mentioned / does the passage NOT suggest?" — the correct answer
+  is something never stated at all, and all 4 wrong options must be
+  individually verifiable as true statements from the passage. This is
+  structurally the hardest comprehension archetype (the student must confirm
+  4 things are true, not just spot 1 thing that's false) and is exactly the
+  kind of question our papers have been under-using — include at least 2-3
+  per 28-question section, spread across both retrieval-adjacent and
+  device-spotting flavors, not just one.
+- **Author-/character-voice inference**: "Which word would [the author /
+  the narrator / character X] be most likely to use to describe...?" —
+  requires synthesising tone or attitude across the *whole* passage, not one
+  quote. Build the wrong options as adjacent-but-wrong shades of the same
+  judgement (e.g. for a character shown as overconfident rather than
+  malicious: criminal/crafty/cranky/clueless as distractors around the
+  correct "complacent") so the student has to pick the *precise* shade the
+  text supports, not just the right general direction. Include at least 1-2
+  of these per passage — this is a distinct, reusable archetype, not a
+  variant of inference.
+- Optionally, once per paper, a light cross-subject hybrid question (a
+  general-knowledge fact wrapped in a quote, or a small date/time
+  calculation implied by details in the text) — used sparingly, not as a
+  section theme.
 - `difficulty: "stretch"` for Elite papers (a couple of "harder"/"challenge"
   tagged retrieval/inference questions are fine at `"standard"` if the fact
   is truly a single-step lookup).
 - `marks: 1` per question, `timeEstimateSeconds` 50-85 depending on
-  complexity (retrieval fastest, inference/literary slowest).
+  complexity (retrieval fastest, inference/literary/NOT-questions slowest).
 
 ## Writing spelling / punctuation (grammar-mistake) questions
 
@@ -116,16 +199,61 @@ shuffled by you — the renderer handles randomising the *displayed letter*).
   literal `"No mistake"` 5th option.
 - `correctAnswer` is the exact text of whichever segment (or `"No mistake"`)
   contains the error.
-- Include 1-2 genuine `"No mistake"` answers per set of 9 (tag `no-mistake`)
-  — otherwise students learn to always assume an error exists.
+- Include exactly 1 genuine `"No mistake"` answer per set of 9 (tag
+  `no-mistake`) — ~10-11%, matching the real exam's rate. Not 2 — 2-in-9 was
+  drifting the section toward "assume there's no error more often than a
+  real paper does," which is its own kind of miscalibration.
 - Spelling: common misspellings appropriate for 11+ (receive/believe,
   separate, occasion, government, privilege, tomorrow, etc.) — reusing the
   same target words across different mocks with fresh sentences is fine and
   expected, these are the standard 11+ trap words.
-- Grammar-mistake (`egr*`): subject-verb agreement (each/neither/every take
-  singular verbs), possessive vs. contraction (its/it's), double
-  comparatives (more harder), dangling modifiers, tense consistency,
-  prepositions after adjectives, apostrophes vs. plurals, relative pronouns.
+- **Grammar-mistake (`egr*`) — this section title is "Punctuation," and it
+  must actually test punctuation mechanics, not abstract grammar rules.**
+  This was a real, student-flagged bug in this skill: the table above has
+  always labeled Section C "Punctuation (grammar-mistake)," but this
+  subsection previously told you to author subject-verb agreement, dangling
+  modifiers, and tense-consistency questions — genuine grammar-agreement
+  content, not punctuation at all. Students correctly flagged this section as
+  testing unfamiliar question types and reading harder than the real exam's
+  equivalent section, because it *was* a different, harder skill than what a
+  real punctuation section tests. Fixed per a full teardown of a real
+  QE Barnet/GL-style punctuation section
+  (`research/qe-barnet-test20-analysis.md`) — write from this list instead,
+  rotating through categories so no error type repeats within one set of 9:
+  - Hyphenation of compound numbers (twenty-one through ninety-nine) and
+    written-out fractions ("one-third", not "one third")
+  - Apostrophe placement for joint possession ("Sam and Priya's book" — one
+    apostrophe when the thing is jointly owned) vs. separate possession
+    ("Sam's and Priya's books" — one each)
+  - Comma splices and correct comma use around interrupting/parenthetical
+    clauses (bracketing commas around a clause that could be removed)
+  - Semicolon misuse — a semicolon incorrectly used where the following
+    clause isn't independent (should be a comma), or where the following
+    word is a coordinating conjunction like "yet"/"but" (should be a comma,
+    not a semicolon)
+  - Quotation marks incorrectly placed around paraphrased/reported speech
+    that isn't a verbatim quote
+  - Missing or misplaced comma before/after interrupted direct speech (e.g.
+    around "she explained" splitting a quotation)
+  - Apostrophes vs. plurals (its/it's, a plain plural mistaken for a
+    possessive)
+  **This is a category fix, not a difficulty cut — keep the section
+  genuinely hard.** Each of these categories has an easy version and a hard
+  version; write the hard one. Joint- vs. separate-possession apostrophes,
+  semicolon-vs-comma before a coordinating conjunction, and comma-splice
+  detection inside a long, multi-clause sentence are all naturally tricky
+  when the sentence is long enough and the correct/incorrect segment isn't
+  the obviously-clunky one — lean into that rather than picking short,
+  simple sentences just because the rule itself is mechanical. Keep 1-2 of
+  the 9 at `difficulty: "challenge"` (e.g. a semicolon-before-conjunction
+  error buried in a sentence long enough that the reader has forgotten the
+  clause started non-independent by the time they reach the semicolon).
+
+  A little genuine grammar-agreement content (subject-verb agreement,
+  double comparatives, relative pronouns) is fine as occasional variety
+  *within* this list, but punctuation-mechanics questions should be the
+  clear majority — that's what the section's own name promises and what a
+  real exam actually tests here.
 - Tag every question `["spelling"|"grammar-mistake", "GL-style", "harder",
   "segment-format"]` (+ `"no-mistake"` where relevant, + `"challenge"` for
   the hardest 1-2) — the `spelling`/`grammar-mistake` tag is what

@@ -181,6 +181,60 @@ checks that a visual exists, not what it shows — so it has to be checked by
 eye, one `table`/`venn` visual at a time. See `maths-mock-authoring`
 SKILL.md for the full rule and more examples.
 
+## Bug 6 — English "Punctuation" section was actually testing grammar-agreement, and comprehension was under-calibrated vs. a real exam
+
+**Symptom (found 2026-08-22, from direct student feedback comparing our
+mocks against a real QE Barnet/GL-style practice paper the founder
+provided):** two separate, compounding issues in every English mock authored
+before this fix:
+
+1. `english-mock-authoring/SKILL.md`'s own structure table has always
+   labeled Section C "Punctuation (grammar-mistake)," but the authoring
+   guidance underneath it actually instructed writing abstract
+   grammar-agreement content — subject-verb agreement, dangling modifiers,
+   tense consistency — not punctuation mechanics at all. Students correctly
+   flagged the section as testing unfamiliar question types and reading
+   harder than the real exam's actual punctuation section, because it *was*
+   a different, harder skill than what "Punctuation" is supposed to mean.
+2. Comprehension questions met the existing "2-3 plausible distractors" bar
+   but were still scoring near 100% for strong students, because the section
+   was missing entire hard-question *archetypes* a real exam uses on every
+   passage: NOT-questions (find the one thing NOT true/mentioned),
+   author-/character-voice inference ("which word would X be most likely to
+   use"), and strength-gradient distractors on inference items (a spread of
+   unsure→interested→keen→enamoured, not four unrelated wrong answers).
+
+**Root cause of both:** the skill's guidance had drifted from what its own
+section labels promised, and had never been checked against a real
+externally-sourced paper question-by-question — only against our own prior
+mocks, which compounds any existing miscalibration rather than catching it.
+
+**Fix (current, live):** a full question-by-question teardown of a real
+paper now exists at `research/qe-barnet-test20-analysis.md` — every one of
+its 60 English questions labeled by exact type/difficulty/what's-tested,
+plus the same for 60 Maths questions and both comprehension passages'
+structure. `english-mock-authoring/SKILL.md` was rewritten against it:
+Section C's guidance now lists real punctuation-mechanics categories
+(hyphenation of compound numbers/fractions, joint- vs. separate-possession
+apostrophes, semicolon-vs-comma-before-conjunction, comma splices, quotation
+marks around non-verbatim speech) instead of grammar-agreement rules, with
+an explicit note to keep each category's *hard* version, not simplify just
+because the fix moved to a more mechanical rule-set. The comprehension
+section split moved from 8/8/6/4/2 to 6/6/5/4/2/3/2 to make room for
+mandatory NOT-questions (2-3 per 28) and voice-inference questions (1-2 per
+passage), and a difficulty target was added: a strong student who reads the
+passage once carefully should still get 2-4 of 28 wrong, not 0.
+
+**General rule:** when a skill file's own structure table names a section
+(e.g. "Punctuation"), the authoring instructions under it must actually test
+that named skill — check this explicitly if a section's guidance was
+written before the section was renamed, or drifted in from a different
+section's convention. And recalibrate comprehension difficulty against a
+real external paper periodically, not just against the platform's own prior
+output — internal-only comparison can't catch "this whole category of
+question is missing," only "this specific question is too easy relative to
+our other questions."
+
 ## How to verify a newly authored mock isn't shipping any of the above
 
 There's no dedicated npm script for this — write a small one-off script,

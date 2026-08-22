@@ -1,8 +1,16 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-19, overnight (6th Elite NVR mock "Spire" added — see below; this was the last of tonight's 4 overnight mock-generation runs)
+Last updated: 2026-08-22 (English mock-authoring skill recalibrated after student feedback — comprehension made harder, punctuation section fixed to actually test punctuation — see below. **Any other session authoring a new English mock right now, including a scheduled/routine one, should re-read `.claude/skills/english-mock-authoring/SKILL.md` fresh** rather than working from older cached context, since its comprehension/grammar guidance changed materially today.)
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (2026-08-22 session — English mock-authoring skill recalibrated, no new mock content)
+
+- Founder relayed real student feedback comparing our English mocks against a real practice paper from a well-known school (already broken down question-by-question in `research/qe-barnet-test20-analysis.md` earlier the same day): our comprehension section reads "way too easy," and our "grammar" section feels harder than expected and tests unfamiliar question types.
+- Found the actual cause of the second complaint: the authoring guide for English mocks has always *called* that section "Punctuation," but the instructions underneath it were secretly telling writers to test grammar rules (subject-verb agreement, dangling modifiers) instead of real punctuation mistakes (hyphens, apostrophes, semicolons, comma placement) — a mismatch nobody had caught. Fixed the guide so that section now genuinely tests punctuation, with an explicit note to keep it hard in the *right* way rather than making it easy.
+- Rewrote the comprehension guidance to require the specific hard question types a real exam uses on every passage: "which of these is NOT true" questions, "which word would the author/character be most likely to use" questions, and answer choices that force a genuine judgement call rather than an easy elimination. Then pushed it further on a same-session follow-up ask ("make it as hard as the real paper, ideally harder") — added a concrete target: a strong student reading the passage once carefully should still get a few wrong, not score 100%.
+- This is a fix to the *authoring instructions* only — no existing mock's actual questions were rewritten yet. It takes effect on the next English mock anyone (including a separate automated/scheduled session) writes using that guide. Documented the whole thing as "Bug 6" in `research/mock-authoring-lessons.md`, the file every mock-authoring session reads first, so it's discoverable on its own.
+- Not done yet: the actual `qe-barnet-style` mock that's live on the site still uses our normal single-passage format, not the real school's two-passage/5-answer-option structure described in the analysis doc — that would be a full new-mock-writing job, offered to the founder as a next step, not started.
 
 ## Overnight mock-generation batch complete (2026-08-19)
 
