@@ -29,7 +29,7 @@ const NOT_SURE_CARDS = [
   {
     icon: <Repeat className="h-6 w-6" />,
     title: "I want weekly exam practice",
-    description: "Most families start with Pro — £39/month for full mock and notes access.",
+    description: "Most families start with Pro for full mock and notes access.",
     cta: "See Pro",
     href: "/pricing#platform",
     highlight: true,
@@ -37,7 +37,7 @@ const NOT_SURE_CARDS = [
   {
     icon: <Users className="h-6 w-6" />,
     title: "I want teaching and support",
-    description: "Group or private tuition, from £15/session.",
+    description: "Group or private tuition, tailored to your child.",
     cta: "See Tuition Options",
     href: "/tuition",
   },

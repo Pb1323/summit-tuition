@@ -23,11 +23,6 @@ export function PricingCard({ tier }: { tier: PricingTier }) {
       )}
       <h3 className="text-lg font-semibold text-navy">{tier.name}</h3>
       <p className="mt-2 min-h-10 text-sm leading-relaxed text-muted">{tier.description}</p>
-      <div className="mt-5 flex items-baseline gap-1">
-        <span className="text-4xl font-bold tracking-tight text-navy">{tier.price}</span>
-        <span className="text-sm font-medium text-muted">{tier.period}</span>
-      </div>
-
       <ul className="mt-6 flex-1 space-y-3">
         {tier.features.map((f) => (
           <li key={f} className="flex items-start gap-2.5 text-sm text-ink/85">

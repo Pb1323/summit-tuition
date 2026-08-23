@@ -49,11 +49,6 @@ function PricingPlanCard({ tab }: { tab: TabDef }) {
           </Badge>
         )}
       </div>
-      <p className="mt-1 text-xl font-black leading-none text-navy">
-        {tier.price}
-        <span className="ml-1 text-xs font-semibold text-muted">{tier.period}</span>
-      </p>
-
       <ul className="mt-3 space-y-1.5">
         {tier.features.slice(0, 3).map((f) => (
           <li key={f} className="flex items-start gap-1.5 text-[11px] font-medium leading-snug text-ink/85">

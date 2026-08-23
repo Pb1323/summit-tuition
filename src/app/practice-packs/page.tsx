@@ -83,8 +83,7 @@ export default function PracticePacksPage() {
                 </div>
                 <h3 className="mt-4 text-base font-semibold text-navy">{pack.name}</h3>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{pack.description}</p>
-                <div className="mt-5 flex items-center justify-between border-t border-line pt-4">
-                  <span className="text-sm font-bold text-navy">{pack.price}</span>
+                <div className="mt-5 flex items-center justify-end border-t border-line pt-4">
                   <CheckoutButton
                     size="sm"
                     variant="outline"
