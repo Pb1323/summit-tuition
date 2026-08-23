@@ -2,7 +2,7 @@
 
 # Summit Tuition Project Context
 
-Last updated: 2026-08-23 (rebuilt `qe-barnet-style` mock to match real QE Barnet English paper structure; added 7th Elite NVR paper, `nvr-elite-citadel`; added `vr-bastion-full`, a 6-block hard VR paper; removed all visible pricing site-wide after founder misquoted a customer — see Recent Feature State).
+Last updated: 2026-08-23 (rebuilt `qe-barnet-style` mock to match real QE Barnet English paper structure; added `english-gl-27-aperture`, new Elite English paper with photography-club passage; added 7th Elite NVR paper, `nvr-elite-citadel`; added `vr-bastion-full`, a 6-block hard VR paper; removed all visible pricing site-wide after founder misquoted a customer — see Recent Feature State).
 
 ## Sibling Projects In This Repo
 
