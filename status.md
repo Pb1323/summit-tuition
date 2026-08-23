@@ -1,8 +1,16 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-23 (added 7th Elite NVR paper, `nvr-elite-citadel`, 50 questions with fresh rule-stacking across all 10 NVR visual types — see below).
+Last updated: 2026-08-23 (added a new hard Verbal Reasoning paper, `vr-bastion-full`, with a fixed 6-block structure — see below).
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (2026-08-23 session — new Verbal Reasoning paper, 'Bastion', fixed 6-block structure)
+
+- The founder asked for a new Verbal Reasoning mock built to a specific structure rather than the usual mixed bag of topics: one block of 10 Analogies questions, then 10 Odd One Out, then 10 Move a Letter puzzles, then 10 Double Meanings, then 10 Compound Words, then 10 Synonyms and Antonyms — and asked for it to be quite difficult, both in the vocabulary used and in the actual reasoning required.
+- Built and published `vr-bastion-full` ("Verbal Reasoning — Bastion Full Paper"), 60 questions/60 marks, 55 minutes. Vocabulary throughout is genuinely advanced (words like perfidious, obsequious, munificent, bolthole, fletcher), and every question has a realistic wrong answer designed to tempt someone who's only half-sure, not an obviously silly option.
+- This is labelled honestly as an original Summit Tuition paper rather than a strict "GL-style" reproduction, since Double Meanings questions and a couple of the other formats aren't part of the real exam board's official question-type list — the site has a rule (from an earlier audit) not to claim GL-style unless the format genuinely matches.
+- Double-checked all 60 questions and answers with the site's built-in verification tool, and it passed every check (marks add up correctly, no duplicate question IDs anywhere on the site, quality check says "Ready"). Code also compiles cleanly. Pushed live to GitHub.
+- Still to do: run the database-seeding step so this mock is actually assignable to real students — it exists in the code now but isn't unlockable yet until that step runs.
 
 ## Done (2026-08-23 session — 7th Elite Non-Verbal Reasoning paper 'Citadel')
 
