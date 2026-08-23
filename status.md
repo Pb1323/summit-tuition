@@ -1,8 +1,12 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-22 (English mock-authoring skill recalibrated after student feedback — comprehension made harder, punctuation section fixed to actually test punctuation — see below. **Any other session authoring a new English mock right now, including a scheduled/routine one, should re-read `.claude/skills/english-mock-authoring/SKILL.md` fresh** rather than working from older cached context, since its comprehension/grammar guidance changed materially today.)
+Last updated: 2026-08-23 (added 7th Elite NVR paper, `nvr-elite-citadel`, 50 questions with fresh rule-stacking across all 10 NVR visual types — see below).
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (2026-08-23 session — 7th Elite Non-Verbal Reasoning paper 'Citadel')
+
+- Built and published a brand-new Elite Non-Verbal Reasoning paper, `nvr-elite-citadel` ("Non-Verbal Reasoning — Full Paper VII 'Citadel'"), a 50-question/50-mark paper sitting alongside the existing six Elite NVR papers (`nvr-elite-difficult`, `-summit`, `-beacon`, `-crest`, `-spire` — not replacing any of them). Hand-authored 50 fresh questions using all 10 NVR visual types the platform has (matrix, sequence, odd-one-out, pair analogy, rotation, similarity, code key, nets, 3D combining, hole punch), 5 questions per type, with rule combinations that have never been used on any earlier Elite NVR paper. Notable question mechanics include squared row/column rotation math, coprime-based fill rules, divisor-count arrow sequences, sawtooth-pattern size resets, and advanced hole-punch edge cases (punches on fold creases that cancel out, four alternating folds still capping at four holes). Every similarity question was checked against a known bug and confirmed safe. Verified that no question ID conflicts exist anywhere on the site, all answers resolve correctly, marks add up to 50, and the platform's built-in quality check returns "Ready". Live in code now; everything type-checks cleanly.
 
 ## Done (2026-08-22 session — English mock-authoring skill recalibrated, no new mock content)
 
