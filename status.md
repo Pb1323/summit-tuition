@@ -1,8 +1,16 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-23 (added a new hard Verbal Reasoning paper, `vr-bastion-full`, with a fixed 6-block structure — see below).
+Last updated: 2026-08-23 (urgent same-day fix: removed all visible pricing from the site after the founder misquoted a customer — see below).
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (2026-08-23 session, urgent — pricing hidden site-wide)
+
+- The founder accidentally quoted the wrong price to a real customer on a call and asked, urgently, to take every visible price off the site until it can be sorted out.
+- Removed the price/period display from every pricing card on the site (used on the main Pricing page, Group/Private Tuition pages, Diagnostic Assessment, Holiday Booster, the mocks page, the homepage, and the `/welcome` page's Pro/Max and Group/Private tabs), from the Practice Packs page's individual pack prices, and reworded three sentences elsewhere that stated exact numbers in plain text (on the Pricing page and the Welcome page).
+- The actual prices themselves are untouched in the background data — nothing was deleted, they're just not shown to visitors right now. This is a stopgap: once the founder confirms the correct pricing, either the numbers need updating and the display switched back on, or the display switched back on with the numbers already fixed.
+- Not touched (not visible to a real visitor): the admin-only "pricing placeholders" panel inside the admin dashboard, one already-dead page that nothing links to, and £ figures that appear inside actual Maths practice questions (those are just word-problem numbers, not real prices).
+- Checked the site still compiles cleanly, then pushed live immediately given how urgent this was.
 
 ## Done (2026-08-23 session — new Verbal Reasoning paper, 'Bastion', fixed 6-block structure)
 
