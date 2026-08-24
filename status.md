@@ -1,8 +1,16 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-24 (completed 8th Elite Non-Verbal Reasoning paper 'Gauntlet' with novel rule combinations).
+Last updated: 2026-08-24 (added full GCSE topic mocks for Physics and Biology; Chemistry batch in progress — see below).
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (2026-08-24 session — full GCSE topic mocks for Physics and Biology)
+
+- The founder asked for a proper practice mock for every real topic on the GCSE Physics, Biology and Chemistry syllabus (not the "8 topics each" they first assumed — Physics really does have 8, but Biology has 7 and Chemistry has 10, so the plan was adjusted to match the real exam board structure rather than force an even split).
+- Added a full 50-question mock for each of the 7 remaining Physics topics (Energy, Electricity, Particle Model of Matter, Atomic Structure, Forces, Waves, Space Physics — Magnetism was already done last session) and each of the 6 remaining Biology topics (Organisation, Infection and Response, Bioenergetics, Homeostasis and Response, Inheritance/Variation/Evolution, Ecology — Cell Biology was already done). That's 13 new mocks and 650 new questions today.
+- Same format as the existing GCSE mocks: hand-marked short-answer questions, no diagrams, a genuine mix of easy 1-mark recall through to a 6-mark extended question in every paper, and real exam-board "required practical" content written out in words instead of pictures.
+- Chemistry's 10 topics are being built next as a third batch (500 more questions) — will update this file again once that lands.
+- Checked for duplicate questions and that each mock's total marks add up correctly, and the code compiles cleanly. Two other unrelated overnight sessions (an NVR paper and an English paper) pushed to the same file while this was running; merged in cleanly with no lost work. Pushed to GitHub — still needs a database seed once Chemistry is also done.
 
 ## Done (2026-08-24 session — 8th Elite Non-Verbal Reasoning paper 'Gauntlet')
 

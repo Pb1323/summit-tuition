@@ -2,114 +2,75 @@
 
 # Summit Tuition Project Context
 
-Last updated: 2026-08-24 (added `nvr-elite-gauntlet`, 8th Elite NVR paper with novel rule-stacking; see Recent Feature State).
+Last updated: 2026-08-24 (added GCSE Physics/Biology full topic-mock sets — 7 Physics + 6 Biology topics, 50 Qs each; Chemistry (10 topics) in progress. See Recent Feature State).
 
 ## Sibling Projects In This Repo
 
-This repo root also contains two other, separate Next.js projects living alongside this one (not part of this app, each has its own CLAUDE.md/PROJECT_CONTEXT.md):
-
-- `india-study-platform/` — a CBSE/India-focused study platform, currently mostly planning docs + data, see `india-study-platform/PROJECT_CONTEXT.md`.
-- `summit-gcse-tuition/` — a GCSE-focused tuition site, a separate runnable Next.js app, see `summit-gcse-tuition/PROJECT_CONTEXT.md`.
-
-There is also a `legacy/` folder in this root which is an older site snapshot, intentionally excluded from lint/typecheck/git-relevant tooling.
+- `india-study-platform/` — separate CBSE/India study platform, mostly planning docs, see its own `PROJECT_CONTEXT.md`.
+- `summit-gcse-tuition/` — separate GCSE tuition Next.js app, see its own `PROJECT_CONTEXT.md`.
+- `legacy/` — older site snapshot, intentionally excluded from lint/typecheck/git-relevant tooling.
 
 ## Purpose
 
-Summit Tuition is a premium online 11+ tuition and mock exam platform. It combines a marketing site with a working student/admin platform for online-only English and Maths mocks, manual student approval, mock unlocks, draft mock generation, admin marking, report release, and review mode.
+Summit Tuition is a premium online 11+ tuition and mock exam platform: marketing site + student/admin platform for online English/Maths/VR/NVR (and some GCSE) mocks, manual mock unlocks, admin marking, report release, review mode.
 
-Update this file before every push so a new chat/model can recover the project state quickly.
+Update this file before every push so a new session can recover state quickly — but keep additions to 1-3 lines; move detail to `status.md`.
 
 ## Tech Stack
 
-- Next.js 16.2.9 App Router under `src/app`.
-- React 19.2.4 and TypeScript.
-- Tailwind CSS v4 via `src/app/globals.css` and `@tailwindcss/postcss`.
-- Prisma 7 with generated client output in `src/generated/prisma`.
-- PostgreSQL when `DATABASE_URL` is configured.
-- Local browser `localStorage` fallback for demo mode when the database is not configured.
-- Playwright e2e tests in `tests/`.
-- Stripe checkout scaffolding exists but stays safe/disabled until real keys are configured.
-
-Important: this repo has `AGENTS.md` warning that this is a newer Next.js with breaking changes. Read relevant local docs in `node_modules/next/dist/docs/` before editing Next-specific code.
+- Next.js 16.2.9 App Router (`src/app`), React 19.2.4, TypeScript, Tailwind CSS v4, Prisma 7 (client output `src/generated/prisma`), PostgreSQL via `DATABASE_URL` (falls back to `localStorage` demo mode if unset), Playwright e2e (`tests/`).
+- Stripe checkout scaffolding exists but is disabled (`SITE.stripeCheckoutEnabled = false`) — see Known Limitations.
+- `AGENTS.md` warns this Next.js version has breaking API changes — read `node_modules/next/dist/docs/` before Next-specific edits.
+- PowerShell blocks `npm.ps1` — use `npm.cmd` on Windows.
 
 ## Current Health
 
-- `npm.cmd run typecheck` passes.
-- `npm.cmd run lint` passes (1 pre-existing unrelated warning in `tests/student-mock-flow.spec.ts`, 0 errors).
-- `npm.cmd run build` passes.
-- `npm.cmd run test:e2e` passes 7/8; the 1 remaining failure (`new-features.spec.ts` lessons-remaining test) is a pre-existing, self-documented flaky race condition in the admin lessons-editor save flow, unrelated to English mocks — confirmed flaky (fails then passes identically on retry), not a regression.
-- PowerShell blocks `npm.ps1`, so use `npm.cmd` on Windows.
-- Current working tree had pre-existing edits excluding `legacy/` from lint/typecheck and fixing the README root directory note.
-- `legacy/` is an older site snapshot and is intentionally ignored by git/lint/typecheck.
-- `next/font/google` was removed from `src/app/layout.tsx`; the app now uses a system font stack in `src/app/globals.css` so builds do not depend on fetching Google Fonts.
+- `npm.cmd run typecheck` / `lint` / `build` all pass.
+- `npm.cmd run test:e2e` passes 7/8; the 1 failure (`new-features.spec.ts` lessons-remaining test) is a known pre-existing flaky race in the admin lessons-editor save flow, unrelated to mocks.
+- `next/font/google` removed from `layout.tsx`; app uses a system font stack in `globals.css` so builds don't depend on fetching Google Fonts.
 
 ## Main Product Flows
 
-- Public marketing routes explain diagnostic assessments, tuition, mocks, practice packs, pricing, FAQs, policies, and booking/contact.
-- Students open interactive Study Notes at `/notes` (subject index) and `/notes/maths/[topic]` (Numbers, Fractions/Decimals/Percentages, Ratio & Proportion, Algebra, Geometry, Averages & Statistics), wired in from the student dashboard.
-- Students register at `/register`, choose a plan, and get instant account access — there is no manual approval gate on signup (`approved: true` is set at registration in both the demo and DB-backed paths). The real manual step is per-mock unlocking, not account approval.
-- Admin signs in at `/login`, opens `/admin`, assigns plans, and unlocks mocks. Admin can still pause/re-approve or reject an existing account (`/api/admin/students/[id]/approve`, `reject`) — this is for suspending accounts after the fact, not gating new signups. The "Paused Student Accounts" panel on `/admin` only ever lists accounts an admin has manually paused.
-- Students open `/dashboard`, start unlocked online mocks, autosave drafts, submit attempts, and now see raw scores immediately on submission (2026-07-17 goal-gradient change — see Recent Feature State) while waiting for the full marked report/feedback to be released by admin.
-- Admin opens `/admin/mocks` to inspect mocks, generate draft mocks, publish/unpublish, preview as student, review attempts, add feedback, and release reports.
-- Released attempts can be reviewed by students at `/mocks/[id]/review`.
+- Marketing routes cover diagnostics, tuition, mocks, practice packs, pricing, FAQs, policies, booking/contact.
+- Students: Study Notes at `/notes`, register at `/register` with instant account access (no manual approval gate — `approved: true` at registration). The manual gate is per-mock unlocking, not account approval.
+- Admin: signs in at `/login`, opens `/admin` to assign plans/unlock mocks; can pause/reject an existing account after the fact (not a signup queue). `/admin/mocks` for draft generation, publish/unpublish, preview, marking, report release.
+- Students see raw scores immediately on submission (goal-gradient UX), full marked report/feedback comes later via admin release. Reviewed at `/mocks/[id]/review`.
 
 ## Important Routes
 
-- `/` landing page.
-- `/login`, `/register`, `/account` (2026-07-21: no-form gateway page with exactly two buttons — "Create New Account" → `/register`, "Sign Into Existing Account" → `/login` — every site-wide "Create Account" CTA now points here instead of straight to `/register`), `/dashboard`, `/dashboard/settings` (name/password/dark-mode toggle), `/dashboard/family` (parent view: lessons remaining, upcoming lessons, payment-status placeholder), `/dashboard/spelling` (standalone Spelling Tester practice tool — 5-option picker + Quizlet-style flashcard learn mode, not part of the scored mock/Attempt system, see Recent Feature State 2026-07-29).
-- `/welcome` — lightweight mobile-first landing page (no heavy motion) for sharing outside the main desktop-oriented site, e.g. via WhatsApp. Redesigned 2026-07-17, then again 2026-07-21 (see Recent Feature State) to add a second pricing-tabs widget for Group/Private tuition directly under the Pro/Max tabs (`src/components/sections/welcome-pricing-tabs.tsx` now exports both `WelcomePricingTabs` and `WelcomeTuitionPricingTabs` off one shared `PricingTabSwitcher`), plus a sticky bottom booking bar (`welcome-sticky-cta.tsx`).
-- `/free-mock` — anonymous (no login) official mock sample, now exactly 2 mocks (1 Maths, 1 English, 5 Qs each) with `?subject=maths|english` deep-linking straight into the matching one; see Recent Feature State (2026-07-21 free-mock funnel, then the same-day rework entry below).
-- `/notes-preview` — anonymous (no login) single real Study Notes lesson, faded/blurred at ~70% height with an "Unlock with Pro/Max" CTA into `/pricing#platform`. Deliberately one subtopic only, not a full topic or strand — see Recent Feature State.
-- `/admin`, `/admin/students`, `/admin/mocks`, `/admin/mocks/[id]/preview`.
-- `/mocks`, `/mocks/[id]`, `/mocks/[id]/review`, `/mocks/[id]/report` (student-facing printable PDF report, released attempts only), `/mocks/[id]/print` (printable practice mocks — `printOnly: true`, no score/report, see Design Notes).
-- `/admin/homework` — worksheet generator: pick subject/topic/difficulty/count from the question bank, print/PDF a worksheet + answer key.
-- `/notes`, `/notes/maths`, `/notes/maths/numbers`, `/notes/maths/fractions-decimals-percentages`, `/notes/maths/ratio-proportion`, `/notes/maths/algebra`, `/notes/maths/geometry`, `/notes/maths/averages-statistics`.
-- `/notes/english`, `/notes/english/grammar` (+ 5 topic pages), `/notes/english/comprehension`, `/notes/english/spelling`, `/notes/english/cloze` (each strand's first topic live; see Recent Feature State below).
-- Marketing pages: `/pricing`, `/contact`, `/book-a-call`, `/about`, `/faq`, `/tuition`, `/tuition/group`, `/tuition/private`, `/diagnostic-assessment`, `/practice-packs`, `/holiday-booster`, `/privacy-policy`, `/terms`, `/safeguarding`. `/weekly-mock-club`, `/practice-paper-simulator`, `/complete-programme` still exist as page files but are redirected to `/pricing#platform` via `next.config.ts` (2026-07-20) — don't link to them, and don't bother updating their copy.
+- `/`, `/login`, `/register`, `/account` (gateway: two buttons → register/login), `/dashboard`, `/dashboard/settings`, `/dashboard/family`, `/dashboard/spelling` (Spelling Tester practice tool, not part of scored Attempt system).
+- `/welcome` — mobile-first WhatsApp-shareable landing page with its own Pro/Max + Group/Private pricing tabs (`welcome-pricing-tabs.tsx`) and sticky CTA bar.
+- `/free-mock` — anonymous, 2 official sample mocks (Maths/English, 5 Qs each), `?subject=` deep-links.
+- `/notes-preview` — anonymous, single real Study Notes subtopic, faded past ~70% height, CTA to `/pricing#platform`.
+- `/admin`, `/admin/students`, `/admin/mocks`, `/admin/mocks/[id]/preview`, `/admin/homework` (worksheet generator).
+- `/mocks`, `/mocks/[id]`, `/mocks/[id]/review`, `/mocks/[id]/report` (printable, released attempts only), `/mocks/[id]/print` (`printOnly: true` practice mocks, no score).
+- `/notes/maths/*` (6 topics live), `/notes/english/*` (Grammar 5/~10 topics, Comprehension/Spelling/Cloze/Creative-Writing each 1 topic live), `/notes/verbal-reasoning/*` (word-relationships + codes-ciphers strands live), `/notes/non-verbal-reasoning/*` (shape-patterns strand live, 3 more stubbed).
+- Marketing: `/pricing`, `/contact`, `/book-a-call`, `/about`, `/faq`, `/tuition(+/group,/private)`, `/diagnostic-assessment`, `/practice-packs`, `/holiday-booster`, `/privacy-policy`, `/terms`, `/safeguarding`. `/weekly-mock-club`, `/practice-paper-simulator`, `/complete-programme` are dead page files, redirected to `/pricing#platform` via `next.config.ts` — don't link to them.
 
 ## Server/API Routes
 
-- Auth: `src/app/api/auth/login/route.ts`, `register`, `logout`.
-- Platform bootstrap: `src/app/api/platform/bootstrap/route.ts`.
-- Admin student actions: approve, reject, assign plan, unlock mock, unlock first mock.
-- Admin mock publishing: `src/app/api/admin/mocks/[id]/publish/route.ts`.
-- Admin reports: feedback and release routes.
-- Attempts: submit and score routes.
-- Checkout and Stripe webhook scaffold: `src/app/api/checkout/route.ts`, `src/app/api/stripe/webhook/route.ts`.
-- Contact form placeholder: `src/app/api/contact/route.ts`.
+- Auth: `src/app/api/auth/{login,register,logout}`. Bootstrap: `src/app/api/platform/bootstrap`.
+- Admin: student approve/reject/assign-plan/unlock-mock routes; mock publish route; report feedback/release routes.
+- Attempts: submit/score routes. Checkout/Stripe webhook scaffold. Contact form placeholder.
 
 ## Data Model
 
-Prisma schema lives in `prisma/schema.prisma`.
+Prisma schema: `prisma/schema.prisma`. Models: `User`, `Session`, `MockExam`, `Question`, `Passage`, `Attempt`, `MockUnlock`, `ReferenceSource`, `ProductPlan`, `EmailTemplate`, `PaymentRequest`. Enums: `Role`, `Subject` (`English`/`Maths`/`VR`/`NVR`/`Biology`/`Chemistry`/`Physics`), `ReferenceStyle`, `AttemptStatus`, `PaymentStatus`, `PaymentRequestStatus`.
 
-Models: `User`, `Session`, `MockExam`, `Question`, `Passage`, `Attempt`, `MockUnlock`, `ReferenceSource`, `ProductPlan`, `EmailTemplate`, `PaymentRequest`. Enums: `Role`, `Subject`, `ReferenceStyle`, `AttemptStatus`, `PaymentStatus`, `PaymentRequestStatus`.
-
-`Subject` now includes `Biology`/`Chemistry`/`Physics` alongside the original `English`/`Maths`/`VR`/`NVR` (2026-08-11, additive enum migration, pushed to prod via `npx prisma db push`) — added for the founder's first real GCSE student. No `examLevel`/key-stage concept exists yet; GCSE and 11+ mocks are only distinguished by `subject` today. See Recent Feature State for the 3 GCSE `MockExam` entries this enabled.
-
-`ProductPlan` has `includedMockIds`/`includedNoteIds` (2026-07-17): assigning a plan to a student additively grants that bundle's mocks/notes via `set-content`/`assign-plan` admin routes — see Recent Feature State. The demo/seed catalog (`src/data/platform.ts`) plans are now Free/Pro/Max (2026-07-20, see Recent Feature State) plus Diagnostic/Group/Private/Holiday as separate non-gating entries; Free/Pro/Max's included-id lists are computed dynamically from `MOCKS`/`NOTE_PAGES` at module load, not hand-maintained.
-
-Schema CLI commands (`migrate`/`push`) must use `DIRECT_URL` (port 5432), not the pooled `DATABASE_URL` — the pgbouncer transaction pooler on 6543 hangs indefinitely on schema commands. `prisma.config.ts` is already wired for this.
-
-Seed/static catalog lives in `src/data/platform.ts`:
-- Demo admin and students.
-- Product plan placeholders.
-- Original English passage.
-- Original Maths/English sample questions.
-- Published diagnostic sample mocks.
-- Future VR/NVR placeholder mock shells.
-- Sample attempts and reference sources.
-- Email template placeholders.
+- No `examLevel`/key-stage field — GCSE vs 11+ mocks are distinguished only by `subject` today.
+- `ProductPlan.includedMockIds`/`includedNoteIds` — assigning a plan additively grants that bundle via `set-content`/`assign-plan` admin routes. Seed plans (`src/data/platform.ts`) are Free/Pro/Max + Diagnostic/Group/Private/Holiday; Free/Pro/Max's included-id lists are computed dynamically from `MOCKS`/`NOTE_PAGES`, not hand-maintained.
+- Schema CLI commands (`migrate`/`push`) must use `DIRECT_URL` (port 5432), not pooled `DATABASE_URL` (6543 pgbouncer hangs on schema commands). `prisma.config.ts` already wired for this.
+- Static seed/demo catalog lives in `src/data/platform.ts` (`MOCKS`, `QUESTIONS`, `NOTE_PAGES`, demo users, etc.).
 
 ## State Architecture
 
-- `src/context/platform-context.tsx` is the client state bridge.
-- It uses `useSyncExternalStore` with local memory plus `localStorage`.
-- It calls server APIs where implemented, then falls back to local demo behavior.
-- `src/lib/server/platform-store.ts` loads DB-backed bootstrap data when `DATABASE_URL` exists, otherwise returns seed/demo data.
-- Generated draft mocks, question edits, clone/archive actions, and reference style edits are currently local/demo admin state, not durable database versioning.
+- `src/context/platform-context.tsx` — client state bridge, `useSyncExternalStore` + `localStorage`, calls server APIs where implemented and falls back to local demo behavior.
+- `src/lib/server/platform-store.ts` — DB-backed bootstrap when `DATABASE_URL` set, else seed/demo data.
+- Generated draft mocks, question edits, clone/archive, reference-style edits are local/demo admin state only — no durable DB versioning yet.
 
 ## Recent Feature State
 
+- **2026-08-24 session (GCSE Physics + Biology full topic-mock sets, 13 new mocks, 650 questions)**: added one full 50-question mock per remaining real AQA Triple Science topic — Physics: `gcse-physics-energy`/`-electricity`/`-particle-model`/`-atomic-structure`/`-forces`/`-waves`/`-space` (7 mocks, skipping "Magnetism and Electromagnetism" which already had `gcse-physics-magnetism-electromagnetism`); Biology: `gcse-biology-organisation`/`-infection-and-response`/`-bioenergetics`/`-homeostasis-and-response`/`-inheritance-variation-evolution`/`-ecology` (6 mocks, skipping "Cell Biology" which already had two full mocks; the new Organisation mock deliberately excludes digestion/enzymes, already covered by `gcse-biology-digestive-system`). Chemistry's 10 remaining topics were queued as a third, separate batch — check `MOCKS` directly for whether `gcse-chemistry-*` ids exist yet. All follow the established GCSE convention: `questionType: "written_response"` (hand-marked, not auto-scored), text-only with zero diagrams, mixed 1-6 mark questions including a 6-mark extended question per mock, real AQA required-practical content described in prose. Built via 3 sequential subagents in isolated git worktrees (one per subject, to avoid concurrent-edit conflicts on this file) merged back into main one at a time. `npm.cmd run typecheck` clean, no duplicate mock/question ids bank-wide. **Not yet seeded** (`npm run db:seed`) as of this entry — seed once Chemistry batch also lands.
 - **2026-08-24 session, scheduled routine (new `nvr-elite-gauntlet` Elite NVR mock, 8th full Elite NVR paper)**: added "Non-Verbal Reasoning — Full Paper VIII 'Gauntlet'", `nvr-elite-gauntlet`, 50 questions/50 marks, 55 minutes, `tier: "Elite"`, `published: true`, question ids `nvg1`–`nvg50` (all confirmed unused via grep first). Deliberately positioned as the 8th standalone Elite NVR paper alongside the existing seven (`nvr-elite-difficult`, `nvr-elite-summit`, `nvr-elite-beacon`, `nvr-elite-crest`, `nvr-elite-spire`, `nvr-elite-citadel`; not replacing any). Entirely built from the platform's existing 10 NVR visual types (matrix/grids, sequences, odd-one-out, analogies, rotation, similarity, combining solids/3D, codes, mirror/reflection, hole punch), 5 questions per type, with fresh rule combinations and mechanics not used in those seven papers. Standout mechanics include: matrix mod-4/mod-3 rule-stacking (row+column modulo 4 for rotation, row+column modulo 3 for border style on different grids), row-times-column parity fill rules (product odd → outline, product even → solid), cumulative-parity reflection rules (reflection gated by whether the running sum of all prior side counts is odd), coupled figure-code lookups (internal marker shape and position advance their own separate cycles in lockstep), divisor-count sequences (arrow count = count of all factors of the position), bounce-and-climb size/rotation patterns (size ping-pongs small↔medium↔large while rotation climbs independently), binary popcount arrow sequences (arrow count = number of 1-bits in the position's binary representation), interleaved dual-pattern sequences (odd-position and even-position figures follow completely independent sequences), and fill-family rotation rules (plain fill adds 0×45°, first texture family adds 1×45°, second texture family adds 2×45°). Odd-one-out and figure-analogy questions include invariant-based rules (sides + 2×arrow_count = 9), fill-family-conditional rotations, arrow-count-squared rotation scaling, and coupled marker cycles. Verified via `scripts/verify-mock.mts`: totalMarks 50/50, 100% visual ratio across all 10 types (5 per type exactly), `evaluateMockQuality` returns `Ready`. `npm run typecheck` clean. Committed and pushed to main.
 - **2026-08-23 session, urgent (removed all visible pricing site-wide)**: founder misquoted pricing to a real tuition customer on a call and asked, urgently, to remove every visible price from the site until it can be corrected. No `£` figures/periods now render anywhere a real visitor can reach: `PricingCard` (`src/components/ui/pricing-card.tsx`, used on `/pricing`, `/tuition/group`, `/tuition/private`, `/diagnostic-assessment`, `/holiday-booster`, `/mocks`, `/`) and `PricingPlanCard` (`src/components/sections/welcome-pricing-tabs.tsx`, used on `/welcome`'s Pro/Max and Group/Private tabs) both had their price/period line removed from the JSX entirely — the underlying `tier.price`/`tier.period` data in `src/data/pricing.ts` is untouched, just no longer rendered. `src/app/practice-packs/page.tsx`'s pack cards no longer show `pack.price`. Three inline copy strings that stated exact numbers were reworded to drop the figure: `src/app/pricing/page.tsx`'s "I want weekly exam practice"/"I want teaching and support" quiz-card descriptions (were "£39/month"/"£15/session"), and `src/app/welcome/page.tsx`'s `TRUST_STATEMENTS` Value line (was "Pro is £39/month..."). **Deliberately not touched, out of scope for "visible to a visitor"**: `src/data/pricing.ts`/`products.ts`'s underlying price data (still holds real values, just unrendered by the components above); `src/components/platform/dashboards.tsx`'s admin-only "Products and pricing placeholders" panel (`product.price`, only visible inside `/admin`, not public); `src/app/weekly-mock-club/page.tsx`'s "£25 per mock" (that page is redirected to `/pricing#platform` via `next.config.ts` and is unreachable to real visitors — see the 2026-07-20 pricing-rebrand entry below); every `£` figure inside actual Maths mock/note question content (word problems, not pricing). `npm.cmd run typecheck` clean (verified via `npx tsc --noEmit`). Committed and pushed immediately (`d5ed69f`) given the urgency. **Follow-up needed**: this is a stopgap — once the founder confirms correct pricing, either restore these price displays with corrected numbers, or replace `src/data/pricing.ts`'s figures first and then re-add the display code (git history has the exact removed lines).
 - **2026-08-23 session (new `vr-bastion-full` VR paper, fixed 6-block structure, deliberately hard vocabulary + logic)**: founder asked for a new VR mock built to a specific fixed structure rather than the usual free mix of topics: a block of Verbal Analogies, then Odd One Out, then Move a Letter, then Double Meanings, then Compound Words, then Synonyms and Antonyms, made quite difficult in both vocabulary and reasoning. Added `vr-bastion-full` ("Verbal Reasoning — Bastion Full Paper"), 60 questions/60 marks, 55 minutes, `tier: "Elite"`, `published: true`, question ids `vrm1`-`vrm60` (10 per block, confirmed unused via grep first — `vre`/`vrk`/`vrw`/`vrz` and bare `vr` prefixes were already taken). Per the `vr-mock-authoring` skill's "two honest paths" rule, this is explicitly the **original Summit-style path**, `style: "non-GL"`, not labelled GL-style — Double Meanings has no GL archetype equivalent at all, and the platform's single-MC Odd One Out/Analogies/Synonyms-Antonyms format and word-based (not single-letter) Move a Letter/Compound Words format differ from GL's real answer formats (see the skill's archetype table). Vocabulary throughout is advanced (perfidious, obsequious, munificent, magnanimous, bolthole, fletcher, sextant, caliper, etc.), and every question carries a genuine near-miss distractor rather than an obvious filler — e.g. analogies use antonym-pair/degree/cause-effect patterns with a plausible-but-wrong option, odd-one-out groups 4 real synonyms against 1 true opposite, and the 10 Move a Letter questions were each hand-verified letter-by-letter (word minus the moved letter must itself be a real word, and the target word plus the moved letter must also be a real word) to avoid the platform's known cipher/logic-puzzle arithmetic-error class. Verified via `scripts/verify-mock.mts`: totalMarks 60/60, `evaluateMockQuality` returns `Ready`, 60 unique `vrm` ids with no bank-wide collisions. `npm run typecheck` clean. Committed and pushed to main; **`npm run db:seed` not yet run this session** — seed before the mock is unlockable for real students.
@@ -252,35 +213,28 @@ Full narrative history of what was built/changed and when now lives in `status.m
 
 ## Design Notes
 
-- **New full-length Maths mocks are capped at 50 questions (2026-08-03 founder instruction)** — 80 was too tiring for students to sit in one sitting. The existing 80-question Elite Maths papers (`maths-elite-1` through `-9`) are left as-is, not retroactively cut down; only mocks authored from this point forward use the 50-question cap. See `.claude/skills/maths-mock-authoring/SKILL.md` for the updated structure/thresholds. English's 54-question full papers are unchanged (that count matches real researched GL section weights, not an arbitrary choice) — see that skill's note before changing it too.
-- Keep the app as a product/tool first, not a generic landing page.
-- Use existing components in `src/components/ui`, `src/components/layout`, `src/components/sections`, and `src/components/platform`.
-- The current visual identity uses navy, gold, cream, white, and restrained motion.
-- Scored mocks stay online-only — do not add PDF downloads or print views of the exam content itself. The one exception: once a report is released, the student's *marked report* (score, topic breakdown, missed questions) is printable/PDF-able at `/mocks/[id]/report`, mirroring the admin's `/admin/reports/[attemptId]` view (`AdminAttemptReport` with `audience="student"`) — this was a deliberate 2026-07-19 fix, not a regression of the "no PDF" rule, which still applies to the underlying mock questions/content.
-- A separate "Printable Practice" mock category is allowed: mocks with `printOnly: true` on `MockExam`, rendered via a plain browser `@media print` view (`/mocks/[id]/print`, `src/app/globals.css`) — no PDF generation library, no score, no report. Keep this category clearly distinct from scored online mocks in UI copy.
-- Do not copy third-party paper content. Reference sources are metadata only.
+- New full-length Maths mocks capped at 50 questions (2026-08-03) — older 80-Q Elite papers (`maths-elite-1` through `-9`) left as-is.
+- Keep the app product/tool-first, not a generic landing page. Reuse `src/components/{ui,layout,sections,platform}`. Visual identity: navy, gold, cream, white, restrained motion.
+- Scored mocks stay online-only, no PDF downloads of exam content — exception: a released report is printable at `/mocks/[id]/report`. Separate `printOnly: true` category exists for practice mocks (no score, plain `@media print`).
+- Do not copy third-party paper content — reference sources are metadata only.
 
 ## Known Limitations
 
-- Auth/session/password handling works for the demo and current app; the critical demo-mode session-forging bypass was fixed 2026-07-17 (see Recent Feature State), but the area still hasn't had a full production security hardening pass.
-- **No DB-level uniqueness on submitted attempts (flagged 2026-07-30, not fixed)**: the app-level double-submission bugs (timer re-fire, unguarded submit button) were fixed, but the `Attempt` model still has no unique constraint on `(studentId, mockId)` for non-`in_progress` rows — two genuinely simultaneous requests (e.g. the same mock open in two tabs) could still both pass the "already submitted?" check and create duplicate rows. Needs a DB migration against the shared production schema; not done without founder sign-off. See Recent Feature State.
-- Full mock content is bundled client-side for demo speed; move sensitive content server-side before production. **2026-07-24 partial fix**: `getPlatformBootstrap` (`src/lib/server/platform-store.ts`) previously sent every mock's full question/passage data (options, passage text) to any signed-in student's bootstrap payload regardless of access — a new `accessibleMockIds()` helper now scopes non-admin responses to only free/unlocked/attempted mocks (returns `null` for admins to mean "no filtering"), separate from the pre-existing answer/markScheme/explanation redaction (`redactQuestionsForStudent`). This closes the content leak but the underlying "bundle everything client-side" architecture is unchanged.
-- `/api/account/redeem-code` (promo code redemption) now has rate limiting (`src/lib/server/rate-limit.ts`'s `isRateLimited`/`clientIp`) — 20/10min per IP, 10/10min per user — added 2026-07-24 alongside the content-leak fix above.
-- Stripe: Pro/Max checkout is fully wired and tested end-to-end against test-mode Prices (see Recent Feature State, 2026-07-20 Stripe session) — but only locally. Production (Vercel) has no Stripe env vars set at all yet, deliberately, so `/api/checkout` there still returns `STRIPE_NOT_CONFIGURED`, and `CheckoutButton` shows the WhatsApp manual-payment fallback instead (see the 2026-07-21 WhatsApp entry above) rather than a dead "coming soon" button. **Correction (2026-07-21): `NEXT_PUBLIC_SITE_URL` IS set in Vercel** (Production + Preview) — verified live via `vercel env ls` and by checking the deployed site's own `og:url` meta tag, which correctly reads `https://summit-tuition.vercel.app` (the real production domain — note `vercel project ls`/`vercel ls` show a different, SSO-protected `summit-tuition-summit-tuition-team.vercel.app` alias; that one is NOT the public front door, don't use it as a reference). The earlier note in this file claiming the var was unset was wrong and has been corrected. Real (live-mode) payments are still blocked on the founder buying a domain and completing Stripe business/bank activation; see `status.md` for the exact staged rollout order.
-- **2026-07-21 (later same day): `SITE.stripeCheckoutEnabled` (`src/data/site.ts`) is now explicitly set to `false`** — a deliberate founder decision to stop sending any real customer down the Stripe checkout path (even the WhatsApp-on-failure one) until live mode is ready, since a checkout flow that fails on first click doesn't read as "finished" to a paying visitor. Both `pricing-card.tsx` and `welcome-pricing-tabs.tsx` now check this flag before ever rendering `CheckoutButton`, falling straight to the plain `Button href={tier.ctaHref}` (→ `/book-a-call?product=...`) instead — this is a one-line flip back to re-enable Stripe later, not a removal of the integration.
-- Email provider is a placeholder and logs in development.
-- Generated mocks and admin draft edits need durable database persistence/versioning in a later pass.
-- Clone/archive currently follow the existing local draft mock model rather than writing to Prisma.
-- **Comprehension passage sameness (flagged 2026-07-26, not yet fixed)**: ~14 of the 20 existing comprehension passages (`src/data/platform.ts`) follow an identical "apprentice earns a stern mentor's trust in an old-world craft" template — confirmed via real student feedback, not just a hunch. Only new passages from this point are required to break the pattern (see Recent Feature State); the older passages themselves haven't been rewritten yet and would need founder sign-off on which mocks to touch (rewriting a passage risks invalidating existing questions' `paragraphRefs`/distractors).
-- **Creative writing / free-text essays cannot be auto-marked anywhere on the platform (architectural, not a bug)** — every mock/question type on Summit Tuition is objective (MCQ, short-answer, segment-format) so it can be auto-graded; there is no essay-grading path. This is why the two real-school-style mocks whose actual format includes a creative-writing component (Latymer, Colyton, see the 2026-07-24 entry) explicitly omit it, and why the new Creative Writing Study Notes strand (2026-07-26) is guidance/practice only, not a submittable/markable exercise — any creative-writing homework has to be delivered as a printable task (see `worksheets/`) and marked by a human, not through the platform.
-- **English Study Notes coverage is thin outside Grammar**: Grammar has 5 of ~10 planned topics live; Comprehension, Spelling, Cloze, and the new Creative Writing strand (added 2026-07-26) each have only their first topic (1 of ~10) live. See `TODO.md` for the batch-out plan.
-- **VR/NVR baseline coverage is thin**: `vr-placeholder`/`nvr-placeholder` each ship one batch of 20 basic questions and stay `published: false`, `tier: "Future"`, while Elite-tier full-length papers (`vr-elite-difficult`, `vr-summit-full`, `vr-horizon-full`, `vr-keystone-full` for VR; `nvr-elite-difficult`, `nvr-elite-summit`, `nvr-elite-beacon`, `nvr-elite-crest` for NVR) are live and published — but entry-level GL/Standard mocks are still missing. **NVR Study Notes now has its first strand (2026-08-18, `nvr-shape-patterns`, see Recent Feature State)** — 3 of its 4 planned strands (codes/grids, nets/3D, similarity/combining) are still stubbed `available: false`, matching VR notes' own thin coverage (1 of 4 strands live).
-- **No real PMC/JMC-licensed question bank** — founder has asked for one; not attempted, since no source past papers are available and copying real competition content would be a copyright problem (see the 2026-07-26 entry above). Original `competition-style`-tagged questions are used instead.
-- **Study Notes progress is local-device only**, not synced across devices via the database yet — this is also the blocker for the entire gamification backlog (mastery meters, wax-seal badges, certificates) in `TODO.md`.
+- No DB-level uniqueness on submitted attempts (see 2026-07-30 above) — needs a migration, founder sign-off required.
+- Full mock content is bundled client-side; `accessibleMockIds()` (2026-07-24) scopes non-admin bootstrap payloads to free/unlocked/attempted mocks only, but the underlying "bundle everything client-side" architecture is unchanged.
+- `/api/account/redeem-code` rate-limited (20/10min per IP, 10/10min per user) since 2026-07-24.
+- Stripe: test-mode checkout fully wired locally; production has no Stripe env vars set and `SITE.stripeCheckoutEnabled = false` (see above) — real payments blocked on domain purchase + bank activation, see `status.md` for the staged rollout order.
+- Email provider is a placeholder, logs in development only.
+- Generated mocks / admin draft edits / clone-archive need durable DB persistence in a later pass.
+- ~14 of ~20 older comprehension passages share an "apprentice earns a mentor's trust" template (confirmed via real student feedback) — only new passages are required to break the pattern; older ones not rewritten (would need founder sign-off, risks invalidating existing question refs).
+- Creative writing / free-text essays cannot be auto-marked anywhere on the platform (architectural — every question type is objective/MCQ). Any creative-writing homework is delivered as a printable task and marked by a human.
+- English Study Notes coverage thin outside Grammar; VR/NVR Study Notes each have only 1-2 of 4 strands live.
+- No real PMC/JMC-licensed question bank (would be a copyright problem) — original `competition-style`-tagged questions used instead.
+- Study Notes progress is local-device only, not DB-synced — blocks the gamification backlog in `TODO.md`.
 
 ## Environment Variables
 
-Full list with defaults lives in `.env.example` — read it directly when you need exact names. Notable non-obvious ones: `DATABASE_URL` unset falls back to localStorage demo mode; `ADMIN_GENERATION_SECRET` is a temporary guard for server-side admin AI generation until cookie auth/database is fully adopted in the UI; `MOCK_GENERATION_PROVIDER` defaults to `deterministic` (no AI key needed) with `OPENAI_*`/`ANTHROPIC_*` as opt-in.
+Full list with defaults in `.env.example`. Notable: `DATABASE_URL` unset → localStorage demo mode; `ADMIN_GENERATION_SECRET` guards server-side admin AI generation; `MOCK_GENERATION_PROVIDER` defaults to `deterministic` (no AI key needed).
 
 ## How To Run Locally
 
@@ -290,11 +244,9 @@ copy .env.example .env.local   # PowerShell: Copy-Item .env.example .env.local
 npm.cmd run dev
 ```
 
-Open `http://localhost:3000`. Works with zero env vars set (falls back to in-browser demo/localStorage mode); set `DATABASE_URL` for a shared Postgres-backed instance across browsers. See README.md "Master Admin Setup" and "Student And Mock Access Test" sections above for the manual walkthrough.
+Open `http://localhost:3000`. Works with zero env vars (localStorage demo mode); set `DATABASE_URL` for a shared Postgres instance. See README.md "Master Admin Setup" / "Student And Mock Access Test" for the manual walkthrough.
 
 ## Verification
-
-Use these commands on Windows:
 
 ```bash
 npm.cmd run lint
@@ -303,19 +255,17 @@ npm.cmd run build
 npm.cmd run test:e2e
 ```
 
-If Playwright needs the local server, the config uses `scripts/playwright-dev-server.ps1`.
+Playwright uses `scripts/playwright-dev-server.ps1` for the local server.
 
 ## Files By Area
 
 - Config: `package.json`, `next.config.ts`, `tsconfig.json`, `eslint.config.mjs`, `postcss.config.mjs`, `playwright.config.ts`, `prisma.config.ts`.
 - App shell: `src/app/layout.tsx`, `src/app/globals.css`.
-- Shared data: `src/data/site.ts`, `pricing.ts`, `products.ts`, `platform.ts`, `nav.ts`, `faq.ts`, `sample-report.ts`.
-- Shared types: `src/types/platform.ts`, `pricing.ts`, `product.ts`, `nav.ts`, `faq.ts`, `contact.ts`.
-- Server libs: `src/lib/server/auth.ts`, `db.ts`, `platform-store.ts`, `ai-generation.ts`.
-- Domain libs: `src/lib/assessment.ts`, `mock-generation.ts`, `mock-quality.ts`, `stripe.ts`, `utils.ts`.
-- Platform UI: `src/components/platform/*`.
-- Study Notes: `src/components/notes/*`, `src/app/notes/**`.
-- Marketing sections: `src/components/sections/*`.
-- Layout/UI primitives: `src/components/layout/*`, `src/components/ui/*`, `src/components/motion/*`.
-- Tests: `tests/admin-nav-and-mock-room.spec.ts`, `admin-approve-and-unlock-flow.spec.ts`, `student-mock-flow.spec.ts`, `new-features.spec.ts`, shared login helper in `tests/helpers.ts` (demo mode needs both the `summit_session` cookie and the `summit-platform-session-v1` localStorage key set — see its doc comment; a spec file that only sets the cookie will silently redirect to /login and hang every subsequent locator).
+- Shared data: `src/data/{site,pricing,products,platform,nav,faq,sample-report}.ts`.
+- Shared types: `src/types/{platform,pricing,product,nav,faq,contact}.ts`.
+- Server libs: `src/lib/server/{auth,db,platform-store,ai-generation}.ts`.
+- Domain libs: `src/lib/{assessment,mock-generation,mock-quality,stripe,utils}.ts`.
+- Platform UI: `src/components/platform/*`. Study Notes: `src/components/notes/*`, `src/app/notes/**`.
+- Marketing sections: `src/components/sections/*`. Layout/UI primitives: `src/components/{layout,ui,motion}/*`.
+- Tests: `tests/*.spec.ts` — shared login helper in `tests/helpers.ts` (demo mode needs both the `summit_session` cookie and `summit-platform-session-v1` localStorage key set, or specs silently redirect to `/login` and hang).
 - Research notes: `research/*.md`.
