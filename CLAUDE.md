@@ -2,7 +2,7 @@
 
 # Summit Tuition Project Context
 
-Last updated: 2026-08-24 (fixed admin-login timeout + shipped leaderboard competition MVP — see Recent Feature State. CLAUDE.md is ~170KB, over the ~30KB target — flagged for a human-triggered compaction pass).
+Last updated: 2026-08-24 (fixed admin-login timeout + shipped leaderboard competition MVP — see Recent Feature State. Note: the first push of this build silently failed on Vercel — `/register`'s new `useSearchParams()` needed a Suspense boundary — so production kept serving the old build until a follow-up commit fixed it; always verify a real `npm run build`, not just typecheck, before assuming a push is live. CLAUDE.md is ~170KB, over the ~30KB target — flagged for a human-triggered compaction pass).
 
 ## Sibling Projects In This Repo
 
