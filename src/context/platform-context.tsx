@@ -1,10 +1,11 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useSyncExternalStore } from "react";
-import { ATTEMPTS, EMAIL_TEMPLATES, MASTER_ADMIN_EMAIL, MOCKS, NOTE_PAGES, PASSAGES, PRODUCT_PLANS, QUESTIONS, REFERENCES, SEEDED_USERS } from "@/data/platform";
+import { ATTEMPTS, AUTO_RELEASE_REPORT_MOCK_IDS, EMAIL_TEMPLATES, MASTER_ADMIN_EMAIL, MOCKS, NOTE_PAGES, ONBOARDING_MOCK_IDS, PASSAGES, PRODUCT_PLANS, QUESTIONS, REFERENCES, SEEDED_USERS } from "@/data/platform";
 import { PROMO_CODES } from "@/data/promo-codes";
 import { analyseAttempt, scoreAnswers, weakTopicsForAttempt } from "@/lib/assessment";
 import { generateMockFromReferenceProfile, type GenerateMockInput } from "@/lib/mock-generation";
+import { generateReferralCode } from "@/lib/referral";
 import type { Attempt, EmailTemplate, MockExam, NotePage, Passage, ProductPlan, Question, ReferenceSource, ReferenceStyle, StudentAccount, Subject } from "@/types/platform";
 
 type PlatformState = {
@@ -23,6 +24,7 @@ type RegisterInput = {
   name: string;
   email: string;
   password: string;
+  ref?: string;
 };
 
 type PlatformContextValue = PlatformState & {
@@ -147,18 +149,46 @@ function emitChange() {
   listeners.forEach((listener) => listener());
 }
 
+// Admin's question set is the whole bank (full text/answers, several MB) and isn't
+// needed for the first paint after login — the lean bootstrap (no "?full=1") omits it
+// (questionsIncluded: false, questions/passages come back empty) so login/dashboard
+// stop being gated on that multi-MB transfer. This fetches the full set afterward, in
+// the background, so admin views that actually need question content still get it.
+let backgroundQuestionsFetchInFlight = false;
+function fetchFullQuestionsInBackground() {
+  if (typeof window === "undefined" || backgroundQuestionsFetchInFlight) return;
+  backgroundQuestionsFetchInFlight = true;
+  fetch("/api/platform/bootstrap?full=1", { credentials: "include", cache: "no-store" })
+    .then((response) => (response.ok ? response.json() : null))
+    .then((data: (PlatformState & { questionsIncluded?: boolean }) | null) => {
+      if (!data || data.questionsIncluded === false) return;
+      memoryState = { ...memoryState, questions: data.questions, passages: data.passages };
+      persistState();
+      emitChange();
+    })
+    .catch(() => {
+      // Admin views that need full question content will just show as empty until a retry succeeds.
+    })
+    .finally(() => {
+      backgroundQuestionsFetchInFlight = false;
+    });
+}
+
 async function refreshFromServer(): Promise<boolean> {
   if (typeof window === "undefined") return false;
   try {
     const response = await fetch("/api/platform/bootstrap", { credentials: "include", cache: "no-store" });
     if (!response.ok) return false;
-    const data = (await response.json()) as PlatformState & { currentUser: StudentAccount | null; mode?: "demo" };
+    const data = (await response.json()) as PlatformState & { currentUser: StudentAccount | null; mode?: "demo"; questionsIncluded?: boolean };
     if (data.mode === "demo") return true; // No database configured: the server has no authoritative state beyond the static seed, so keep local demo mutations intact instead of clobbering them.
     memoryState = {
       users: data.users,
       mocks: data.mocks,
-      questions: data.questions,
-      passages: data.passages,
+      // The lean bootstrap omits questions/passages for admin (questionsIncluded: false)
+      // — keep whatever's already in memory (from an earlier full fetch) rather than
+      // clobbering it with the empty arrays the lean response sends back.
+      questions: data.questionsIncluded === false ? memoryState.questions : data.questions,
+      passages: data.questionsIncluded === false ? memoryState.passages : data.passages,
       attempts: data.attempts,
       references: data.references,
       products: data.products,
@@ -170,6 +200,7 @@ async function refreshFromServer(): Promise<boolean> {
     else window.localStorage.removeItem(SESSION_KEY);
     persistState();
     emitChange();
+    if (data.questionsIncluded === false) fetchFullQuestionsInBackground();
     return true;
   } catch {
     // Keep local demo state if the server/database is unavailable.
@@ -299,6 +330,7 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
         return { ok: false, message: "An account already exists for that email. Sign in to finish first-run setup." };
       }
       const id = `student-${Date.now()}`;
+      const referralCode = generateReferralCode(input.name);
       const user: StudentAccount = {
         id,
         name: input.name,
@@ -308,9 +340,14 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
         approved: true,
         plan: "Diagnostic Assessment",
         paymentStatus: "pending",
-        unlockedMockIds: state.mocks.filter((mock) => mock.isFree && mock.published).map((mock) => mock.id),
+        unlockedMockIds: [
+          ...state.mocks.filter((mock) => mock.isFree && mock.published).map((mock) => mock.id),
+          ...ONBOARDING_MOCK_IDS.filter((id) => state.mocks.some((mock) => mock.id === id && mock.published)),
+        ],
         unlockedNoteIds: state.notes.filter((note) => note.isFree).map((note) => note.id),
         createdAt: new Date().toISOString(),
+        referralCode,
+        referredByCode: input.ref && input.ref !== referralCode ? input.ref : undefined,
       };
       updateStore((prev) => ({ ...prev, users: [...prev.users, user] }));
       return { ok: true };
@@ -628,6 +665,7 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
       const score = scoreAnswers(mock, answers, state.questions);
       const weakTopics = weakTopicsForAttempt(mock, answers, state.questions);
       const analysis = analyseAttempt(mock, answers, state.questions);
+      const autoRelease = AUTO_RELEASE_REPORT_MOCK_IDS.includes(mockId);
       const attempt: Attempt = {
         id: `attempt-${Date.now()}`,
         studentId: currentUser.id,
@@ -638,10 +676,10 @@ export function PlatformProvider({ children }: { children: React.ReactNode }) {
         maxScore: score.maxScore,
         submittedAt: new Date().toISOString(),
         timeSpentSeconds,
-        status: "submitted",
+        status: autoRelease ? "report_released" : "submitted",
         adminFeedback: "",
         weakTopics,
-        reportReady: false,
+        reportReady: autoRelease,
         errorPatterns: Object.fromEntries(analysis.weakTopics.flatMap((topic) => topic.questionIds.map((id) => [id, topic.pattern]))),
       };
       updateStore((prev) => {

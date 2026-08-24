@@ -63,6 +63,8 @@ model User {
   createdAt     DateTime      @default(now())
   lessonsRemaining Int?
   upcomingLessons  Json?
+  referralCode     String?       @unique
+  referredByCode   String?
   sessions      Session[]
   attempts      Attempt[]
   unlocks       MockUnlock[]

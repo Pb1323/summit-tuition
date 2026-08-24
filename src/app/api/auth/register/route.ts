@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { hashPasswordServer, isProductionWithoutDatabase } from "@/lib/server/auth";
 import { isDatabaseConfigured, prisma } from "@/lib/server/db";
 import { clientIp, isRateLimited } from "@/lib/server/rate-limit";
+import { generateReferralCode } from "@/lib/referral";
+import { ONBOARDING_MOCK_IDS } from "@/data/platform";
 
 export const runtime = "nodejs";
 
@@ -10,6 +12,7 @@ export async function POST(request: Request) {
   const name = String(body?.name ?? "").trim();
   const email = String(body?.email ?? "").trim().toLowerCase();
   const password = String(body?.password ?? "");
+  const referredByCode = String(body?.ref ?? "").trim() || undefined;
 
   if (!name || !email || password.length < 8) {
     return NextResponse.json({ ok: false, message: "Name, email and an 8+ character password are required." }, { status: 400 });
@@ -33,6 +36,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, message: "An account already exists for that email." }, { status: 409 });
   }
 
+  let referralCode = generateReferralCode(name);
+  for (let attempt = 0; attempt < 3; attempt++) {
+    if (!(await prisma.user.findUnique({ where: { referralCode } }))) break;
+    referralCode = generateReferralCode(name);
+  }
+
   const user = await prisma.user.create({
     data: {
       name,
@@ -42,12 +51,15 @@ export async function POST(request: Request) {
       approved: true,
       plan: "Diagnostic Assessment",
       paymentStatus: "pending",
+      referralCode,
+      referredByCode: referredByCode && referredByCode !== referralCode ? referredByCode : undefined,
     },
   });
 
-  const [freeMocks, freeNotes] = await Promise.all([
+  const [freeMocks, freeNotes, onboardingMocks] = await Promise.all([
     prisma.mockExam.findMany({ where: { isFree: true, published: true } }),
     prisma.note.findMany({ where: { isFree: true } }),
+    prisma.mockExam.findMany({ where: { id: { in: ONBOARDING_MOCK_IDS }, published: true } }),
   ]);
   await Promise.all([
     ...freeMocks.map((mock) =>
@@ -55,6 +67,11 @@ export async function POST(request: Request) {
     ),
     ...freeNotes.map((note) =>
       prisma.noteUnlock.upsert({ where: { userId_noteId: { userId: user.id, noteId: note.id } }, update: {}, create: { userId: user.id, noteId: note.id } })
+    ),
+    // New-account onboarding mocks (2026-08-24) — every account created via this route gets these,
+    // never retroactively granted to accounts that already exist.
+    ...onboardingMocks.map((mock) =>
+      prisma.mockUnlock.upsert({ where: { userId_mockId: { userId: user.id, mockId: mock.id } }, update: {}, create: { userId: user.id, mockId: mock.id } })
     ),
   ]);
 

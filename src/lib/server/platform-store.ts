@@ -80,6 +80,16 @@ export type PlatformBootstrap = {
   products: ProductPlan[];
   emailTemplates: EmailTemplate[];
   notes: NotePage[];
+  /**
+   * Admin bootstrap ships every question in the bank (2,800+, with full text/answers)
+   * unfiltered — several MB, slow/flaky on a weak connection and unnecessary on the
+   * first paint after login. Login/dashboard render fine without it, so it's omitted
+   * by default (this is false and `questions`/`passages` are empty) and only included
+   * when the caller explicitly asks via `includeQuestions` — the client fetches it as
+   * a non-blocking follow-up once the lean login-critical bootstrap has succeeded.
+   * Non-admin payloads are already filtered small, so this flag is always true for them.
+   */
+  questionsIncluded: boolean;
 };
 
 function fromPrismaReferenceStyle(style: string) {
@@ -92,7 +102,13 @@ function toDateOnly(value: Date | string) {
   return typeof value === "string" ? value.slice(0, 10) : value.toISOString().slice(0, 10);
 }
 
-export async function getPlatformBootstrap(currentUser: StudentAccount | null): Promise<PlatformBootstrap> {
+export async function getPlatformBootstrap(currentUser: StudentAccount | null, includeQuestions = true): Promise<PlatformBootstrap> {
+  // Admin is the only role whose question set is unfiltered (the whole bank, full
+  // text/answers) — that's the multi-MB payload. Non-admin question sets are already
+  // scoped down to a handful of accessible mocks, so there's nothing to gain by
+  // deferring them; always include for non-admin regardless of the caller's flag.
+  const skipQuestions = currentUser?.role === "admin" && !includeQuestions;
+
   if (!isDatabaseConfigured()) {
     const allowedMockIds = accessibleMockIds(MOCKS, currentUser, ATTEMPTS);
     const accessibleQuestions = filterQuestionsByAccess(QUESTIONS, MOCKS, allowedMockIds);
@@ -105,21 +121,22 @@ export async function getPlatformBootstrap(currentUser: StudentAccount | null): 
       mode: "demo",
       users: currentUser?.role === "admin" ? SEEDED_USERS : currentUser ? [currentUser] : [],
       mocks: MOCKS,
-      questions,
-      passages: currentUser?.role === "admin" ? PASSAGES : filterPassagesByQuestions(PASSAGES, accessibleQuestions),
+      questions: skipQuestions ? [] : questions,
+      passages: skipQuestions ? [] : currentUser?.role === "admin" ? PASSAGES : filterPassagesByQuestions(PASSAGES, accessibleQuestions),
       attempts: currentUser?.role === "admin" ? ATTEMPTS : currentUser ? ATTEMPTS.filter((attempt) => attempt.studentId === currentUser.id) : [],
       references: currentUser?.role === "admin" ? REFERENCES : REFERENCES.filter((reference) => reference.style === "GL-style"),
       products: PRODUCT_PLANS,
       emailTemplates: currentUser?.role === "admin" ? EMAIL_TEMPLATES : [],
       notes: NOTE_PAGES,
+      questionsIncluded: !skipQuestions,
     };
   }
 
   const [users, mocks, questions, passages, attempts, references, products, emailTemplates, notes] = await Promise.all([
     currentUser?.role === "admin" ? prisma.user.findMany({ include: { unlocks: true, noteUnlocks: true }, orderBy: { createdAt: "desc" } }) : Promise.resolve([]),
     prisma.mockExam.findMany({ where: currentUser?.role === "admin" ? {} : { published: true } }),
-    prisma.question.findMany(),
-    prisma.passage.findMany(),
+    skipQuestions ? Promise.resolve([]) : prisma.question.findMany(),
+    skipQuestions ? Promise.resolve([]) : prisma.passage.findMany(),
     currentUser?.role === "admin"
       ? prisma.attempt.findMany()
       : currentUser
@@ -242,5 +259,6 @@ export async function getPlatformBootstrap(currentUser: StudentAccount | null): 
       title: note.title,
       isFree: note.isFree,
     })),
+    questionsIncluded: !skipQuestions,
   };
 }

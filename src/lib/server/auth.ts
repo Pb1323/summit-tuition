@@ -46,7 +46,7 @@ export function verifyPassword(password: string, stored: string) {
   return expected.length === actual.length && timingSafeEqual(expected, actual);
 }
 
-export function publicUser(user: { id: string; name: string; email: string; role: string; approved: boolean; plan: string; paymentStatus: string; createdAt: Date | string; unlocks?: { mockId: string }[]; noteUnlocks?: { noteId: string }[]; lessonsRemaining?: number | null; upcomingLessons?: unknown }): StudentAccount {
+export function publicUser(user: { id: string; name: string; email: string; role: string; approved: boolean; plan: string; paymentStatus: string; createdAt: Date | string; unlocks?: { mockId: string }[]; noteUnlocks?: { noteId: string }[]; lessonsRemaining?: number | null; upcomingLessons?: unknown; referralCode?: string | null; referredByCode?: string | null }): StudentAccount {
   return {
     id: user.id,
     name: user.name,
@@ -60,6 +60,8 @@ export function publicUser(user: { id: string; name: string; email: string; role
     createdAt: typeof user.createdAt === "string" ? user.createdAt : user.createdAt.toISOString(),
     lessonsRemaining: user.lessonsRemaining ?? undefined,
     upcomingLessons: (user.upcomingLessons as StudentAccount["upcomingLessons"]) ?? undefined,
+    referralCode: user.referralCode ?? undefined,
+    referredByCode: user.referredByCode ?? undefined,
   };
 }
 

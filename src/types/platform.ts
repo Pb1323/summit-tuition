@@ -42,6 +42,8 @@ export interface StudentAccount {
   createdAt: string;
   lessonsRemaining?: number;
   upcomingLessons?: { date: string; time: string; note?: string }[];
+  referralCode?: string;
+  referredByCode?: string;
 }
 
 export interface QuestionVisual {

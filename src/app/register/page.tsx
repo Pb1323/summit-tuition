@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Container } from "@/components/ui/container";
 import { Card } from "@/components/ui/card";
 import { AnimatedButton, PremiumBadge, RevealOnScroll } from "@/components/platform/ui";
@@ -10,6 +10,8 @@ import { usePlatform } from "@/context/platform-context";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const ref = searchParams.get("ref") ?? undefined;
   const { register, login } = usePlatform();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -20,7 +22,7 @@ export default function RegisterPage() {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsSubmitting(true);
-    const result = await register({ name, email, password });
+    const result = await register({ name, email, password, ref });
     if (!result.ok) {
       setMessage(result.message);
       setIsSubmitting(false);
@@ -41,6 +43,11 @@ export default function RegisterPage() {
           <PremiumBadge>Create student account</PremiumBadge>
           <h1 className="mt-4 text-3xl font-bold text-navy">Register for online 11+ mocks</h1>
           <p className="mt-2 text-muted">Instant access — sign in straight away with one free English mock, one free Maths mock and one free notes page. Summit Tuition unlocks further mocks and notes individually as you progress.</p>
+          {ref && (
+            <p className="mt-3 rounded-xl bg-gold-light/40 p-3 text-sm text-navy">
+              You were invited by a friend — once you unlock your first mock, they get £5 off.
+            </p>
+          )}
           <form onSubmit={onSubmit} className="mt-8 grid gap-5">
             <div>
               <label className="text-sm font-bold text-navy" htmlFor="name">Student name</label>

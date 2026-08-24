@@ -8,6 +8,8 @@ import { ArrowRight, CheckCircle2, Lock, ShieldCheck, XCircle } from "lucide-rea
 import { cn } from "@/lib/utils";
 import { usePlatform } from "@/context/platform-context";
 import { VisualRenderer } from "@/components/platform/question-visuals";
+import { CheckoutButton } from "@/components/ui/checkout-button";
+import { COMPETITION_MOCK_ID } from "@/data/competition";
 import type { Attempt, MockExam, Passage, Question, Role } from "@/types/platform";
 
 const COMPACT_QUESTION_NAV_THRESHOLD = 15;
@@ -623,6 +625,7 @@ export function QuestionNavigator({
 }
 
 export function MockCard({ mock, attempt, locked }: { mock: MockExam; attempt?: Attempt; locked?: boolean }) {
+  const { currentUser } = usePlatform();
   const answeredCount = attempt ? Object.keys(attempt.answers).filter((key) => attempt.answers[key]).length : 0;
   return (
     <GlowCard className="p-6">
@@ -644,7 +647,25 @@ export function MockCard({ mock, attempt, locked }: { mock: MockExam; attempt?: 
         <div><p className="text-muted">Marks</p><p className="font-bold text-navy">{mock.totalMarks}</p></div>
       </div>
       <div className="mt-6">
-        {locked ? (
+        {locked && mock.id === COMPETITION_MOCK_ID ? (
+          <div className="space-y-3">
+            <div className="rounded-2xl border border-gold/30 bg-gold-light/30 p-3 text-sm text-navy">
+              <strong>Ranked entry.</strong> Unlock the full paper to go on the leaderboard and qualify for a prize.
+            </div>
+            <CheckoutButton
+              checkout={{
+                priceId: "price_competition_entry",
+                mode: "payment",
+                productName: mock.title,
+                productId: mock.id,
+                studentEmail: currentUser?.email,
+                studentName: currentUser?.name,
+              }}
+            >
+              Unlock full paper
+            </CheckoutButton>
+          </div>
+        ) : locked ? (
           <div className="rounded-2xl border border-line bg-cream p-3 text-sm text-muted">
             <strong className="text-navy">Locked.</strong> Admin approval and a manual mock unlock are required before this online paper opens.
           </div>

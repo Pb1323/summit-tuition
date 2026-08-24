@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { BookOpenCheck, ClipboardList, CreditCard, Eye, FilePlus2, Lock, Mail, ShieldCheck, Sparkles, Users } from "lucide-react";
 import { recommendationsForTopics } from "@/lib/assessment";
@@ -52,6 +52,49 @@ function PromoCodeRedeem() {
       </form>
       {status && (
         <p className={`mt-3 text-sm font-semibold ${status.ok ? "text-green-700" : "text-red-600"}`}>{status.message}</p>
+      )}
+    </GlowCard>
+  );
+}
+
+function ReferralCard() {
+  const { currentUser } = usePlatform();
+  const [stats, setStats] = useState<{ referralCode: string | null; qualifyingCount: number; max: number } | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/referrals")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => data && setStats(data));
+  }, []);
+
+  if (!currentUser?.referralCode) return null;
+  const link = `${typeof window !== "undefined" ? window.location.origin : ""}/register?ref=${currentUser.referralCode}`;
+
+  return (
+    <GlowCard className="p-6">
+      <PremiumBadge tone="gold">Refer friends</PremiumBadge>
+      <h2 className="mt-3 text-xl font-bold text-navy">Invite up to 3 friends, save £5 each</h2>
+      <p className="mt-1 text-sm text-muted">
+        Share your link. Once a friend registers and unlocks their first mock, you get £5 off — up to £15 total across 3 friends.
+      </p>
+      <div className="mt-4 flex flex-wrap items-center gap-3">
+        <code className="rounded-lg border border-line bg-cream px-3 py-2 text-sm text-navy">{link}</code>
+        <AnimatedButton
+          type="button"
+          onClick={() => {
+            navigator.clipboard?.writeText(link);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+          }}
+        >
+          {copied ? "Copied" : "Copy link"}
+        </AnimatedButton>
+      </div>
+      {stats && (
+        <p className="mt-3 text-sm font-semibold text-navy">
+          {stats.qualifyingCount} of {stats.max} friends qualified so far
+        </p>
       )}
     </GlowCard>
   );
@@ -115,6 +158,7 @@ export function StudentDashboard() {
           <div className="mt-5 flex flex-wrap gap-3">
             <Link href="/dashboard/settings" className="rounded-full border border-line bg-white px-4 py-2 text-sm font-bold text-navy hover:border-gold">Account settings</Link>
             <Link href="/dashboard/family" className="rounded-full border border-line bg-white px-4 py-2 text-sm font-bold text-navy hover:border-gold">Family / payments</Link>
+            <Link href="/leaderboard" className="rounded-full border border-gold-dark bg-gold-light/30 px-4 py-2 text-sm font-bold text-navy hover:border-gold">Leaderboard</Link>
           </div>
         </GlowCard>
         <GlowCard className="p-8">
@@ -158,8 +202,9 @@ export function StudentDashboard() {
         </GlowCard>
       </section>
 
-      <section>
+      <section className="grid gap-6 md:grid-cols-2">
         <PromoCodeRedeem />
+        <ReferralCard />
       </section>
 
       <section>
