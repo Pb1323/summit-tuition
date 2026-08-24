@@ -1,8 +1,16 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-24 (completed full GCSE topic mocks for Physics, Biology and Chemistry — every real topic across all three subjects now has a practice mock).
+Last updated: 2026-08-24 (fixed a real admin-login bug on the live site, and shipped a first version of the leaderboard competition).
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (2026-08-24 session — fixed admin login bug, shipped leaderboard competition MVP)
+
+- The founder reported logging into the live site and seeing "Signed in, but couldn't load your account" — sometimes it worked, sometimes it didn't, and a hard refresh didn't fix it. Traced this to the admin dashboard trying to download the entire question bank (every question, every answer, for every mock — over 5MB) the instant you log in, before showing you anything. On a slower connection that download can fail partway through, which is exactly what was happening.
+- Fixed properly rather than patching around it: the admin login now loads a small, fast version first (about 10x smaller) so the dashboard appears almost instantly, then quietly finishes loading the full question bank in the background a moment later. Confirmed with real before/after timing against the live database: the old way was 5.5MB and about 1.4 seconds; the new way is 550KB and about 0.6 seconds for the part that actually blocks you logging in. Nothing changed for students — their version was already small.
+- Also finished and shipped the leaderboard competition the founder asked for earlier tonight: a new full-length English paper ("Vanguard") that students pay to enter, with a free 10-question taster anyone can try first, results ranked by score then by how fast they finished, and prizes for the top 3 (gift card, a free month, a free week). Added a referral program alongside it — a student can invite up to 3 friends, and gets £5 off (up to £15 total) once a friend actually registers and unlocks a mock, not just for signing up. Real Stripe payment isn't switched on yet, so entry currently falls back to a WhatsApp message, matching how the rest of the site already handles this.
+- Checked the database directly (read-only, no changes) to confirm mocks were unlocking correctly and nothing was actually broken there — the underlying unlock system was fine the whole time; the real problem was specifically the slow/oversized login.
+- Code compiles cleanly, pushed live. `CLAUDE.md` is still oversized (~170KB) from months of accumulated notes — flagged again, worth a proper cleanup pass when there's time.
 
 ## Done (2026-08-24 session — full GCSE topic mocks for Physics, Biology and Chemistry)
 
