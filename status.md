@@ -1,8 +1,15 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-23 (urgent same-day fix: removed all visible pricing from the site after the founder misquoted a customer — see below).
+Last updated: 2026-08-24 (completed 8th Elite Non-Verbal Reasoning paper 'Gauntlet' with novel rule combinations).
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (2026-08-24 session — 8th Elite Non-Verbal Reasoning paper 'Gauntlet')
+
+- Finished a brand-new Elite Non-Verbal Reasoning mock, `nvr-elite-gauntlet` ("Non-Verbal Reasoning — Full Paper VIII 'Gauntlet'"), the 8th in the Elite NVR series, sitting alongside the existing seven. 50 questions, 50 marks, all 10 visual types covered (5 questions per type).
+- What makes this one different: instead of repeating rule patterns from the earlier Elite papers, this one introduces entirely fresh mechanics stacked together: matrices with mod-4 and mod-3 remainder rules working together, fill patterns driven by whether row-times-column is odd or even, reflections that track a cumulative running total of previous shapes, arrow sequences based on binary numbers and prime factors, and size patterns that bounce back-and-forth while rotation climbs independently underneath. Includes some genuinely tricky "coupled" rules (internal marker shape and position both advance their own cycles at the same time) and fill-family conditionals (rotation amount depends on what kind of texture fill the figure has).
+- Checked everything works: no duplicate question IDs on the platform, all 50 marks add up correctly, quality check passes. Code compiles cleanly.
+- Live in the code now and ready to unlock for students once the database seed runs.
 
 ## Done (2026-08-23 session, urgent — pricing hidden site-wide)
 
