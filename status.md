@@ -1,6 +1,6 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-25 (new Elite VR mock "Crestwood" with 5 novel question types; earlier: new Elite Maths Paper XVI added, fixed admin login, shipped leaderboard competition).
+Last updated: 2026-08-25 (new Elite NVR mock "Vanguard" (9th full paper), new Elite VR mock "Crestwood" with 5 novel question types; earlier: new Elite Maths Paper XVI added, fixed admin login, shipped leaderboard competition).
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
