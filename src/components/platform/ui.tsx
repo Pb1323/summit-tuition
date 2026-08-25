@@ -410,6 +410,123 @@ export function ClozeGapRenderer({
   );
 }
 
+/**
+ * Real GL-style "pick one word from each of two groups" answer (verbal analogies,
+ * opposites, compound-word joining). Reuses the plain string `correctAnswer` field —
+ * no schema change — with a fixed convention: `options` holds exactly 6 entries, the
+ * first 3 belong to the left group and the last 3 to the right group, and the correct
+ * answer is authored as `"<left word>, <right word>"`. `value` is built the same way
+ * from the student's two picks, so the existing single-string equality check in
+ * QuestionRenderer needs no changes at all.
+ */
+export function TwoGroupAnswer({
+  question,
+  value,
+  onChange,
+  review,
+}: {
+  question: Question;
+  value?: string;
+  onChange: (value: string) => void;
+  review?: boolean;
+}) {
+  const allOptions = Array.isArray(question.options) ? question.options : [];
+  const leftOptions = useMemo(() => seededShuffle(allOptions.slice(0, 3), question.id + "-left"), [allOptions, question.id]);
+  const rightOptions = useMemo(() => seededShuffle(allOptions.slice(3, 6), question.id + "-right"), [allOptions, question.id]);
+  const correctParts = String(Array.isArray(question.correctAnswer) ? question.correctAnswer.join(", ") : question.correctAnswer)
+    .split(",")
+    .map((part) => part.trim().toLowerCase());
+  const [leftValue = "", rightValue = ""] = (value ?? ", ").split(",").map((part) => part.trim());
+  const pick = (group: "left" | "right", option: string) => {
+    const next = group === "left" ? `${option}, ${rightValue}` : `${leftValue}, ${option}`;
+    onChange(next);
+  };
+  const group = (label: string, options: string[], side: "left" | "right", current: string) => (
+    <fieldset className="grid gap-2">
+      <legend className="mb-1 text-xs font-black uppercase tracking-[0.1em] text-gold-dark">{label}</legend>
+      {options.map((option) => {
+        const selected = current.toLowerCase() === option.trim().toLowerCase();
+        const isCorrect = correctParts.includes(option.trim().toLowerCase());
+        const showCorrect = review && isCorrect;
+        const showWrong = review && selected && !isCorrect;
+        return (
+          <label key={option} className={cn("flex cursor-pointer items-center gap-3 rounded-2xl border bg-white p-3 text-sm font-semibold transition hover:border-gold", selected && "border-gold bg-gold/10", showCorrect && "border-emerald-300 bg-emerald-50", showWrong && "border-red-300 bg-red-50")}>
+            <input className="sr-only" type="radio" name={`${question.id}-${side}`} value={option} checked={selected} onChange={() => pick(side, option)} disabled={review} />
+            <span className="flex-1">{option}</span>
+            {showCorrect && <CheckCircle2 className="h-4 w-4 text-emerald-700" />}
+            {showWrong && <XCircle className="h-4 w-4 text-red-700" />}
+          </label>
+        );
+      })}
+    </fieldset>
+  );
+  return (
+    <div className="grid gap-4 sm:grid-cols-2">
+      {group("Group 1", leftOptions, "left", leftValue)}
+      {group("Group 2", rightOptions, "right", rightValue)}
+    </div>
+  );
+}
+
+/**
+ * Real GL-style "mark the two that don't belong" answer (odd-two-out). Same
+ * zero-schema-change convention as TwoGroupAnswer: `correctAnswer` is authored as
+ * the two correct words alphabetically sorted and joined `"<a>, <b>"`, and `value`
+ * is built the same way from whichever two checkboxes are selected.
+ */
+export function MarkTwoAnswer({
+  question,
+  value,
+  onChange,
+  review,
+  options,
+}: {
+  question: Question;
+  value?: string;
+  onChange: (value: string) => void;
+  review?: boolean;
+  options: string[];
+}) {
+  const selected = (value ?? "").split(",").map((part) => part.trim()).filter(Boolean);
+  const correctParts = String(Array.isArray(question.correctAnswer) ? question.correctAnswer.join(", ") : question.correctAnswer)
+    .split(",")
+    .map((part) => part.trim().toLowerCase());
+  const toggle = (option: string) => {
+    const already = selected.some((item) => item.toLowerCase() === option.toLowerCase());
+    let next: string[];
+    if (already) {
+      next = selected.filter((item) => item.toLowerCase() !== option.toLowerCase());
+    } else if (selected.length >= 2) {
+      next = [selected[1], option]; // drop the oldest pick so exactly 2 stay selected
+    } else {
+      next = [...selected, option];
+    }
+    onChange([...next].sort((a, b) => a.localeCompare(b)).join(", "));
+  };
+  return (
+    <div>
+      <p className="mb-2 text-xs font-black uppercase tracking-[0.1em] text-gold-dark">Mark the two that don&apos;t belong ({selected.length}/2 selected)</p>
+      <fieldset className="grid gap-3">
+        {options.map((option) => {
+          const isSelected = selected.some((item) => item.toLowerCase() === option.toLowerCase());
+          const isCorrect = correctParts.includes(option.trim().toLowerCase());
+          const showCorrect = review && isCorrect;
+          const showWrong = review && isSelected && !isCorrect;
+          return (
+            <label key={option} className={cn("flex cursor-pointer items-center gap-3 rounded-2xl border bg-white p-4 text-sm font-semibold transition hover:border-gold", isSelected && "border-gold bg-gold/10", showCorrect && "border-emerald-300 bg-emerald-50", showWrong && "border-red-300 bg-red-50")}>
+              <input className="sr-only" type="checkbox" checked={isSelected} onChange={() => toggle(option)} disabled={review} />
+              <span className={cn("flex h-9 w-9 shrink-0 items-center justify-center rounded-md border text-sm font-black", isSelected ? "border-gold bg-gold text-navy" : "border-line bg-cream text-navy", showCorrect && "border-emerald-500 bg-emerald-500 text-white", showWrong && "border-red-500 bg-red-500 text-white")}>{isSelected ? "✓" : ""}</span>
+              <span className="flex-1">{option}</span>
+              {showCorrect && <CheckCircle2 className="h-4 w-4 text-emerald-700" />}
+              {showWrong && <XCircle className="h-4 w-4 text-red-700" />}
+            </label>
+          );
+        })}
+      </fieldset>
+    </div>
+  );
+}
+
 export function QuestionRenderer({
   question,
   value,
@@ -444,11 +561,14 @@ export function QuestionRenderer({
   const hasText = typeof question.text === "string" && question.text.trim().length > 0;
   const rawOptions = useMemo(() => (Array.isArray(question.options) ? question.options : []), [question.options]);
   const isSegmentFormat = question.tags?.includes("segment-format") && rawOptions.length > 0;
-  // Segment-format options map to fixed lettered sentence positions and must stay in order;
-  // everything else gets a per-question shuffle so the correct answer isn't always in the same slot.
+  const isTwoGroupFormat = question.tags?.includes("two-group-format") && rawOptions.length === 6;
+  const isMarkTwoFormat = question.tags?.includes("mark-two-format") && rawOptions.length === 5;
+  // Segment-format and two-group options map to fixed positions (lettered clauses, or a 3/3
+  // left/right split) and must stay in order; everything else gets a per-question shuffle so the
+  // correct answer isn't always in the same slot.
   const options = useMemo(
-    () => (isSegmentFormat ? rawOptions : seededShuffle(rawOptions, shuffleSeed ?? question.id)),
-    [isSegmentFormat, question.id, rawOptions, shuffleSeed]
+    () => (isSegmentFormat || isTwoGroupFormat ? rawOptions : seededShuffle(rawOptions, shuffleSeed ?? question.id)),
+    [isSegmentFormat, isTwoGroupFormat, question.id, rawOptions, shuffleSeed]
   );
   const hasOptions = options.length > 0;
   const isChoiceQuestion = question.questionType === "multiple_choice" || question.questionType === "cloze";
@@ -502,6 +622,10 @@ export function QuestionRenderer({
         <SegmentMistakeAnswer question={question} value={value} onChange={onChange} review={review} isCorrectOption={isCorrectOption} />
       ) : isCloze ? (
         <ClozeGapRenderer question={question} value={value} onChange={onChange} review={review} options={options} />
+      ) : isTwoGroupFormat ? (
+        <TwoGroupAnswer question={question} value={value} onChange={onChange} review={review} />
+      ) : isMarkTwoFormat ? (
+        <MarkTwoAnswer question={question} value={value} onChange={onChange} review={review} options={options} />
       ) : hasOptions ? (
         <fieldset className="grid gap-3">
           <legend className="sr-only">Answer options for {hasText ? question.text : "this question"}</legend>
