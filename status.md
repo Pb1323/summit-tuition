@@ -1,8 +1,12 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-26 (new Elite Maths Paper XVII added; earlier: new Elite NVR mock "Vanguard" (9th full paper), new Elite VR mock "Crestwood" with 5 novel question types, new Elite Maths Paper XVI added, fixed admin login, shipped leaderboard competition).
+Last updated: 2026-08-26 (new Elite VR mock "Solstice" with 5 novel question types, new Elite Maths Paper XVII added; earlier: new Elite NVR mock "Vanguard" (9th full paper), new Elite VR mock "Crestwood" with 5 novel question types, new Elite Maths Paper XVI added, fixed admin login, shipped leaderboard competition).
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (2026-08-26 session — new Elite VR mock 'Solstice' with 5 novel question types)
+
+- Added the Solstice full Elite Verbal Reasoning mock (`vr-solstice-full`), 50 questions/50 marks in 45 minutes, published and ready for students. Built entirely around five question types not used in any other VR mock on the platform: bracket word-building, prefix-for-opposite, category counting, syllable-count matching, and collective nouns. Honestly labelled as original Summit content (non-GL) since these question types don't follow the real exam board's answer formats. Every question was hand-checked for accuracy — bracket-word pairings verified to have exactly one option completing both sides, syllable counts hand-counted. Verified clean via the platform's quality checker.
 
 ## Done (2026-08-26 session — new Elite Maths mock 'Paper XVII')
 
