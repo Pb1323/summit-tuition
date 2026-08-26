@@ -761,7 +761,6 @@ export function MockCard({ mock, attempt, locked }: { mock: MockExam; attempt?: 
             <PremiumBadge tone={mock.difficultyLabel === "Summit Stretch" ? "red" : "navy"}>{mock.difficultyLabel ?? "Standard"}</PremiumBadge>
           </div>
           <h3 className="mt-3 text-xl font-bold text-navy">{mock.title}</h3>
-          <p className="mt-2 text-sm leading-relaxed text-muted">{mock.description}</p>
         </div>
         {locked && <Lock className="h-5 w-5 text-muted" />}
       </div>

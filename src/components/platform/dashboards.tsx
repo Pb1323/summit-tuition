@@ -164,7 +164,7 @@ export function StudentDashboard() {
         <GlowCard className="p-8">
           <PremiumBadge>Next mock</PremiumBadge>
           <h2 className="mt-4 text-2xl font-bold text-navy">{inProgress ? "Resume saved mock" : nextMock?.title ?? "Awaiting unlock"}</h2>
-          <p className="mt-2 text-sm text-muted">{inProgress ? "A draft attempt is saved locally so you can continue from the mock room." : nextMock?.description ?? "Your tutor will unlock the next online mock after approval."}</p>
+          <p className="mt-2 text-sm text-muted">{inProgress ? "A draft attempt is saved locally so you can continue from the mock room." : nextMock ? `${nextMock.subject} · ${nextMock.totalMarks} marks · ${nextMock.durationMinutes} min` : "Your tutor will unlock the next online mock after approval."}</p>
           <div className="mt-4 rounded-2xl border border-gold/25 bg-gold/10 p-4 text-sm font-semibold text-navy">{nextAction}</div>
           {inProgress ? (
             <AnimatedButton href={`/mocks/${inProgress.mockId}`} className="mt-6">Resume mock</AnimatedButton>
