@@ -1,8 +1,12 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-26 (new Elite VR mock "Solstice" with 5 novel question types, new Elite Maths Paper XVII added; earlier: new Elite NVR mock "Vanguard" (9th full paper), new Elite VR mock "Crestwood" with 5 novel question types, new Elite Maths Paper XVI added, fixed admin login, shipped leaderboard competition).
+Last updated: 2026-08-27 (new Elite Maths Paper XVIII added; earlier: new Elite VR mock "Solstice" with 5 novel question types, new Elite Maths Paper XVII added, new Elite NVR mock "Vanguard" (9th full paper), fixed admin login, shipped leaderboard competition).
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (2026-08-27 session — new Elite Maths mock 'Paper XVIII')
+
+- Added the 18th full Elite Maths mock (`maths-elite-18`), 50 questions/50 marks in 45 minutes, published and ready for students. Same quality bar and difficulty level as recent Elite Maths papers (calibrated to ~75% difficulty band). Covers all six core 11+ topics, includes 40% stretch questions, 40% of questions have diagrams across all 11 visual types, verified clean via the platform's quality checker.
 
 ## Done (2026-08-26 session — new Elite VR mock 'Solstice' with 5 novel question types)
 
