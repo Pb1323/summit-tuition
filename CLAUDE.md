@@ -2,7 +2,7 @@
 
 # Summit Tuition Project Context
 
-Last updated: 2026-08-27 (new `nvr-elite-sentinel` 11th Elite NVR paper, new `maths-elite-18` 18th Elite Maths paper — see Recent Feature State).
+Last updated: 2026-08-27 (new `english-gl-31-gambit` 23rd Elite English paper, new `nvr-elite-sentinel` 11th Elite NVR paper, new `maths-elite-18` 18th Elite Maths paper — see Recent Feature State).
 
 ## Sibling Projects In This Repo
 
@@ -71,6 +71,8 @@ Prisma schema: `prisma/schema.prisma`. Models: `User`, `Session`, `MockExam`, `Q
 - Generated draft mocks, question edits, clone/archive, reference-style edits are local/demo admin state only — no durable DB versioning yet.
 
 ## Recent Feature State
+
+- **2026-08-27 session, scheduled routine (new `english-gl-31-gambit` Elite English mock, 23rd full Elite English paper)**: added "English GL-Style Full Paper XXIII — Gambit", `english-gl-31-gambit`, 54 questions/54 marks, 55 minutes, `tier: "Elite"`, `published: true`, question ids `eh2200`–`eh2227`/`esp2200`–`esp2208`/`egr2200`–`egr2208`/`ecl2200`–`ecl2207` (prefix confirmed unused via grep first). New original passage "The Sixty-First Move" (`passage-sixty-first-move`, ~770 words, 6 paragraphs) — the platform's first school-chess-club passage — where a winning player's habit of glancing at a teammate before two decisive moves draws a cheating complaint, resolved once a mistyped digital-clock reset (not signalling) is uncovered. Built per the current (2026-08-22) english-mock-authoring skill/Bug 6: comprehension uses the 6/6/5/4/2/3/2 split (retrieval/inference/vocabulary/grammar/literary/NOT-questions/character-voice), and Section C tests real punctuation mechanics (hyphenation, joint-possession apostrophes, comma splice, semicolon misuse, non-verbatim quotation marks, bracketing commas, its/it's) rather than grammar-agreement, with 1/9 no-mistake. Verified via `npx tsx scripts/verify-mock.mts english-gl-31-gambit`: totalMarks 54/54, section split 28/9/9/8, `evaluateMockQuality` returns `Ready`. `npm run typecheck` clean (no errors in `src/data/platform.ts`). Committed and pushed to main; `npm run db:seed` not run (no DB access in this environment).
 
 - **2026-08-27 session, scheduled routine (new `nvr-elite-sentinel` Elite NVR mock, 11th full Elite NVR paper)**: added "Non-Verbal Reasoning — Full Paper XI", `nvr-elite-sentinel`, 50 questions/50 marks, 55 minutes, `tier: "Elite"`, `published: true`, question ids `nvl1`–`nvl50` (all confirmed unused via grep first). Built entirely from the platform's existing 10 NVR visual types (5 questions per type) with fresh rule-stacking not reused verbatim from the ten existing Elite NVR papers — including self-referential rotations, Fibonacci-style arrow growth, border-to-fill lookup keys, and modulo-7 figure codes. Every similarity question explicitly re-checked against documented Bug 4 (`research/mock-authoring-lessons.md`): correct answer never matches query figure's own appearance, one distractor always matches the query exactly as a trap. Verified via `npx tsx scripts/verify-mock.mts nvr-elite-sentinel`: totalMarks 50/50, 100% visual ratio across all 10 types (5 per type), `evaluateMockQuality` returns `Ready`. `npm run typecheck` clean. Committed and pushed to main; `npm run db:seed` not run.
 
