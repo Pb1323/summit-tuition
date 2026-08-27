@@ -1,11 +1,12 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-27 (new Elite Maths Paper XVIII added; earlier: new Elite VR mock "Solstice" with 5 novel question types, new Elite Maths Paper XVII added, new Elite NVR mock "Vanguard" (9th full paper), fixed admin login, shipped leaderboard competition).
+Last updated: 2026-08-27 (new Elite NVR Paper XI and Elite Maths Paper XVIII added; earlier: new Elite VR mock "Solstice" with 5 novel question types, new Elite Maths Paper XVII added, new Elite NVR mock "Vanguard" (9th full paper), fixed admin login, shipped leaderboard competition).
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
-## Done (2026-08-27 session — new Elite Maths mock 'Paper XVIII')
+## Done (2026-08-27 session — new Elite NVR + Elite Maths mocks)
 
+- Added the 11th full Elite Non-Verbal Reasoning mock (`nvr-elite-sentinel`), 50 questions/50 marks in 55 minutes, published and ready for students. Built using all 10 visual types the platform supports (5 questions per type), with fresh rule combinations not reused from the 10 existing Elite NVR papers. Includes advanced mechanics like self-referential rotations, Fibonacci-style arrow growth, border-to-fill lookup keys, and modulo-7 figure codes. Every similarity question was checked against the known bug where the query figure can give away the answer — all confirmed safe. Verified clean via the platform's quality checker.
 - Added the 18th full Elite Maths mock (`maths-elite-18`), 50 questions/50 marks in 45 minutes, published and ready for students. Same quality bar and difficulty level as recent Elite Maths papers (calibrated to ~75% difficulty band). Covers all six core 11+ topics, includes 40% stretch questions, 40% of questions have diagrams across all 11 visual types, verified clean via the platform's quality checker.
 
 ## Done (2026-08-26 session — new Elite VR mock 'Solstice' with 5 novel question types)
