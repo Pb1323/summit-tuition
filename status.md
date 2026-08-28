@@ -1,8 +1,15 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-28 (new Elite Maths Paper XIX and 12th Elite NVR Paper added; also new Elite English Paper XXIII, new Elite NVR Paper XI and Elite Maths Paper XVIII added; earlier: new Elite VR mock "Solstice" with 5 novel question types, new Elite Maths Paper XVII added, new Elite NVR mock "Vanguard" (9th full paper), fixed admin login, shipped leaderboard competition).
+Last updated: 2026-08-28 (new all-Double-Meanings VR mock "Wavelength" for Lupin, seeded live and unlocked; also new Elite Maths Paper XIX and 12th Elite NVR Paper added; new Elite English Paper XXIII, new Elite NVR Paper XI and Elite Maths Paper XVIII added; earlier: new Elite VR mock "Solstice" with 5 novel question types, new Elite Maths Paper XVII added, new Elite NVR mock "Vanguard" (9th full paper), fixed admin login, shipped leaderboard competition).
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (2026-08-28 session — new "Wavelength" VR mock for Lupin, all Double Meanings questions)
+
+- Lupin's tutor flagged that recent VR mocks had real quality problems: some questions repeated the same answer wording across multiple options (especially short-word questions), and the same vocabulary/synonym pairs kept getting reused question to question — a sign content was being generated a bit carelessly. Asked for a brand-new VR mock built entirely around "double meanings" questions, in the specific bracketed two-word-pair format real 11+ exams actually use (e.g. given (SHORE, EDGE) and (VAULT, TREASURY), the answer is BANK — a word that fits both).
+- Researched how real 11+ papers phrase this question type before writing anything, then built "Verbal Reasoning — Wavelength Full Paper" (`vr-wavelength-full`), 50 questions/50 marks, 45 minutes, published and ready. Every question uses a different target word (bank, watch, ring, pen, pound, and 45 more) — checked against everything already on the platform so nothing repeats. Every question was then re-read specifically hunting for the tutor's complaint pattern, and 5 early drafts were caught and fixed for exactly that reason (an option that was secretly also correct, a word that didn't cleanly fail one side, etc.).
+- One pre-existing bug was found while double-checking, unrelated to this new mock: two older VR mocks on the platform accidentally share overlapping question ID ranges (a leftover from earlier sessions), which the automated checker flagged. Not something this session caused or fixed — flagged in `CLAUDE.md` for a future session to sort out.
+- Seeded live to the database and unlocked directly on Lupin's real account, so it's ready for him to sit now — no further setup needed.
 
 ## Done (2026-08-28 session — new Elite VR, Maths and NVR mocks)
 
