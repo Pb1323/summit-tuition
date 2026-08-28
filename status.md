@@ -1,13 +1,14 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-28 (new Elite Maths Paper XIX added; also new Elite English Paper XXIII, new Elite NVR Paper XI and Elite Maths Paper XVIII added; earlier: new Elite VR mock "Solstice" with 5 novel question types, new Elite Maths Paper XVII added, new Elite NVR mock "Vanguard" (9th full paper), fixed admin login, shipped leaderboard competition).
+Last updated: 2026-08-28 (new Elite Maths Paper XIX and 12th Elite NVR Paper added; also new Elite English Paper XXIII, new Elite NVR Paper XI and Elite Maths Paper XVIII added; earlier: new Elite VR mock "Solstice" with 5 novel question types, new Elite Maths Paper XVII added, new Elite NVR mock "Vanguard" (9th full paper), fixed admin login, shipped leaderboard competition).
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
 
-## Done (2026-08-28 session — new Elite VR and Maths mocks)
+## Done (2026-08-28 session — new Elite VR, Maths and NVR mocks)
 
 - Added the Cascade full Elite Verbal Reasoning mock (`vr-cascade-full`), 50 questions/50 marks in 45 minutes, published and ready for students. Built entirely around five brand-new question types not used in any existing VR mock: charade-style compound-word riddles, portmanteau word blending (e.g. BREAKFAST+LUNCH=BRUNCH), Greek/Latin root-and-affix meaning matching, spoonerism letter-swaps, and contronyms/auto-antonyms. All portmanteaus, spoonerisms and root meanings were hand-verified before writing answers. Verified clean via the platform's quality checker.
 - Added the 19th full Elite Maths mock (`maths-elite-19`), 50 questions/50 marks in 45 minutes, published and ready for students. Same quality bar and difficulty level as recent Elite Maths papers (calibrated to ~75% difficulty band). Covers all six core 11+ topics, includes 44% stretch questions, 40% of questions have diagrams across all 11 visual types, verified clean via the platform's quality checker.
+- Added the 12th full Elite Non-Verbal Reasoning mock (`nvr-elite-vertex`), 50 questions/50 marks in 55 minutes, published and ready for students. Built using all 10 visual types the platform supports (5 questions per type), with original rule-stacking not reused from the 11 existing Elite NVR papers. Every similarity question was checked against the known bug where the query figure can give away the answer — all confirmed safe. Verified clean via the platform's quality checker.
 
 ## Done (2026-08-27 session — new Elite English, NVR and Maths mocks)
 
