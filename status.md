@@ -1,8 +1,12 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-28 (added new Elite English Paper XXIV, completing the overnight mock-generation batch; earlier today: renamed the all-Double-Meanings VR mock to "Intensive Mock 8" and fixed 18 duplicate-option bugs; also new Elite Maths Paper XIX and 12th Elite NVR Paper; new Elite English Paper XXIII, new Elite NVR Paper XI and Elite Maths Paper XVIII; new Elite VR mock "Solstice" with 5 novel question types, new Elite Maths Paper XVII, new Elite NVR mock "Vanguard").
+Last updated: 2026-08-29 (added new Elite Maths Paper XX; earlier 2026-08-28: Elite English Paper XXIV completing overnight batch, renamed VR "Wavelength" to "Intensive Mock 8" and fixed 18 duplicate-option bugs, added Elite Maths Papers XIX, Elite NVR Papers XI–XII, Elite VR mock "Solstice" with 5 novel types).
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (2026-08-29 session — new Elite Maths Paper XX)
+
+- Added the 20th full Elite Maths mock (`maths-elite-20`), 50 questions/50 marks in 45 minutes, published and ready for students. Positioned alongside the existing 19 Elite Maths papers at the same ~75% difficulty level. Covers all six core 11+ topics with deliberately varied real-world framing (sport, recipes/tanks, choirs, surveys) rather than repeated shop-discount scenarios. Includes 46% stretch questions, 34% of questions have diagrams across all 11 visual types, one original number-riddle puzzle tagged challenge. Verified clean via the platform's quality checker.
 
 ## Done (2026-08-28 session — new Elite English Paper XXIV, completes overnight mock batch)
 
