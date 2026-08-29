@@ -1,8 +1,12 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-29 (added new Elite Maths Paper XX; earlier 2026-08-28: Elite English Paper XXIV completing overnight batch, renamed VR "Wavelength" to "Intensive Mock 8" and fixed 18 duplicate-option bugs, added Elite Maths Papers XIX, Elite NVR Papers XI–XII, Elite VR mock "Solstice" with 5 novel types).
+Last updated: 2026-08-29 (added new Elite NVR Paper XIII completing overnight batch; earlier same day: Elite Maths Paper XX, Elite VR "Zephyr" with 5 novel types).
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (2026-08-29 session — new Elite NVR Paper XIII, completes Overnight Mocks v2 batch)
+
+- Added the 13th full Elite Non-Verbal Reasoning mock (`nvr-elite-lattice`), 50 questions/50 marks in 55 minutes, published and ready for students. Built using all 10 visual types the platform supports (5 questions per type), with original rule-stacking not reused from the 12 existing Elite NVR papers. Includes advanced mechanics like column-fixed sides with row-fixed rotation and diagonal fill, weighted arrow counts, and self-referential rotation formulas. Every similarity question was checked against the known bug where the query figure can give away the answer — all confirmed safe. Verified clean via the platform's quality checker. **This completes the Overnight Mocks v2 batch** (ran overnight from 2026-08-22 through 08-29): batch produced 6 new English papers, 3 new Maths papers, 3 new NVR papers, and 3 new VR mocks (15 total new mocks, ~750 questions).
 
 ## Done (2026-08-29 session — new Elite Maths Paper XX)
 
