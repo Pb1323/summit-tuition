@@ -25,7 +25,16 @@ export function MockRoomShell({ mockId, mode = "student" }: MockRoomShellProps) 
   const mock = mocks.find((item) => item.id === mockId);
   const existing = attempts.find((attempt) => attempt.studentId === currentUser?.id && attempt.mockId === mockId && attempt.status !== "in_progress");
   const draft = attempts.find((attempt) => attempt.studentId === currentUser?.id && attempt.mockId === mockId && attempt.status === "in_progress");
-  const rawQuestions = useMemo(() => questionBank.filter((question) => mock?.questionIds.includes(question.id)), [mock, questionBank]);
+  // Preserve the exact authored order from mock.questionIds — don't rely on questionBank's own
+  // incidental order (locally that's file-definition order, but the production bootstrap loads
+  // questions via `prisma.question.findMany()` with no `orderBy`, so Postgres doesn't guarantee
+  // any particular row order there; a plain .filter() on questionBank silently inherited whatever
+  // order the DB happened to return instead of the mock's intended question sequence).
+  const questionsById = useMemo(() => new Map(questionBank.map((question) => [question.id, question])), [questionBank]);
+  const rawQuestions = useMemo(
+    () => (mock?.questionIds ?? []).map((id) => questionsById.get(id)).filter((question): question is Question => Boolean(question)),
+    [mock, questionsById]
+  );
   // English mocks are re-ordered into GL's real fixed section order (comprehension, spelling,
   // punctuation, cloze) regardless of the order questions happen to sit in questionIds/the bank —
   // this is what makes the section grouping/interstitials below meaningful. Non-English mocks and

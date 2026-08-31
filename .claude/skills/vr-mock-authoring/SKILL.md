@@ -80,3 +80,34 @@ npx tsx scripts/verify-mock.mts your-new-mock-id   # bank-wide dup ids, answers 
 npm.cmd run typecheck
 npm run db:seed   # idempotent catalog upsert — pushing platform.ts alone does NOT make it live; production reads Postgres, not the static file. Safe to re-run, do this once reviewed.
 ```
+
+## Deep ambiguity/integrity checklist (run on every new VR mock, not just spot-checks)
+
+**2026-08-31 finding**: a first-pass check (types/order/counts, answers resolve, no dup options, cross-question repetition, answer-position spread) is not enough — running the sharper checklist below against `vr-intensive-mock-9` caught 2 real bugs the first pass missed entirely: a Move-a-Letter question where a *listed wrong* distractor letter also produced a genuine second valid solution via an obscure-but-real word (false-correct, worse than an unlisted alternate answer), and a Word-Codes cipher block whose worked example disclosed only 5 of the ~17 letter-mappings actually needed to solve the follow-on questions — genuinely unsolvable as written despite passing every mechanical check. **Treat this checklist as the real bar, not the summary list above.**
+
+Re-derive everything from scratch — don't just re-read your own markScheme/explanation and assume it's right, and don't check only the intended answer, check whether any *other* option also resolves.
+
+- **Analogies**: could two options each complete a valid-but-different relationship (category vs. function)? Is the stem pair's relationship looser/vaguer than the answer's, letting a defensible alternate pairing exist?
+- **Number sequences**: does the rule technically fit 2+ plausible next terms from only the shown terms (under-constrained)? Re-derive the rule from scratch, don't just confirm the intended one works.
+- **Logic puzzles**: read the clues in given order — does an early clue reference something only defined later, reading as contradictory on first pass? Re-enumerate every valid arrangement from scratch — is the "must be true" answer actually only "could be true"?
+- **Letter-value algebra**: does the question restate its own A-E values explicitly, or silently rely on the instructions' demo values (a shifted/reversed value that isn't restated will get answered against the demo's rule by default)? Recompute independently — is `correctAnswer` a typo of the true value?
+- **Opposites**: is there a second genuine antonym at a different strength/register in either bracket (e.g. correct pair is sad/happy but "joyful" also sits there)? Does the target word have multiple senses (light = weight vs brightness) the stem doesn't disambiguate?
+- **Letter sequences**: does the sequence rely on monospace-only visual alignment (skip-pattern spacing) that breaks in a proportional font? Does it wrap past Z, and if so is that clearly intentional?
+- **Word bridges**: re-derive from scratch — does more than one word bridge both sides? Does the bridge only work under one sense of an ambiguous word?
+- **Hidden words**: re-scan the ENTIRE sentence at every possible word-boundary split (not just the intended one) for any other accidental hidden word, including any that overlaps distractor vocabulary. Does the hidden word straddle punctuation ambiguously?
+- **Odd-one-out**: are the "odd two" odd for two different valid reasons, or is a third option also arguably odd by an unintended rule? Is the shared category among the "in" group broad enough that a different 3-word grouping is also defensible?
+- **Move-a-letter**: for every listed wrong-answer letter, check whether removing it *also* produces a valid real word pairing (obscure dictionary words count — this is exactly the bug class that slipped through once already). Confirm the task is genuinely "move one letter," not secretly "move and reorder."
+- **Word codes / ciphers**: does the worked example disclose enough letter-mappings to actually solve every follow-on question, or does the answer key quietly assume mappings never shown to the student? Does every code's length exactly match its word's length?
+- **Number equations**: is there order-of-operations ambiguity not resolved by explicit brackets? Could a mistyped operator (+ vs ×) still produce a plausible-looking wrong answer among the options?
+- **Shared-letter (double-pair)**: re-check all 26 letters against all 4 word-formations per question — is more than one letter genuinely valid? (A near-miss that's eliminated by the *second* pair is fine; a near-miss that survives both pairs is not.)
+- **Word building**: check ALL cross-combinations between the two groups (not just the intended pair) — does any other combination also spell a real word?
+- **Number-code deduction**: re-derive the full cipher from only the given codes — is it uniquely solvable, or does another digit assignment also satisfy every given constraint?
+
+**Cross-cutting, all questions:**
+- *Rendering*: smart quotes/em-dashes/symbols pasted correctly? No literal markdown/HTML leftovers (`**bold**`, `&amp;`)? Nothing depends on monospace alignment?
+- *Answer-key integrity*: script-check every `correctAnswer` is an exact string match (case/spacing/punctuation) to its own `options` entry — a silent mismatch means correct clicks register as wrong. Confirm every `options` element is a `string`, never a `number`.
+- *Cross-question consistency*: same-block questions phrase instructions the same way; no theme/example word/answer word reused across 2+ questions anywhere in the mock.
+- *Structural*: no numbering gaps/skips/dupes; no stray reference to a diagram/passage that isn't actually a field on the question.
+- *Answer-option hygiene*: no trailing spaces/stray characters in any option; no distractor so thematically mismatched it's eliminable without solving; correct answers aren't clustered on one option position (moot if `seededShuffle` still governs render order — confirm no hardcoded order path was introduced).
+
+If ANY item fails, fix it and re-run the FULL checklist again, not just the failed item — a fix can misalign something else (e.g. editing a hidden-word sentence can introduce a new accidental hidden word).
