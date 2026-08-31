@@ -1,8 +1,13 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-29 (added new Elite NVR Paper XIII completing overnight batch; earlier same day: Elite Maths Paper XX, Elite VR "Zephyr" with 5 novel types).
+Last updated: 2026-08-31 (added 4 new GCSE topic mocks); earlier same day: hardened "Intensive Mock 9" difficulty; earlier 2026-08-29: added new Elite NVR Paper XIII completing overnight batch; earlier same day: Elite Maths Paper XX, Elite VR "Zephyr" with 5 novel types).
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (2026-08-31 session — 4 new GCSE topic mocks + hardened Intensive Mock 9)
+
+- Added 4 new GCSE topic mocks: **GCSE Biology — Cell Division & Stem Cells** (40 questions/94 marks, covers cell cycle, mitosis mechanics, stem cells and ethics), **GCSE Physics — Magnetism & Electromagnetism II** (40 questions/100 marks, covers magnets, motors, generators, transformers, National Grid), **GCSE Chemistry — Bonding, Structure & Properties II** (40 questions/95 marks, covers ionic/covalent/metallic bonding, giant structures, nanoparticles), and **GCSE Chemistry — Atomic Structure & Periodic Table II** (40 questions/93 marks, covers atoms, isotopes, atomic model history, Group reactivity trends). All 160 questions hand-marked short-answer format following the established GCSE topic-mock convention, published and ready for students.
+- Also reviewed "Verbal Reasoning — Intensive Mock 9" and swapped out 20 of its 80 questions (25%) to increase challenge for stronger students. Replaced 2 standard-difficulty questions per block across 10 of 13 question-type blocks, upgrading their difficulty tags from `standard` to `stretch`. Every replaced question was independently checked for correctness before committing. Block structure, question count, scoring, and timing all remain unchanged — only the difficulty level of selected questions shifted.
 
 ## Done (2026-08-29 session — new Elite NVR Paper XIII, completes Overnight Mocks v2 batch)
 
