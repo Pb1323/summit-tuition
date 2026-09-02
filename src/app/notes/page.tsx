@@ -1,6 +1,6 @@
 "use client";
 
-import { Calculator, BookText, Brain, ShapesIcon } from "lucide-react";
+import { Calculator, BookText, Brain, ShapesIcon, FlaskConical } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { RequireAuth, GlowCard, PremiumBadge, RevealOnScroll } from "@/components/platform/ui";
 import Link from "next/link";
@@ -32,6 +32,13 @@ const SUBJECTS = [
     name: "Non-Verbal Reasoning",
     icon: ShapesIcon,
     description: "Odd one out, series, analogies, rotation and reflection — explained visually, figure by figure.",
+    available: true,
+  },
+  {
+    slug: "gcse-science",
+    name: "GCSE Science",
+    icon: FlaskConical,
+    description: "Biology, Chemistry and Physics — the full AQA Triple Science specification, topic by topic.",
     available: true,
   },
 ];
