@@ -1,8 +1,12 @@
 # Summit Tuition — Status (Plain English)
 
-Last updated: 2026-08-31 (added 4 new GCSE topic mocks); earlier same day: hardened "Intensive Mock 9" difficulty; earlier 2026-08-29: added new Elite NVR Paper XIII completing overnight batch; earlier same day: Elite Maths Paper XX, Elite VR "Zephyr" with 5 novel types).
+Last updated: 2026-09-02 (added a new Verbal Reasoning practice paper, "Intensive Mock 11" — written and saved, but not yet live for students); earlier 2026-08-31: added 4 new GCSE topic mocks; earlier same day: hardened "Intensive Mock 9" difficulty; earlier 2026-08-29: added new Elite NVR Paper XIII completing overnight batch; earlier same day: Elite Maths Paper XX, Elite VR "Zephyr" with 5 novel types).
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
+
+## Done (2026-09-02 session — new Verbal Reasoning practice paper, "Intensive Mock 11")
+
+- Added a new 80-question Verbal Reasoning practice paper ("Intensive Mock 11"), matching the same structure and question types as the two earlier "Intensive Mock" papers (9 and 10). All questions are brand new content, double-checked for correct answers and for not repeating anything already used elsewhere on the platform. **This one is written and saved to the project but is not yet switched on for students** — the automated overnight process that normally makes new papers live didn't have the database connection it needed this time, so a future session still needs to publish it and turn it on for the current test student before it can actually be used.
 
 ## Done (2026-08-31 session — 4 new GCSE topic mocks + hardened Intensive Mock 9)
 
