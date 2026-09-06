@@ -64,3 +64,8 @@ research/gl-papers/*.pdf
 /.codex/
 /.impeccable/
 /.claude/skills/impeccable/
+
+# design-sync tool caches/build bundles - generated, not source
+/.design-sync/
+/.ds-sync/
+/ds-bundle/

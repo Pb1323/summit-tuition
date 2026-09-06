@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { ATTEMPTS, MOCKS } from "@/data/platform";
+import { ATTEMPTS, AUTO_RELEASE_REPORT_MOCK_IDS, MOCKS } from "@/data/platform";
 import { analyseAttempt, scoreAnswers, weakTopicsForAttempt } from "@/lib/assessment";
 import { getCurrentUser } from "@/lib/server/auth";
 import { isDatabaseConfigured, prisma } from "@/lib/server/db";
@@ -95,6 +95,7 @@ export async function POST(request: Request) {
   const score = scoreAnswers(dtoMock, answers, questionBank);
   const weakTopics = weakTopicsForAttempt(dtoMock, answers, questionBank);
   const analysis = analyseAttempt(dtoMock, answers, questionBank);
+  const autoRelease = AUTO_RELEASE_REPORT_MOCK_IDS.includes(mockId);
   const attempt = await prisma.attempt.create({
     data: {
       studentId: currentUser.id,
@@ -105,7 +106,8 @@ export async function POST(request: Request) {
       maxScore: score.maxScore,
       submittedAt: new Date(),
       timeSpentSeconds,
-      status: "submitted",
+      status: autoRelease ? "report_released" : "submitted",
+      reportReady: autoRelease,
       weakTopics,
       errorPatterns: Object.fromEntries(analysis.weakTopics.flatMap((topic) => topic.questionIds.map((id) => [id, topic.pattern]))),
     },
