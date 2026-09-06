@@ -2,6 +2,14 @@
 
 # Summit Tuition Project Context
 
+## ⚠ Status (2026-09-06): being wound down for sale, not actively developed
+Founder's primary aim is now **selling the platform/content**, not building on it further. Most
+students have left — only Lupin remains active. Default to leaving the platform as-is: don't
+propose new mocks, unlocks, or features unless explicitly asked. All previously-scheduled
+overnight mock-generation cloud routines were checked (`RemoteTrigger`) and found already
+one-off/disabled — nothing recurring needs cancelling. See `[[project-selling-summit-tuition]]`
+memory for the sale effort itself.
+
 Last updated: 2026-09-06 (root-caused + fixed the admin mock-unlock checkbox display bug, added GCSE Science notes diagrams/vertical shorts template/onboarding-mock auto-release — see Recent Feature State); 2026-09-02 (added `vr-intensive-mock-11`, an 80-question VR paper replicating `vr-intensive-mock-9`/`-10`'s 15-block EBMC Paper 3 structure, question ids `vrj1`-`vrj80`, third distinct Word Codes cipher mechanic (reverse-alphabet/Atbash, full mapping table disclosed every question); committed and pushed to main, but **not seeded to the live DB and not unlocked for Lupin** — this cloud session had no `DATABASE_URL`/`node_modules`, unlike the routine that queued it — see Recent Feature State for what a follow-up session still needs to do); 2026-09-01 (added `vr-intensive-mock-10`, an 80-question VR paper replicating `vr-intensive-mock-9`'s 15-block EBMC Paper 3 structure, question ids `vri1`-`vri80`; seeded and unlocked for Lupin — see Recent Feature State); 2026-08-31 (added 4 new hand-authored GCSE mocks — `gcse-biology-cell-division-mitosis`, `gcse-physics-magnetism-fields`, `gcse-chemistry-bonding-structure-2`, `gcse-chemistry-atomic-structure-2` — 160 questions total; earlier same day: hardened 25% of `vr-intensive-mock-9` to stretch difficulty; 2026-08-29: added `nvr-elite-lattice` 13th Elite NVR mock completing Overnight Mocks v2 batch; earlier same day: `vr-zephyr-full` Elite VR mock with 5 novel question types, and `maths-elite-20` 20th Elite Maths paper — see Recent Feature State).
 
 ## Sibling Projects In This Repo
