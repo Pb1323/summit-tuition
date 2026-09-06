@@ -174,12 +174,24 @@ function fetchFullQuestionsInBackground() {
     });
 }
 
+// Guards against out-of-order responses: if two admin actions each trigger their own
+// refreshFromServer() in quick succession (e.g. toggling two mock-unlock checkboxes
+// back to back), the GET for the *first* action can resolve after the GET for the
+// *second* one and clobber its fresher state with a stale snapshot — the checkbox
+// for the second toggle would silently revert even though its DB write succeeded.
+// Each call captures the sequence number current when IT started; a response is only
+// applied if no newer refresh has been issued since, so a stale response is discarded
+// rather than allowed to overwrite newer data regardless of resolution order.
+let refreshSeq = 0;
+
 async function refreshFromServer(): Promise<boolean> {
   if (typeof window === "undefined") return false;
+  const mySeq = ++refreshSeq;
   try {
     const response = await fetch("/api/platform/bootstrap", { credentials: "include", cache: "no-store" });
     if (!response.ok) return false;
     const data = (await response.json()) as PlatformState & { currentUser: StudentAccount | null; mode?: "demo"; questionsIncluded?: boolean };
+    if (mySeq !== refreshSeq) return true; // A newer refresh has since been issued — this response is stale, don't apply it.
     if (data.mode === "demo") return true; // No database configured: the server has no authoritative state beyond the static seed, so keep local demo mutations intact instead of clobbering them.
     memoryState = {
       users: data.users,
