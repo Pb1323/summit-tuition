@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Poem Comprehension — Practice Paper</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root { --ink:#000; --rule:#000; --muted:#333; }
+  * { box-sizing: border-box; }
+  body { font-family: 'Times New Roman', Times, serif; color: var(--ink); max-width: 780px; margin: 0 auto; padding: 30px 34px 60px; background: #fff; font-size: 14px; }
+  .top-boxes { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .top-boxes .box { border: 1.5px solid #000; padding: 4px 10px; font-size: 11px; }
+  header { text-align: center; margin: 10px 0 16px; }
+  header .exam-board { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; }
+  header h1 { font-size: 22px; margin: 6px 0 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+  header .subtitle { font-size: 13px; font-style: italic; }
+  .divider { border: none; border-top: 2px solid #000; margin: 10px 0 14px; }
+  .instructions { border: 1.5px solid #000; padding: 12px 16px; font-size: 12.5px; margin-bottom: 20px; }
+  .instructions p { margin: 0 0 6px; }
+  .instructions ul { margin: 6px 0 0; padding-left: 18px; }
+  .name-fields { display: flex; gap: 24px; margin-bottom: 18px; font-size: 12.5px; }
+  .name-fields .f { flex: 1; border-bottom: 1px solid #000; padding-bottom: 3px; }
+
+  .poem-box { border: 1.5px solid #000; padding: 14px 20px; margin-bottom: 14px; background: #fafafa; }
+  .poem-box h2 { font-size: 16px; text-align: center; margin: 0 0 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .poem-box .stanza { margin-bottom: 10px; }
+  .poem-box .stanza p { margin: 0; line-height: 1.5; }
+  .poem-box .lineno { color: #888; font-size: 10px; font-family: Arial, sans-serif; float: right; }
+
+  .q { display: flex; gap: 10px; margin-bottom: 16px; page-break-inside: avoid; }
+  .q .n { font-weight: bold; min-width: 26px; }
+  .q .topic-tag { display:inline-block; font-family: Arial, sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; background:#eee; border:1px solid #999; padding:1px 7px; border-radius: 8px; margin-left: 8px; }
+  .q .marks { float: right; font-size: 11px; }
+  .q .ans-box { border: 1px solid #000; min-height: 46px; margin-top: 6px; }
+
+  .footer-official { display: flex; justify-content: space-between; font-size: 10.5px; border-top: 1px solid #000; padding-top: 6px; margin-top: 20px; }
+  .page-break { page-break-before: always; }
+  .answer-key { background: #f2f2f2; border: 1px dashed #666; padding: 10px 16px; font-size: 12px; margin-top: 6px; }
+  .answer-key h3 { font-size: 13px; margin: 0 0 6px; }
+  @media print { body { padding: 16px; } .poem-box, .q { break-inside: avoid; } }
+</style>
+</head>
+<body>
+
+<div class="top-boxes">
+  <div class="box">Total marks: ___ / 60</div>
+  <div class="box">Poem Comprehension — 4 poems, 5 questions each</div>
+</div>
+
+<header>
+  <div class="exam-board">Summit Tuition Assessment</div>
+  <h1>Poem Comprehension Practice Paper</h1>
+  <div class="subtitle">GL-style / QE-style — Difficult Inference Questions</div>
+</header>
+<hr class="divider">
+
+<div class="instructions">
+  <p><strong>Instructions to candidates</strong></p>
+  <ul>
+    <li>Read each poem carefully, twice, before answering its questions.</li>
+    <li>Answer every question in full sentences using evidence from the poem.</li>
+    <li>Use the P.E.E.L. method (Point, Evidence, Explain, Link) from your notes for every answer.</li>
+    <li>Marks are shown in square brackets after each question.</li>
+  </ul>
+</div>
+
+<div class="name-fields">
+  <div class="f">Candidate name</div>
+  <div class="f">Date</div>
+  <div class="f">Time started / finished</div>
+</div>
+
+<!-- POEM 1 -->
+<div class="poem-box">
+<h2>Poem 1: The Old Boathouse</h2>
+<div class="stanza">
+<p>The boathouse leans, half-swallowed by the reeds,<br>
+its timber ribs still counting out the tide.<br>
+No oar has stirred these waters in an age —<br>
+the lake keeps every secret it can hide.</p>
+</div>
+<div class="stanza">
+<p>My grandfather once rowed here, straight and sure,<br>
+his hands like rope, his voice a low, warm drum.<br>
+Now only rust remembers where he stood,<br>
+and I stand where his silence has become.</p>
+</div>
+<div class="stanza">
+<p>I press my palm against the greying wood<br>
+and feel, beneath the damp, a stubborn heat —<br>
+as though the boathouse holds one final breath<br>
+it will not, cannot, let itself complete.</p>
+</div>
+<div class="stanza">
+<p>I do not cry. I did not know him long.<br>
+But something in the hinge's rusted moan<br>
+insists that grief can live in borrowed rooms,<br>
+in objects we've inherited, not grown.</p>
+</div>
+</div>
+
+<div class="q"><div class="n">1.<span class="topic-tag">Word choice</span></div><div style="flex:1;"><span class="marks">[3]</span>What does the word "counting" suggest about the boathouse's relationship with time in the first stanza? <div class="ans-box"></div></div></div>
+<div class="q"><div class="n">2.<span class="topic-tag">Tone</span></div><div style="flex:1;"><span class="marks">[3]</span>How does the poet's tone shift between the second stanza and the final stanza? Use evidence from both. <div class="ans-box"></div></div></div>
+<div class="q"><div class="n">3.<span class="topic-tag">Structure</span></div><div style="flex:1;"><span class="marks">[3]</span>Why might the poet have chosen to end the poem with the phrase "not grown" rather than ending on the image of the grandfather? <div class="ans-box"></div></div></div>
+<div class="q"><div class="n">4.<span class="topic-tag">Speaker's feelings</span></div><div style="flex:1;"><span class="marks">[3]</span>The speaker says "I do not cry. I did not know him long." What does this reveal about how the speaker feels about their own grief? <div class="ans-box"></div></div></div>
+<div class="q"><div class="n">5.<span class="topic-tag">Theme</span></div><div style="flex:1;"><span class="marks">[3]</span>What is this poem suggesting about the way we inherit emotions or memories from people we barely knew? <div class="ans-box"></div></div></div>
+
+<div class="page-break"></div>
+
+<!-- POEM 2 -->
+<div class="poem-box">
+<h2>Poem 2: Storm Warning</h2>
+<div class="stanza">
+<p>The sky has turned the colour of a bruise.<br>
+Gulls scatter inland, screaming as they flee.<br>
+Mother pulls the shutters tight and says,<br>
+"It's only weather. Nothing else. You'll see."</p>
+</div>
+<div class="stanza">
+<p>But I have watched her knuckles, white and small,<br>
+gripping the latch as though it might give way.<br>
+I've counted seven storms in seven years —<br>
+none made her hands forget how to obey.</p>
+</div>
+<div class="stanza">
+<p>The wind arrives. It does not knock. It takes<br>
+the washing line, the fence, the garden chair.<br>
+It hurls itself against the trembling glass<br>
+like something furious, and unaware.</p>
+</div>
+<div class="stanza">
+<p>And when it's done — when morning shows its face,<br>
+pale and apologetic, softly lit —<br>
+we step outside to see what we have lost,<br>
+and Mother laughs, too quickly, over it.</p>
+</div>
+</div>
+
+<div class="q"><div class="n">1.<span class="topic-tag">Word choice</span></div><div style="flex:1;"><span class="marks">[3]</span>Explain the effect of the word "bruise" in the first line. Why is this an unusual and effective word choice? <div class="ans-box"></div></div></div>
+<div class="q"><div class="n">2.<span class="topic-tag">Structure</span></div><div style="flex:1;"><span class="marks">[3]</span>Why does the poet use short, blunt sentences in the line "It does not knock. It takes"? <div class="ans-box"></div></div></div>
+<div class="q"><div class="n">3.<span class="topic-tag">Inference</span></div><div style="flex:1;"><span class="marks">[3]</span>What does the detail about Mother's "white and small" knuckles suggest that her words "It's only weather" do not? <div class="ans-box"></div></div></div>
+<div class="q"><div class="n">4.<span class="topic-tag">Character</span></div><div style="flex:1;"><span class="marks">[3]</span>Why do you think Mother "laughs, too quickly" at the end of the poem? What does this suggest about her true feelings? <div class="ans-box"></div></div></div>
+<div class="q"><div class="n">5.<span class="topic-tag">Theme</span></div><div style="flex:1;"><span class="marks">[3]</span>What overall point might this poem be making about how adults try to protect children from fear? <div class="ans-box"></div></div></div>
+
+<div class="page-break"></div>
+
+<!-- POEM 3 -->
+<div class="poem-box">
+<h2>Poem 3: The Clockmender's Window</h2>
+<div class="stanza">
+<p>Behind the glass, a hundred faces wait,<br>
+each frozen at a different hour of loss —<br>
+ten past, half two, the stubborn twenty-five<br>
+that never learned to let its minute pass.</p>
+</div>
+<div class="stanza">
+<p>The clockmender bends low with steady hands,<br>
+a jeweller's eye pressed tight against the springs.<br>
+He does not mend for money anymore.<br>
+He mends because a mended clock still sings.</p>
+</div>
+<div class="stanza">
+<p>They say his wife once loved this very sound —<br>
+the tick that filled the silence of their house.<br>
+Since she's been gone, he's fixed twelve hundred clocks,<br>
+as if he still might wind her footsteps out.</p>
+</div>
+<div class="stanza">
+<p>Tonight, one clock strikes true. Then, one by one,<br>
+the others catch its rhythm, hour by hour,<br>
+until the shop is loud with borrowed time —<br>
+and something in his shoulders loses power.</p>
+</div>
+</div>
+
+<div class="q"><div class="n">1.<span class="topic-tag">Word choice</span></div><div style="flex:1;"><span class="marks">[3]</span>What does the phrase "frozen at a different hour of loss" suggest about the clocks in the shop window? <div class="ans-box"></div></div></div>
+<div class="q"><div class="n">2.<span class="topic-tag">Symbolism</span></div><div style="flex:1;"><span class="marks">[3]</span>What might the stopped clocks symbolise in relation to the clockmender's own life? <div class="ans-box"></div></div></div>
+<div class="q"><div class="n">3.<span class="topic-tag">Structure</span></div><div style="flex:1;"><span class="marks">[3]</span>Why is it significant that the poem ends with the clocks finally striking "true" together, rather than earlier in the poem? <div class="ans-box"></div></div></div>
+<div class="q"><div class="n">4.<span class="topic-tag">Inference</span></div><div style="flex:1;"><span class="marks">[3]</span>What does the final line, "something in his shoulders loses power," suggest is happening to the clockmender emotionally? <div class="ans-box"></div></div></div>
+<div class="q"><div class="n">5.<span class="topic-tag">Theme</span></div><div style="flex:1;"><span class="marks">[3]</span>What does this poem suggest about how people cope with grief through routine or repeated actions? <div class="ans-box"></div></div></div>
+
+<div class="page-break"></div>
+
+<!-- POEM 4 -->
+<div class="poem-box">
+<h2>Poem 4: Leaving Number Nine</h2>
+<div class="stanza">
+<p>The boxes swallow rooms that used to hold<br>
+the shape of us — our voices, worn-in chairs.<br>
+The hallway echoes strangely, wide and bare,<br>
+as though it, too, is startled that it's spared.</p>
+</div>
+<div class="stanza">
+<p>I trace the pencil marks along the frame<br>
+where every August measured how I'd grown.<br>
+Someone will paint them over, I suppose —<br>
+a stranger's height where mine has always shown.</p>
+</div>
+<div class="stanza">
+<p>Dad says, "New house, new start," and tries to smile,<br>
+but folds the last box shut a beat too slow.<br>
+I've learned that grown-ups hide their leaving, too,<br>
+inside the boxes marked "don't need — let go."</p>
+</div>
+<div class="stanza">
+<p>The van pulls off. I do not turn to look.<br>
+Some rooms you carry better in your mind<br>
+than through a rear-view mirror, growing small —<br>
+number nine, unshrinking, left behind.</p>
+</div>
+</div>
+
+<div class="q"><div class="n">1.<span class="topic-tag">Word choice</span></div><div style="flex:1;"><span class="marks">[3]</span>What effect does the word "swallow" create in the opening line, and what does it suggest about the speaker's feelings towards moving? <div class="ans-box"></div></div></div>
+<div class="q"><div class="n">2.<span class="topic-tag">Inference</span></div><div style="flex:1;"><span class="marks">[3]</span>What does the detail of Dad folding "the last box shut a beat too slow" reveal about his true feelings, despite what he says? <div class="ans-box"></div></div></div>
+<div class="q"><div class="n">3.<span class="topic-tag">Structure</span></div><div style="flex:1;"><span class="marks">[3]</span>Why do you think the poet chose to end the poem with the paradox "unshrinking, left behind" rather than a simpler, calmer image? <div class="ans-box"></div></div></div>
+<div class="q"><div class="n">4.<span class="topic-tag">Speaker's feelings</span></div><div style="flex:1;"><span class="marks">[3]</span>Why might the speaker choose not to "turn to look" as the van pulls away? What does this decision suggest about how they are coping? <div class="ans-box"></div></div></div>
+<div class="q"><div class="n">5.<span class="topic-tag">Theme</span></div><div style="flex:1;"><span class="marks">[3]</span>What is this poem suggesting about the difference between how children and adults each cope with a big change like moving house? <div class="ans-box"></div></div></div>
+
+<div class="footer-official">
+  <span>Summit Tuition — Poem Comprehension Practice Paper</span>
+  <span>End of questions</span>
+</div>
+
+<div class="page-break"></div>
+
+<div class="answer-key">
+<h3>Tutor Answer Guide — Model Points (not a full mark scheme, use to guide marking)</h3>
+<p><strong>Poem 1 — The Old Boathouse:</strong> Q1: "counting" personifies the boathouse as patiently, almost obsessively tracking time passing, suggesting endurance/waiting. Q2: shifts from warm nostalgic memory (S2: "warm drum") to quiet unresolved grief (S4: "borrowed rooms"). Q3: ending on "not grown" universalises the idea — grief isn't only for what we experienced ourselves, it can be inherited, making the theme bigger than just this grandfather. Q4: shows the speaker feels their grief is somehow unearned or confusing, since they didn't know him well, yet it's still real. Q5: objects/places can carry emotional weight independent of direct memory — we can grieve secondhand.</p>
+<p><strong>Poem 2 — Storm Warning:</strong> Q1: "bruise" suggests injury, tenderness, and a sense of the sky being wounded/threatening — colour + pain associations. Q2: short blunt sentences mimic the storm's sudden, violent, uncontrollable arrival — mirrors how fear feels intrusive. Q3: her body language contradicts her calm words — a classic show-not-tell of hidden fear. Q4: she is masking fear/relief with forced humour to protect the child. Q5: adults often minimise danger verbally while their behaviour reveals real anxiety, showing protection can be imperfect/transparent.</p>
+<p><strong>Poem 3 — The Clockmender's Window:</strong> Q1: suggests each clock represents a frozen, painful moment in time — stuck rather than moving forward, as if loss stops time. Q2: the clocks symbolise his inability to "move on" from his wife's death — literally and emotionally stopped. Q3: the ending shows resolution/release — repairing time finally "working" mirrors an emotional turning point. Q4: suggests a release of built-up tension/grief — relief or a quiet emotional breakthrough. Q5: repetitive, purposeful routines can be a way of processing grief without confronting it directly.</p>
+<p><strong>Poem 4 — Leaving Number Nine:</strong> Q1: "swallow" suggests loss, being consumed/erased, and a slightly threatening, irreversible feeling about leaving. Q2: his hesitation reveals suppressed sadness despite his forced positivity — a physical "tell". Q3: the paradox captures how memory keeps a place "full-sized" in the mind even as it becomes physically distant — emotional truth vs. literal truth. Q4: avoiding looking back is a coping mechanism — facing the loss might feel too painful, so the speaker chooses avoidance/control. Q5: children may cope by holding on internally/refusing to watch, while adults perform forced positivity outwardly — both are masking real feelings differently.</p>
+</div>
+
+</body>
+</html>
