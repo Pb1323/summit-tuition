@@ -1,5 +1,10 @@
 # Summit Tuition — Status (Plain English)
 
+## Done (2026-09-08 session — released 5 pending mock reports for Lupin; started a sale-planning doc)
+
+- Lupin had 5 completed mocks sitting since 2026-09-02–08 with their reports not yet released (a normal admin step, just hadn't been done): Maths GL-Style Full Papers XVI/XVII/XVIII, and English GL-Style Full Papers XXII "Parallax"/XXIV "Signal". All auto-scored MCQ papers, so releasing was just the standard admin "release report" flip (done directly against the DB, same pattern as every other direct-DB student-ops fix in this project) — no hand-marking needed. He can now see all 5 reports.
+- Added `SELLING-THE-PLATFORM.md` (repo root) — a working doc for the platform-sale effort (see "being wound down for sale" note above): a fill-in warm-contacts table plus initial research on two named local prospects (1st Class Tuition confirmed real/substantial; "TutorWise" unverified). Business-side planning only, no code/content changed.
+
 Last updated: 2026-09-02 (added a new Verbal Reasoning practice paper, "Intensive Mock 11" — written and saved, but not yet live for students); earlier 2026-08-31: added 4 new GCSE topic mocks; earlier same day: hardened "Intensive Mock 9" difficulty; earlier 2026-08-29: added new Elite NVR Paper XIII completing overnight batch; earlier same day: Elite Maths Paper XX, Elite VR "Zephyr" with 5 novel types).
 
 This is a plain-English summary of where the whole project stands — the product, what's live, what's mid-build, and the business side. Written so you can skim it without needing to read code. Technical detail lives in `CLAUDE.md` and `README.md` if you ever need it.
