@@ -30,3 +30,26 @@ Could not confirm a tutoring business operating under this exact name in WGC/Her
 - [ ] Decide in advance: is a smaller pilot/term deal acceptable if a first buyer offers less than £10k?
 
 **Reminder:** don't lead with price in any pitch — demo first, let the buyer ask.
+
+## Step 4 — outreach message drafts (2026-09-10, ready to use once contacts are named)
+
+**Warm contact / referrer version** (parents, other tutors, school-gate contacts):
+> Hi [name] — random one, but you know how I've been running 11+ tutoring for a while? I built out a proper online platform behind it (mock exams, marking, study notes, admin tools) that took a huge amount of work, and I'm thinking about handing it on to another tutor rather than let it sit idle. If you know any tutors — solo or small — who are still doing everything by hand (Word docs, WhatsApp, spreadsheets), would you mind putting me in touch? Happy to show you round it too if useful.
+
+**Direct-to-tutor / small-business version** (used once a name is confirmed, e.g. after vetting):
+> Hi [name] — I run Summit Tuition, an online 11+/GCSE platform (mock exams with auto-marking + admin marking, study notes, student/parent dashboards). I've mostly wound down my own tutoring to focus elsewhere, and rather than let the platform sit unused I'm looking to pass it on to another tutor who'd get real use out of it — it'd save months of building this from scratch. Would a quick 15-min call or a short demo video be useful to see if it's a fit?
+
+**1st Class Tuition (Folu) — soft-touch, referrer-first framing** (per memory: more likely referrer than buyer given her scale):
+> Hi Folu — I run a smaller 11+ tutoring operation and built an online mock-exam/study-notes platform behind it. I'm looking to hand the platform itself on to a tutor or small tutoring business who'd want a ready-built system rather than building one from scratch. Given how established 1st Class Tuition is, I imagine you may already have your own systems — but if you know any smaller/newer tutors in your network who'd find this useful, I'd really appreciate an introduction. Happy to send a short demo.
+
+**Note on "TutorWise" (WGC):** still unverified (see Step 2) — don't send anything until the actual name/contact is confirmed.
+
+## Step 5 — demo script outline (2026-09-10, draft — record once Step 3's checklist is done)
+
+Target ~5 minutes, screen-recorded walkthrough. Suggested beats:
+1. **Hook (15s)** — one line on the problem: "Most tutors run mocks off Word docs and WhatsApp. This is what a real platform behind a tutoring business looks like."
+2. **Student side (90s)** — register → dashboard → take a mock (show auto-marking on MCQ) → released report with topic breakdown.
+3. **Study Notes (45s)** — one subject's notes hub, an interactive subtopic, to show it's not just exams.
+4. **Admin side (90s)** — `/admin/students` per-student unlock panel, `/admin/mocks` command centre (draft/publish/quality-check), marking a hand-marked GCSE question.
+5. **Scale proof (30s)** — mention the real numbers: ~150+ mocks, ~7,000+ questions, multiple subjects (11+ and GCSE), all original content — this is the "skip 6+ months and £15-30k" claim made concrete.
+6. **Close (15s)** — "This is a real, live platform, not a mockup — happy to talk through handing it over."
