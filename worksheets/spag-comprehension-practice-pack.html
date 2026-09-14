@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SPaG &amp; Comprehension Practice Pack</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root { --ink:#111; --line:#e2e2e2; --muted:#7a7a7a; --accent:#16233f; --gold:#a9812f; }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, Helvetica, Arial, sans-serif; color: var(--ink); max-width: 820px; margin: 0 auto; padding: 40px 34px 60px; line-height: 1.5; background: #fff; font-size: 13px; }
+  header { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:2px solid var(--ink); padding-bottom:12px; margin-bottom:6px; }
+  header .mark { font-size:11px; text-transform:uppercase; letter-spacing:2px; color:var(--muted); }
+  header h1 { font-size:23px; font-weight:700; margin:5px 0 0; letter-spacing:-0.3px; }
+  .sub { font-size:12px; color:var(--muted); margin:4px 0 20px; }
+  h2.section { font-size:12px; text-transform:uppercase; letter-spacing:2px; color:#fff; background:var(--accent); padding:6px 12px; margin:28px 0 4px; page-break-inside: avoid; page-break-after: avoid; }
+  h2.section .n { color: var(--gold); margin-right:8px; }
+  .section-note { font-size:11.5px; color:var(--muted); font-style:italic; margin:4px 0 14px; }
+  h3.sub2 { font-size:12.5px; font-weight:700; margin:16px 0 4px; color:var(--accent); border-bottom:1px solid var(--line); padding-bottom:2px; }
+  .passage { background:#faf9f6; border:1px solid var(--line); border-left:3px solid var(--accent); padding:14px 16px; margin:10px 0 16px; font-size:12.5px; }
+  .passage p { margin:0 0 9px; }
+  .passage p:last-child { margin-bottom:0; }
+  .passage .pn { color:var(--gold); font-weight:700; font-size:10px; margin-right:4px; }
+  .q { margin-bottom:11px; page-break-inside: avoid; }
+  .q .qt { font-weight:600; }
+  .q .qtag { font-size:9px; text-transform:uppercase; letter-spacing:0.5px; color:#fff; background:var(--gold); padding:1px 6px; border-radius:3px; margin-right:6px; }
+  .q .opts { margin:4px 0 0 18px; font-size:12px; }
+  .q .opts div { margin-bottom:2px; }
+  .q .ans-line { border-bottom:1px solid var(--line); height:16px; margin-top:4px; }
+  .seg { font-family: Georgia, serif; font-size:12.5px; background:#faf9f6; border:1px solid var(--line); padding:8px 12px; margin:4px 0 6px; }
+  .seg b { color: var(--accent); }
+  .instr { font-size:10.5px; color:var(--muted); margin-bottom:2px; }
+  .cloze-passage { background:#faf9f6; border:1px solid var(--line); border-left:3px solid var(--gold); padding:14px 16px; margin:10px 0; font-size:12.5px; }
+  .gapbox { font-size:10.5px; border:1px solid var(--accent); border-radius:3px; padding:2px 6px; display:inline-block; margin:0 2px; background:#fff; }
+  table.ref { width:100%; border-collapse:collapse; font-size:11.5px; margin:6px 0 14px; }
+  table.ref th, table.ref td { border:1px solid var(--line); padding:5px 8px; text-align:left; vertical-align:top; }
+  table.ref th { background:#f0f0f0; font-size:10px; text-transform:uppercase; letter-spacing:0.5px; }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:0 24px; }
+  ul.tight { margin:4px 0 10px 18px; padding:0; }
+  ul.tight li { margin-bottom:3px; }
+  .answer-key { font-size:11.5px; columns:2; column-gap:24px; }
+  .answer-key .blk { break-inside: avoid; margin-bottom:10px; }
+  .answer-key .blk h4 { font-size:11px; margin:0 0 4px; color:var(--accent); }
+  .answer-key .blk div { margin-bottom:1px; }
+  .pagebreak { page-break-before: always; }
+  footer { margin-top:34px; padding-top:10px; border-top:1px solid var(--line); font-size:9.5px; color:var(--muted); display:flex; justify-content:space-between; text-transform:uppercase; letter-spacing:1px; }
+  @media print { body { padding: 18px; } h2.section { -webkit-print-color-adjust:exact; print-color-adjust:exact; } .qtag { -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="mark">Summit Tuition · SPaG &amp; Comprehension Practice Pack</div>
+    <h1>Deep Practice — One Question of Every Real Exam Type</h1>
+  </div>
+</header>
+<div class="sub">Companion to the recap checklist. Every archetype below is modelled on the real GL Assessment English structure our own mock bank is built against (<code>research/gl-english-question-bank.md</code>) — comprehension is ~52% of a real paper, spelling/punctuation ~17% each, cloze ~15%. Work through each type, then check the answer key at the end.</div>
+
+<h2 class="section"><span class="n">1</span>Comprehension — Practice Passage &amp; Full Question Set</h2>
+<div class="section-note">A real GL comprehension section mixes 5 sub-skills, not one: retrieval, inference, vocabulary-in-context, grammar-embedded, and literary technique — plus NOT-questions and "voice" questions on harder papers. Every type is included below so nothing is missed in practice.</div>
+
+<div class="passage">
+<p><span class="pn">¶1</span>The shed at the back of her grandfather's garden had not been opened in three years, and when Elsa finally dragged the door across its rusted track, she was met with a smell of oil and old wood. Underneath a tarpaulin, half-buried beneath stacked plant pots, stood a bicycle — its frame furred with rust, one pedal missing entirely, the chain seized solid. It was, her mother had told her more than once, not worth the bother. Elsa disagreed.</p>
+<p><span class="pn">¶2</span>She spent the first week simply loosening the chain, dabbing oil onto every stiff link with a rag until her fingers were black and her knuckles raw. Twice she nearly gave up — once when the rear wheel buckled further under a spanner she didn't know how to use, and once when her brother laughed and said she'd have better luck buying a new bike outright. Each time, though, she found herself back in the shed the next morning, sleeves rolled, resolute.</p>
+<p><span class="pn">¶3</span>It was while replacing the cracked handlebar grips that she noticed something odd: a thin roll of paper, tucked so deep inside the left grip that it had survived decades untouched. She eased it free with a pair of tweezers. The ink had faded to the colour of weak tea, but the handwriting — small, careful, looping at the tails of its letters — was unmistakably her grandfather's. <i>Whoever rides this next</i>, it read, <i>ride it further than I ever did.</i></p>
+<p><span class="pn">¶4</span>Elsa read the note four times before she folded it back along its original creases and slid it into her pocket, not the grip. When the bicycle was finally roadworthy — three weeks, one replacement pedal, and more oil than she cared to count — she wheeled it out onto the lane behind the house and rode it in a slow, wobbling circle, the note pressing flat against her hip with every turn of the pedals.</p>
+<p><span class="pn">¶5</span>Her grandfather had died the spring before she was born; she had only ever known him through photographs and her mother's stories. But freewheeling down the lane that evening, the chain finally silent and smooth beneath her, Elsa felt, for the first time, as though she had actually met him.</p>
+</div>
+
+<h3 class="sub2">Retrieval (stated directly in the text)</h3>
+<div class="q"><span class="qtag">Retrieval</span><span class="qt">1. According to paragraph 1, how long had the shed been unopened before Elsa went in?</span><div class="ans-line"></div></div>
+<div class="q"><span class="qtag">Retrieval</span><span class="qt">2. According to paragraph 3, what tool did Elsa use to free the note from the handlebar grip?</span><div class="ans-line"></div></div>
+<div class="q"><span class="qtag">Retrieval</span><span class="qt">3. According to paragraph 4, how long did it take altogether to make the bicycle roadworthy?</span><div class="ans-line"></div></div>
+
+<h3 class="sub2">Inference (connecting details the passage doesn't spell out)</h3>
+<div class="q"><span class="qtag">Inference</span><span class="qt">4. What does paragraph 2 suggest about Elsa's character, given that she returned to the shed each morning despite two separate setbacks?</span><div class="ans-line"></div></div>
+<div class="q"><span class="qtag">Inference</span><span class="qt">5. Why might Elsa have chosen to keep the note in her pocket instead of putting it back inside the grip (paragraph 4)?</span><div class="ans-line"></div></div>
+<div class="q"><span class="qtag">Inference</span><span class="qt">6. What does the final paragraph suggest about how riding the bicycle made Elsa feel about the grandfather she never met?</span><div class="ans-line"></div></div>
+
+<h3 class="sub2">Vocabulary-in-context (quote the sentence, then the exact sense used here)</h3>
+<div class="q"><span class="qtag">Vocab</span><span class="qt">7. In paragraph 2, "resolute" most nearly means:</span>
+<div class="opts"><div>A) relieved &nbsp; B) reluctant &nbsp; C) determined &nbsp; D) regretful</div></div></div>
+<div class="q"><span class="qtag">Vocab</span><span class="qt">8. In paragraph 4, "roadworthy" most nearly means:</span>
+<div class="opts"><div>A) brand new &nbsp; B) fit and safe to be ridden &nbsp; C) expensive &nbsp; D) lightweight</div></div></div>
+<div class="q"><span class="qtag">Vocab</span><span class="qt">9. In paragraph 5, "freewheeling" describes:</span>
+<div class="opts"><div>A) riding very fast &nbsp; B) riding without pedalling &nbsp; C) riding uphill &nbsp; D) riding carelessly</div></div></div>
+
+<h3 class="sub2">Grammar embedded in the passage (word class / clause function)</h3>
+<div class="q"><span class="qtag">Grammar</span><span class="qt">10. In paragraph 1, "furred with rust" — what part of speech is "furred" functioning as here?</span><div class="ans-line"></div></div>
+<div class="q"><span class="qtag">Grammar</span><span class="qt">11. In paragraph 3, "tucked so deep inside the left grip that it had survived decades untouched" — what kind of clause is this (main or subordinate)?</span><div class="ans-line"></div></div>
+
+<h3 class="sub2">Literary technique</h3>
+<div class="q"><span class="qtag">Technique</span><span class="qt">12. "the chain finally silent and smooth beneath her" (paragraph 5) — name the technique used here and explain its effect in one sentence.</span><div class="ans-line"></div></div>
+<div class="q"><span class="qtag">Technique</span><span class="qt">13. Which of these techniques is <u>NOT</u> used anywhere in the passage?</span>
+<div class="opts"><div>A) simile &nbsp; B) onomatopoeia &nbsp; C) symbolism &nbsp; D) imagery</div></div></div>
+
+<h3 class="sub2">NOT-question (hardest type — confirm four true things, not spot one false one)</h3>
+<div class="q"><span class="qtag">NOT</span><span class="qt">14. Which of the following is <u>NOT</u> true according to the passage?</span>
+<div class="opts">
+<div>A) Elsa's mother thought the bicycle wasn't worth restoring</div>
+<div>B) Elsa's brother encouraged her to keep going with the restoration</div>
+<div>C) The note was hidden inside the handlebar grip</div>
+<div>D) Elsa read the note several times before putting it away</div>
+</div></div>
+
+<h3 class="sub2">Character/author "voice" inference</h3>
+<div class="q"><span class="qtag">Voice</span><span class="qt">15. Based on the wording of his note, which word best captures the grandfather's tone?</span>
+<div class="opts"><div>A) commanding &nbsp; B) hopeful &nbsp; C) indifferent &nbsp; D) apologetic</div></div></div>
+
+<h2 class="section pagebreak"><span class="n">2</span>Spelling — Segment Format</h2>
+<div class="section-note">Real format: one sentence, split into 4 lettered word-groups. Mark the segment containing the spelling mistake — or mark <b>N</b> if the whole sentence is correct. Exactly 1 in 5 below is genuinely mistake-free — don't assume every sentence has an error.</div>
+<div class="instr">Find the group of words with the spelling mistake. If there is no mistake, choose N.</div>
+
+<div class="seg"><b>S1.</b> A) It was a great privilege &nbsp; B) to recieve the award &nbsp; C) on such an important occasion &nbsp; D) in front of the whole school. &nbsp; <b>N</b> — no mistake</div>
+<div class="seg"><b>S2.</b> A) The government announced &nbsp; B) a seperate policy &nbsp; C) for schools in rural areas &nbsp; D) starting next September. &nbsp; <b>N</b> — no mistake</div>
+<div class="seg"><b>S3.</b> A) She was definitely &nbsp; B) embarassed &nbsp; C) by the sudden silence &nbsp; D) that followed her joke. &nbsp; <b>N</b> — no mistake</div>
+<div class="seg"><b>S4.</b> A) It is necessary &nbsp; B) to accomodate &nbsp; C) every student's needs &nbsp; D) within the new timetable. &nbsp; <b>N</b> — no mistake</div>
+<div class="seg"><b>S5.</b> A) The committee will &nbsp; B) announce its decision &nbsp; C) at tomorrow's meeting &nbsp; D) without further delay. &nbsp; <b>N</b> — no mistake</div>
+<div class="q" style="margin-top:8px"><i>Your answers:</i> S1 ___ &nbsp; S2 ___ &nbsp; S3 ___ &nbsp; S4 ___ &nbsp; S5 ___</div>
+
+<h2 class="section"><span class="n">3</span>Punctuation — Segment Format</h2>
+<div class="section-note">Same format as spelling, but every error here is a genuine punctuation-mechanics error (not grammar-agreement) — matching the real exam's Section C: hyphenation, joint/separate possession, comma splices, semicolon misuse, and quotation marks around reported (non-verbatim) speech.</div>
+<div class="instr">Find the group of words with the punctuation mistake. If there is no mistake, choose N.</div>
+
+<div class="seg"><b>P1.</b> A) The rain started suddenly, &nbsp; B) everyone ran for cover, &nbsp; C) except for one boy &nbsp; D) who stood watching the sky. &nbsp; <b>N</b> — no mistake <span style="color:var(--muted)">(comma splice)</span></div>
+<div class="seg"><b>P2.</b> A) There were exactly &nbsp; B) twenty one students &nbsp; C) in the class today &nbsp; D) according to the register. &nbsp; <b>N</b> — no mistake <span style="color:var(--muted)">(hyphenation)</span></div>
+<div class="seg"><b>P3.</b> A) She wanted to join the team; &nbsp; B) but her schedule &nbsp; C) simply would not allow it &nbsp; D) this term. &nbsp; <b>N</b> — no mistake <span style="color:var(--muted)">(semicolon before a conjunction)</span></div>
+<div class="seg"><b>P4.</b> A) Priya and Sam's &nbsp; B) essays were both &nbsp; C) shortlisted separately &nbsp; D) for the regional prize. &nbsp; <b>N</b> — no mistake <span style="color:var(--muted)">(joint vs. separate possession)</span></div>
+<div class="seg"><b>P5.</b> A) The museum's new exhibit &nbsp; B) opens next Saturday &nbsp; C) and will run for &nbsp; D) six weeks. &nbsp; <b>N</b> — no mistake</div>
+<div class="seg"><b>P6.</b> A) The teacher explained &nbsp; B) that "the trip was cancelled" &nbsp; C) due to the weather &nbsp; D) forecast that morning. &nbsp; <b>N</b> — no mistake <span style="color:var(--muted)">(quotation marks around reported, not direct, speech)</span></div>
+<div class="q" style="margin-top:8px"><i>Your answers:</i> P1 ___ &nbsp; P2 ___ &nbsp; P3 ___ &nbsp; P4 ___ &nbsp; P5 ___ &nbsp; P6 ___</div>
+
+<h2 class="section"><span class="n">4</span>Cloze — Best Word in Context</h2>
+<div class="section-note">Every option below is grammatically valid on its own — only one is correct once you account for tense, connective logic, or register. Read the whole sentence (before <i>and</i> after the gap) before choosing.</div>
+
+<div class="cloze-passage">
+By the time the bus finally arrived, Layla <span class="gapbox">(1)____</span> waiting for almost half an hour. She <span class="gapbox">(2)____</span> have taken the earlier one, but she overslept. <span class="gapbox">(3)____</span> she was frustrated, she tried not to show it. "If only I'd left sooner," she thought, "none of this <span class="gapbox">(4)____</span> have happened." The driver, noticing her damp coat, asked kindly <span class="gapbox">(5)____</span> she needed a lift straight into town.
+</div>
+<table class="ref">
+<tr><th>Gap</th><th>Options</th><th>Your answer</th></tr>
+<tr><td>1</td><td>had been / has been / was / is / were</td><td></td></tr>
+<tr><td>2</td><td>could / should / must / would / needn't</td><td></td></tr>
+<tr><td>3</td><td>Although / Because / Since / If / Unless</td><td></td></tr>
+<tr><td>4</td><td>would / will / had / has / did</td><td></td></tr>
+<tr><td>5</td><td>whether / that / because / while / despite</td><td></td></tr>
+</table>
+
+<h2 class="section pagebreak"><span class="n">5</span>Grammar Reference — Expanded</h2>
+
+<h3 class="sub2">Word classes</h3>
+<table class="ref">
+<tr><th>Class</th><th>Job</th><th>Example</th></tr>
+<tr><td>Noun</td><td>names a thing/person/place/idea</td><td>bicycle, determination</td></tr>
+<tr><td>Verb</td><td>an action or state</td><td>restored, felt</td></tr>
+<tr><td>Adjective</td><td>describes a noun</td><td>rusted, resolute</td></tr>
+<tr><td>Adverb</td><td>describes a verb/adjective/adverb</td><td>slowly, unmistakably</td></tr>
+<tr><td>Preposition</td><td>shows relationship (place/time/direction)</td><td>inside, beneath, before</td></tr>
+<tr><td>Conjunction</td><td>joins clauses/words</td><td>although, because, but</td></tr>
+<tr><td>Pronoun</td><td>replaces a noun</td><td>she, it, whoever</td></tr>
+<tr><td>Determiner</td><td>specifies a noun</td><td>the, her, every</td></tr>
+</table>
+
+<h3 class="sub2">Clause &amp; sentence types</h3>
+<ul class="tight">
+<li><b>Simple sentence</b> — one main clause. "Elsa opened the shed."</li>
+<li><b>Compound sentence</b> — two main clauses joined by <i>and/but/or/so</i>. "She oiled the chain, and the wheel finally turned."</li>
+<li><b>Complex sentence</b> — a main clause + a subordinate clause. "Although she was tired, she kept going."</li>
+<li><b>Relative clause</b> — adds information about a noun, starts with <i>who/which/that/whose</i>. "The note, which had faded, was still legible."</li>
+<li><b>Non-finite/participial clause</b> — starts with an -ing or -ed form, no subject of its own. "Tucked inside the grip, the note had survived decades."</li>
+</ul>
+
+<h3 class="sub2">Common error categories (with the fix)</h3>
+<div class="two-col">
+<div>
+<ul class="tight">
+<li><b>Comma splice</b> — two main clauses joined only by a comma. <i>Wrong:</i> "It rained, we stayed in." <i>Fixed:</i> "It rained, so we stayed in." / "It rained; we stayed in."</li>
+<li><b>Subject-verb agreement</b> — "The list of names <u>were</u> long" → should be <u>was</u> (the subject is "list", singular).</li>
+<li><b>Dangling modifier</b> — "Running late, the bus was missed." (who was running? unclear) → "Running late, Elsa missed the bus."</li>
+</ul>
+</div>
+<div>
+<ul class="tight">
+<li><b>its / it's</b> — <i>its</i> = possessive ("its frame"), <i>it's</i> = "it is/it has".</li>
+<li><b>who / whom</b> — <i>who</i> is the subject ("who rode the bike"), <i>whom</i> is the object ("to whom it was given").</li>
+<li><b>fewer / less</b> — <i>fewer</i> for countable nouns ("fewer mistakes"), <i>less</i> for uncountable ("less time").</li>
+</ul>
+</div>
+</div>
+
+<h3 class="sub2">Punctuation rules — full reference</h3>
+<table class="ref">
+<tr><th>Mark</th><th>Rule</th><th>Example</th></tr>
+<tr><td>Apostrophe (possession, one owner)</td><td>'s after the noun</td><td>Elsa's bicycle</td></tr>
+<tr><td>Apostrophe (possession, plural ending in s)</td><td>' after the s</td><td>the students' books</td></tr>
+<tr><td>Apostrophe (joint possession, one item shared)</td><td>'s only on the last name</td><td>Sam and Priya's project (they share one project)</td></tr>
+<tr><td>Apostrophe (separate possession)</td><td>'s on each name</td><td>Sam's and Priya's essays (two separate essays)</td></tr>
+<tr><td>Semicolon</td><td>joins two related main clauses (no conjunction)</td><td>She loved cycling; her brother preferred running.</td></tr>
+<tr><td>Colon</td><td>introduces a list or explanation</td><td>She needed three things: oil, a spanner, and patience.</td></tr>
+<tr><td>Hyphen</td><td>compound numbers 21-99, compound adjectives before a noun</td><td>twenty-one, a well-known author</td></tr>
+<tr><td>Quotation marks</td><td>direct/verbatim speech only, never reported speech</td><td>She said, "I'm nearly done." (not: she said that "she was nearly done")</td></tr>
+</table>
+
+<h3 class="sub2">Connectives by function (useful for cloze and your own writing)</h3>
+<table class="ref">
+<tr><th>Function</th><th>Connectives</th></tr>
+<tr><td>Cause / reason</td><td>because, since, as, due to, given that</td></tr>
+<tr><td>Contrast</td><td>although, whereas, however, despite, even though</td></tr>
+<tr><td>Addition</td><td>furthermore, moreover, in addition, also</td></tr>
+<tr><td>Condition</td><td>if, unless, provided that, as long as</td></tr>
+<tr><td>Time</td><td>meanwhile, before, after, as soon as, once</td></tr>
+</table>
+
+<h2 class="section"><span class="n">6</span>Comprehension Technique — Expanded</h2>
+<div class="two-col">
+<div>
+<h3 class="sub2">Reading strategy</h3>
+<ul class="tight">
+<li>Read the whole passage once for gist before looking at any question.</li>
+<li>Underline names, places, and any word that repeats — likely to matter later.</li>
+<li>Note the paragraph number in the margin as you read — questions reference it directly.</li>
+<li>For each question, re-read only the relevant paragraph(s), don't rely on memory.</li>
+</ul>
+<h3 class="sub2">By question type</h3>
+<ul class="tight">
+<li><b>Retrieval</b> — find the exact matching phrase; distractors are real details from elsewhere in the passage, not invented.</li>
+<li><b>Inference</b> — the answer isn't written directly; combine two nearby clues. Ask "what does this action/detail show, not just say?"</li>
+<li><b>Vocabulary</b> — always check the word's specific meaning <i>in that sentence</i>, not its most common everyday meaning.</li>
+</ul>
+</div>
+<div>
+<ul class="tight">
+<li><b>NOT-questions</b> — check all four options against the text one at a time; three will be verifiably true, one won't appear at all.</li>
+<li><b>Voice questions</b> — think about tone across the whole passage, not just the one quoted line.</li>
+<li><b>Literary technique</b> — know the definitions cold (see list below) so you're not guessing under time pressure.</li>
+</ul>
+<h3 class="sub2">Literary techniques — quick definitions</h3>
+<ul class="tight">
+<li><b>Simile</b> — compares using "like" or "as". <b>Metaphor</b> — states one thing IS another.</li>
+<li><b>Personification</b> — gives human qualities to something non-human.</li>
+<li><b>Imagery</b> — descriptive language appealing to the senses.</li>
+<li><b>Symbolism</b> — an object represents a bigger idea (the bicycle = connection to family).</li>
+<li><b>Foreshadowing</b> — an early hint of something that happens later.</li>
+</ul>
+</div>
+</div>
+
+<h2 class="section pagebreak"><span class="n">7</span>Character &amp; Setting — Three Layers, and Show-Not-Tell</h2>
+<div class="two-col">
+<div>
+<h3 class="sub2">Character — 3 layers</h3>
+<ul class="tight">
+<li><b>Physical</b> — appearance, what we see (black fingers, raw knuckles)</li>
+<li><b>Emotional</b> — feelings, inner thought (frustration, resolve)</li>
+<li><b>Behavioural</b> — actions, what they actually do (returns to the shed each morning)</li>
+</ul>
+</div>
+<div>
+<h3 class="sub2">Setting — 3 layers</h3>
+<ul class="tight">
+<li><b>Physical</b> — concrete detail (the shed, the tarpaulin, the rusted track)</li>
+<li><b>Sensory / imagery</b> — smell of oil and old wood</li>
+<li><b>Atmosphere / mood</b> — quiet, nostalgic, almost sacred</li>
+</ul>
+</div>
+</div>
+<h3 class="sub2">Show, Not Tell — worked example</h3>
+<table class="ref">
+<tr><th>Telling (weak)</th><th>Showing (strong)</th></tr>
+<tr><td>Elsa was determined.</td><td>Each time she failed, she found herself back in the shed the next morning, sleeves rolled.</td></tr>
+<tr><td>The shed was old and neglected.</td><td>The door dragged across its rusted track; a smell of oil and old wood hung in the air.</td></tr>
+</table>
+
+<h2 class="section"><span class="n">8</span>Answer Key</h2>
+<div class="answer-key">
+<div class="blk"><h4>Comprehension</h4>
+<div>1. Three years</div>
+<div>2. A pair of tweezers</div>
+<div>3. Three weeks</div>
+<div>4. Determined/persistent despite setbacks and discouragement</div>
+<div>5. Wanted to keep it close/personal, not risk losing it again</div>
+<div>6. Connected to him — as though she had met him</div>
+<div>7. C — determined</div>
+<div>8. B — fit and safe to be ridden</div>
+<div>9. B — riding without pedalling</div>
+<div>10. Adjective (past participle used adjectivally)</div>
+<div>11. Subordinate (non-finite/relative) clause</div>
+<div>12. Personification — gives the chain human calm, mirrors Elsa's own feeling</div>
+<div>13. B — onomatopoeia (not used anywhere)</div>
+<div>14. B — the brother mocked her, he didn't encourage her</div>
+<div>15. B — hopeful</div>
+</div>
+<div class="blk"><h4>Spelling (mistake segment)</h4>
+<div>S1: B — "recieve" → receive</div>
+<div>S2: B — "seperate" → separate</div>
+<div>S3: B — "embarassed" → embarrassed</div>
+<div>S4: B — "accomodate" → accommodate</div>
+<div>S5: N — no mistake</div>
+</div>
+<div class="blk"><h4>Punctuation (mistake segment)</h4>
+<div>P1: A — comma splice (needs ; or full stop)</div>
+<div>P2: B — "twenty one" → twenty-one</div>
+<div>P3: A — semicolon before "but" should be a comma</div>
+<div>P4: A — separate essays need "Priya's and Sam's"</div>
+<div>P5: N — no mistake</div>
+<div>P6: B — reported speech shouldn't be in quotation marks</div>
+</div>
+<div class="blk"><h4>Cloze</h4>
+<div>1. had been (past perfect continuous)</div>
+<div>2. could (a missed possibility)</div>
+<div>3. Although (concession)</div>
+<div>4. would (third conditional)</div>
+<div>5. whether (reported question)</div>
+</div>
+</div>
+
+<footer>
+  <span>Summit Tuition</span>
+  <span>SPaG &amp; Comprehension Practice Pack</span>
+</footer>
+
+</body>
+</html>
