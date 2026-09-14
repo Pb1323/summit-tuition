@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Comma Punctuation Practice</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root { --ink:#111; --line:#e2e2e2; --muted:#7a7a7a; --accent:#16233f; --gold:#a9812f; }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, Helvetica, Arial, sans-serif; color: var(--ink); max-width: 820px; margin: 0 auto; padding: 40px 34px 60px; line-height: 1.5; background: #fff; font-size: 13px; }
+  header { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:2px solid var(--ink); padding-bottom:12px; margin-bottom:6px; }
+  header .mark { font-size:11px; text-transform:uppercase; letter-spacing:2px; color:var(--muted); }
+  header h1 { font-size:23px; font-weight:700; margin:5px 0 0; letter-spacing:-0.3px; }
+  .sub { font-size:12px; color:var(--muted); margin:4px 0 20px; }
+  h2.section { font-size:12px; text-transform:uppercase; letter-spacing:2px; color:#fff; background:var(--accent); padding:6px 12px; margin:26px 0 4px; page-break-inside: avoid; page-break-after: avoid; }
+  h2.section .n { color: var(--gold); margin-right:8px; }
+  .section-note { font-size:11.5px; color:var(--muted); font-style:italic; margin:4px 0 12px; }
+  h3.sub2 { font-size:12.5px; font-weight:700; margin:14px 0 4px; color:var(--accent); border-bottom:1px solid var(--line); padding-bottom:2px; }
+  table.ref { width:100%; border-collapse:collapse; font-size:11.5px; margin:6px 0 14px; }
+  table.ref th, table.ref td { border:1px solid var(--line); padding:6px 8px; text-align:left; vertical-align:top; }
+  table.ref th { background:#f0f0f0; font-size:10px; text-transform:uppercase; letter-spacing:0.5px; }
+  .seg { font-family: Georgia, serif; font-size:12.5px; background:#faf9f6; border:1px solid var(--line); padding:8px 12px; margin:4px 0 6px; }
+  .instr { font-size:10.5px; color:var(--muted); margin-bottom:4px; }
+  .q { margin-bottom:9px; page-break-inside: avoid; }
+  .q .qt { font-weight:600; }
+  .q .qtag { font-size:9px; text-transform:uppercase; letter-spacing:0.5px; color:#fff; background:var(--gold); padding:1px 6px; border-radius:3px; margin-right:6px; }
+  .ans-line { border-bottom:1px solid var(--line); height:18px; margin-top:3px; }
+  .pagebreak { page-break-before: always; }
+  .answer-key { font-size:11.5px; columns:2; column-gap:24px; }
+  .answer-key .blk { break-inside: avoid; margin-bottom:10px; }
+  .answer-key .blk h4 { font-size:11px; margin:0 0 4px; color:var(--accent); }
+  .answer-key .blk div { margin-bottom:2px; }
+  footer { margin-top:30px; padding-top:10px; border-top:1px solid var(--line); font-size:9.5px; color:var(--muted); display:flex; justify-content:space-between; text-transform:uppercase; letter-spacing:1px; }
+  @media print { body { padding: 18px; } h2.section { -webkit-print-color-adjust:exact; print-color-adjust:exact; } .qtag { -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="mark">Summit Tuition · SPaG Practice</div>
+    <h1>Comma Punctuation — Full Practice</h1>
+  </div>
+</header>
+<div class="sub">A dedicated deep-dive on commas — the single most error-prone punctuation mark in the SPaG/Punctuation section. Covers every comma rule, then drills each one with real practice sentences (segment-format, matching the real exam) plus an "insert the missing comma" set.</div>
+
+<h2 class="section"><span class="n">1</span>Comma Rules — Full Reference</h2>
+<table class="ref">
+<tr><th>Rule</th><th>Explanation</th><th>Example</th></tr>
+<tr><td>Lists</td><td>separates 3+ items in a list</td><td>She bought apples, bread, milk and cheese.</td></tr>
+<tr><td>Oxford comma (optional but consistent)</td><td>comma before "and"/"or" in the final list item — pick one style and stay consistent</td><td>apples, bread, and cheese <i>(vs. apples, bread and cheese — both accepted, but be consistent)</i></td></tr>
+<tr><td>Joining two main clauses</td><td>comma + coordinating conjunction (and/but/or/so/yet) between two complete sentences</td><td>It started to rain, so we went inside.</td></tr>
+<tr><td>Comma splice (ERROR)</td><td>two main clauses joined by a comma with NO conjunction — always wrong</td><td>✗ It rained, we went inside. → ✓ It rained, so we went inside. / It rained; we went inside.</td></tr>
+<tr><td>After an introductory word/phrase</td><td>comma after a fronted adverbial, subordinate clause, or interjection opening a sentence</td><td>Although it was raining, she went outside. / Eventually, she gave up.</td></tr>
+<tr><td>Around non-essential (parenthetical) information</td><td>a clause that could be removed without changing the core meaning — commas on BOTH sides</td><td>My brother, who is younger than me, plays football.</td></tr>
+<tr><td>NOT around essential (restrictive) information</td><td>a clause that IS needed to identify what's being talked about — no commas</td><td>The boy who scored the winning goal is my brother. <i>(no commas — identifies which boy)</i></td></tr>
+<tr><td>Direct address</td><td>separates the name of the person being spoken to</td><td>Can you pass the salt, please, Tom?</td></tr>
+<tr><td>Before a quotation</td><td>introduces direct speech</td><td>She said, "I'm nearly finished."</td></tr>
+<tr><td>Separating coordinate adjectives</td><td>two adjectives of equal weight, both describing the same noun equally</td><td>a cold, wet morning <i>(but: a bright red car — no comma, "bright" modifies "red")</i></td></tr>
+<tr><td>Dates and addresses</td><td>separates parts of a date or address</td><td>15 March, 2026 / London, England</td></tr>
+</table>
+
+<h2 class="section"><span class="n">2</span>The Comma Splice — Special Focus</h2>
+<div class="section-note">The single most common comma error on real papers. A comma splice happens when two complete sentences (main clauses) are joined by ONLY a comma, with no conjunction.</div>
+<table class="ref">
+<tr><th>Wrong (comma splice)</th><th>Fixed — 4 ways</th></tr>
+<tr><td rowspan="4">The bus was late, everyone waited outside.</td><td>1. Add a coordinating conjunction: ...late, <b>so</b> everyone waited outside.</td></tr>
+<tr><td>2. Use a semicolon: ...late<b>;</b> everyone waited outside.</td></tr>
+<tr><td>3. Split into two sentences: ...late<b>.</b> Everyone waited outside.</td></tr>
+<tr><td>4. Subordinate one clause: <b>Because</b> the bus was late, everyone waited outside.</td></tr>
+</table>
+
+<h2 class="section pagebreak"><span class="n">3</span>Practice — Segment Format (Find the Comma Mistake)</h2>
+<div class="instr">Find the group of words with the punctuation mistake. If there is no mistake, choose N.</div>
+
+<div class="seg"><b>C1.</b> A) The storm arrived quickly, &nbsp; B) everyone rushed &nbsp; C) to bring the washing &nbsp; D) in from the line. &nbsp; <b>N</b></div>
+<div class="seg"><b>C2.</b> A) My sister who lives in Leeds &nbsp; B) is visiting us &nbsp; C) for the whole &nbsp; D) of half term. &nbsp; <b>N</b></div>
+<div class="seg"><b>C3.</b> A) Although she was nervous &nbsp; B) she walked calmly &nbsp; C) onto the stage &nbsp; D) and began to speak. &nbsp; <b>N</b></div>
+<div class="seg"><b>C4.</b> A) The recipe called for flour, &nbsp; B) sugar, eggs &nbsp; C) and butter, &nbsp; D) but nothing else. &nbsp; <b>N</b></div>
+<div class="seg"><b>C5.</b> A) Marcus, our new captain &nbsp; B) led the team superbly &nbsp; C) throughout the entire &nbsp; D) qualifying tournament. &nbsp; <b>N</b></div>
+<div class="seg"><b>C6.</b> A) "I'll be there by six" &nbsp; B) she promised, &nbsp; C) before hanging up &nbsp; D) the telephone. &nbsp; <b>N</b></div>
+<div class="seg"><b>C7.</b> A) The bright, red kite &nbsp; B) soared above &nbsp; C) the crowded beach &nbsp; D) all afternoon. &nbsp; <b>N</b></div>
+<div class="seg"><b>C8.</b> A) Please, Grandad &nbsp; B) tell us the story &nbsp; C) about the shipwreck &nbsp; D) again tonight. &nbsp; <b>N</b></div>
+<div class="q" style="margin-top:8px"><i>Your answers:</i> C1 ___ &nbsp; C2 ___ &nbsp; C3 ___ &nbsp; C4 ___ &nbsp; C5 ___ &nbsp; C6 ___ &nbsp; C7 ___ &nbsp; C8 ___</div>
+
+<h2 class="section"><span class="n">4</span>Practice — Insert the Missing Comma(s)</h2>
+<div class="instr">Rewrite each sentence with the comma(s) added in the correct place(s). One sentence needs none.</div>
+
+<div class="q"><span class="qtag">Insert</span><span class="qt">1. Before we left the house we checked every window twice.</span><div class="ans-line"></div></div>
+<div class="q"><span class="qtag">Insert</span><span class="qt">2. My uncle who taught me to swim is coming to the party.</span><div class="ans-line"></div></div>
+<div class="q"><span class="qtag">Insert</span><span class="qt">3. The match was cancelled so the team trained indoors instead.</span><div class="ans-line"></div></div>
+<div class="q"><span class="qtag">Insert</span><span class="qt">4. Yes I would love to come to the concert with you.</span><div class="ans-line"></div></div>
+<div class="q"><span class="qtag">Insert</span><span class="qt">5. The tall old lighthouse has stood on that cliff for over a century.</span><div class="ans-line"></div></div>
+<div class="q"><span class="qtag">Insert</span><span class="qt">6. Well I suppose we could try the earlier train instead.</span><div class="ans-line"></div></div>
+<div class="q"><span class="qtag">Insert</span><span class="qt">7. The dog that bit the postman was finally caught by the warden. <span style="color:var(--muted); font-weight:400;">(needs no comma — explain why in one sentence)</span></span><div class="ans-line"></div></div>
+<div class="q"><span class="qtag">Insert</span><span class="qt">8. Once the rain had stopped the children ran back outside to play.</span><div class="ans-line"></div></div>
+
+<h2 class="section"><span class="n">5</span>Practice — Comma Splice Repair</h2>
+<div class="instr">Each sentence below contains a comma splice. Fix it using a DIFFERENT method each time (conjunction / semicolon / full stop / subordination) — write your corrected version.</div>
+
+<div class="q"><span class="qtag">Fix</span><span class="qt">1. The lights went out, nobody could see a thing.</span><div class="ans-line"></div></div>
+<div class="q"><span class="qtag">Fix</span><span class="qt">2. She trained every single day, she was determined to win.</span><div class="ans-line"></div></div>
+<div class="q"><span class="qtag">Fix</span><span class="qt">3. The exam was difficult, most students still finished on time.</span><div class="ans-line"></div></div>
+<div class="q"><span class="qtag">Fix</span><span class="qt">4. He forgot his umbrella, he got soaked walking home.</span><div class="ans-line"></div></div>
+
+<h2 class="section pagebreak"><span class="n">6</span>Answer Key</h2>
+<div class="answer-key">
+<div class="blk"><h4>Segment format (comma mistakes)</h4>
+<div>C1: A — comma splice (needs "so"/full stop, not a bare comma)</div>
+<div>C2: A — "who lives in Leeds" is non-essential, needs commas both sides: "My sister, who lives in Leeds,"</div>
+<div>C3: A — needs a comma after the introductory clause: "Although she was nervous,"</div>
+<div>C4: N — no mistake (correctly listed, Oxford comma used consistently)</div>
+<div>C5: A — "our new captain" is parenthetical, needs commas both sides: "Marcus, our new captain,"</div>
+<div>C6: A — needs a comma before the closing quotation mark: "I'll be there by six,"</div>
+<div>C7: A — "bright" and "red" aren't equal coordinate adjectives here ("bright" modifies "red"), no comma needed: "The bright red kite"</div>
+<div>C8: A — direct address needs a comma: "Please, Grandad,"</div>
+</div>
+<div class="blk"><h4>Insert the missing comma</h4>
+<div>1. Before we left the house, we checked every window twice.</div>
+<div>2. My uncle, who taught me to swim, is coming to the party.</div>
+<div>3. The match was cancelled, so the team trained indoors instead.</div>
+<div>4. Yes, I would love to come to the concert with you.</div>
+<div>5. No comma needed — "tall old" are coordinate but read naturally without one; accept either.</div>
+<div>6. Well, I suppose we could try the earlier train instead.</div>
+<div>7. No comma — "that bit the postman" is essential, it identifies which dog.</div>
+<div>8. Once the rain had stopped, the children ran back outside to play.</div>
+</div>
+<div class="blk"><h4>Comma splice repair (sample fixes)</h4>
+<div>1. The lights went out, so nobody could see a thing. <i>(conjunction)</i></div>
+<div>2. She trained every single day; she was determined to win. <i>(semicolon)</i></div>
+<div>3. The exam was difficult. Most students still finished on time. <i>(full stop)</i></div>
+<div>4. Because he forgot his umbrella, he got soaked walking home. <i>(subordination)</i></div>
+</div>
+</div>
+
+<footer>
+  <span>Summit Tuition</span>
+  <span>Comma Punctuation — Full Practice</span>
+</footer>
+
+</body>
+</html>
