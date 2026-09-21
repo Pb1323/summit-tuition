@@ -1,0 +1,19 @@
+name,website,emails_found,drafted(yes/no),draft_id,reason_if_not
+Prep4All,prep4all.co.uk,contact@prep4all.co.uk; help@prep4all.co.uk,no,,software vendor/online platform (competitor-type)
+QS Learning,qslearning.co.uk,info@qslearning.co.uk,yes,r-8861705223867291089,
+Education Plus Tutoring,education-plus-tutoring.co.uk,,no,,site unreachable (DNS/fetch blocked)
+Jacqui Robinson Education,jacquirobinsoneducation.co.uk,office@jacquirobinsoneducation.co.uk,yes,r4232158409640991097,
+Achieve Learning,achievelearning.co.uk,advantage@achievelearning.co.uk,yes,r-2559894241335168887,
+Pegasus Tutors,pegasustutors.co.uk,,no,,no email shown on site
+Mock Exam Centre,mockexamcentre.co.uk,,no,,no email shown on site
+11 Plus Academy,11plus-academy.co.uk,,no,,site unreachable (DNS/fetch blocked)
+11 Plus Mock Exams Southend CSSE,sites.google.com/view/11plusmockexamssouthend,,no,,no email shown on site
+The Cambridge Tutor Company,,,no,,no website
+Teach & Coach Tutors,,,no,,no website
+Examberry,examberry.com,,no,,email obfuscated (Cloudflare protected)
+New Chapter Tuition,newchaptertuition.co.uk,hello@newchaptertuition.co.uk,yes,r-682521764700254653,
+Eleven Ace,elevenace.com,,no,,email masked on site
+That Tutor,thattutor.uk,help@thattutor.uk,yes,r8400502122980360889,
+Maths Tutors UK (Facebook group),facebook.com/groups/mathstutorsuk,,no,,Facebook group; not fetchable/no email
+Monkton Combe School,monkton.org.uk,,no,,school; site page 404 and only third-party email known (not verified on own site)
+Rob Williams Assessment,robwilliamsassessment.co.uk,,no,,no email shown on fetched page; other pages blocked

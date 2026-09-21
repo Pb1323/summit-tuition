@@ -1,0 +1,19 @@
+name,website,emails_found,drafted(yes/no),draft_id,reason_if_not
+Tutors Excel,tutors-excel.com,office@tutors-excel.com,yes,r-450913463628467091,
+Leading Tuition,leadingtuition.co.uk,hello@leadingtuition.co.uk,yes,r-8498667663415169631,
+Prestige Tuition Centre,prestigetuition.co.uk,admin@prestigetuition.co.uk,yes,r-6562318164626945655,
+11 Plus Teacher,11plusteacher.co.uk,,no,,fetch failed (domain unverifiable)
+Eleven Plus Exams (tuition centre + mocks),elevenplusexams.co.uk,,no,,fetch failed (403/unverifiable)
+Excel Academy,excelacademy.org.uk,info@exceledgeacademy.com; info@excelacademy.org.uk,yes,r647520348950059025,
+ElevenPlus Euphoria,11pluseuphoria.co.uk,,no,,fetch failed (404/unverifiable)
+Knowledge Seekers,knowledgeseekers.co.uk,,no,,no email shown on site
+Learning Plus Southend,learningplussouthend.com,mail@learningplussouthend.com,yes,r6042340677717119441,
+Teacher Gra Oet Exam Tutor,,,no,,no website
+11 Plus Prep School Ltd,,,no,,no website
+Victoria Philpotts,victoriaphilpotts.co.uk,info@victoriaphilpotts.co.uk,yes,r6614374512767370411,
+Our Future Tutoring,ourfuturetutoring.com,info@ourfuturetutoring.com,yes,r-7028262362927515551,
+The Tutoring Company,thetutoringcompany.co.uk,,no,,skipped: Aylesbury/Bucks is Chris's area (not fetched)
+Vanessa's Tutoring,vanessastutoring.com,info@vanessastutoring.com,yes,r-2489686623840526454,
+National Tutors Conference,tutorsconference.co.uk,,no,,skipped: event not tutoring business (not fetched)
+Caistor Grammar School,caistorgrammar.com,admissions@caistorgrammar.com (from notes; not fetched),no,,skipped: state school not tutoring business
+Pass Eleven Plus,passelevenplus.co.uk,help@passelevenplus.co.uk,yes,r1469384495476750656,

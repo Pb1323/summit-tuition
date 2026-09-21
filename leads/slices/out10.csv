@@ -1,0 +1,18 @@
+name,website,emails_found,drafted(yes/no),draft_id,reason_if_not
+11plustutoring.uk,11plustutoring.uk,,no,,email masked/obfuscated on site (contact form at /contact/)
+LearnNorthwest,learnnorthwest.com,,no,,no public email found (contact page 404; only unrelated designer gmail in source)
+GX Tuition,gxtuition.co.uk,,no,,Chris area (Gerrards Cross) - skipped
+Harrow Tuition Centre,harrowtuitioncentre.co.uk,,no,,fetch returned no content; no email found
+The Learning Hub Group,thelearninghubgroup.co.uk,admin@tlhgroup.co.uk,yes,r-2908489281132946207,
+Pre-Test.co.uk,pre-test.co.uk,,no,,no public email (phone only); site is Planet BOFA mock/test vendor
+Enjoy Education,verify domain,,no,,no verified domain
+Primary School Tutoring Ltd,,,no,,no website
+11Plustutors Ltd,,,no,,no website
+Pillai Tutors,pillaitutors.co.uk,,no,,site blocked (403) / no email retrievable
+Impact Tuition Urmston,impacttuitionurmston.co.uk,hello@impacttuition.co.uk,yes,r-2383088713213243798,
+Oxford Tutors,oxfordtutors.com,welcome@oxfordtutors.com; info@oxfordtutors.com,yes,r-5056990879092983874,
+Kinetic Kids Academy,kinetickidsacademy.co.uk,info@kinetickidsacademy.co.uk,yes,r-4355105996008257974,
+A Star Tuitions,astartuitions.co.uk,,no,,no public email (phone/WhatsApp only)
+TTA Regional Events 2026,thetutorsassociation.org.uk/regional-events-2026,,no,,event/community not a business
+Kingston Grammar School,kgs.org.uk,registrar@kgs.org.uk; enquiries@kgs.org.uk,yes,r-4940469485686396340,
+11plus-mockexams.co.uk,11plus-mockexams.co.uk,,no,,no public email (WhatsApp/Telegram only)

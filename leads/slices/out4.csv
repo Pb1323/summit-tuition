@@ -1,0 +1,19 @@
+name,website,emails_found,drafted(yes/no),draft_id,reason_if_not
+Tintagel Tutoring,tintageltutoring.co.uk,tintageltutoring@gmail.com,yes,r-2178138415580543574,
+Atom Learning,atomlearning.com,,no,,Software vendor/competitor; not fetched
+First Class Learning,firstclasslearning.co.uk,,no,,Fetch failed (redirect then domain blocked); no email verified
+Jane Beckett 11plustutor,11plustutor.me,,no,,Contact page 404 and homepage fetch blocked; no email verified
+Hatch End Tuition,hatchendtuition.co.uk,,no,,Email obfuscated on site; homepage fetch blocked
+School Entry Tutor,schoolentrytutor.co.uk,enquiries@schoolentrytutor.co.uk,yes,r-7635982441775938659,
+Winterwood Tutors,winterwoodtutors.co.uk,contact@winterwoodtutors.co.uk,yes,r5950701888061119930,
+E.S. Tutors,estutors.co.uk,,no,,Site unreachable (DNS/blocked)
+Excel Academy Tutors,,,no,,No website in slice
+42tutoring,,,no,,No website in slice
+Torbay Tutors,torbaytutors.co.uk,kate@torbaytutors.co.uk,yes,r5083098729289069896,
+11++ Tuition,11plusplustuition.co.uk,,no,,Chris area (Slough/Reading); skipped
+Tugo Tutors,tugotutors.com,,no,,Tutor marketplace; skipped
+Eleven Plus Centre,elevenpluscentre.com,info@elevenpluscentre.com,yes,r-951945656882771939,
+Wonderlearn,wonderlearn.co.uk,mrswatson@wonderlearn.co.uk,yes,r-4205880598169934183,
+National Tutors UK (Facebook group),facebook.com/groups/NationalTutorsUK,,no,,Facebook group; no public email
+Eaton Square Prep,eatonsquareschools.com,,no,,No email on contact page (phone/form only)
+Owl Tutors,owltutors.co.uk,enquiries@owltutors.co.uk,yes,r6768549277051465986,

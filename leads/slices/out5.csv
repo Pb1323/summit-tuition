@@ -1,0 +1,19 @@
+name,website,emails_found,drafted,draft_id,reason_if_not
+Life Changing Tuition,lifechangingtuition.com,admin@lifechangingtuition.com,yes,r-1607581207210685645,
+David Bell Education,davidbelleducation.co.uk,enquiries@davidbelleducation.co.uk,yes,r1340632642605683416,
+Oak Tuition,oaktuition.com,,no,,domain did not resolve (ENOTFOUND)
+Cohort Tuition,cohorttuition.co.uk,,no,,fetch failed (SSL error)
+Test Teach,testteach.co.uk,,no,,email on contact page obfuscated (Cloudflare-protected); not used
+Planet BOFA,verify domain,,no,,software vendor/edtech; no verified domain
+Pass 11 Plus Grammar,pass11plusgrammar.co.uk,info@pass11plusgrammar.com,yes,r5829486137595576202,
+Prize Tuition,prizetuition.co.uk,,no,,pages returned empty / fetch blocked
+Blackstone Tutors,,,no,,no website in slice
+The Tutoring School,,,no,,no website in slice
+Exeter Tutors / The Exam Suite,exetertutors.com,info@exetertutors.com,yes,r8730218611719134796,
+On Target Tuition,on-targettuitionlisburn.co.uk,lisburntuition@gmail.com,yes,r-5981247655276251614,
+Get My Grades,getmygrades.co.uk,,no,,no email shown on site (contact link only)
+11 Plus VIP,11plusvip.com,help@11plusvip.com,yes,r6454495043166248999,
+National Learning Group,nationallearninggroup.co.uk,support@tnlg.co.uk,yes,r8104325417085998046,
+City of London School,cityoflondonschool.org.uk,enquiries@cityoflondonschool.org.uk,yes,r6085343638755012667,
+Warlingham Park School,warlinghamparkprepschool.co.uk,,no,,no email shown (phone/contact form only)
+Keystone Tutors,keystonetutors.com,enquiries@keystonetutors.com,yes,r2693907284368403077,

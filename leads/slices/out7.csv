@@ -1,0 +1,19 @@
+name,website,emails_found,drafted(yes/no),draft_id,reason_if_not
+11plusprepschool,11plusprepschool.co.uk,,no,,no public email (phone/WhatsApp + contact form only)
+The Education Centre Liverpool,privatetuitionliverpool.com,,no,,fetch returned blank page
+Maple Education,mapleeducation.co.uk,,no,,Chris area (Aylesbury/Bucks) - not fetched
+Tewkesbury Tuition,tewkesburytuition.co.uk,,no,,site 404 on fetch
+StudyBox,studybox.london,wallington@studybox.london;sutton@studybox.london;croydon@studybox.london,yes,r-2689197519432735917,
+Ampla,ampla-edu.com,info@ampla-edu.com,yes,r8484704752352492977,
+Learning Street,learningstreet.co.uk,,no,,no public email (contact form only)
+West Kent Tuition,westkenttuition.com,,no,,domain not resolvable
+Walker Tuition,,,no,,no website; Amersham Bucks (Chris area)
+Tutorantis,,,no,,no website
+The Exam Coach,theexamcoach.tv,teamkeen@theexamcoach.tv,yes,r4840381739579742239,
+Creative in Learning,,,no,,no website
+11++tuition,11plusplustuition.co.uk,,no,,Chris area (Reading/Bucks) - not fetched
+AIM (Achieve Inspire Motivate) mocks,aimkent.org.uk,Hello@aimkent.org.uk,yes,r-3632095656510497985,
+Tugo,tugo.co.uk,,no,,software vendor/marketplace - skipped
+More House School,morehouse.org.uk,,no,,contact fetch 404; no email found
+OxBridge Centre,oxbridgeuk.com,admin@oxbridgeuk.com,yes,r2623700598340790792,
+Sherpa Online,sherpa-online.com,,no,,marketplace - skipped
