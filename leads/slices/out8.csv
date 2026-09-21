@@ -1,0 +1,18 @@
+name,website,emails_found,drafted(yes/no),draft_id,reason_if_not
+Marie Redmond Tuition,marieredmond.co.uk,,no,,Chris area (Bucks/Berks/Reading) - skipped without fetch
+Accelerate Learning,alcentres.co.uk,info@alcentres.co.uk,yes,r-4441595045910777948,
+Flying Start Tuition,flyingstarttuition.co.uk,,no,,Chris area (Chesham/Aylesbury Bucks) - skipped
+KSOL,ksol.co.uk,,no,,Fetch failed (404 on /contact; home blocked) - no email verified
+Explore Learning,explorelearning.co.uk,,no,,National chain - skipped
+TheLearningMaths,thelearningmaths.com,info@thelearningmaths.com,yes,r30055945548204456,
+Spires,verify domain,,no,,Marketplace and no verified domain - skipped
+Mock Test Masters,mocktestmasters.co.uk,,no,,Fetch failed (500/blocked) - no email verified
+Elite Tuition Centre,,,no,,No website in slice
+West Midlands Tuition Hub,,,no,,No website in slice
+Principal Tutors,principaltutors.com,,no,,Fetch failed (404/blocked) - no email verified
+Moon Tuition,moontuition.co.uk,,no,,Multi-area incl. Reading (Chris area) - skipped without fetch
+Colin Arnold Tuition,colinarnoldtuition.com,info@colinarnoldtuition.com,yes,r-2352322400160138979,
+Tutor World,tutorworlduk.com,,no,,Email obfuscated (Cloudflare protected) - not used
+Study Central,verify domain,,no,,No verified domain; TTA partner/vendor - skipped
+North London Collegiate School,nlcs.org.uk,,no,,School not tutoring business; contact page 404 - skipped
+Educare 11 Plus,educare11plus.co.uk,info@11plusguru.com; info@educare11plus.co.uk,yes,r7983124474667228785,
