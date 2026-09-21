@@ -1,5 +1,9 @@
 # Summit Tuition — Status (Plain English)
 
+## Done (2026-09-21, later still — audited QUEST/FSCE samples against the official familiarisation booklets)
+
+Full findings in `research/quest-fsce-official-comparison.md`. Fixed: QUEST English now 5 options (A-E) on all 12 Qs; QUEST PDF has instruction page, pencil-rectangle answer sheet, END OF TEST; FSCE PDF split into Adventure-style multiple choice (28 Qs) and Beacon-style digit-box short answers (12 Qs) with oval/box answer sheet and official rules wording; fixed a real bug where the `shape` visual hardcoded "cm" (L-garden and sports hall said m in the question) — `shape` now takes a `unit` field. Not fixed (need decision): FSCE is cross-curricular in reality, QUEST Maths module not built, some FSCE maths items are recall not application.
+
 ## Done (2026-09-21, later — rebuilt the QUEST/FSCE sample PDFs as clean printable papers)
 
 The first PDFs were screenshots of each question stitched together (repeating header on every page). Replaced with a real print layout: dev-only route `/print/[mockId]?part=paper|answers|sources|combined` (`src/app/print/[mockId]/page.tsx`, 404s in production, opts into the existing `.gl-print` print rules) rendered to PDF via Playwright `page.pdf()` — real selectable text, vector diagrams, title block once, small page-number footer. Outputs in `research/sample-mocks/`: `fsce-maths-paper.pdf` (5 pp, 2 columns) + `fsce-maths-answers.pdf`; `quest-english-questions.pdf` + `quest-english-sources.pdf`/`.html` (source booklet, separate) + `quest-english-answers.pdf` + `quest-english-combined.pdf`. Old screenshot PDFs deleted. Also fixed the `map` visual (scale label clipped, distance labels colliding with landmark names). Export script was throwaway (regenerate by starting `npm.cmd run dev` and calling `page.pdf()` on each route). Content still QUEST=medium confidence (no official samples).

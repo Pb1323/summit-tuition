@@ -556,6 +556,7 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
   if (type === "shape" || type === "geometry") {
     const width = typeof visual.data.width === "number" ? visual.data.width : 9;
     const height = typeof visual.data.height === "number" ? visual.data.height : 4;
+    const lengthUnit = typeof visual.data.unit === "string" ? visual.data.unit : "cm";
     const cutWidth = typeof visual.data.cutWidth === "number" ? visual.data.cutWidth : null;
     const cutHeight = typeof visual.data.cutHeight === "number" ? visual.data.cutHeight : null;
     const isCompound = cutWidth !== null && cutHeight !== null && cutWidth < width && cutHeight < height;
@@ -580,28 +581,28 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
             </linearGradient>
           </defs>
           <path className="qv-pop" d={path} fill={`url(#${shapeGradientId})`} stroke={INK} strokeWidth={4} strokeLinejoin="round" />
-          <g className="qv-hit" tabIndex={0} role="img" aria-label={`Top side: ${width} cm`}>
+          <g className="qv-hit" tabIndex={0} role="img" aria-label={`Top side: ${width} ${lengthUnit}`}>
             <line className="qv-mark" x1={x0} y1={y0} x2={x0 + w} y2={y0} stroke="transparent" strokeWidth={8} />
-            <text x={x0 + w / 2} y={y0 - 10} textAnchor="middle" fill={INK_SOFT} fontSize={13} fontWeight={800}>{width} cm</text>
-            <ValueTooltip x={x0 + w / 2} y={y0 - 44} text={`${width} cm`} />
+            <text x={x0 + w / 2} y={y0 - 10} textAnchor="middle" fill={INK_SOFT} fontSize={13} fontWeight={800}>{width} {lengthUnit}</text>
+            <ValueTooltip x={x0 + w / 2} y={y0 - 44} text={`${width} ${lengthUnit}`} />
           </g>
-          <g className="qv-hit" tabIndex={0} role="img" aria-label={`Right upper side: ${height - cutHeight} cm`}>
+          <g className="qv-hit" tabIndex={0} role="img" aria-label={`Right upper side: ${height - cutHeight} ${lengthUnit}`}>
             <line className="qv-mark" x1={x0 + w} y1={y0} x2={x0 + w} y2={y0 + (h - ch)} stroke="transparent" strokeWidth={8} />
-            <text x={x0 + w + 8} y={y0 + (h - ch) / 2 + 4} fill={INK_SOFT} fontSize={13} fontWeight={800}>{height - cutHeight} cm</text>
-            <ValueTooltip x={x0 + w + 34} y={y0 + (h - ch) / 2 - 30} text={`${height - cutHeight} cm`} />
+            <text x={x0 + w + 8} y={y0 + (h - ch) / 2 + 4} fill={INK_SOFT} fontSize={13} fontWeight={800}>{height - cutHeight} {lengthUnit}</text>
+            <ValueTooltip x={x0 + w + 34} y={y0 + (h - ch) / 2 - 30} text={`${height - cutHeight} ${lengthUnit}`} />
           </g>
-          <g className="qv-hit" tabIndex={0} role="img" aria-label={`Inner step: ${cutHeight} cm`}>
+          <g className="qv-hit" tabIndex={0} role="img" aria-label={`Inner step: ${cutHeight} ${lengthUnit}`}>
             <line className="qv-mark" x1={x0 + w - cw} y1={y0 + h - ch} x2={x0 + w - cw} y2={y0 + h} stroke="transparent" strokeWidth={8} />
-            <text x={x0 + w - cw + 8} y={y0 + h - ch / 2 + 4} fill={INK_SOFT} fontSize={13} fontWeight={800}>{cutHeight} cm</text>
-            <ValueTooltip x={x0 + w - cw + 34} y={y0 + h - ch / 2 - 30} text={`${cutHeight} cm`} />
+            <text x={x0 + w - cw + 8} y={y0 + h - ch / 2 + 4} fill={INK_SOFT} fontSize={13} fontWeight={800}>{cutHeight} {lengthUnit}</text>
+            <ValueTooltip x={x0 + w - cw + 34} y={y0 + h - ch / 2 - 30} text={`${cutHeight} ${lengthUnit}`} />
           </g>
-          <g className="qv-hit" tabIndex={0} role="img" aria-label={`Left side: ${height} cm`}>
+          <g className="qv-hit" tabIndex={0} role="img" aria-label={`Left side: ${height} ${lengthUnit}`}>
             <line className="qv-mark" x1={x0} y1={y0} x2={x0} y2={y0 + h} stroke="transparent" strokeWidth={8} />
-            <text x={x0 - 8} y={y0 + h / 2 + 4} textAnchor="end" fill={INK_SOFT} fontSize={13} fontWeight={800}>{height} cm</text>
-            <ValueTooltip x={x0 - 40} y={y0 + h / 2 - 30} text={`${height} cm`} />
+            <text x={x0 - 8} y={y0 + h / 2 + 4} textAnchor="end" fill={INK_SOFT} fontSize={13} fontWeight={800}>{height} {lengthUnit}</text>
+            <ValueTooltip x={x0 - 40} y={y0 + h / 2 - 30} text={`${height} ${lengthUnit}`} />
           </g>
         </svg>,
-        `${title}: L-shaped compound rectilinear shape, labelled sides ${width} cm across the top, ${height - cutHeight} cm on the right, ${cutHeight} cm at the inner step and ${height} cm on the left`
+        `${title}: L-shaped compound rectilinear shape, labelled sides ${width} ${lengthUnit} across the top, ${height - cutHeight} ${lengthUnit} on the right, ${cutHeight} ${lengthUnit} at the inner step and ${height} ${lengthUnit} on the left`
       );
     }
     // Plain rectangle drawn in proportion to its stated dimensions.
@@ -619,18 +620,18 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
           </linearGradient>
         </defs>
         <rect className="qv-pop" x={x0} y={y0} width={drawWidth} height={drawHeight} fill={`url(#${rectGradientId})`} stroke={INK} strokeWidth={4} rx={3} />
-        <g className="qv-hit" tabIndex={0} role="img" aria-label={`Width: ${width} cm`}>
+        <g className="qv-hit" tabIndex={0} role="img" aria-label={`Width: ${width} ${lengthUnit}`}>
           <line className="qv-mark" x1={x0} y1={y0} x2={x0 + drawWidth} y2={y0} stroke="transparent" strokeWidth={8} />
-          <text x={x0 + drawWidth / 2} y={y0 - 12} textAnchor="middle" fill={INK_SOFT} fontSize={13} fontWeight={800}>{width} cm</text>
-          <ValueTooltip x={x0 + drawWidth / 2} y={y0 - 46} text={`width: ${width} cm`} />
+          <text x={x0 + drawWidth / 2} y={y0 - 12} textAnchor="middle" fill={INK_SOFT} fontSize={13} fontWeight={800}>{width} {lengthUnit}</text>
+          <ValueTooltip x={x0 + drawWidth / 2} y={y0 - 46} text={`width: ${width} ${lengthUnit}`} />
         </g>
-        <g className="qv-hit" tabIndex={0} role="img" aria-label={`Height: ${height} cm`}>
+        <g className="qv-hit" tabIndex={0} role="img" aria-label={`Height: ${height} ${lengthUnit}`}>
           <line className="qv-mark" x1={x0 + drawWidth} y1={y0} x2={x0 + drawWidth} y2={y0 + drawHeight} stroke="transparent" strokeWidth={8} />
-          <text x={x0 + drawWidth + 10} y={y0 + drawHeight / 2 + 4} fill={INK_SOFT} fontSize={13} fontWeight={800}>{height} cm</text>
-          <ValueTooltip x={x0 + drawWidth + 44} y={y0 + drawHeight / 2 - 30} text={`height: ${height} cm`} />
+          <text x={x0 + drawWidth + 10} y={y0 + drawHeight / 2 + 4} fill={INK_SOFT} fontSize={13} fontWeight={800}>{height} {lengthUnit}</text>
+          <ValueTooltip x={x0 + drawWidth + 44} y={y0 + drawHeight / 2 - 30} text={`height: ${height} ${lengthUnit}`} />
         </g>
       </svg>,
-      `${title}: rectangle ${width} cm by ${height} cm`
+      `${title}: rectangle ${width} ${lengthUnit} by ${height} ${lengthUnit}`
     );
   }
 
