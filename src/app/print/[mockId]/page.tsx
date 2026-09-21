@@ -29,7 +29,7 @@ main#main-content { display: block; }
 .pp-candidate span { flex: 1; border-bottom: 1px solid #172033; padding-bottom: 14px; }
 .pp-instr { margin: 10px 0 14px; padding: 9px 14px; border-left: 4px solid #f59e0b; background: #fffdf7; font: 9.5pt/1.45 Arial, sans-serif; color: #26344f; }
 .pp-instr ul { margin: 4px 0 0 16px; padding: 0; }
-.pp-cols { column-count: 2; column-gap: 9mm; column-rule: 1px solid #f7e8bd; }
+.pp-cols { column-count: 1; }
 .pp-q { break-inside: avoid; page-break-inside: avoid; margin: 0 0 11px; display: flex; gap: 8px; }
 .pp-q.wide { margin-bottom: 14px; }
 .pp-num { flex: none; width: 24px; height: 24px; border-radius: 999px; background: #172033; color: #fde68a; font: 700 9.5pt/24px Arial, sans-serif; text-align: center; }
@@ -40,7 +40,7 @@ main#main-content { display: block; }
 .pp-opts.one { grid-template-columns: 1fr; }
 .pp-opts li { display: flex; gap: 6px; align-items: baseline; }
 .pp-opts .l { flex: none; width: 17px; height: 17px; border: 1.2px solid #172033; border-radius: 4px; font: 700 8pt/15px Arial, sans-serif; text-align: center; }
-.pp-vis { margin: 5px 0 6px; max-width: 100%; }
+.pp-vis { margin: 5px 0 6px; max-width: 105mm; }
 .pp-vis > div { box-shadow: none !important; border-radius: 8px !important; }
 .pp-vis svg { max-width: 100%; height: auto; }
 .pp-vis table { width: 100% !important; table-layout: fixed; }
