@@ -1127,8 +1127,15 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
         </defs>
         <rect x={2} y={2} width={316} height={216} rx={14} fill={`url(#${mapGradientId})`} stroke={INK} strokeWidth={2} />
         {segments.map((segment, index) => {
-          const midX = (segment.from.x + segment.to.x) / 2;
-          const midY = (segment.from.y + segment.to.y) / 2;
+          // Slide the distance label along its leg until it clears every landmark name (approximate text boxes).
+          const clears = (cx: number, cy: number) =>
+            landmarks.every((l) => {
+              const halfW = l.label.length * 3;
+              return Math.abs(cx - l.x) > halfW + 20 || cy + 8 < l.y - 24 || cy - 10 > l.y - 2;
+            });
+          const t = [0.5, 0.4, 0.6, 0.35, 0.65].find((c) => clears(segment.from.x + (segment.to.x - segment.from.x) * c, segment.from.y + (segment.to.y - segment.from.y) * c)) ?? 0.5;
+          const midX = segment.from.x + (segment.to.x - segment.from.x) * t;
+          const midY = segment.from.y + (segment.to.y - segment.from.y) * t;
           const distance = distanceFor(segment.from.id, segment.to.id);
           return (
             <g key={`${segment.from.id}-${segment.to.id}-${index}`} className="qv-step" style={{ animationDelay: `${index * 0.12}s` }}>
@@ -1160,7 +1167,7 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
             <line x1={0} y1={0} x2={44} y2={0} stroke={INK} strokeWidth={2} />
             <line x1={0} y1={-4} x2={0} y2={4} stroke={INK} strokeWidth={2} />
             <line x1={44} y1={-4} x2={44} y2={4} stroke={INK} strokeWidth={2} />
-            <text x={22} y={16} textAnchor="middle" fill={INK} fontSize={9} fontWeight={700}>{scaleLabel}</text>
+            <text x={0} y={16} textAnchor="start" fill={INK} fontSize={9} fontWeight={700}>{scaleLabel}</text>
           </g>
         )}
       </svg>,

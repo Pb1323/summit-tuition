@@ -1,5 +1,9 @@
 # Summit Tuition — Status (Plain English)
 
+## Done (2026-09-21, later — rebuilt the QUEST/FSCE sample PDFs as clean printable papers)
+
+The first PDFs were screenshots of each question stitched together (repeating header on every page). Replaced with a real print layout: dev-only route `/print/[mockId]?part=paper|answers|sources|combined` (`src/app/print/[mockId]/page.tsx`, 404s in production, opts into the existing `.gl-print` print rules) rendered to PDF via Playwright `page.pdf()` — real selectable text, vector diagrams, title block once, small page-number footer. Outputs in `research/sample-mocks/`: `fsce-maths-paper.pdf` (5 pp, 2 columns) + `fsce-maths-answers.pdf`; `quest-english-questions.pdf` + `quest-english-sources.pdf`/`.html` (source booklet, separate) + `quest-english-answers.pdf` + `quest-english-combined.pdf`. Old screenshot PDFs deleted. Also fixed the `map` visual (scale label clipped, distance labels colliding with landmark names). Export script was throwaway (regenerate by starting `npm.cmd run dev` and calling `page.pdf()` on each route). Content still QUEST=medium confidence (no official samples).
+
 ## Done (2026-09-21 session, build follow-up — built the 2 QUEST/FSCE sample mocks, exported PDFs, drafted the Chris Pearse follow-up email)
 
 Direct follow-up to the research-only session below — this session did the actual build. Read the 5 research files first (all already on `main`), per the pairing decision: **Maths ← Future Stories/FSCE's Adventure+Beacon papers**, **English ← QUEST Part 2's Creative Comprehension**.

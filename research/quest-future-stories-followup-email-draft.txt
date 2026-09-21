@@ -6,9 +6,10 @@ been sent. To send it:
 1. Open a new email to Chris Pearse (Teachitright), reusing whatever address/thread you already
    have from his reply on 2026-09-09.
 2. Copy the subject and body below as-is (or tweak the tone if you'd like it more/less casual).
-3. Manually attach these two PDFs from the repo before sending:
-     - research/sample-mocks/future-stories-sample.pdf   (Maths — Future Stories/FSCE style)
-     - research/sample-mocks/quest-sample.pdf             (English — QUEST style)
+3. Manually attach these PDFs from the repo before sending (answer PDFs are optional/internal):
+     - research/sample-mocks/fsce-maths-paper.pdf         (Maths — Future Stories/FSCE style)
+     - research/sample-mocks/quest-english-combined.pdf   (English — QUEST style, sources then questions)
+       or quest-english-sources.pdf + quest-english-questions.pdf as two separate files
    Heads up: they're large (~14MB and ~7MB) because they're full-resolution screenshots of the
    live app, one per question — you may want to compress them (or re-export at a smaller size)
    before emailing, depending on Chris's mail server's attachment limit.
@@ -37,7 +38,7 @@ Stories' Adventure/Beacon structure (Reading School's own test), and one English
 on QUEST's Creative Comprehension section — a themed set of linked sources (a map, a data table,
 a chart, a short report) your students cross-reference to answer, rather than a single passage.
 
-Both are attached as PDFs, exported straight from the live platform, so what you're looking at is
+Both are attached as PDFs, laid out as clean printable papers in the platform's navy/gold style, so what you're looking at is
 the same navy-and-gold exam interface your students would actually sit the paper in, not a static
 mock-up.
 
