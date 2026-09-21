@@ -17,3 +17,5 @@
 4. Warm-lead route not yet tried at all (your existing parents/students' network, Reddit/Mumsnet 11+ threads, Facebook groups for tutors).
 
 **Agents launched 2026-09-21 (in flight when this was committed):** schools -> leads_schools.csv, regions -> leads_regions.csv, warm/community -> leads_warm.csv, contact verification -> contacts_verified.csv. Merge into leads.csv when they land, then fill recipients on the 10 unsent Gmail drafts (subjects name the target).
+
+**Merged 2026-09-21:** `leads_all.csv` = deduped union of leads/regions/warm/schools (already-contacted names removed). Emails only in `contacts_verified.csv` (45 rows, 24 real emails); 5 Gmail drafts have recipients set, rest need form/manual check. Warm agent found NO real forum posts asking for mocks; school bucket thin.

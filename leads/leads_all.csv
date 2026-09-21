@@ -1,0 +1,189 @@
+name,region,buyer_type,board,fit,website,source,notes,file
+Extra Tuition Centre,Kent/Medway/Bexley/Bucks/Glos/Manchester/Barnet,multi-centre tutor,GL-style,A,extratuition.com,search+11plusguide,45+ yrs; many regions = biggest content need; Bucks branch overlaps Chris area,leads.csv
+GLECTA Learning,Ilford/Harrow/Bexley/Medway/Chelmsford/Barnet/Westcliff,multi-centre tutor+mock provider,GL/CSSE/all,A,glecta.com,search,7 centres; sells mocks online; may already build own,leads.csv
+Sutton Tutorials,Sutton Coldfield/Birmingham/W Mids,tutor+mock provider,GL+CEM,A,suttontutorials.co.uk,search,Runs series of GL and CEM mocks across Midlands,leads.csv
+Educational Tutoring Services (ETS),Sutton Coldfield/Walsall/Great Barr,multi-centre tutor,CEM-style,A,tutoringservice.co.uk,search,2 centres; CEM-style mocks; fits CEM pivot,leads.csv
+Einstein11Plus,Birmingham (Harborne/Sutton/Edgbaston/Solihull),multi-centre tutor,GL+CEM,A,einstein11plus.com,search,Sells GL mock products online,leads.csv
+11 Plus Base,Birmingham/Sandwell/Dudley/Solihull/Walsall/Warks,multi-area tutor,GL/CEM,A,11plusbase.com,search,Score tracking + progress reports = platform need,leads.csv
+Profectus Tutoring,Warwickshire/W Mids/Lincolnshire,tutor,GL/CEM,B,profectustutoring.co.uk,search,In-person mocks,leads.csv
+Tutors Excel,Solihull/Birmingham,tutor,GL/CEM,B,tutors-excel.com,search,Regular mocks,leads.csv
+Prep4All,Birmingham/national,mock provider,GL/CEM,B,prep4all.co.uk,search,Mock provider; reseller or competitor,leads.csv
+Tintagel Tutoring,unconfirmed,tutor+mock provider,11+ mocks,C,tintageltutoring.co.uk,search,Region not confirmed,leads.csv
+Life Changing Tuition,Bexley/Kent,tutor,CEM+GL,B,lifechangingtuition.com,search,Covers Kent/Medway/Bexley,leads.csv
+Perfect Plus Tutoring,Medway,tutor,GL,C,perfectplustutoring.com,search,Small,leads.csv
+11plusprepschool,Bexley,tutor,Quest (new Bexley provider),B,11plusprepschool.co.uk,search,Blogs Bexley moving to Quest = needs Quest content,leads.csv
+Marie Redmond Tuition,Bucks/Herts/Berks (Bushey centre),multi-centre tutor,Bucks/Kendrick/Slough/Reading (FSCE),A,marieredmond.co.uk,search+11plusguide,Already runs FSCE mocks; overlaps Chris area - hold,leads.csv
+Brilliant Tutors Academy,Reading,tutor,FSCE,B,brilliant-tutors.co.uk,search,FSCE mocks in-house; Reading,leads.csv
+11plustutoring.uk,Berkshire/Surrey/Leeds (online),online tutor network,multi,B,11plustutoring.uk,search,Many town pages = scaled operator,leads.csv
+Adnan Khan Tutoring,Wokingham (online),solo tutor,FSCE,C,adnankhantutoring.co.uk,search,Solo; low ticket,leads.csv
+Quest for Exams,UK online,mock/tutor portal,QUEST,A,questforexams.co.uk,search,Tutor portal + full-length mocks; QUEST content buyer or competitor,leads.csv
+Leading Tuition,UK,tutor agency,QUEST/multi,B,leadingtuition.co.uk,search,Publishes grammar-school board guide,leads.csv
+QS Learning,UK,tutor,QUEST/grammar,B,qslearning.co.uk,search,,leads.csv
+Atom Learning,UK,edtech (QUEST owner),QUEST,C,atomlearning.com,search,Competitor; unlikely buyer,leads.csv
+David Bell Education,UK,consultant,QUEST,C,davidbelleducation.co.uk,search,Guides only; referrer at best,leads.csv
+11 Plus Wirral,Wirral,tutor+mock writer,QUEST from Sept 2026,A,11pluswirral.com,search,Writes own mocks; Wirral moving to Quest = urgent need,leads.csv
+Gurukul 11+,Liverpool,tutor,Blue Coat/Trafford/Wirral,A,gurukul-11plus.co.uk,search,Board-specific mocks,leads.csv
+The Education Centre Liverpool,Liverpool,centre,11+,B,privatetuitionliverpool.com,11plusguide,,leads.csv
+Accelerate Learning,Liverpool,centre,11+,B,alcentres.co.uk,11plusguide,Multi-centre domain,leads.csv
+Chuckra 11 Plus,Trafford/Manchester,tutor+content,GL/Trafford,A,11plus.co.uk,search,Publicly partners with tutors/companies for mock services,leads.csv
+Better Tuition,Urmston,tutor,11+,C,bettertuition.co.uk,11plusguide,,leads.csv
+LearnNorthwest,Manchester,tutor,11+,C,learnnorthwest.com,11plusguide,,leads.csv
+11 Plus Tutors in Manchester,Manchester,tutor+mocks,independent entrance,B,11plustutorsinmanchester.co.uk,search,Runs Nov-Jan mocks; different firm from Essex one,leads.csv
+Prestige Tuition Centre,Greater Manchester,centre,private grammar,B,prestigetuition.co.uk,search,,leads.csv
+Education Plus Tutoring,Holmfirth,tutor,11+,C,education-plus-tutoring.co.uk,11plusguide,,leads.csv
+First Class Learning,Leeds/Wakefield/Barnet,multi-centre tutor,11+,B,firstclasslearning.co.uk,11plusguide,NOT same as 1st Class Tuition (already contacted) - verify,leads.csv
+Oak Tuition,Huddersfield,tutor,11+,C,oaktuition.com,11plusguide,,leads.csv
+Top Tip Tutoring,Skipton,tutor,11+,C,toptiptutoring.co.uk,11plusguide,,leads.csv
+Maple Education,Aylesbury,tutor,11+ Bucks,B,mapleeducation.co.uk,11plusguide,Bucks - near Chris,leads.csv
+Flying Start Tuition,Chesham/Aylesbury,tutor,11+ Bucks,B,flyingstarttuition.co.uk,11plusguide,Bucks - near Chris,leads.csv
+11 Plus CEM Academy,Milton Keynes,tutor,CEM,A,11pluscem.co.uk,11plusguide,CEM specialist; fits CEM pivot,leads.csv
+Becky Pengilly,Burnham,solo tutor,Bucks,C,beckypengilly.co.uk,11plusguide,Burnham = Chris's town - hold,leads.csv
+GX Tuition,Gerrards Cross,tutor,11+/GCSE,C,gxtuition.co.uk,search,Chris area - hold,leads.csv
+Beaconsfield School 11+,Beaconsfield,tutor,11+,C,beaconsfieldschool.co.uk,11plusguide,,leads.csv
+11 Plus Teacher,Chelmsford,tutor,CSSE,B,11plusteacher.co.uk,11plusguide,,leads.csv
+Jacqui Robinson Education,Colchester,tutor,CSSE,C,jacquirobinsoneducation.co.uk,11plusguide,,leads.csv
+Jane Beckett 11plustutor,Cirencester/Stroud/Gloucester/Cheltenham/Swindon,tutor,CEM (Glos),B,11plustutor.me,11plusguide,Gloucestershire uses CEM,leads.csv
+Cohort Tuition,Gloucester,tutor,CEM (Glos),B,cohorttuition.co.uk,11plusguide,,leads.csv
+Topmarks 11 Plus Tuition School,Gloucester,tutor,CEM (Glos),C,topmarks11plus.wix.com/tuition-school,11plusguide,Wix site,leads.csv
+Tewkesbury Tuition,Glos/Worcs/Warks,tutor,CEM (Glos),C,tewkesburytuition.co.uk,search,,leads.csv
+KSOL,Gloucester,tutor,CEM (Glos),C,ksol.co.uk,search,,leads.csv
+Regent Learning Centre,Harrow,centre,11+,B,regentlearning.com,11plusguide,,leads.csv
+Harrow Tuition Centre,Harrow/Barnet,centre,11+,B,harrowtuitioncentre.co.uk,search,,leads.csv
+Advance Education Services,Mill Hill/Hampstead/Harrow,centre,11+,B,advanceeducation.co.uk,11plusguide,,leads.csv
+Eleven Plus Exams (tuition centre + mocks),Harrow / national online,tutor+large content site,multi,A,elevenplusexams.co.uk,search,Big authority site with mocks and a VLE; strong fit or competitor,leads.csv
+Achieve Learning,Harrow,centre,11+/GCSE,B,achievelearning.co.uk,search,Since 2004,leads.csv
+Hatch End Tuition,SW Herts/Harrow,tutor,SW Herts consortium,B,hatchendtuition.co.uk,search,,leads.csv
+Test Teach,Sutton/Kingston,centre,CSSE/Surrey,B,testteach.co.uk,search,Weekly classes + monthly reports,leads.csv
+House of Tutors,Croydon/Slough/Lewisham,multi-centre tutor,11+/SATs,B,houseoftutors.co.uk,search,,leads.csv
+StudyBox,Sutton/Wallington,tutor,Sutton grammar,C,studybox.london,search,,leads.csv
+Explore Learning,UK (~95-124 centres),national chain,11+ support,C,explorelearning.co.uk,search,Enterprise; slow sale,leads.csv
+Kip McGrath,UK franchise,franchisor,English/maths,C,kipmcgrath.co.uk,search,Franchisor: head-office deal only,leads.csv
+The Learning Hub Group,Wembley,centre,11+/GCSE/A-level,B,thelearninghubgroup.co.uk,search,,leads.csv
+The Learning Centre (TLC),unconfirmed,centre,11+,C,tlctutoringservices.co.uk,search,,leads.csv
+Excel Academy,Harrow,centre,11+/GCSE,B,excelacademy.org.uk,search,,leads.csv
+Pegasus Tutors,London/UK,tutor agency,ISEB pretest/13+,B,pegasustutors.co.uk,search,Independent-school route,leads.csv
+School Entry Tutor,London/Home Counties,solo/small,ISEB/13+,C,schoolentrytutor.co.uk,search,,leads.csv
+Planet BOFA,UK online,edtech,ISEB/London consortium,B,verify domain,search,Adaptive platform; competitor or partner,leads.csv
+Able Tutors,London,tutor,13+/ISEB,C,abletutors.co.uk,search,,leads.csv
+Ampla,UK,tutor,ISEB/CE,C,ampla-edu.com,search,,leads.csv
+TheLearningMaths,UK,tutor,13+,C,thelearningmaths.com,search,,leads.csv
+Teachers To Your Home,UK national,agency,11+/13+,B,teacherstoyourhome.com,search,National coverage = content reuse,leads.csv
+Pre-Test.co.uk,UK,mock provider,ISEB/London consortium,B,pre-test.co.uk,search,Bespoke pre-test mocks,leads.csv
+SHLC Tutors,UK,marking service,GCSE/11+,B,shlc-tutor.co.uk,search,Sells bulk marking to schools/agencies; auto-marking is a fit,leads.csv
+ElevenPlus Euphoria,UK online,mock provider,11+,B,11pluseuphoria.co.uk,search,,leads.csv
+Mock Exam Centre,UK,mock provider,11+,B,mockexamcentre.co.uk,search,,leads.csv
+Winterwood Tutors,UK,tutor+mocks,11+,C,winterwoodtutors.co.uk,search,,leads.csv
+Pass 11 Plus Grammar,UK,mock/blog,11+,C,pass11plusgrammar.co.uk,search,,leads.csv
+ElevenPlus Genius,UK online,interactive mock platform,11+,B,elevenplusgenius.co.uk,search,Competitor platform; possible content buyer,leads.csv
+Learning Street,UK,tutor,independent 11+,C,learningstreet.co.uk,search,,leads.csv
+Spires,UK online,tutor marketplace,11+,C,verify domain,search,Marketplace; content partner maybe,leads.csv
+Hampstead & Frognal Tutors,London,TTA agency,GCSE,C,hampsteadandfrognaltutors.org.uk,search,TTA corporate member,leads.csv
+Enjoy Education,London,TTA agency,GCSE/11+,B,verify domain,search,Founded 2006; founding TTA member,leads.csv
+Minerva Tutors,UK,tutor agency,GCSE,C,verify domain,search,,leads.csv
+Knowledge Seekers,UK,tutor agency,GCSE,C,knowledgeseekers.co.uk,search,,leads.csv
+11 Plus Academy,Kent (Kings Hill/Sevenoaks/Tunbridge Wells/Tonbridge/Bearsted/Aylesford/St Mary's Island),multi-centre tutor,Kent/GL/CEM,A,11plus-academy.co.uk,11plusguide Kent,8 Kent centres; no email seen,leads_regions.csv
+E.S. Tutors,Gillingham Kent,tutor centre,Kent,C,estutors.co.uk,11plusguide Kent,,leads_regions.csv
+Prize Tuition,Faversham/Ashford/Canterbury/Folkestone Kent,tutor+mock provider,Kent,B,prizetuition.co.uk,11plusguide Kent + web search,Runs mocks,leads_regions.csv
+Tutor Rise,Bexleyheath,tutor,Kent/Bexley,C,tutorrise.com,11plusguide Kent,,leads_regions.csv
+West Kent Tuition,East Peckham/Tonbridge,tutor,Kent,C,westkenttuition.com,11plusguide Kent,,leads_regions.csv
+Mock Test Masters,Tonbridge Kent,mock provider,Kent,B,mocktestmasters.co.uk,web search,Runs Big Kent 11+ mock,leads_regions.csv
+AIM Kent,Tunbridge Wells/Tonbridge/Sevenoaks,charity tuition + mocks,Kent,C,aimkent.org.uk,web search,Charity; free tuition for low-income; runs Y5 mocks,leads_regions.csv
+Primary School Tutoring Ltd,Margate Kent,tutor,Kent,C,,DeepMark directory,,leads_regions.csv
+11 Plus Pod,Leigh-on-Sea/Southend/Rayleigh Essex,mock provider,CSSE,A,11pluspod.com,web search + DeepMark,Runs mocks in primary schools,leads_regions.csv
+Learning Plus Southend,Southend-on-Sea Essex,tutor centre+mocks,CSSE,A,learningplussouthend.com,web search,Monday evening centre,leads_regions.csv
+11 Plus Mock Exams Southend CSSE,Southend/Basildon/Chelmsford/Colchester,mock provider,CSSE,B,sites.google.com/view/11plusmockexamssouthend,web search,,leads_regions.csv
+Excel Academy Tutors,Essex,tutor,CSSE,C,,DeepMark directory,,leads_regions.csv
+Blackstone Tutors,Borehamwood Herts,tutor,Herts,C,,DeepMark directory,,leads_regions.csv
+Trefoil Tutors,Elstree Herts,tutor,Herts,C,,DeepMark directory,,leads_regions.csv
+Walker Tuition,Amersham Bucks,tutor,Bucks,C,,DeepMark directory,,leads_regions.csv
+Elite Tuition Centre,Birmingham,centre,GL,C,,DeepMark directory,,leads_regions.csv
+11 Plus Dash,Walsall,tutor,GL,B,,DeepMark directory,,leads_regions.csv
+11Plustutors Ltd,Northampton,tutor,,C,,DeepMark directory,,leads_regions.csv
+Club 11 Plus,Poole Dorset,tutor,Dorset GL,B,,DeepMark directory,,leads_regions.csv
+Teacher Gra Oet Exam Tutor,Bournemouth,tutor,,C,,DeepMark directory,,leads_regions.csv
+The Cambridge Tutor Company,Swindon,tutor,,C,,DeepMark directory,,leads_regions.csv
+42tutoring,Bristol,tutor,,C,,DeepMark directory,,leads_regions.csv
+The Tutoring School,Polegate E Sussex,tutor,,C,,DeepMark directory,,leads_regions.csv
+Tutor Led Learning,York,tutor,,C,,DeepMark directory,,leads_regions.csv
+Tutorantis,Edinburgh Scotland,tutor,,C,,DeepMark directory,,leads_regions.csv
+West Midlands Tuition Hub,Stoke-on-Trent,tutor,,C,,DeepMark directory,,leads_regions.csv
+EduCare Tuitions,Manchester,tutor,,C,,DeepMark directory,,leads_regions.csv
+Pillai Tutors,London/Croydon centre,multi-centre tutor,Kent/Bexley/Sutton/Kingston,A,pillaitutors.co.uk,web search,Croydon centre; Bexley office in DeepMark,leads_regions.csv
+Winatutors,Bexley,tutor,Kent/Bexley,C,,DeepMark directory,,leads_regions.csv
+11 Plus Prep School Ltd,Bexley,tutor,Bexley,C,,DeepMark directory,,leads_regions.csv
+Teach & Coach Tutors,Leeds,tutor+mocks,Yorkshire,B,,web search,Group + online + mock tests,leads_regions.csv
+Torbay Tutors,Torquay/Paignton/Totnes/Newton Abbot Devon,tutor+mock provider,Devon,A,torbaytutors.co.uk,web search,Runs 11+ mocks,leads_regions.csv
+Exeter Tutors / The Exam Suite,Exeter Devon,tutor+mock provider,Devon,A,exetertutors.com,web search,Exam Suite runs mocks from March,leads_regions.csv
+11 Plus Tutoring Academy,Bristol/Gloucs/Swindon,tutor+mocks,CEM/GL,A,11plustutoringacademy.co.uk,web search,Group tuition Bristol,leads_regions.csv
+The Exam Coach,Cambridge/Bristol/Sheffield/Trafford (online),online group tutor network,various,A,theexamcoach.tv,web search,Multi-region online groups,leads_regions.csv
+Principal Tutors,Trafford/Altrincham/Manchester,tutor agency,Trafford,B,principaltutors.com,web search,,leads_regions.csv
+Trafford Tuition,Trafford,tutor,Trafford,B,trafford-tuition.co.uk,web search,Ofsted-registered,leads_regions.csv
+Impact Tuition Urmston,Urmston Trafford,tutor,Trafford,C,impacttuitionurmston.co.uk,web search,,leads_regions.csv
+11plustrafford,Trafford,tutor,Trafford,C,11plustrafford.co.uk,web search,,leads_regions.csv
+Victoria Philpotts,Manchester,solo tutor,,C,victoriaphilpotts.co.uk,web search,,leads_regions.csv
+Examberry,Slough,tutor centre,Slough,B,examberry.com,web search,Multi-year courses,leads_regions.csv
+11++ Tuition,Slough/Reading,mock provider,GL,B,11plusplustuition.co.uk,web search,Test hall mocks,leads_regions.csv
+On Target Tuition,Lisburn N Ireland,tutor centre,AQE/GL NI,A,on-targettuitionlisburn.co.uk,web search,,leads_regions.csv
+Catapult Tuition,Northern Ireland,tutor/practice papers,SEAG,B,catapult-tuition.com,web search,,leads_regions.csv
+Creative in Learning,Mold Wales,tuition centre+exam centre,GCSE WJEC,B,,web search,Tel 01352 755 141 per search result,leads_regions.csv
+Moon Tuition,Cambridge/Reading/London,multi-centre tutor,11+13+ ISEB,A,moontuition.co.uk,web search,,leads_regions.csv
+U2 Tuition,Oxford/London,tutor,11+,B,u2tuition.com,web search,,leads_regions.csv
+Oxford Tutors,Oxford,tutor agency,11+/GCSE,B,oxfordtutors.com,web search,,leads_regions.csv
+Tutorbility,UK online,tutor,11+,C,tutorbility.com,web search,,leads_regions.csv
+Our Future Tutoring,,TTA partner,,C,ourfuturetutoring.com,TTA partners,,leads_regions.csv
+New Chapter Tuition,,TTA partner,,C,newchaptertuition.co.uk,TTA partners,,leads_regions.csv
+Tugo Tutors,,TTA partner tutor marketplace,,C,tugotutors.com,TTA partners,,leads_regions.csv
+Get My Grades,,TTA partner,GCSE,C,getmygrades.co.uk,TTA partners,,leads_regions.csv
+11 Plus Tutors in Essex,Chelmsford/Essex,tutor+mock provider,CSSE/CCHS-FSCE,A,11plustutorsinessex.co.uk,search+fetch,Evidence: mocks are paper-only in Keene Hall Galleywood; results/marked papers returned BY POST; page says 'please also consider our online portal' = online delivery is an afterthought. URL: 11plustutorsinessex.co.uk/11plusmockexams/. FSCE Adventure/Beacon/Compass/Discovery formats = direct match to our FSCE sample,leads_warm.csv
+11++tuition,Langley/Reading/Bucks/Slough,mock provider+tutor,GL/Quest/Reading boys,A,11plusplustuition.co.uk,search+fetch,"Evidence: hall-based mocks plus online overflow, own booking system (my.11plusplustuition.co.uk/bookings); explicitly runs Quest formats - matches new Quest sample. Reading/Slough/Bucks (Chris area for Bucks - check overlap before contact)",leads_warm.csv
+Colin Arnold Tuition,Colchester/North Essex,solo tutor+paper writer,CSSE,B,colinarnoldtuition.com,search+fetch,Evidence: page says he WRITES each CSSE English/maths mock himself and in-person mocks paused 2027 planning 3 mocks May-Jul 2028 = pain point is authoring time; small so low ticket but strong licensing story,leads_warm.csv
+Skillplus Tuition,UK/London (CSSE),paper seller,CSSE,B,skillplustuition.com,search+fetch,Evidence: sells downloadable PDF mock packs GBP10/paper or GBP25/3; hard copies by email request; no online test platform. URL: skillplustuition.com/category/past-mock-11-exam-papers. Registered co 14186552,leads_warm.csv
+Kinetic Kids Academy,Bexley/Kent,new small centre,Bexley grammar/Kent,B,kinetickidsacademy.co.uk,search+fetch,"Evidence: 'New Venture' - Year 5 cohort launched Sept 2025 (full), Year 4 free trial Jan 2026, 12 spots/session, 'no screen time'; no mock exams or online system mentioned - obvious gap; overlaps 11plusprepschool Bexley Quest lead area. URL: kinetickidsacademy.co.uk/11-plus-tuition-tutor-in-bexley-year-4/",leads_warm.csv
+School of Coding & AI (SOC Learning),Wolverhampton,centre,4-subject 11+,B,soclearning.com,search+fetch,Evidence: centre-based 11+ mocks in person; separate 'Online 11+ Mock Exam' product suggests they want online delivery; GBP20-30/lesson. URL: soclearning.com/tuition/11-plus-tuition/11-plus-centre-based-mock-exams/,leads_warm.csv
+The Tutoring Company,Aylesbury/Luton/Slough,multi-centre tutor,11+ Bucks/Slough,B,thetutoringcompany.co.uk,search,Evidence: 3 centres; 'targeted 11+ mock exams and booster courses'; Aylesbury = Bucks near Chris - check overlap,leads_warm.csv
+Eleven Ace,UK online,online tutor,GL/independent,C,elevenace.com,search,"Says 'full mock tests' + online tutors; possible content buyer, likely has own; low evidence of need",leads_warm.csv
+Eleven Plus Centre,Hounslow London,centre,independent/GL,C,elevenpluscentre.com,search,Has own interactive learning portal with instant marking - competitor; only viable as content licensee,leads_warm.csv
+11 Plus VIP,UK,tutor+mock seller,multi,C,11plusvip.com,search,"Sells practice papers, tuition and mocks; not fetched - verify",leads_warm.csv
+Edgbaston Tuition Centre,Birmingham,centre,CEM/GL,C,edgbastontuition.com,search,Has Mock 1 exam page (URL 404 on fetch - site may be being rebuilt; verify). Birmingham CEM/GL area,leads_warm.csv
+AIM (Achieve Inspire Motivate) mocks,Kent,charity mock programme,Kent Test,C,aimkent.org.uk,search+fetch,"Charity 1167767; papers exclusively by Exam Papers Plus, in-person, scores emailed within 14 days, answer sheets POSTED; free to pupil-premium children. Partner-or-CSR route not sale",leads_warm.csv
+Tutor World,Ashford/Canterbury/Folkestone/Maidstone Kent,multi-centre tutor,Kent Test,B,tutorworlduk.com,search+fetch,Evidence: replica Kent Test mocks in 5 Kent sites; page gives NO delivery/marking method or online option. URL: tutorworlduk.com/mock-exams.html,leads_warm.csv
+Chuckra Kent (Tonbridge) Test Centre,Tonbridge Kent,test centre operator,GL/ISEB/CEM/FSCE/CSSE,B,11plus.co.uk,search,"Open to anyone nationally starting Y6 Sept 2026/27, all boards; extends existing Chuckra lead (already in leads.csv) with a distinct hall-mock revenue line",leads_warm.csv
+SGS PTA Mock Tests,Sutton,school PTA,SET/Sutton,C,sgsptamocktests.com,search,"PTA hall-based familiarisation tests; 2026 tests finished - not a commercial buyer, awareness only",leads_warm.csv
+A Star Tuitions,UK,tuition company (TTA NTA26 sponsor),GCSE/11+,C,astartuitions.co.uk,fetch NTA26 sponsors,"Listed as sponsor of National Tutoring Awards 2026 (thetutorsassociation.org.uk/national-tutoring-awards-2026) - active, sector-engaged; no evidence of mock need",leads_warm.csv
+Osbourne Cawkwell Tuition,UK,tuition company (NTA26 sponsor),multi,C,octuition.co.uk,fetch NTA26 sponsors,NTA26 sponsor; sector-engaged; no need evidence,leads_warm.csv
+Vanessa's Tutoring,UK,tuition company (NTA26 sponsor),multi,C,vanessastutoring.com,fetch NTA26 sponsors,NTA26 sponsor; no need evidence,leads_warm.csv
+That Tutor,UK,tuition company (NTA26 sponsor),multi,C,thattutor.uk,fetch NTA26 sponsors,NTA26 sponsor; no need evidence,leads_warm.csv
+Wonderlearn,UK,tuition company (NTA26 sponsor),primary/11+,C,wonderlearn.co.uk,fetch NTA26 sponsors,NTA26 sponsor; verify 11+ offering,leads_warm.csv
+National Learning Group,UK,tuition group (NTA26 sponsor),multi,C,nationallearninggroup.co.uk,fetch NTA26 sponsors,NTA26 sponsor; larger group = more budget,leads_warm.csv
+Manning Tutors,UK,tutor agency (NTA26 sponsor),multi,C,manningstutors.co.uk,fetch NTA26 sponsors,NTA26 sponsor,leads_warm.csv
+Tugo,UK,AI co-pilot for group tutors (TTA partner),multi,B,tugo.co.uk (verify),fetch TTA partners,TTA partner: auto-marking + marketplace for group tutors - could list/buy mocks; verify domain. Partner or competitor,leads_warm.csv
+Study Central,UK,online tuition materials (TTA partner),maths/English,B,verify domain,fetch TTA partners,TTA partner selling online maths/English materials - possible content licensee,leads_warm.csv
+Olivia Press,UK,11+/GCSE workbook publisher (TTA partner),11+,B,verify domain,fetch TTA partners,'Exam Mastery Series' workbooks for 11+ and GCSE; publisher = licensing route for question banks,leads_warm.csv
+TTA Regional Events 2026,UK regions,event/community,n/a,B,thetutorsassociation.org.uk/regional-events-2026,search,FREE to attend for non-members; meet TTA President + tuition business leaders per region - warm-intro venue for pitching in person,leads_warm.csv
+TTA Tuition Leadership Day 2026,London,event,n/a,C,thetutorsassociation.org.uk/tuition-leadership-day-2026,search,Held 3 Jul 2026 (already past); 90 guests incl suppliers/platforms; watch for 2027 edition,leads_warm.csv
+National Tutors Conference,UK,event,n/a,C,tutorsconference.co.uk,search,2025 edition site found; check 2026/27 dates for exhibitor stand,leads_warm.csv
+Maths Tutors UK (Facebook group),UK,community,n/a,C,facebook.com/groups/mathstutorsuk,search,Community name only; group privacy status not verified; no specific post found asking for mocks,leads_warm.csv
+National Tutors UK (Facebook group),UK,community,n/a,C,facebook.com/groups/NationalTutorsUK,search,"Community name only, appears to be tutor-finder group; privacy not verified",leads_warm.csv
+City of London School,London,selective independent school admissions,Quest Assessments (own adaptive test),B,cityoflondonschool.org.uk,cityoflondonschool.org.uk/admissions/11-entry,Uses Quest online adaptive test + familiarisation portal; enquiries@cityoflondonschool.org.uk seen on page; Quest board = fits our QUEST pivot,leads_schools.csv
+Queen's College London,London,independent girls school admissions,London 11+ Consortium,B,qcl.org.uk,qcl.org.uk/admissions/11-admissions,admissions@qcl.org.uk seen on page (Head of Admissions listed); no mock info on page,leads_schools.csv
+More House School,London,independent girls school admissions,London 11+ Consortium,B,morehouse.org.uk,bofa11plus.com More House page,Member of 14-school consortium; BOFA sells mock packs for it; no school email seen on page,leads_schools.csv
+North London Collegiate School,London,independent girls school admissions,London 11+ Consortium,C,nlcs.org.uk,leadingtuition.co.uk consortium article,Named as consortium member; no contact seen; not verified on own site,leads_schools.csv
+Alleyn's School,London,independent school admissions,London consortium (South),C,alleyns.org.uk,leadingtuition.co.uk consortium article,Named as consortium member; no contact seen; not verified on own site,leads_schools.csv
+Kingston Grammar School,Kingston/Surrey,independent day school admissions,Own 10+/11+ entrance tests,B,kgs.org.uk,kgs.org.uk/admissions/admissions-process/10-11-admissions,registrar@kgs.org.uk and enquiries@kgs.org.uk seen on page; page does not mention mocks,leads_schools.csv
+Reigate Grammar School,Surrey,independent school admissions,Own English/Maths/Reasoning tests,B,reigategrammar.org,reigategrammar.org/admissions/entry-at-11,Publishes 11+ and 13+ sample papers (so values practice content); email obfuscated on page - use contact via site; phone 01737 222231 seen,leads_schools.csv
+Caistor Grammar School,Lincolnshire,state grammar admissions,Own Verbal Reasoning tests,C,caistorgrammar.com,caistorgrammar.com/join-us/process,admissions@caistorgrammar.com seen on page; VR-only test with guidance doc,leads_schools.csv
+Monkton Combe School,Bath,independent school admissions,CAT4 Level C,C,monkton.org.uk,exampapersplus.co.uk Monkton Combe page,mpsadmissions@monkton.org.uk seen on third-party page; CAT4 not our content type,leads_schools.csv
+Eaton Square Prep,London,prep school running own 11+ prep,Atom Learning + setting,B,eatonsquareschools.com,eatonsquareschools.com/prep/11-results,Uses Atom Learning for VR/NVR (competitor tool in use); phone 0207 225 3131; no email seen (Enquire Now form on site),leads_schools.csv
+Warlingham Park School,Surrey,prep school with 11+ Club,11+ generic,A,warlinghamparkprepschool.co.uk,warlinghamparkprepschool.co.uk/juniors/preparation-for-11,Runs weekly 11+ Club Y5 spring to Y6 autumn incl. practice papers + mocks = direct content buyer; phone 01883 626844; contact form on site,leads_schools.csv
+Brentwood School,Essex,independent school admissions,Own entrance assessment,C,brentwoodschool.co.uk,brentwoodschool.co.uk/admissions/open-events-school-visits,admissions@brentwood.essex.sch.uk seen; only taster mornings listed on page,leads_schools.csv
+OxBridge Centre,Sutton/Wimbledon,tutor centre + mock provider,Sutton grammar style (English+Maths),A,oxbridgeuk.com,oxbridgeuk.com/11-plus-mock-tests,Runs Y5 mock sets at Sutton High School and KCS Wimbledon; admin@oxbridgeuk.com and booking form seen on page,leads_schools.csv
+Educare 11 Plus,Manchester/national,mock provider,GL/CEM regional,A,educare11plus.co.uk,educare11plus.co.uk mock exams page,Mocks throughout year by region; info@educare11plus.co.uk seen on page,leads_schools.csv
+Yellowbird Education,London (Fulham/Putney),tutor + mock provider,London/boarding independent exams 7+/8+/10+/11+,B,yellowbirdeducation.com,yellowbirdeducation.com/mock-exams,Phone/WhatsApp only on page (no email/form seen),leads_schools.csv
+11plus-mockexams.co.uk,UK online,mock provider,CEM/GL/CSSE/ISEB + named school styles,B,11plus-mockexams.co.uk,11plus-mockexams.co.uk,Style-specific mocks for selective schools; contact only via WhatsApp/Telegram on page,leads_schools.csv
+Think Academy UK,London,edtech/tutor mock provider,GL/CEM/ISEB,B,thinkacademy.uk,blog.thinkacademy.uk/11-plus-mock-exams,Y4/Y5 mocks with cohort ranking + reports; hello@thinkacademy.uk seen on page,leads_schools.csv
+Pass Eleven Plus,UK (40+ locations),mock/practice provider,GL + regional consortiums,A,passelevenplus.co.uk,passelevenplus.co.uk,Mocks across many regions; help@passelevenplus.co.uk + form https://passelevenplus.co.uk/contact-us/ seen; verify not same firm as Pass 11 Plus Grammar,leads_schools.csv
+Rob Williams Assessment,UK,test publisher/mock seller,13+/ISEB/CE,A,robwilliamsassessment.co.uk,robwilliamsassessment.co.uk/practice-13-plus-past-papers,Sells 13+ practice papers/mocks via ExamPapersPlus; passedpapers@gmail.com + contact form seen; potential licensing partner or competitor,leads_schools.csv
+Owl Tutors,UK online,papers publisher/tutoring,11+/13+ CE,B,owltutors.co.uk,owltutors.co.uk/advice/11-plus/exam-papers,Sells 15 premium paper packs (GBP4.95-25); contact form https://owltutors.co.uk/contact-us/; phone 020 3457 8474,leads_schools.csv
+Keystone Tutors,London,tutor agency,13+/London consortium,B,keystonetutors.com,keystonetutors.com/news/london-11-plus-consortium,enquiries@keystonetutors.com + /contact form seen; mocks not mentioned on page,leads_schools.csv
+Golden Circle Tutors,London,tutor agency offering mocks + interviews,13+/11+,B,goldencircletutors.co.uk,goldencircletutors.co.uk/how-to-prepare-for-13-exams,Lists Mock Exams & Interviews service; contactus@goldencircletutors.co.uk seen on page,leads_schools.csv
+Sherpa Online,UK online,tutor marketplace,13+ CE/pre-tests,C,sherpa-online.com,sherpa-online.com/blog,No mocks mentioned; tutor-matching only; no contact seen - referrer at best,leads_schools.csv
