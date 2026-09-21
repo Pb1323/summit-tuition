@@ -1,0 +1,19 @@
+name,region,buyer_type,board,fit,website,source,notes,file
+Tutors Excel,Solihull/Birmingham,tutor,GL/CEM,B,tutors-excel.com,search,Regular mocks,leads.csv
+Leading Tuition,UK,tutor agency,QUEST/multi,B,leadingtuition.co.uk,search,Publishes grammar-school board guide,leads.csv
+Prestige Tuition Centre,Greater Manchester,centre,private grammar,B,prestigetuition.co.uk,search,,leads.csv
+11 Plus Teacher,Chelmsford,tutor,CSSE,B,11plusteacher.co.uk,11plusguide,,leads.csv
+Eleven Plus Exams (tuition centre + mocks),Harrow / national online,tutor+large content site,multi,A,elevenplusexams.co.uk,search,Big authority site with mocks and a VLE; strong fit or competitor,leads.csv
+Excel Academy,Harrow,centre,11+/GCSE,B,excelacademy.org.uk,search,,leads.csv
+ElevenPlus Euphoria,UK online,mock provider,11+,B,11pluseuphoria.co.uk,search,,leads.csv
+Knowledge Seekers,UK,tutor agency,GCSE,C,knowledgeseekers.co.uk,search,,leads.csv
+Learning Plus Southend,Southend-on-Sea Essex,tutor centre+mocks,CSSE,A,learningplussouthend.com,web search,Monday evening centre,leads_regions.csv
+Teacher Gra Oet Exam Tutor,Bournemouth,tutor,,C,,DeepMark directory,,leads_regions.csv
+11 Plus Prep School Ltd,Bexley,tutor,Bexley,C,,DeepMark directory,,leads_regions.csv
+Victoria Philpotts,Manchester,solo tutor,,C,victoriaphilpotts.co.uk,web search,,leads_regions.csv
+Our Future Tutoring,,TTA partner,,C,ourfuturetutoring.com,TTA partners,,leads_regions.csv
+The Tutoring Company,Aylesbury/Luton/Slough,multi-centre tutor,11+ Bucks/Slough,B,thetutoringcompany.co.uk,search,Evidence: 3 centres; 'targeted 11+ mock exams and booster courses'; Aylesbury = Bucks near Chris - check overlap,leads_warm.csv
+Vanessa's Tutoring,UK,tuition company (NTA26 sponsor),multi,C,vanessastutoring.com,fetch NTA26 sponsors,NTA26 sponsor; no need evidence,leads_warm.csv
+National Tutors Conference,UK,event,n/a,C,tutorsconference.co.uk,search,2025 edition site found; check 2026/27 dates for exhibitor stand,leads_warm.csv
+Caistor Grammar School,Lincolnshire,state grammar admissions,Own Verbal Reasoning tests,C,caistorgrammar.com,caistorgrammar.com/join-us/process,admissions@caistorgrammar.com seen on page; VR-only test with guidance doc,leads_schools.csv
+Pass Eleven Plus,UK (40+ locations),mock/practice provider,GL + regional consortiums,A,passelevenplus.co.uk,passelevenplus.co.uk,Mocks across many regions; help@passelevenplus.co.uk + form https://passelevenplus.co.uk/contact-us/ seen; verify not same firm as Pass 11 Plus Grammar,leads_schools.csv

@@ -1,0 +1,19 @@
+name,region,buyer_type,board,fit,website,source,notes,file
+Prep4All,Birmingham/national,mock provider,GL/CEM,B,prep4all.co.uk,search,Mock provider; reseller or competitor,leads.csv
+QS Learning,UK,tutor,QUEST/grammar,B,qslearning.co.uk,search,,leads.csv
+Education Plus Tutoring,Holmfirth,tutor,11+,C,education-plus-tutoring.co.uk,11plusguide,,leads.csv
+Jacqui Robinson Education,Colchester,tutor,CSSE,C,jacquirobinsoneducation.co.uk,11plusguide,,leads.csv
+Achieve Learning,Harrow,centre,11+/GCSE,B,achievelearning.co.uk,search,Since 2004,leads.csv
+Pegasus Tutors,London/UK,tutor agency,ISEB pretest/13+,B,pegasustutors.co.uk,search,Independent-school route,leads.csv
+Mock Exam Centre,UK,mock provider,11+,B,mockexamcentre.co.uk,search,,leads.csv
+11 Plus Academy,Kent (Kings Hill/Sevenoaks/Tunbridge Wells/Tonbridge/Bearsted/Aylesford/St Mary's Island),multi-centre tutor,Kent/GL/CEM,A,11plus-academy.co.uk,11plusguide Kent,8 Kent centres; no email seen,leads_regions.csv
+11 Plus Mock Exams Southend CSSE,Southend/Basildon/Chelmsford/Colchester,mock provider,CSSE,B,sites.google.com/view/11plusmockexamssouthend,web search,,leads_regions.csv
+The Cambridge Tutor Company,Swindon,tutor,,C,,DeepMark directory,,leads_regions.csv
+Teach & Coach Tutors,Leeds,tutor+mocks,Yorkshire,B,,web search,Group + online + mock tests,leads_regions.csv
+Examberry,Slough,tutor centre,Slough,B,examberry.com,web search,Multi-year courses,leads_regions.csv
+New Chapter Tuition,,TTA partner,,C,newchaptertuition.co.uk,TTA partners,,leads_regions.csv
+Eleven Ace,UK online,online tutor,GL/independent,C,elevenace.com,search,"Says 'full mock tests' + online tutors; possible content buyer, likely has own; low evidence of need",leads_warm.csv
+That Tutor,UK,tuition company (NTA26 sponsor),multi,C,thattutor.uk,fetch NTA26 sponsors,NTA26 sponsor; no need evidence,leads_warm.csv
+Maths Tutors UK (Facebook group),UK,community,n/a,C,facebook.com/groups/mathstutorsuk,search,Community name only; group privacy status not verified; no specific post found asking for mocks,leads_warm.csv
+Monkton Combe School,Bath,independent school admissions,CAT4 Level C,C,monkton.org.uk,exampapersplus.co.uk Monkton Combe page,mpsadmissions@monkton.org.uk seen on third-party page; CAT4 not our content type,leads_schools.csv
+Rob Williams Assessment,UK,test publisher/mock seller,13+/ISEB/CE,A,robwilliamsassessment.co.uk,robwilliamsassessment.co.uk/practice-13-plus-past-papers,Sells 13+ practice papers/mocks via ExamPapersPlus; passedpapers@gmail.com + contact form seen; potential licensing partner or competitor,leads_schools.csv

@@ -1,0 +1,19 @@
+name,region,buyer_type,board,fit,website,source,notes,file
+11plusprepschool,Bexley,tutor,Quest (new Bexley provider),B,11plusprepschool.co.uk,search,Blogs Bexley moving to Quest = needs Quest content,leads.csv
+The Education Centre Liverpool,Liverpool,centre,11+,B,privatetuitionliverpool.com,11plusguide,,leads.csv
+Maple Education,Aylesbury,tutor,11+ Bucks,B,mapleeducation.co.uk,11plusguide,Bucks - near Chris,leads.csv
+Tewkesbury Tuition,Glos/Worcs/Warks,tutor,CEM (Glos),C,tewkesburytuition.co.uk,search,,leads.csv
+StudyBox,Sutton/Wallington,tutor,Sutton grammar,C,studybox.london,search,,leads.csv
+Ampla,UK,tutor,ISEB/CE,C,ampla-edu.com,search,,leads.csv
+Learning Street,UK,tutor,independent 11+,C,learningstreet.co.uk,search,,leads.csv
+West Kent Tuition,East Peckham/Tonbridge,tutor,Kent,C,westkenttuition.com,11plusguide Kent,,leads_regions.csv
+Walker Tuition,Amersham Bucks,tutor,Bucks,C,,DeepMark directory,,leads_regions.csv
+Tutorantis,Edinburgh Scotland,tutor,,C,,DeepMark directory,,leads_regions.csv
+The Exam Coach,Cambridge/Bristol/Sheffield/Trafford (online),online group tutor network,various,A,theexamcoach.tv,web search,Multi-region online groups,leads_regions.csv
+Creative in Learning,Mold Wales,tuition centre+exam centre,GCSE WJEC,B,,web search,Tel 01352 755 141 per search result,leads_regions.csv
+11++tuition,Langley/Reading/Bucks/Slough,mock provider+tutor,GL/Quest/Reading boys,A,11plusplustuition.co.uk,search+fetch,"Evidence: hall-based mocks plus online overflow, own booking system (my.11plusplustuition.co.uk/bookings); explicitly runs Quest formats - matches new Quest sample. Reading/Slough/Bucks (Chris area for Bucks - check overlap before contact)",leads_warm.csv
+AIM (Achieve Inspire Motivate) mocks,Kent,charity mock programme,Kent Test,C,aimkent.org.uk,search+fetch,"Charity 1167767; papers exclusively by Exam Papers Plus, in-person, scores emailed within 14 days, answer sheets POSTED; free to pupil-premium children. Partner-or-CSR route not sale",leads_warm.csv
+Tugo,UK,AI co-pilot for group tutors (TTA partner),multi,B,tugo.co.uk (verify),fetch TTA partners,TTA partner: auto-marking + marketplace for group tutors - could list/buy mocks; verify domain. Partner or competitor,leads_warm.csv
+More House School,London,independent girls school admissions,London 11+ Consortium,B,morehouse.org.uk,bofa11plus.com More House page,Member of 14-school consortium; BOFA sells mock packs for it; no school email seen on page,leads_schools.csv
+OxBridge Centre,Sutton/Wimbledon,tutor centre + mock provider,Sutton grammar style (English+Maths),A,oxbridgeuk.com,oxbridgeuk.com/11-plus-mock-tests,Runs Y5 mock sets at Sutton High School and KCS Wimbledon; admin@oxbridgeuk.com and booking form seen on page,leads_schools.csv
+Sherpa Online,UK online,tutor marketplace,13+ CE/pre-tests,C,sherpa-online.com,sherpa-online.com/blog,No mocks mentioned; tutor-matching only; no contact seen - referrer at best,leads_schools.csv

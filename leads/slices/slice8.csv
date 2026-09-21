@@ -1,0 +1,18 @@
+name,region,buyer_type,board,fit,website,source,notes,file
+Marie Redmond Tuition,Bucks/Herts/Berks (Bushey centre),multi-centre tutor,Bucks/Kendrick/Slough/Reading (FSCE),A,marieredmond.co.uk,search+11plusguide,Already runs FSCE mocks; overlaps Chris area - hold,leads.csv
+Accelerate Learning,Liverpool,centre,11+,B,alcentres.co.uk,11plusguide,Multi-centre domain,leads.csv
+Flying Start Tuition,Chesham/Aylesbury,tutor,11+ Bucks,B,flyingstarttuition.co.uk,11plusguide,Bucks - near Chris,leads.csv
+KSOL,Gloucester,tutor,CEM (Glos),C,ksol.co.uk,search,,leads.csv
+Explore Learning,UK (~95-124 centres),national chain,11+ support,C,explorelearning.co.uk,search,Enterprise; slow sale,leads.csv
+TheLearningMaths,UK,tutor,13+,C,thelearningmaths.com,search,,leads.csv
+Spires,UK online,tutor marketplace,11+,C,verify domain,search,Marketplace; content partner maybe,leads.csv
+Mock Test Masters,Tonbridge Kent,mock provider,Kent,B,mocktestmasters.co.uk,web search,Runs Big Kent 11+ mock,leads_regions.csv
+Elite Tuition Centre,Birmingham,centre,GL,C,,DeepMark directory,,leads_regions.csv
+West Midlands Tuition Hub,Stoke-on-Trent,tutor,,C,,DeepMark directory,,leads_regions.csv
+Principal Tutors,Trafford/Altrincham/Manchester,tutor agency,Trafford,B,principaltutors.com,web search,,leads_regions.csv
+Moon Tuition,Cambridge/Reading/London,multi-centre tutor,11+13+ ISEB,A,moontuition.co.uk,web search,,leads_regions.csv
+Colin Arnold Tuition,Colchester/North Essex,solo tutor+paper writer,CSSE,B,colinarnoldtuition.com,search+fetch,Evidence: page says he WRITES each CSSE English/maths mock himself and in-person mocks paused 2027 planning 3 mocks May-Jul 2028 = pain point is authoring time; small so low ticket but strong licensing story,leads_warm.csv
+Tutor World,Ashford/Canterbury/Folkestone/Maidstone Kent,multi-centre tutor,Kent Test,B,tutorworlduk.com,search+fetch,Evidence: replica Kent Test mocks in 5 Kent sites; page gives NO delivery/marking method or online option. URL: tutorworlduk.com/mock-exams.html,leads_warm.csv
+Study Central,UK,online tuition materials (TTA partner),maths/English,B,verify domain,fetch TTA partners,TTA partner selling online maths/English materials - possible content licensee,leads_warm.csv
+North London Collegiate School,London,independent girls school admissions,London 11+ Consortium,C,nlcs.org.uk,leadingtuition.co.uk consortium article,Named as consortium member; no contact seen; not verified on own site,leads_schools.csv
+Educare 11 Plus,Manchester/national,mock provider,GL/CEM regional,A,educare11plus.co.uk,educare11plus.co.uk mock exams page,Mocks throughout year by region; info@educare11plus.co.uk seen on page,leads_schools.csv

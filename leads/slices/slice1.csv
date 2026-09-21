@@ -1,0 +1,19 @@
+name,region,buyer_type,board,fit,website,source,notes,file
+Profectus Tutoring,Warwickshire/W Mids/Lincolnshire,tutor,GL/CEM,B,profectustutoring.co.uk,search,In-person mocks,leads.csv
+Adnan Khan Tutoring,Wokingham (online),solo tutor,FSCE,C,adnankhantutoring.co.uk,search,Solo; low ticket,leads.csv
+11 Plus Tutors in Manchester,Manchester,tutor+mocks,independent entrance,B,11plustutorsinmanchester.co.uk,search,Runs Nov-Jan mocks; different firm from Essex one,leads.csv
+Beaconsfield School 11+,Beaconsfield,tutor,11+,C,beaconsfieldschool.co.uk,11plusguide,,leads.csv
+Advance Education Services,Mill Hill/Hampstead/Harrow,centre,11+,B,advanceeducation.co.uk,11plusguide,,leads.csv
+The Learning Centre (TLC),unconfirmed,centre,11+,C,tlctutoringservices.co.uk,search,,leads.csv
+SHLC Tutors,UK,marking service,GCSE/11+,B,shlc-tutor.co.uk,search,Sells bulk marking to schools/agencies; auto-marking is a fit,leads.csv
+Minerva Tutors,UK,tutor agency,GCSE,C,verify domain,search,,leads.csv
+11 Plus Pod,Leigh-on-Sea/Southend/Rayleigh Essex,mock provider,CSSE,A,11pluspod.com,web search + DeepMark,Runs mocks in primary schools,leads_regions.csv
+Club 11 Plus,Poole Dorset,tutor,Dorset GL,B,,DeepMark directory,,leads_regions.csv
+Winatutors,Bexley,tutor,Kent/Bexley,C,,DeepMark directory,,leads_regions.csv
+11plustrafford,Trafford,tutor,Trafford,C,11plustrafford.co.uk,web search,,leads_regions.csv
+Tutorbility,UK online,tutor,11+,C,tutorbility.com,web search,,leads_regions.csv
+School of Coding & AI (SOC Learning),Wolverhampton,centre,4-subject 11+,B,soclearning.com,search+fetch,Evidence: centre-based 11+ mocks in person; separate 'Online 11+ Mock Exam' product suggests they want online delivery; GBP20-30/lesson. URL: soclearning.com/tuition/11-plus-tuition/11-plus-centre-based-mock-exams/,leads_warm.csv
+Osbourne Cawkwell Tuition,UK,tuition company (NTA26 sponsor),multi,C,octuition.co.uk,fetch NTA26 sponsors,NTA26 sponsor; sector-engaged; no need evidence,leads_warm.csv
+TTA Tuition Leadership Day 2026,London,event,n/a,C,thetutorsassociation.org.uk/tuition-leadership-day-2026,search,Held 3 Jul 2026 (already past); 90 guests incl suppliers/platforms; watch for 2027 edition,leads_warm.csv
+Reigate Grammar School,Surrey,independent school admissions,Own English/Maths/Reasoning tests,B,reigategrammar.org,reigategrammar.org/admissions/entry-at-11,Publishes 11+ and 13+ sample papers (so values practice content); email obfuscated on page - use contact via site; phone 01737 222231 seen,leads_schools.csv
+Think Academy UK,London,edtech/tutor mock provider,GL/CEM/ISEB,B,thinkacademy.uk,blog.thinkacademy.uk/11-plus-mock-exams,Y4/Y5 mocks with cohort ranking + reports; hello@thinkacademy.uk seen on page,leads_schools.csv

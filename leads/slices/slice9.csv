@@ -1,0 +1,18 @@
+name,region,buyer_type,board,fit,website,source,notes,file
+Brilliant Tutors Academy,Reading,tutor,FSCE,B,brilliant-tutors.co.uk,search,FSCE mocks in-house; Reading,leads.csv
+Better Tuition,Urmston,tutor,11+,C,bettertuition.co.uk,11plusguide,,leads.csv
+Becky Pengilly,Burnham,solo tutor,Bucks,C,beckypengilly.co.uk,11plusguide,Burnham = Chris's town - hold,leads.csv
+Regent Learning Centre,Harrow,centre,11+,B,regentlearning.com,11plusguide,,leads.csv
+Kip McGrath,UK franchise,franchisor,English/maths,C,kipmcgrath.co.uk,search,Franchisor: head-office deal only,leads.csv
+Teachers To Your Home,UK national,agency,11+/13+,B,teacherstoyourhome.com,search,National coverage = content reuse,leads.csv
+Hampstead & Frognal Tutors,London,TTA agency,GCSE,C,hampsteadandfrognaltutors.org.uk,search,TTA corporate member,leads.csv
+AIM Kent,Tunbridge Wells/Tonbridge/Sevenoaks,charity tuition + mocks,Kent,C,aimkent.org.uk,web search,Charity; free tuition for low-income; runs Y5 mocks,leads_regions.csv
+11 Plus Dash,Walsall,tutor,GL,B,,DeepMark directory,,leads_regions.csv
+EduCare Tuitions,Manchester,tutor,,C,,DeepMark directory,,leads_regions.csv
+Trafford Tuition,Trafford,tutor,Trafford,B,trafford-tuition.co.uk,web search,Ofsted-registered,leads_regions.csv
+U2 Tuition,Oxford/London,tutor,11+,B,u2tuition.com,web search,,leads_regions.csv
+Skillplus Tuition,UK/London (CSSE),paper seller,CSSE,B,skillplustuition.com,search+fetch,Evidence: sells downloadable PDF mock packs GBP10/paper or GBP25/3; hard copies by email request; no online test platform. URL: skillplustuition.com/category/past-mock-11-exam-papers. Registered co 14186552,leads_warm.csv
+SGS PTA Mock Tests,Sutton,school PTA,SET/Sutton,C,sgsptamocktests.com,search,"PTA hall-based familiarisation tests; 2026 tests finished - not a commercial buyer, awareness only",leads_warm.csv
+Olivia Press,UK,11+/GCSE workbook publisher (TTA partner),11+,B,verify domain,fetch TTA partners,'Exam Mastery Series' workbooks for 11+ and GCSE; publisher = licensing route for question banks,leads_warm.csv
+Alleyn's School,London,independent school admissions,London consortium (South),C,alleyns.org.uk,leadingtuition.co.uk consortium article,Named as consortium member; no contact seen; not verified on own site,leads_schools.csv
+Yellowbird Education,London (Fulham/Putney),tutor + mock provider,London/boarding independent exams 7+/8+/10+/11+,B,yellowbirdeducation.com,yellowbirdeducation.com/mock-exams,Phone/WhatsApp only on page (no email/form seen),leads_schools.csv

@@ -1,0 +1,19 @@
+name,region,buyer_type,board,fit,website,source,notes,file
+Tintagel Tutoring,unconfirmed,tutor+mock provider,11+ mocks,C,tintageltutoring.co.uk,search,Region not confirmed,leads.csv
+Atom Learning,UK,edtech (QUEST owner),QUEST,C,atomlearning.com,search,Competitor; unlikely buyer,leads.csv
+First Class Learning,Leeds/Wakefield/Barnet,multi-centre tutor,11+,B,firstclasslearning.co.uk,11plusguide,NOT same as 1st Class Tuition (already contacted) - verify,leads.csv
+Jane Beckett 11plustutor,Cirencester/Stroud/Gloucester/Cheltenham/Swindon,tutor,CEM (Glos),B,11plustutor.me,11plusguide,Gloucestershire uses CEM,leads.csv
+Hatch End Tuition,SW Herts/Harrow,tutor,SW Herts consortium,B,hatchendtuition.co.uk,search,,leads.csv
+School Entry Tutor,London/Home Counties,solo/small,ISEB/13+,C,schoolentrytutor.co.uk,search,,leads.csv
+Winterwood Tutors,UK,tutor+mocks,11+,C,winterwoodtutors.co.uk,search,,leads.csv
+E.S. Tutors,Gillingham Kent,tutor centre,Kent,C,estutors.co.uk,11plusguide Kent,,leads_regions.csv
+Excel Academy Tutors,Essex,tutor,CSSE,C,,DeepMark directory,,leads_regions.csv
+42tutoring,Bristol,tutor,,C,,DeepMark directory,,leads_regions.csv
+Torbay Tutors,Torquay/Paignton/Totnes/Newton Abbot Devon,tutor+mock provider,Devon,A,torbaytutors.co.uk,web search,Runs 11+ mocks,leads_regions.csv
+11++ Tuition,Slough/Reading,mock provider,GL,B,11plusplustuition.co.uk,web search,Test hall mocks,leads_regions.csv
+Tugo Tutors,,TTA partner tutor marketplace,,C,tugotutors.com,TTA partners,,leads_regions.csv
+Eleven Plus Centre,Hounslow London,centre,independent/GL,C,elevenpluscentre.com,search,Has own interactive learning portal with instant marking - competitor; only viable as content licensee,leads_warm.csv
+Wonderlearn,UK,tuition company (NTA26 sponsor),primary/11+,C,wonderlearn.co.uk,fetch NTA26 sponsors,NTA26 sponsor; verify 11+ offering,leads_warm.csv
+National Tutors UK (Facebook group),UK,community,n/a,C,facebook.com/groups/NationalTutorsUK,search,"Community name only, appears to be tutor-finder group; privacy not verified",leads_warm.csv
+Eaton Square Prep,London,prep school running own 11+ prep,Atom Learning + setting,B,eatonsquareschools.com,eatonsquareschools.com/prep/11-results,Uses Atom Learning for VR/NVR (competitor tool in use); phone 0207 225 3131; no email seen (Enquire Now form on site),leads_schools.csv
+Owl Tutors,UK online,papers publisher/tutoring,11+/13+ CE,B,owltutors.co.uk,owltutors.co.uk/advice/11-plus/exam-papers,Sells 15 premium paper packs (GBP4.95-25); contact form https://owltutors.co.uk/contact-us/; phone 020 3457 8474,leads_schools.csv

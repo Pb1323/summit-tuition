@@ -1,0 +1,19 @@
+name,region,buyer_type,board,fit,website,source,notes,file
+Life Changing Tuition,Bexley/Kent,tutor,CEM+GL,B,lifechangingtuition.com,search,Covers Kent/Medway/Bexley,leads.csv
+David Bell Education,UK,consultant,QUEST,C,davidbelleducation.co.uk,search,Guides only; referrer at best,leads.csv
+Oak Tuition,Huddersfield,tutor,11+,C,oaktuition.com,11plusguide,,leads.csv
+Cohort Tuition,Gloucester,tutor,CEM (Glos),B,cohorttuition.co.uk,11plusguide,,leads.csv
+Test Teach,Sutton/Kingston,centre,CSSE/Surrey,B,testteach.co.uk,search,Weekly classes + monthly reports,leads.csv
+Planet BOFA,UK online,edtech,ISEB/London consortium,B,verify domain,search,Adaptive platform; competitor or partner,leads.csv
+Pass 11 Plus Grammar,UK,mock/blog,11+,C,pass11plusgrammar.co.uk,search,,leads.csv
+Prize Tuition,Faversham/Ashford/Canterbury/Folkestone Kent,tutor+mock provider,Kent,B,prizetuition.co.uk,11plusguide Kent + web search,Runs mocks,leads_regions.csv
+Blackstone Tutors,Borehamwood Herts,tutor,Herts,C,,DeepMark directory,,leads_regions.csv
+The Tutoring School,Polegate E Sussex,tutor,,C,,DeepMark directory,,leads_regions.csv
+Exeter Tutors / The Exam Suite,Exeter Devon,tutor+mock provider,Devon,A,exetertutors.com,web search,Exam Suite runs mocks from March,leads_regions.csv
+On Target Tuition,Lisburn N Ireland,tutor centre,AQE/GL NI,A,on-targettuitionlisburn.co.uk,web search,,leads_regions.csv
+Get My Grades,,TTA partner,GCSE,C,getmygrades.co.uk,TTA partners,,leads_regions.csv
+11 Plus VIP,UK,tutor+mock seller,multi,C,11plusvip.com,search,"Sells practice papers, tuition and mocks; not fetched - verify",leads_warm.csv
+National Learning Group,UK,tuition group (NTA26 sponsor),multi,C,nationallearninggroup.co.uk,fetch NTA26 sponsors,NTA26 sponsor; larger group = more budget,leads_warm.csv
+City of London School,London,selective independent school admissions,Quest Assessments (own adaptive test),B,cityoflondonschool.org.uk,cityoflondonschool.org.uk/admissions/11-entry,Uses Quest online adaptive test + familiarisation portal; enquiries@cityoflondonschool.org.uk seen on page; Quest board = fits our QUEST pivot,leads_schools.csv
+Warlingham Park School,Surrey,prep school with 11+ Club,11+ generic,A,warlinghamparkprepschool.co.uk,warlinghamparkprepschool.co.uk/juniors/preparation-for-11,Runs weekly 11+ Club Y5 spring to Y6 autumn incl. practice papers + mocks = direct content buyer; phone 01883 626844; contact form on site,leads_schools.csv
+Keystone Tutors,London,tutor agency,13+/London consortium,B,keystonetutors.com,keystonetutors.com/news/london-11-plus-consortium,enquiries@keystonetutors.com + /contact form seen; mocks not mentioned on page,leads_schools.csv

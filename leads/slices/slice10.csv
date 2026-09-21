@@ -1,0 +1,18 @@
+name,region,buyer_type,board,fit,website,source,notes,file
+11plustutoring.uk,Berkshire/Surrey/Leeds (online),online tutor network,multi,B,11plustutoring.uk,search,Many town pages = scaled operator,leads.csv
+LearnNorthwest,Manchester,tutor,11+,C,learnnorthwest.com,11plusguide,,leads.csv
+GX Tuition,Gerrards Cross,tutor,11+/GCSE,C,gxtuition.co.uk,search,Chris area - hold,leads.csv
+Harrow Tuition Centre,Harrow/Barnet,centre,11+,B,harrowtuitioncentre.co.uk,search,,leads.csv
+The Learning Hub Group,Wembley,centre,11+/GCSE/A-level,B,thelearninghubgroup.co.uk,search,,leads.csv
+Pre-Test.co.uk,UK,mock provider,ISEB/London consortium,B,pre-test.co.uk,search,Bespoke pre-test mocks,leads.csv
+Enjoy Education,London,TTA agency,GCSE/11+,B,verify domain,search,Founded 2006; founding TTA member,leads.csv
+Primary School Tutoring Ltd,Margate Kent,tutor,Kent,C,,DeepMark directory,,leads_regions.csv
+11Plustutors Ltd,Northampton,tutor,,C,,DeepMark directory,,leads_regions.csv
+Pillai Tutors,London/Croydon centre,multi-centre tutor,Kent/Bexley/Sutton/Kingston,A,pillaitutors.co.uk,web search,Croydon centre; Bexley office in DeepMark,leads_regions.csv
+Impact Tuition Urmston,Urmston Trafford,tutor,Trafford,C,impacttuitionurmston.co.uk,web search,,leads_regions.csv
+Oxford Tutors,Oxford,tutor agency,11+/GCSE,B,oxfordtutors.com,web search,,leads_regions.csv
+Kinetic Kids Academy,Bexley/Kent,new small centre,Bexley grammar/Kent,B,kinetickidsacademy.co.uk,search+fetch,"Evidence: 'New Venture' - Year 5 cohort launched Sept 2025 (full), Year 4 free trial Jan 2026, 12 spots/session, 'no screen time'; no mock exams or online system mentioned - obvious gap; overlaps 11plusprepschool Bexley Quest lead area. URL: kinetickidsacademy.co.uk/11-plus-tuition-tutor-in-bexley-year-4/",leads_warm.csv
+A Star Tuitions,UK,tuition company (TTA NTA26 sponsor),GCSE/11+,C,astartuitions.co.uk,fetch NTA26 sponsors,"Listed as sponsor of National Tutoring Awards 2026 (thetutorsassociation.org.uk/national-tutoring-awards-2026) - active, sector-engaged; no evidence of mock need",leads_warm.csv
+TTA Regional Events 2026,UK regions,event/community,n/a,B,thetutorsassociation.org.uk/regional-events-2026,search,FREE to attend for non-members; meet TTA President + tuition business leaders per region - warm-intro venue for pitching in person,leads_warm.csv
+Kingston Grammar School,Kingston/Surrey,independent day school admissions,Own 10+/11+ entrance tests,B,kgs.org.uk,kgs.org.uk/admissions/admissions-process/10-11-admissions,registrar@kgs.org.uk and enquiries@kgs.org.uk seen on page; page does not mention mocks,leads_schools.csv
+11plus-mockexams.co.uk,UK online,mock provider,CEM/GL/CSSE/ISEB + named school styles,B,11plus-mockexams.co.uk,11plus-mockexams.co.uk,Style-specific mocks for selective schools; contact only via WhatsApp/Telegram on page,leads_schools.csv

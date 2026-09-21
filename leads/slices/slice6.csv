@@ -1,0 +1,19 @@
+name,region,buyer_type,board,fit,website,source,notes,file
+Perfect Plus Tutoring,Medway,tutor,GL,C,perfectplustutoring.com,search,Small,leads.csv
+Gurukul 11+,Liverpool,tutor,Blue Coat/Trafford/Wirral,A,gurukul-11plus.co.uk,search,Board-specific mocks,leads.csv
+Top Tip Tutoring,Skipton,tutor,11+,C,toptiptutoring.co.uk,11plusguide,,leads.csv
+Topmarks 11 Plus Tuition School,Gloucester,tutor,CEM (Glos),C,topmarks11plus.wix.com/tuition-school,11plusguide,Wix site,leads.csv
+House of Tutors,Croydon/Slough/Lewisham,multi-centre tutor,11+/SATs,B,houseoftutors.co.uk,search,,leads.csv
+Able Tutors,London,tutor,13+/ISEB,C,abletutors.co.uk,search,,leads.csv
+ElevenPlus Genius,UK online,interactive mock platform,11+,B,elevenplusgenius.co.uk,search,Competitor platform; possible content buyer,leads.csv
+Tutor Rise,Bexleyheath,tutor,Kent/Bexley,C,tutorrise.com,11plusguide Kent,,leads_regions.csv
+Trefoil Tutors,Elstree Herts,tutor,Herts,C,,DeepMark directory,,leads_regions.csv
+Tutor Led Learning,York,tutor,,C,,DeepMark directory,,leads_regions.csv
+11 Plus Tutoring Academy,Bristol/Gloucs/Swindon,tutor+mocks,CEM/GL,A,11plustutoringacademy.co.uk,web search,Group tuition Bristol,leads_regions.csv
+Catapult Tuition,Northern Ireland,tutor/practice papers,SEAG,B,catapult-tuition.com,web search,,leads_regions.csv
+11 Plus Tutors in Essex,Chelmsford/Essex,tutor+mock provider,CSSE/CCHS-FSCE,A,11plustutorsinessex.co.uk,search+fetch,Evidence: mocks are paper-only in Keene Hall Galleywood; results/marked papers returned BY POST; page says 'please also consider our online portal' = online delivery is an afterthought. URL: 11plustutorsinessex.co.uk/11plusmockexams/. FSCE Adventure/Beacon/Compass/Discovery formats = direct match to our FSCE sample,leads_warm.csv
+Edgbaston Tuition Centre,Birmingham,centre,CEM/GL,C,edgbastontuition.com,search,Has Mock 1 exam page (URL 404 on fetch - site may be being rebuilt; verify). Birmingham CEM/GL area,leads_warm.csv
+Manning Tutors,UK,tutor agency (NTA26 sponsor),multi,C,manningstutors.co.uk,fetch NTA26 sponsors,NTA26 sponsor,leads_warm.csv
+Queen's College London,London,independent girls school admissions,London 11+ Consortium,B,qcl.org.uk,qcl.org.uk/admissions/11-admissions,admissions@qcl.org.uk seen on page (Head of Admissions listed); no mock info on page,leads_schools.csv
+Brentwood School,Essex,independent school admissions,Own entrance assessment,C,brentwoodschool.co.uk,brentwoodschool.co.uk/admissions/open-events-school-visits,admissions@brentwood.essex.sch.uk seen; only taster mornings listed on page,leads_schools.csv
+Golden Circle Tutors,London,tutor agency offering mocks + interviews,13+/11+,B,goldencircletutors.co.uk,goldencircletutors.co.uk/how-to-prepare-for-13-exams,Lists Mock Exams & Interviews service; contactus@goldencircletutors.co.uk seen on page,leads_schools.csv
