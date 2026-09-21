@@ -85,7 +85,10 @@ export interface QuestionVisual {
     | "nvr_holepunch"
     | "nvrHolePunch"
     | "vr_code"
-    | "vrCode";
+    | "vrCode"
+    | "map"
+    | "source_card"
+    | "sourceCard";
   title: string;
   /** Payload shape depends on `type` — validated at render time in question-visuals.tsx, not by this type. */
   data: Record<string, unknown>;

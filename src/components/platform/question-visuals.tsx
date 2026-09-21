@@ -64,6 +64,41 @@ function isCodePairArray(value: unknown): value is { word: string; code: string 
   );
 }
 
+/** A single labelled point on a `map` visual, positioned directly in the SVG's viewBox coordinate space. */
+interface MapLandmark {
+  id: string;
+  label: string;
+  x: number;
+  y: number;
+}
+
+function isMapLandmark(value: unknown): value is MapLandmark {
+  if (typeof value !== "object" || value === null) return false;
+  const c = value as Record<string, unknown>;
+  return typeof c.id === "string" && typeof c.label === "string" && typeof c.x === "number" && typeof c.y === "number";
+}
+
+function isMapLandmarkArray(value: unknown): value is MapLandmark[] {
+  return Array.isArray(value) && value.length > 0 && value.every(isMapLandmark);
+}
+
+/** An optional distance label for one leg of a `map` visual's route, keyed by the two landmark ids it joins. */
+interface MapDistance {
+  from: string;
+  to: string;
+  km: number;
+}
+
+function isMapDistance(value: unknown): value is MapDistance {
+  if (typeof value !== "object" || value === null) return false;
+  const c = value as Record<string, unknown>;
+  return typeof c.from === "string" && typeof c.to === "string" && typeof c.km === "number";
+}
+
+function isMapDistanceArray(value: unknown): value is MapDistance[] {
+  return Array.isArray(value) && value.every(isMapDistance);
+}
+
 /** Rounds to 2dp so SSR and client trig results always serialize identically (avoids hydration mismatches). */
 function r2(value: number) {
   return Math.round(value * 100) / 100;
@@ -1068,6 +1103,101 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
         <text x={targetX + targetSize / 2} y={targetY + targetSize / 2 + 9} textAnchor="middle" fill={GOLD_DARK} fontSize={30} fontWeight={900}>?</text>
       </svg>,
       `${title}: paper folded ${folds.join(" then ")}, a hole is punched through the folded stack; choose the pattern of holes when unfolded`
+    );
+  }
+
+  if (type === "map") {
+    const landmarks = visual.data.landmarks;
+    const route = visual.data.route;
+    if (!isMapLandmarkArray(landmarks) || !isStringArray(route) || route.length < 2) return <VisualFallback adminPreview={adminPreview} />;
+    const byId = new Map(landmarks.map((landmark) => [landmark.id, landmark]));
+    const distances = isMapDistanceArray(visual.data.distances) ? visual.data.distances : [];
+    const scaleLabel = typeof visual.data.scaleLabel === "string" ? visual.data.scaleLabel : undefined;
+    const distanceFor = (fromId: string, toId: string) =>
+      distances.find((d) => (d.from === fromId && d.to === toId) || (d.from === toId && d.to === fromId));
+    const segments = route.slice(0, -1).map((fromId, index) => ({ from: byId.get(fromId), to: byId.get(route[index + 1]) })).filter((s): s is { from: MapLandmark; to: MapLandmark } => !!s.from && !!s.to);
+    const mapGradientId = `${patternId}-map`;
+    return frame(
+      <svg viewBox="0 0 320 220" className="h-64 w-full max-w-full">
+        <defs>
+          <linearGradient id={mapGradientId} x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#f4f8ec" />
+            <stop offset="100%" stopColor="#e6f0d8" />
+          </linearGradient>
+        </defs>
+        <rect x={2} y={2} width={316} height={216} rx={14} fill={`url(#${mapGradientId})`} stroke={INK} strokeWidth={2} />
+        {segments.map((segment, index) => {
+          const midX = (segment.from.x + segment.to.x) / 2;
+          const midY = (segment.from.y + segment.to.y) / 2;
+          const distance = distanceFor(segment.from.id, segment.to.id);
+          return (
+            <g key={`${segment.from.id}-${segment.to.id}-${index}`} className="qv-step" style={{ animationDelay: `${index * 0.12}s` }}>
+              <line x1={segment.from.x} y1={segment.from.y} x2={segment.to.x} y2={segment.to.y} stroke={BLUE} strokeWidth={2.5} strokeDasharray="6 5" strokeLinecap="round" />
+              {distance && (
+                <g>
+                  <rect x={midX - 20} y={midY - 10} width={40} height={16} rx={4} fill="#ffffff" opacity={0.88} />
+                  <text x={midX} y={midY + 2} textAnchor="middle" fill={BLUE_DARK} fontSize={10} fontWeight={800}>{distance.km} km</text>
+                </g>
+              )}
+            </g>
+          );
+        })}
+        {landmarks.map((landmark, index) => (
+          <g key={landmark.id} className="qv-pop qv-hit" style={{ animationDelay: `${0.3 + index * 0.08}s` }} tabIndex={0} role="img" aria-label={landmark.label}>
+            <circle cx={landmark.x} cy={landmark.y} r={13} fill="transparent" />
+            <circle className="qv-mark-scale" cx={landmark.x} cy={landmark.y} r={7} fill={GOLD} stroke={INK} strokeWidth={2} />
+            <text x={landmark.x} y={landmark.y - 12} textAnchor="middle" fill={INK_SOFT} fontSize={10.5} fontWeight={800}>{landmark.label}</text>
+            <ValueTooltip x={landmark.x} y={landmark.y - 46} text={landmark.label} color={GOLD_DARK} />
+          </g>
+        ))}
+        <g transform="translate(278, 24)">
+          <circle r={16} fill="#ffffff" stroke={INK} strokeWidth={1.5} />
+          <polygon points="0,-11 4,3 0,-1 -4,3" fill={GOLD_DARK} />
+          <text x={0} y={-18} textAnchor="middle" fill={INK} fontSize={9} fontWeight={800}>N</text>
+        </g>
+        {scaleLabel && (
+          <g transform="translate(16, 200)">
+            <line x1={0} y1={0} x2={44} y2={0} stroke={INK} strokeWidth={2} />
+            <line x1={0} y1={-4} x2={0} y2={4} stroke={INK} strokeWidth={2} />
+            <line x1={44} y1={-4} x2={44} y2={4} stroke={INK} strokeWidth={2} />
+            <text x={22} y={16} textAnchor="middle" fill={INK} fontSize={9} fontWeight={700}>{scaleLabel}</text>
+          </g>
+        )}
+      </svg>,
+      `${title}: stylised trail map with landmarks ${landmarks.map((l) => l.label).join(", ")}, connected by a route in the order ${route.join(" → ")}`
+    );
+  }
+
+  if (type === "sourcecard") {
+    const heading = visual.data.heading;
+    const body = visual.data.body;
+    if (typeof heading !== "string" || !isStringArray(body) || body.length === 0) return <VisualFallback adminPreview={adminPreview} />;
+    const kind = typeof visual.data.kind === "string" ? visual.data.kind : "notice";
+    const meta = typeof visual.data.meta === "string" ? visual.data.meta : undefined;
+    const stamp = typeof visual.data.stamp === "string" ? visual.data.stamp : undefined;
+    return frame(
+      <div className="flex justify-center py-1">
+        <div
+          className={cn(
+            "qv-pop relative w-full max-w-md -rotate-1 rounded-sm border-2 border-dashed border-gold-dark/60 bg-[#fffdf6] px-6 py-5 shadow-[0_14px_30px_-18px_rgba(17,24,39,0.5)]",
+            kind === "clipping" && "rotate-1 border-solid border-ink/30 font-serif"
+          )}
+        >
+          {stamp && (
+            <span className="absolute -top-3 right-4 rotate-3 rounded-sm bg-gold-dark px-2 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-cream shadow-md">
+              {stamp}
+            </span>
+          )}
+          <p className="text-[15px] font-black uppercase tracking-[0.1em] text-navy">{heading}</p>
+          {meta && <p className="mt-1 text-xs font-semibold italic text-gold-dark">{meta}</p>}
+          <div className="mt-3 space-y-2.5 text-[14.5px] leading-relaxed text-ink">
+            {body.map((paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ))}
+          </div>
+        </div>
+      </div>,
+      `${title}: ${heading}${meta ? `, ${meta}` : ""} — ${body.join(" ")}`
     );
   }
 
