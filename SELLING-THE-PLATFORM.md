@@ -156,3 +156,85 @@ Time remained in this session, so per the task's "go deeper" instruction: resear
 | **11 Plus Made Simple** (Mindbuilders Ltd) — Kent/Bexley/South East London ([11plusmadesimple.co.uk](https://11plusmadesimple.co.uk/)) | 87% first-choice-school placement rate claimed, group tuition + summer school + diagnostic assessments, founder-led (Ronke, ex-Assistant Principal) | Contact-form only, no public email. Smaller/newer operation than the others — another good candidate (like Ace Learning in Step 6) for a lower-risk pilot/reference deal rather than a first big-ticket sale. |
 
 **Not drafted into outreach emails this session** (time/scope judgement call, not an oversight) — 12 new prospects plus the original 5 is already 17 businesses total; per Step 7's own reasoning, sending too much outreach before the Teachitright call outcome is known risks diluting focus on the one real live conversation. These 8 (4 from Step 6 not drafted + these 4) are held in reserve as a ready-researched second wave once Teachitright's scope/pricing conversation gives a clearer sense of what pitch actually lands.
+
+## Step 11 — Teachitright deep-dive ahead of the Zoom/Teams call (2026-09-15)
+
+Chris Pearse replied 2026-09-10 wanting to discuss "the proposal in more detail" over Zoom/Teams — call scheduled for this weekend (~2026-09-16/17). This is a full re-research pass, because **Teachitright is a substantially bigger and different operation than the earlier "£700k-£1.8m, above-£2k-floor" framing assumed** — that earlier number was a rough heuristic, not built from real numbers. Below is grounded from Teachitright's own site, Companies House, and public book listings (2026-09-15).
+
+### What Teachitright actually is
+- **Founded 2006 by Chris Pearse** (ex-primary teacher, 10 years in state sector, former head teacher), still Managing Director/Tutor 20 years later.
+- **11-14 physical centres** (site says "11 tuition centres"; region breakdown listed adds to 14 — Ascot, Bisham/Marlow, Colnbrook, Maidenhead, Reading, Slough, Windsor in Berkshire; Burnham, High Wycombe, Gerrards Cross, Marlow in Bucks; Camberley in Surrey; West Drayton, Heathrow in London) — real discrepancy, worth clarifying on the call, not a research error to fix by guessing.
+- **16 named tutors** + a minimum 2-person admin/office team, all DBS-checked qualified teachers. Group classes capped at **10 students max**.
+- **Over 80% pupil success rate** at 11+, "Most Trusted 11+ Tuition Company" (2025 SME Enterprise Awards). 4.8★ Google, 4.6★ Trustpilot.
+- **They already publish their own content commercially** — the "11+ Tuition Guides" series (Numerical/Verbal/Non-Verbal workbooks), sold on Amazon/Blackwell's/AbeBooks, at least one title co-published via **University of Buckingham Press**, co-authored by Chris Pearse himself (with Louise Swann). This is the single most important finding for how to pitch him — **he is not a buyer who lacks content, he's a competitor-grade content creator.** Leading with "here's a ready-made question bank" undersells what he'd actually value and may even read as slightly presumptuous.
+- **Existing tech**: a live student portal at `teachitright.ediface.org` ("Ediface" — a white-label tutoring-business portal platform, not something we've used before, not deeply researched this session — ask him directly what it does/doesn't do rather than guessing). Their mock exams (Bucks, Kendrick School, Reading School, Slough Consortium) read as **in-person, ticketed sitting events at named venues**, not an online auto-marked platform — no evidence anywhere on their site of online/auto-marked mock delivery. **This — not content — looks like the real gap Summit's platform fills**: instant auto-marking, per-student online dashboards, and centralised admin visibility across 14 sites, versus scheduling physical sittings at 3-4 external venues.
+- **Companies House** (05965681, active, incorporated 12 Oct 2006): files "Total exemption full accounts" — a small-company exemption that does **not** require public turnover/profit disclosure (balance-sheet-only). So there is no public revenue figure to check against — every number below is an estimate, not a filed fact.
+
+### Revised ARR / scale estimate (bottom-up, not the old £700k-£1.8m heuristic)
+Built from centres × classes × fee, not a top-down "looks big" guess — treat as directional, and say so if it comes up on the call:
+- ~11-14 centres × an estimated 2-3 running classes each × ~8 students/class (near the 10-cap, given the strong pass rate implying real demand) ≈ **200-280 concurrently enrolled students** in core group tuition.
+- Typical South-East small-group (≤10) 11+ weekly tuition fee: ~£25-35/session × ~30-34 weeks/year ≈ **£800-£1,150/student/year**.
+- Core group-tuition revenue alone: **~£190,000-£265,000/year**.
+- Plus real secondary revenue streams the previous estimate didn't account for: nationally-distributed book sales (Amazon/Blackwell's, not just their own students), ticketed mock-exam sittings at multiple named venues (potentially dozens to 100+ students per sitting, run several times a year), and masterclasses/revision camps (holiday-course pricing).
+- **All-in estimate: roughly £350,000-£900,000/year**, with something in the £500k-£650k range feeling most defensible for a 20-year, multi-region, reputation-led (not venture/ad-spend-led) operator — this replaces the earlier £700k-£1.8m figure, which was too heuristic; treat both as bracketing estimates, not facts.
+
+### Headcount
+Almost certainly **not** 16 FTE salaries — group/after-school tutoring in the UK is overwhelmingly paid hourly/per-session, so the 16 tutors are most likely part-time/casual, paid per class taught. Real fixed overhead is more like Chris + a small (3-5 person) back-office/admin function coordinating scheduling, enrolment, and marketing across 14 sites.
+
+### Profit estimate
+Typical net margins for an established, reputation-led (low paid-marketing spend), low-fixed-overhead (rented school/community-centre space, not owned premises) UK group tuition business run **15-25%**. On £500k-£900k revenue, that's roughly **£75,000-£225,000/year** net profit to Chris as owner — likely toward the higher end of that band given 20 years of accumulated reputation and no signs of heavy customer-acquisition spend.
+
+### What this changes about the pitch
+1. **Don't lead with content volume** ("150+ mocks, 7,000+ questions") — he already has a commercially credible content operation of his own. It may still matter as *breadth/coverage*, but the stronger hook is **online delivery + auto-marking + admin infrastructure**, which nothing on his site suggests he has today.
+2. **The original "content-only licence" scope option (Step 8) is probably the weakest of the three for him** — he may see it as competing with his own publishing business rather than saving him work. **Platform/delivery-only, or a hybrid (his content questions loaded into Summit's auto-marking/admin engine), is likely the stronger real ask** — worth floating as a 4th option on the call.
+3. **His scale (11-14 sites) makes the multi-centre licence the realistic core of any deal**, not a single-centre pilot — a pilot may still be the right *de-risking* first step, but frame it that way (a proof point before wider rollout), not as the likely end state.
+4. **Price anchor needs revisiting**: the "above £2k, no ceiling" floor and the Step 9 £5k-£15k/year comparables were calibrated on the older, smaller size estimate. At a genuine £500k-£900k-revenue, 14-site operation, a materially higher number (both as a fair value-capture ask and as something he can actually justify internally) is defensible — but per the standing rule, still don't lead with a number; let him ask.
+
+### Open questions only Chris can answer (don't guess these on the call)
+- Real active student count and true number of running centres (11 vs 14).
+- What Ediface actually does today (portal only? scheduling? any assessment features at all?) and whether it's a pain point or something he's happy with.
+- How mock exams are currently marked (by tutors by hand? any existing digital scoring?) and whether that's a bottleneck across 14 sites.
+- Whether he sees the workbook/publishing business as separate from the tuition-centre business, or as one integrated thing he wouldn't want a third party touching.
+- What actually prompted him to reply with real interest to begin with — worth asking directly rather than assuming.
+
+## Step 12 — finalized offer for the 2026-09-16 10-11am call (Google Meet)
+
+**Checked the real Gmail thread first** (per explicit instruction) — meeting is confirmed for tomorrow (2026-09-16), 10-11am, Google Meet (not Zoom/Teams as earlier notes assumed). No price or scope has been discussed yet; the last email from Srinivas only promised to "walk through everything... and figure out together what scope makes the most sense" — so this is a genuinely clean slate, not a negotiation already anchored on a number.
+
+**Deal structure decision (confirmed by founder 2026-09-15): one-time handover, no ongoing support.** Srinivas is not building a SaaS company alongside Oxford medicine — Chris gets the code + content outright and runs it himself afterward, with a short bounded handover period, not an open-ended support relationship. This changes the pricing model from Step 9's annual-licence framing to a **one-off lump-sum sale**, and it needs to be said plainly on the call (it's a genuine selling point — full ownership, not a rented subscription he depends on a stranger to keep running — not a hidden catch).
+
+### Recommended scope menu (one-off pricing, not annual)
+
+1. **Full platform buyout** — complete codebase + content bank (150+ mocks, ~7,000 questions, auto-marking engine, admin/reporting tooling) handed over for use across all his centres, no seat/centre limit. **Anchor range: £20,000-£35,000 one-off.** This is the one to actually want — highest value to him (solves the online-delivery/auto-marking gap his own site shows no evidence of having) and cleanest to hand over (one codebase, one content set, no unbundling).
+2. **Platform/delivery engine only, his content loaded in** — he keeps authoring his own workbooks/questions (he's good at this, per Step 11) but gets the auto-marking, online delivery, and admin dashboard to run them through, instead of in-person ticketed mock sittings. **Range: £15,000-£25,000 one-off** — priced close to the full option since the engine, not the content, is the harder-to-replicate part.
+3. **Single-centre pilot** — same one-off code+content handover, scoped to prove it out at 1-2 centres first before wider rollout. Not cheaper to build (it's the same asset either way) but a lower **£6,000-£10,000** entry price makes sense as a deliberately easier first yes if he's not ready to commit at full scale — frame explicitly as "a way to de-risk it for you, not a smaller product."
+4. **Content-only licence** (Step 8's original 3rd option) — **now the weakest option, don't lead with it.** He's already a commercial content publisher (University of Buckingham Press book credits); a pure question-bank handover undersells what's actually different about Summit and may read as mildly presumptuous. Keep it in back pocket only if he explicitly says he just wants more content, not delivery tooling.
+
+**Don't state a number unprompted** (standing rule, unchanged) — this menu is what to have *ready* when he asks "so what would this cost," not an opening line.
+
+### Practical point to raise, not assume: who hosts it afterward
+A true one-off handover means Chris's own technical resource (in-house or a freelancer) takes over deployment/hosting once transferred — Srinivas isn't running ongoing infrastructure for someone else's business. Worth surfacing directly on the call ("do you have any in-house dev/technical capacity, or would you need to bring someone in to take this over") rather than assuming either way — his answer affects which scope option is realistic for him.
+
+### Call structure for the hour (discovery before pitch — he hasn't seen anything concrete yet)
+1. **~10 min discovery** — ask the open questions from Step 11 directly: how mocks are marked today, what Ediface does/doesn't do, real centre/student count, what made him reply. Don't guess these going in.
+2. **~20-25 min demo** — Step 8's revised script (student mock flow with auto-marking, Study Notes, admin per-student/per-centre unlock view, scale proof numbers).
+3. **~15 min scope conversation** — walk through the 4 options above as "here are a few shapes this could take," anchored on what his discovery answers just revealed actually matters to him (e.g. if marking-by-hand at 14 sites is a real pain, option 2 lands harder than option 1's "content bank" framing).
+4. **Close** — if he pushes for a number, the anchor range is £20k-£35k for the full buyout (see above); let him name a figure first if at all possible, per the standing "don't lead with price" rule — but you now have a real number in mind rather than the old £2k floor, which was sized for a solo tutor, not a 14-site operator.
+
+## Step 13 — actual call outcome (2026-09-16) and the pivot (2026-09-17/18)
+
+**Real outcome, not a hypothetical:** Chris took the call and gave a specific, real objection — the platform's content is GL-format, and Teachitright's actual exam boards are **CEM, QUEST, and Future Stories**. As it stands, GL-format content isn't usable for him. This is a genuine "not for this content bank," not a soft brush-off he never elaborated on — but it's also not a confirmed "build the other boards and I'll buy," since he didn't ask for that; the pivot below is our inference, not his ask.
+
+**Real, verified spend clarified this session:** actual cash outlay was higher than first estimated — paid Postgres tier, paid Vercel, plus ~£1,000 for a contractor brought in for specific work. Real total roughly £1,200-£1,600, on top of the time invested. Revised replacement-cost/market-rate estimate for the platform: **£10,000-£20,000** (down from the earlier £15-30k, since AI-assisted building lowers the realistic cost to replicate this today).
+
+**Revenue re-estimate, tightened to avoid overestimating:** using more conservative assumptions (11 confirmed centres not 14, 2 classes/centre, ~7 students/class, lower fee/week bracket, modest secondary-revenue uplift rather than a large multiplier), the working estimate is now **roughly £160,000-£220,000/year revenue**, down from the earlier £500k-650k figure. Treat this as the working floor for internal pricing sanity checks — the true number could be higher, but don't price as if it's a bigger business than this until Chris's own numbers say otherwise.
+
+**Target price, picked as one definite number for internal use:** **£15,000, one-off, full platform buyout.** Floor if he pushes back hard: £8,000 (matches the single-centre pilot tier). Still never state a number unprompted.
+
+**The pivot plan:** rather than treat the GL-format objection as a dead end, build a CEM/QUEST/Future Stories-format content bank instead, on top of the already-built platform (delivery, auto-marking, admin, reporting — none of which are GL-specific). This is a much smaller lift than the original 7-month build, since only Layer 1 (content) needs redoing, not the infrastructure underneath it. **Caveat, not yet resolved:** "QUEST" and "Future Stories" have not been independently verified as standard/real 11+ exam board names (CEM is well-known and real) — confirm exact names/format before sinking real content-authoring time in, in case something was misheard on the call.
+
+**Follow-up email:** drafted, refined over several passes (cut a fabricated-sounding "2k MRR"/team-hours framing that came up in pitch rehearsal, fixed an unfinished/redundant closing, added a one-line CTA asking Chris which board he'd want to see first — this exists specifically so a non-reply cheaply signals "not actually interested" before weeks of build effort go in). **Saved as a Gmail draft in the existing Teachitright thread 2026-09-18, not yet sent** — Srinivas to review and send when ready.
+
+**Not yet started:** actually building any CEM/QUEST/Future Stories content, or the promised "CEM-style non-verbal reasoning" work referenced in the follow-up email — the email is currently ahead of the real build. Don't let the email's "next few weeks" promise slip unnoticed if this thread goes quiet.
+
+**2026-09-23:** Third follow-up drafted (not sent) as a reply in the "A CEM/QUEST/FSCE format sample" thread: offers the FSCE Maths + QUEST English sample papers, says the answer sheets are available on request, repeats the which-board-first question, and asks for a 15-min call. PDFs are attached by hand (Gmail connector can't carry 1 MB+ files); paths are listed in a draft to prime.mr.chess@gmail.com. The NVR sample promised in the 09-18 email is still not built and is left out of this email.
