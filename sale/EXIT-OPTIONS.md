@@ -12,6 +12,8 @@ Built 2026-09-24 (re-run of the failed cloud routine `trig_01CiQghu245DBsNMu3mEn
 - `TEASER.md` — 1-page anonymised teaser (not sent)
 - `_excluded-names.txt` — dedupe list (from the earlier failed run)
 
+**Note on this run:** this file's Part 1 was written in an earlier cut-off attempt (commit `e84fec4`). This pass (2026-09-25) completed Parts 2-4 and the final recommendation, cross-checked Part 1's Bond 11+ publisher attribution (corrected: Oxford University Press, not HarperCollins — HarperCollins publishes the separate Collins 11+ range), and added the closing recommendation below. Web research this pass: ~15 searches, no additional marketplace/multiple research repeated.
+
 ## Asset facts used below (checked against the production DB, read-only, 2026-09-24)
 
 | Item | Count |
@@ -71,3 +73,43 @@ Read-only counts from a throwaway script (deleted). No personal data was read. R
 1. **Don't list yet.** First get 2–3 months of real payments through Stripe (Step 3 in SELLING-THE-PLATFORM.md). That makes Microns an option and helps on Acquire/Flippa.
 2. When listing: **Acquire.com (main) + Rightbiz (UK, £12/mo, 0% commission)** together. Add Flippa only if Acquire gets no response in 4–6 weeks. Skip brokers.
 3. Pitch it as an **asset sale**: code + 7,426 questions + 159 mocks + domain, 2–4 weeks of handover. Put the ask at £15k, with an unpublished floor of £8k (same as Step 13).
+
+---
+
+## 2. Strategic buyers beyond tutoring centres (25 named, verified targets)
+
+Full sheet: `strategic-buyers.csv`. All checked against `_excluded-names.txt` and `SELLING-THE-PLATFORM.md` — none overlap with existing leads, and Teachitright/Chris Pearse plus the Bucks/Burnham/High Wycombe/Maidenhead/Reading hold-area are excluded throughout. Every row has a public contact route (no signups, no messages sent). Grouped:
+
+**11+ publishers (6):** GL Assessment (now a Renaissance Learning company — the biggest 11+ test publisher), CGP Books, Bond 11+ (Oxford University Press — corrected from an earlier misattribution to HarperCollins), Collins 11+ (HarperCollins, the actual Collins imprint), Galore Park (Hodder Education/Hachette Learning, ISEB-focused), Hodder Education/Hachette Learning itself as the parent group.
+
+**Mock-exam / practice-paper providers (5):** PiAcademy (20,000+ registered users, direct product-model match), Exam Papers Plus, 11 Plus Guru, Testbase (RM plc — school question-bank platform, 12,000+ schools), RM plc as the parent group.
+
+**Tutoring marketplaces (4):** MyTutor (UK's largest — **acquired by IXL Learning in May 2025**, the strongest single data point in this research: a real, recent, named acquisition of a UK tutoring company by a US edtech group explicitly buying for "depth and geography"), IXL Learning directly, Tutorful, Owl Tutors.
+
+**Broader UK/US edtech firms (10):** Discovery Education (bought UK's DoodleLearning in 2022, Clearlake Capital-backed — a second real, named, recent acquisition of UK primary-edtech content), DoodleLearning itself, CENTURY Tech, Sparx Learning (already acquired HegartyMaths — evidenced appetite for content bolt-ons), Seneca Learning, Educake (weakest entry — category match only, not independently verified beyond one secondary mention), Twinkl (~£100m turnover, huge resource marketplace), Letts (weak — ownership not re-verified this session), Varsity Tutors/Nerdy Inc (weak — historical UK acquisition, First Tutors, which has since closed).
+
+**Most important two findings in this section:**
+- **MyTutor→IXL Learning (2025)** and **DoodleLearning→Discovery Education (2022)** are the two strongest pieces of evidence in this whole report: real, recent, named acquisitions of UK edtech/tutoring companies by well-funded strategics. They prove buyers exist for UK 11+/tutoring assets — just not usually pre-revenue ones at this size.
+- Everything else in this list is a plausible-fit cold-contact target, not an evidenced live buyer. Treat the "why it fits" column as a hypothesis to test, not a guarantee of interest.
+
+---
+
+## 3. Due-diligence pack buyers will want, and our gaps
+
+Full detail: `DUE-DILIGENCE-CHECKLIST.md`. Summary across code, content/IP, GDPR, and financials — **the single biggest gap found is not technical: the founder (Pranav) is a minor, and there is no documented IP assignment or contracting-party structure that would let a sale contract actually be signed.** Everything else (license/secret scan never run, no originality statement for the question bank, no GDPR lawful-basis documentation for the 17 real student accounts, no Stripe statements evidencing the ~£12k ARR figure) is fixable in days; the minor/contracting-party question needs a family decision, not more research, and should be resolved before any buyer conversation gets serious.
+
+---
+
+## 4. Listing draft and teaser
+
+Drafted, **not posted or sent anywhere**: `LISTING-DRAFT.md` (full marketplace listing copy for Acquire.com/Rightbiz/SideProjectors) and `TEASER.md` (1-page anonymised teaser, contact field left blank for the family to fill in). Both price the platform as a £15k asset sale (£8k floor, undisclosed), consistent with Part 1's recommendation, and both explicitly flag it as "asset sale, not revenue business."
+
+---
+
+## Overall recommendation (all four parts)
+
+1. **Resolve the contracting-party/IP-ownership question first** (Part 3) — this blocks every other route, not just marketplaces.
+2. **Don't cold-list on a marketplace yet.** Get 2-3 months of real Stripe revenue if at all possible; it changes which marketplaces are even eligible (Microns) and what multiple applies.
+3. **The two strongest real leads to watch, not contact uninvited:** MyTutor/IXL Learning and Discovery Education/DoodleLearning are evidence that this category of asset does get bought — but both deals were by companies actively shopping, not the result of a cold approach. A warm intro (via Networking-Mentors contacts, or LinkedIn) would beat a cold email to either.
+4. **If cold outreach to strategics is wanted next**, PiAcademy and Testbase are the closest product-model matches and the easiest to make a concrete pitch to (both already do mock-exam/question-bank delivery, so "here's a ready-made bank" is a clear, legible ask).
+5. **Marketplace-wise**, Acquire.com + Rightbiz remains the right pair once revenue exists; Flippa as a fallback; skip brokers and Empire Flippers/FE International (both fail eligibility at this size).
