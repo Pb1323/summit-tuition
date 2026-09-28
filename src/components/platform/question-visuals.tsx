@@ -742,13 +742,13 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
         </defs>
         <g className="qv-hit" tabIndex={0} role="img" aria-label={`${String(visual.data.leftLabel ?? "A")} only: ${String(visual.data.left ?? "")}`}>
           <circle className="qv-pop qv-mark" style={{ animationDelay: "0s" }} cx={132} cy={96} r={62} fill={`url(#${vennGradientId}-left)`} stroke={INK} strokeWidth={3} />
-          <text x={108} y={36} textAnchor="middle" fill={INK} fontSize={13} fontWeight={800}>{String(visual.data.leftLabel ?? "A")}</text>
+          <text x={78} y={22} textAnchor="middle" fill={INK} fontSize={13} fontWeight={800}>{String(visual.data.leftLabel ?? "A")}</text>
           <text x={104} y={100} textAnchor="middle" fill={INK_SOFT} fontSize={16} fontWeight={800}>{String(visual.data.left ?? "")}</text>
           <ValueTooltip x={104} y={148} text={`${String(visual.data.leftLabel ?? "A")} only: ${String(visual.data.left ?? "")}`} />
         </g>
         <g className="qv-hit" tabIndex={0} role="img" aria-label={`${String(visual.data.rightLabel ?? "B")} only: ${String(visual.data.right ?? "")}`}>
           <circle className="qv-pop qv-mark" style={{ animationDelay: "0.15s" }} cx={188} cy={96} r={62} fill={`url(#${vennGradientId}-right)`} stroke={INK} strokeWidth={3} />
-          <text x={212} y={36} textAnchor="middle" fill={INK} fontSize={13} fontWeight={800}>{String(visual.data.rightLabel ?? "B")}</text>
+          <text x={242} y={22} textAnchor="middle" fill={INK} fontSize={13} fontWeight={800}>{String(visual.data.rightLabel ?? "B")}</text>
           <text x={216} y={100} textAnchor="middle" fill={INK_SOFT} fontSize={16} fontWeight={800}>{String(visual.data.right ?? "")}</text>
           <ValueTooltip x={216} y={148} text={`${String(visual.data.rightLabel ?? "B")} only: ${String(visual.data.right ?? "")}`} />
         </g>
@@ -1119,7 +1119,7 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
     const segments = route.slice(0, -1).map((fromId, index) => ({ from: byId.get(fromId), to: byId.get(route[index + 1]) })).filter((s): s is { from: MapLandmark; to: MapLandmark } => !!s.from && !!s.to);
     const mapGradientId = `${patternId}-map`;
     return frame(
-      <svg viewBox="0 0 320 220" className="h-64 w-full max-w-full">
+      <svg viewBox="0 0 360 220" className="h-64 w-full max-w-full">
         <defs>
           <linearGradient id={mapGradientId} x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="#f4f8ec" />
@@ -1158,7 +1158,7 @@ export function VisualRenderer({ visual, adminPreview }: { visual: QuestionVisua
             <ValueTooltip x={landmark.x} y={landmark.y - 46} text={landmark.label} color={GOLD_DARK} />
           </g>
         ))}
-        <g transform="translate(278, 24)">
+        <g transform="translate(340, 40)">
           <circle r={16} fill="#ffffff" stroke={INK} strokeWidth={1.5} />
           <polygon points="0,-11 4,3 0,-1 -4,3" fill={GOLD_DARK} />
           <text x={0} y={-18} textAnchor="middle" fill={INK} fontSize={9} fontWeight={800}>N</text>
